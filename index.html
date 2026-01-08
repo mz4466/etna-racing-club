@@ -444,197 +444,194 @@
             color: var(--lava-orange);
             text-transform: uppercase;
             letter-spacing: 4px;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             text-shadow: 0 0 20px rgba(255, 140, 66, 0.5);
         }
 
-        .championships-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
+        .buttons-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            max-width: 800px;
+            margin: 0 auto 60px;
         }
 
-        .championship-card {
-            position: relative;
+        .championship-button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 40px;
             background: linear-gradient(135deg, 
                 rgba(74, 14, 14, 0.9) 0%, 
                 rgba(45, 10, 10, 0.95) 100%);
             border: 3px solid var(--volcano-red);
             border-radius: 20px;
-            padding: 35px 25px;
-            text-align: center;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 
-                0 15px 40px rgba(0, 0, 0, 0.6),
-                inset 0 0 30px rgba(255, 80, 20, 0.1);
+                0 10px 30px rgba(0, 0, 0, 0.5),
+                inset 0 0 20px rgba(255, 80, 20, 0.1);
             text-decoration: none;
-            display: block;
             color: var(--cream);
+            cursor: pointer;
         }
 
-        .championship-card.active {
+        .championship-button.active {
             border-color: var(--fire-yellow);
             background: linear-gradient(135deg, 
                 rgba(255, 80, 20, 0.3) 0%, 
                 rgba(74, 14, 14, 0.9) 50%,
                 rgba(45, 10, 10, 0.95) 100%);
+            box-shadow: 
+                0 10px 30px rgba(255, 80, 20, 0.6),
+                inset 0 0 30px rgba(255, 140, 66, 0.2),
+                0 0 40px rgba(255, 165, 0, 0.4);
         }
 
-        .championship-card.active:hover {
-            transform: translateY(-15px) scale(1.05);
+        .championship-button.active:hover {
+            transform: translateY(-8px) scale(1.02);
             border-color: #ffffff;
             box-shadow: 
-                0 25px 60px rgba(255, 80, 20, 0.8),
+                0 20px 50px rgba(255, 80, 20, 0.8),
                 inset 0 0 40px rgba(255, 140, 66, 0.3),
-                0 0 80px rgba(255, 165, 0, 0.6);
+                0 0 60px rgba(255, 165, 0, 0.6);
         }
 
-        .championship-card.coming-soon {
-            opacity: 0.6;
+        .championship-button.disabled {
+            opacity: 0.5;
             border-color: rgba(201, 184, 163, 0.3);
             cursor: not-allowed;
         }
 
-        .championship-card.coming-soon:hover {
-            transform: translateY(-5px);
-            opacity: 0.8;
+        .championship-button.disabled:hover {
+            transform: none;
         }
 
-        .card-badge {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--volcano-red);
-            color: #ffffff;
-            font-family: 'Teko', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            padding: 6px 20px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            box-shadow: 0 5px 15px rgba(255, 80, 20, 0.6);
-        }
-
-        .championship-card.active .card-badge {
-            background: linear-gradient(90deg, var(--volcano-red), var(--fire-yellow));
-            animation: badge-pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes badge-pulse {
-            0%, 100% {
-                box-shadow: 0 5px 15px rgba(255, 80, 20, 0.6);
-            }
-            50% {
-                box-shadow: 0 8px 25px rgba(255, 165, 0, 0.9);
-            }
-        }
-
-        .championship-card.coming-soon .card-badge {
-            background: rgba(201, 184, 163, 0.3);
-            color: var(--smoke);
-        }
-
-        .card-quarter {
+        .button-quarter {
             font-family: 'Russo One', sans-serif;
-            font-size: 48px;
+            font-size: 42px;
             color: var(--fire-yellow);
-            margin: 20px 0 10px;
+            min-width: 100px;
             text-shadow: 0 0 20px rgba(255, 165, 0, 0.6);
         }
 
-        .championship-card.coming-soon .card-quarter {
+        .championship-button.disabled .button-quarter {
             color: var(--smoke);
             text-shadow: none;
         }
 
-        .card-name {
+        .button-label {
             font-family: 'Teko', sans-serif;
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 600;
-            color: var(--cream);
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 10px;
+            flex-grow: 1;
+            text-align: center;
         }
 
-        .championship-card.coming-soon .card-name {
+        .championship-button.disabled .button-label {
             color: var(--smoke);
         }
 
-        .card-period {
-            font-size: 14px;
-            color: var(--smoke);
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-        }
-
-        .card-cta {
+        .button-status {
             font-family: 'Teko', sans-serif;
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 600;
-            color: var(--fire-yellow);
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 2px solid rgba(255, 80, 20, 0.3);
+            color: var(--smoke);
+            padding: 8px 20px;
+            background: rgba(201, 184, 163, 0.2);
+            border-radius: 20px;
+            min-width: 180px;
+            text-align: center;
         }
 
-        .championship-card.active .card-cta {
-            animation: arrow-bounce 1.5s ease-in-out infinite;
+        .button-status.active-status {
+            color: #ffffff;
+            background: linear-gradient(90deg, var(--volcano-red), var(--fire-yellow));
+            animation: status-pulse 2s ease-in-out infinite;
+            box-shadow: 0 5px 15px rgba(255, 80, 20, 0.5);
         }
 
-        @keyframes arrow-bounce {
+        @keyframes status-pulse {
             0%, 100% {
-                transform: translateX(0);
+                box-shadow: 0 5px 15px rgba(255, 80, 20, 0.5);
             }
             50% {
-                transform: translateX(5px);
+                box-shadow: 0 8px 25px rgba(255, 165, 0, 0.8);
             }
         }
 
-        .championship-card.coming-soon .card-cta {
-            color: var(--smoke);
+        .divider-line {
+            width: 80%;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                var(--volcano-red) 20%, 
+                var(--fire-yellow) 50%,
+                var(--volcano-red) 80%, 
+                transparent 100%);
+            margin: 60px auto;
+            box-shadow: 0 0 20px var(--volcano-red);
         }
 
-        /* Secondary Button */
-        .secondary-button {
+        /* Main CTA Button (Regolamento) */
+        .main-cta-button {
             display: inline-block;
             position: relative;
             font-family: 'Russo One', sans-serif;
-            font-size: clamp(20px, 3.5vw, 28px);
+            font-size: clamp(24px, 4vw, 36px);
             font-weight: 400;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             text-transform: uppercase;
-            color: var(--cream);
+            color: #ffffff;
             text-decoration: none;
-            padding: 20px 50px;
+            padding: 30px 70px;
             background: linear-gradient(135deg, 
-                rgba(74, 14, 14, 0.9) 0%, 
-                rgba(45, 10, 10, 0.95) 100%);
-            border: 3px solid var(--lava-orange);
-            border-radius: 50px;
+                var(--volcano-red) 0%, 
+                var(--lava-orange) 50%,
+                var(--volcano-red) 100%);
+            border: 4px solid var(--fire-yellow);
+            border-radius: 60px;
             box-shadow: 
-                0 10px 30px rgba(0, 0, 0, 0.5),
-                inset 0 0 20px rgba(255, 80, 20, 0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                0 15px 40px rgba(255, 80, 20, 0.6),
+                inset 0 -8px 20px rgba(0, 0, 0, 0.4),
+                0 0 50px rgba(255, 165, 0, 0.4);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
             cursor: pointer;
         }
 
-        .secondary-button:hover {
-            transform: translateY(-5px) scale(1.05);
-            border-color: var(--fire-yellow);
-            box-shadow: 
-                0 15px 40px rgba(255, 140, 66, 0.6),
-                inset 0 0 30px rgba(255, 80, 20, 0.2);
+        .main-cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.3) 50%, 
+                transparent 100%);
+            transition: left 0.7s ease;
         }
 
-        .secondary-button:active {
-            transform: translateY(-2px) scale(1.02);
+        .main-cta-button:hover::before {
+            left: 100%;
+        }
+
+        .main-cta-button:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 
+                0 25px 60px rgba(255, 80, 20, 0.8),
+                inset 0 -8px 20px rgba(0, 0, 0, 0.4),
+                0 0 80px rgba(255, 165, 0, 0.7);
+            border-color: #ffffff;
+        }
+
+        .main-cta-button:active {
+            transform: translateY(-4px) scale(1.03);
         }
 
         /* Footer */
@@ -716,30 +713,35 @@
                 font-size: 24px;
             }
 
-            .cta-button {
-                padding: 20px 40px;
-                letter-spacing: 2px;
+            .buttons-wrapper {
+                gap: 20px;
             }
 
-            .championships-grid {
-                grid-template-columns: 1fr;
-                gap: 25px;
+            .championship-button {
+                flex-direction: column;
+                padding: 25px 20px;
+                gap: 15px;
             }
 
-            .championship-card {
-                padding: 30px 20px;
+            .button-quarter {
+                font-size: 36px;
+                min-width: auto;
             }
 
-            .card-quarter {
-                font-size: 40px;
-            }
-
-            .card-name {
+            .button-label {
                 font-size: 24px;
+                text-align: center;
             }
 
-            .secondary-button {
-                padding: 18px 35px;
+            .button-status {
+                font-size: 14px;
+                padding: 6px 15px;
+                min-width: auto;
+            }
+
+            .main-cta-button {
+                padding: 22px 45px;
+                font-size: clamp(20px, 4vw, 28px);
                 letter-spacing: 2px;
             }
 
@@ -825,61 +827,46 @@
             </div>
 
             <div class="cta-container">
-                <!-- Main Regolamento Button -->
-                <div style="margin-bottom: 60px;">
-                    <a href="regolamento_etna_racing_club.html" class="cta-button">
-                        <span class="button-icon">📋</span>
-                        Regolamento Ufficiale
-                    </a>
-                </div>
-
                 <!-- Championship Buttons Section -->
                 <h2 class="championships-title">Campionati 2026</h2>
-                <div class="championships-grid">
+                
+                <div class="buttons-wrapper">
                     <!-- Q1 - Active -->
-                    <a href="traiettorie-gelate-2026-q1.html" class="championship-card active">
-                        <div class="card-badge">🔥 IN CORSO</div>
-                        <div class="card-quarter">Q1</div>
-                        <div class="card-name">Traiettorie Gelate</div>
-                        <div class="card-period">Gennaio - Marzo 2026</div>
-                        <div class="card-cta">Vai al Campionato →</div>
+                    <a href="traiettorie-gelate-2026-q1.html" class="championship-button active">
+                        <span class="button-quarter">Q1</span>
+                        <span class="button-label">Traiettorie Gelate</span>
+                        <span class="button-status active-status">🔥 IN CORSO</span>
                     </a>
 
                     <!-- Q2 - Coming Soon -->
-                    <div class="championship-card coming-soon">
-                        <div class="card-badge">⏳ DA CONFERMARE</div>
-                        <div class="card-quarter">Q2</div>
-                        <div class="card-name">Da Annunciare</div>
-                        <div class="card-period">Aprile - Giugno 2026</div>
-                        <div class="card-cta">Prossimamente</div>
+                    <div class="championship-button disabled">
+                        <span class="button-quarter">Q2</span>
+                        <span class="button-label">Da Confermare</span>
+                        <span class="button-status">⏳ PROSSIMAMENTE</span>
                     </div>
 
                     <!-- Q3 - Coming Soon -->
-                    <div class="championship-card coming-soon">
-                        <div class="card-badge">⏳ DA CONFERMARE</div>
-                        <div class="card-quarter">Q3</div>
-                        <div class="card-name">Da Annunciare</div>
-                        <div class="card-period">Luglio - Settembre 2026</div>
-                        <div class="card-cta">Prossimamente</div>
+                    <div class="championship-button disabled">
+                        <span class="button-quarter">Q3</span>
+                        <span class="button-label">Da Confermare</span>
+                        <span class="button-status">⏳ PROSSIMAMENTE</span>
                     </div>
 
                     <!-- Q4 - Coming Soon -->
-                    <div class="championship-card coming-soon">
-                        <div class="card-badge">⏳ DA CONFERMARE</div>
-                        <div class="card-quarter">Q4</div>
-                        <div class="card-name">Da Annunciare</div>
-                        <div class="card-period">Ottobre - Dicembre 2026</div>
-                        <div class="card-cta">Prossimamente</div>
+                    <div class="championship-button disabled">
+                        <span class="button-quarter">Q4</span>
+                        <span class="button-label">Da Confermare</span>
+                        <span class="button-status">⏳ PROSSIMAMENTE</span>
                     </div>
                 </div>
 
-                <!-- Piloti Button -->
-                <div style="margin-top: 60px;">
-                    <a href="#" class="secondary-button" onclick="alert('Pagina Piloti in costruzione! 🏗️'); return false;">
-                        <span class="button-icon">👥</span>
-                        I Nostri Piloti
-                    </a>
-                </div>
+                <div class="divider-line"></div>
+
+                <!-- Regolamento Button -->
+                <a href="regolamento_etna_racing_club.html" class="main-cta-button">
+                    <span class="button-icon">📋</span>
+                    Regolamento Ufficiale
+                </a>
             </div>
 
             <div class="footer-section">
