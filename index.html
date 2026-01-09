@@ -178,7 +178,6 @@
             justify-content: center;
             gap: 30px;
             margin: 0 auto 50px;
-            /* ensure logos stay above backdrop elements */
             position: relative;
             z-index: 11;
         }
@@ -197,7 +196,6 @@
             margin: 0;
             filter: drop-shadow(0 0 24px rgba(0,0,0,0.6));
             transition: transform 0.35s ease, filter 0.35s ease;
-            /* subtle pop on hover */
         }
 
         .gt7-logo:hover {
@@ -815,11 +813,9 @@
 
         <div class="content-wrapper">
             <div class="logo-row">
-                <!-- existing embedded club logo (kept as-is) -->
-                <img class="club-logo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gIoSUNDX1BST0ZJTEUAAQEAAAIYAAAAAAQwAABtbnRyUkdCIFhZWiAAAAAAAAAAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAAD[...]" alt="Etna Racing Club logo">
-
-                <!-- GT7 logo: save your provided image at assets/gt7-logo.png -->
-                <img class="gt7-logo" src="assets/gt7-logo.png" alt="Gran Turismo 7 logo">
+                <!-- use the actual files in the repo root -->
+                <img class="club-logo" src="etna-logo.png" alt="Etna Racing Club logo" loading="lazy">
+                <img class="gt7-logo" src="gt7.png" alt="Gran Turismo 7 logo" loading="lazy">
             </div>
             
             <h1 class="club-name">Etna Racing Club</h1>
