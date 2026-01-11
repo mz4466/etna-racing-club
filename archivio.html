@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Archivio - Etna Racing Club</title>
+    <style>
+        :root{
+            --bg:#050202;
+            --card:#221010;
+            --accent:#ff5014;
+            --muted:#c9b8a3;
+            --text:#fff5e6;
+        }
+        body{
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            background: linear-gradient(180deg, #000000 0%, #100404 60%);
+            color:var(--text);
+            padding:28px;
+            min-height:100vh;
+            box-sizing:border-box;
+        }
+        .container{
+            max-width:900px;
+            margin:0 auto;
+        }
+        h1{
+            font-family: 'Russo One', sans-serif;
+            font-size:32px;
+            letter-spacing:2px;
+            margin-bottom:8px;
+            color:var(--accent);
+            text-transform:uppercase;
+        }
+        p.lead{
+            color:var(--muted);
+            margin-bottom:24px;
+        }
+
+        .back-link{
+            display:inline-block;
+            margin-bottom:20px;
+            color:var(--text);
+            text-decoration:none;
+            background:transparent;
+            border:1px solid rgba(201,184,163,0.12);
+            padding:8px 12px;
+            border-radius:8px;
+        }
+
+        .card{
+            background: linear-gradient(180deg, rgba(45,10,10,0.9), rgba(74,14,14,0.8));
+            border:1px solid rgba(255,80,20,0.08);
+            padding:16px;
+            border-radius:12px;
+            box-shadow:0 8px 30px rgba(0,0,0,0.6);
+        }
+
+        .year{
+            margin-bottom:12px;
+        }
+
+        .year-button{
+            width:100%;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            background:transparent;
+            color:var(--text);
+            border:none;
+            padding:14px 16px;
+            font-size:18px;
+            font-family:'Teko', sans-serif;
+            letter-spacing:2px;
+            cursor:pointer;
+            text-transform:uppercase;
+            border-radius:8px;
+            transition:background .18s ease, box-shadow .18s ease;
+        }
+        .year-button:hover{
+            background:rgba(255,80,20,0.06);
+            box-shadow:0 6px 18px rgba(255,80,20,0.06);
+        }
+        .year-button:focus{
+            outline:none;
+            box-shadow:0 0 0 6px rgba(255,80,20,0.08);
+        }
+        .arrow{
+            transition:transform .2s ease;
+            font-size:16px;
+            color:var(--muted);
+        }
+        .arrow.open{
+            transform:rotate(90deg);
+        }
+
+        .year-list{
+            margin-top:8px;
+            padding:0 16px 12px 16px;
+            list-style:none;
+            display:none;
+        }
+        .year-list.show{
+            display:block;
+        }
+        .year-list li{
+            margin:8px 0;
+        }
+        .year-list button.item{
+            width:100%;
+            text-align:left;
+            background:linear-gradient(90deg, rgba(255,80,20,0.06), transparent);
+            border:1px solid rgba(201,184,163,0.06);
+            padding:10px 12px;
+            color:var(--text);
+            border-radius:8px;
+            cursor:pointer;
+            font-family:Roboto, Arial, sans-serif;
+        }
+        .year-list button.item:hover{
+            background:linear-gradient(90deg, rgba(255,80,20,0.12), transparent);
+        }
+
+        .note{
+            margin-top:18px;
+            color:var(--muted);
+            font-size:14px;
+        }
+
+        @media (max-width:600px){
+            .year-button{ font-size:16px; padding:12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Torna alla Home</a>
+
+        <h1>Archivio</h1>
+        <p class="lead">Seleziona l'anno per vedere gli eventi archiviati. Per ora ogni anno contiene le voci 1, 2, 3 e 4.</p>
+
+        <div class="card" role="region" aria-label="Archivio anni">
+            <div class="year">
+                <button class="year-button" aria-expanded="false" data-target="list-2025">
+                    <span>2025</span>
+                    <span class="arrow" aria-hidden="true">▶</span>
+                </button>
+                <ul id="list-2025" class="year-list" role="list">
+                    <li><button class="item" type="button">1</button></li>
+                    <li><button class="item" type="button">2</button></li>
+                    <li><button class="item" type="button">3</button></li>
+                    <li><button class="item" type="button">4</button></li>
+                </ul>
+            </div>
+
+            <div class="year">
+                <button class="year-button" aria-expanded="false" data-target="list-2024">
+                    <span>2024</span>
+                    <span class="arrow" aria-hidden="true">▶</span>
+                </button>
+                <ul id="list-2024" class="year-list" role="list">
+                    <li><button class="item" type="button">1</button></li>
+                    <li><button class="item" type="button">2</button></li>
+                    <li><button class="item" type="button">3</button></li>
+                    <li><button class="item" type="button">4</button></li>
+                </ul>
+            </div>
+
+            <p class="note">Nota: al momento gli elementi sono segnaposto (1,2,3,4). Puoi sostituirli con i link/dati reali quando pronti.</p>
+        </div>
+    </div>
+
+    <script>
+        // Toggle dropdown lists
+        document.querySelectorAll('.year-button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetId = btn.getAttribute('data-target');
+                const list = document.getElementById(targetId);
+                const expanded = btn.getAttribute('aria-expanded') === 'true';
+                btn.setAttribute('aria-expanded', String(!expanded));
+                list.classList.toggle('show', !expanded);
+                const arrow = btn.querySelector('.arrow');
+                if(!expanded) arrow.classList.add('open'); else arrow.classList.remove('open');
+            });
+        });
+
+        // OPTIONAL: item buttons currently do nothing, later can link to specific event pages
+        document.querySelectorAll('.year-list .item').forEach(it => {
+            it.addEventListener('click', () => {
+                // In futuro puoi fare: window.location = 'archivio/2025/evento-1.html';
+                alert('Hai cliccato su: ' + it.textContent + '\n(qui puoi collegare la pagina reale)');
+            });
+        });
+    </script>
+</body>
+</html>
