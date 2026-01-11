@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daytona Ovale - Risultati Gara | Etna Racing Club</title>
+    <title>Dragon Trail - Risultati Gara | Etna Racing Club</title>
     <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300,400,500,600,700&family=Russo+One&family=Roboto:wght@300,400,700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -13,14 +13,16 @@
         }
 
         :root {
-            --volcano-red: #ff5014;
-            --lava-orange: #ff8c42;
-            --fire-yellow: #ffa500;
-            --deep-maroon: #4a0e0e;
-            --dark-brown: #2d0a0a;
+            --primary-gold: #FFD700;
+            --light-gold: #FFC107;
+            --dark-gold: #B8860B;
+            --champagne: #F7E7CE;
+            --pure-black: #000000;
+            --dark-gray: #1a1a1a;
+            --medium-gray: #2d2d2d;
+            --light-gray: #4a4a4a;
             --cream: #fff5e6;
             --smoke: #c9b8a3;
-            --pure-black: #000000;
             --gold: #FFD700;
             --silver: #C0C0C0;
             --bronze: #CD7F32;
@@ -28,7 +30,7 @@
 
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(180deg, #000000 0%, #1a0505 50%, #2d0a0a 100%);
+            background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #1a1a1a 100%);
             color: var(--cream);
             min-height: 100vh;
             padding: 20px;
@@ -55,13 +57,13 @@
             width: 64px;
             height: auto;
             border-radius: 8px;
-            box-shadow: 0 6px 18px rgba(255, 80, 20, 0.4);
+            box-shadow: 0 6px 18px rgba(255, 215, 0, 0.4);
         }
 
         .brand-text h1 {
             font-family: 'Russo One', sans-serif;
             font-size: 28px;
-            color: var(--lava-orange);
+            color: var(--primary-gold);
             letter-spacing: 2px;
         }
 
@@ -73,20 +75,21 @@
 
         .back-btn {
             font-family: 'Russo One', sans-serif;
-            background: linear-gradient(90deg, var(--volcano-red), var(--lava-orange));
-            color: #fff;
+            background: linear-gradient(90deg, var(--dark-gold), var(--primary-gold));
+            color: #000;
+            font-weight: 600;
             text-decoration: none;
             padding: 12px 24px;
             border-radius: 8px;
             font-size: 14px;
             letter-spacing: 1px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 80, 20, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
         }
 
         .back-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 80, 20, 0.5);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
         }
 
         /* Main Container */
@@ -114,46 +117,46 @@
             text-align: center;
             margin-bottom: 40px;
             padding: 30px 20px;
-            background: linear-gradient(135deg, rgba(74, 14, 14, 0.6), rgba(45, 10, 10, 0.8));
-            border: 2px solid var(--volcano-red);
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.9), rgba(13, 13, 13, 0.95));
+            border: 2px solid var(--primary-gold);
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.2);
         }
 
         .race-title {
             font-family: 'Russo One', sans-serif;
             font-size: clamp(36px, 6vw, 56px);
-            color: var(--fire-yellow);
+            color: var(--primary-gold);
             text-transform: uppercase;
             letter-spacing: 3px;
             margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(255, 165, 0, 0.6);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
         }
 
         .race-subtitle {
             font-family: 'Teko', sans-serif;
             font-size: clamp(20px, 4vw, 28px);
-            color: var(--smoke);
+            color: var(--champagne);
             letter-spacing: 2px;
             text-transform: uppercase;
         }
 
         /* Results Table */
         .results-table {
-            background: linear-gradient(135deg, rgba(18, 19, 24, 0.9), rgba(8, 8, 10, 0.9));
-            border: 2px solid rgba(255, 80, 20, 0.2);
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(13, 13, 13, 0.98));
+            border: 2px solid rgba(255, 215, 0, 0.3);
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.1);
         }
 
         /* Championship Standings */
         .standings-card {
-            background: linear-gradient(135deg, rgba(18, 19, 24, 0.9), rgba(8, 8, 10, 0.9));
-            border: 2px solid rgba(255, 80, 20, 0.2);
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(13, 13, 13, 0.98));
+            border: 2px solid rgba(255, 215, 0, 0.3);
             border-radius: 15px;
             padding: 24px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.1);
             position: sticky;
             top: 20px;
         }
@@ -161,12 +164,12 @@
         .standings-title {
             font-family: 'Russo One', sans-serif;
             font-size: 24px;
-            color: var(--fire-yellow);
+            color: var(--primary-gold);
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 20px;
             text-align: center;
-            text-shadow: 0 0 15px rgba(255, 165, 0, 0.5);
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
         }
 
         .standings-item {
@@ -175,15 +178,16 @@
             justify-content: space-between;
             padding: 14px 12px;
             margin-bottom: 10px;
-            background: linear-gradient(90deg, rgba(255, 80, 20, 0.05), transparent);
-            border: 1px solid rgba(255, 80, 20, 0.1);
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.08), transparent);
+            border: 1px solid rgba(255, 215, 0, 0.15);
             border-radius: 10px;
             transition: all 0.3s ease;
         }
 
         .standings-item:hover {
-            background: linear-gradient(90deg, rgba(255, 80, 20, 0.12), transparent);
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.15), transparent);
             transform: translateX(5px);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
         }
 
         .standings-position {
@@ -206,12 +210,6 @@
             text-shadow: 0 0 10px rgba(255, 165, 0, 0.4);
         }
 
-        .standings-races {
-            font-size: 14px;
-            color: var(--smoke);
-            margin-left: 8px;
-        }
-
         .race-info {
             text-align: center;
             margin-top: 20px;
@@ -227,19 +225,19 @@
         }
 
         thead {
-            background: linear-gradient(135deg, var(--deep-maroon), var(--dark-brown));
+            background: linear-gradient(135deg, var(--dark-gray), var(--medium-gray));
         }
 
         th {
             font-family: 'Teko', sans-serif;
             font-size: 20px;
             font-weight: 600;
-            color: var(--fire-yellow);
+            color: var(--primary-gold);
             text-transform: uppercase;
             letter-spacing: 2px;
             padding: 18px 15px;
             text-align: left;
-            border-bottom: 2px solid var(--volcano-red);
+            border-bottom: 2px solid var(--primary-gold);
         }
 
         th:first-child {
@@ -248,12 +246,12 @@
         }
 
         tbody tr {
-            border-bottom: 1px solid rgba(255, 80, 20, 0.1);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
             transition: background 0.3s ease;
         }
 
         tbody tr:hover {
-            background: rgba(255, 80, 20, 0.05);
+            background: rgba(255, 215, 0, 0.05);
         }
 
         tbody tr:last-child {
@@ -293,18 +291,18 @@
             font-family: 'Teko', sans-serif;
             font-size: 22px;
             font-weight: 600;
-            color: var(--lava-orange);
+            color: var(--light-gold);
         }
 
         /* Best lap highlight */
         .best-lap {
-            color: var(--fire-yellow);
+            color: var(--primary-gold);
             font-weight: 700;
-            background: linear-gradient(90deg, rgba(255, 165, 0, 0.2), transparent);
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), transparent);
             padding: 4px 8px;
             border-radius: 4px;
-            border-left: 3px solid var(--fire-yellow);
-            text-shadow: 0 0 10px rgba(255, 165, 0, 0.5);
+            border-left: 3px solid var(--primary-gold);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
         }
 
         .best-lap::before {
@@ -367,7 +365,7 @@
 
     <main class="container">
         <div class="race-header">
-            <h1 class="race-title">Daytona Ovale</h1>
+            <h1 class="race-title">Dragon Trail</h1>
             <p class="race-subtitle">Campionato C1 • Sole & Sorpassi 2025</p>
         </div>
 
@@ -390,40 +388,30 @@
                     <tbody>
                         <tr>
                             <td class="pos-1">1°</td>
-                            <td class="pilot-name">Claudio</td>
-                            <td>Nismo</td>
-                            <td>21'08"678</td>
-                            <td>52"028</td>
+                            <td class="pilot-name">Pyer</td>
+                            <td>Huracan</td>
+                            <td>27'16"266</td>
+                            <td class="best-lap">1'43"018</td>
                             <td>25</td>
-                            <td>1</td>
-                            <td><strong>26</strong></td>
+                            <td>1+1</td>
+                            <td><strong>27</strong></td>
                         </tr>
                         <tr>
                             <td class="pos-2">2°</td>
-                            <td class="pilot-name">Pyer</td>
-                            <td>Huracan</td>
-                            <td>a 5"867</td>
-                            <td class="best-lap">51"617</td>
-                            <td>18</td>
-                            <td>1</td>
-                            <td><strong>19</strong></td>
-                        </tr>
-                        <tr>
-                            <td class="pos-3">3°</td>
-                            <td class="pilot-name">Luca</td>
-                            <td>RX-Vision</td>
-                            <td>a 1 Giro</td>
-                            <td>51"669</td>
+                            <td class="pilot-name">Claudio</td>
+                            <td>Nismo</td>
+                            <td>a 17"438</td>
+                            <td>1'45"376</td>
                             <td>18</td>
                             <td>-</td>
                             <td><strong>18</strong></td>
                         </tr>
                         <tr>
-                            <td>4°</td>
-                            <td class="pilot-name">Fabio</td>
-                            <td>Nismo</td>
-                            <td>N.C.</td>
-                            <td>52"615</td>
+                            <td class="pos-3">3°</td>
+                            <td class="pilot-name">Luca</td>
+                            <td>Suzuki</td>
+                            <td>a 1 Giro</td>
+                            <td>1'50"720</td>
                             <td>15</td>
                             <td>-</td>
                             <td><strong>15</strong></td>
@@ -439,36 +427,24 @@
                 <div class="standings-item">
                     <span class="standings-position pos-1">1°</span>
                     <span class="standings-driver">Pyer</span>
-                    <span class="standings-points">64 <span class="standings-races">pts</span></span>
+                    <span class="standings-points">27</span>
                 </div>
                 
                 <div class="standings-item">
                     <span class="standings-position pos-2">2°</span>
                     <span class="standings-driver">Claudio</span>
-                    <span class="standings-points">59 <span class="standings-races">pts</span></span>
+                    <span class="standings-points">18</span>
                 </div>
                 
                 <div class="standings-item">
                     <span class="standings-position pos-3">3°</span>
                     <span class="standings-driver">Luca</span>
-                    <span class="standings-points">45 <span class="standings-races">pts</span></span>
-                </div>
-
-                <div class="standings-item">
-                    <span class="standings-position">4°</span>
-                    <span class="standings-driver">Raffo</span>
-                    <span class="standings-points">27 <span class="standings-races">pts</span></span>
-                </div>
-
-                <div class="standings-item">
-                    <span class="standings-position">5°</span>
-                    <span class="standings-driver">Fabio</span>
-                    <span class="standings-points">25 <span class="standings-races">pts</span></span>
+                    <span class="standings-points">15</span>
                 </div>
 
                 <div class="race-info">
-                    <strong>Gara 3 di 5</strong><br>
-                    Prossima: Le Mans
+                    <strong>Gara 1 di 5</strong><br>
+                    Prossima: Lago Maggiore
                 </div>
             </div>
         </div>
