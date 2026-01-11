@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragon Trail - Risultati Gara | Etna Racing Club</title>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300,400,500,600,700&family=Russo+One&family=Roboto:wght@300,400,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --volcano-red: #ff5014;
+            --lava-orange: #ff8c42;
+            --fire-yellow: #ffa500;
+            --deep-maroon: #4a0e0e;
+            --dark-brown: #2d0a0a;
+            --cream: #fff5e6;
+            --smoke: #c9b8a3;
+            --pure-black: #000000;
+            --gold: #FFD700;
+            --silver: #C0C0C0;
+            --bronze: #CD7F32;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(180deg, #000000 0%, #1a0505 50%, #2d0a0a 100%);
+            color: var(--cream);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            max-width: 1400px;
+            margin: 0 auto 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .brand img {
+            width: 64px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 6px 18px rgba(255, 80, 20, 0.4);
+        }
+
+        .brand-text h1 {
+            font-family: 'Russo One', sans-serif;
+            font-size: 28px;
+            color: var(--lava-orange);
+            letter-spacing: 2px;
+        }
+
+        .brand-text p {
+            font-size: 12px;
+            color: var(--smoke);
+            letter-spacing: 1px;
+        }
+
+        .back-btn {
+            font-family: 'Russo One', sans-serif;
+            background: linear-gradient(90deg, var(--volcano-red), var(--lava-orange));
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 80, 20, 0.3);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 80, 20, 0.5);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Race Header */
+        .race-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, rgba(74, 14, 14, 0.6), rgba(45, 10, 10, 0.8));
+            border: 2px solid var(--volcano-red);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .race-title {
+            font-family: 'Russo One', sans-serif;
+            font-size: clamp(36px, 6vw, 56px);
+            color: var(--fire-yellow);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(255, 165, 0, 0.6);
+        }
+
+        .race-subtitle {
+            font-family: 'Teko', sans-serif;
+            font-size: clamp(20px, 4vw, 28px);
+            color: var(--smoke);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Results Table */
+        .results-table {
+            background: linear-gradient(135deg, rgba(18, 19, 24, 0.9), rgba(8, 8, 10, 0.9));
+            border: 2px solid rgba(255, 80, 20, 0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            margin-bottom: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--deep-maroon), var(--dark-brown));
+        }
+
+        th {
+            font-family: 'Teko', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--fire-yellow);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 18px 15px;
+            text-align: left;
+            border-bottom: 2px solid var(--volcano-red);
+        }
+
+        th:first-child {
+            text-align: center;
+            width: 80px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(255, 80, 20, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 80, 20, 0.05);
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        td {
+            padding: 20px 15px;
+            font-size: 16px;
+            color: var(--cream);
+        }
+
+        td:first-child {
+            text-align: center;
+            font-family: 'Russo One', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        /* Position styling */
+        .pos-1 {
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+        }
+
+        .pos-2 {
+            color: var(--silver);
+            text-shadow: 0 0 10px rgba(192, 192, 192, 0.6);
+        }
+
+        .pos-3 {
+            color: var(--bronze);
+            text-shadow: 0 0 10px rgba(205, 127, 50, 0.6);
+        }
+
+        .pilot-name {
+            font-family: 'Teko', sans-serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--lava-orange);
+        }
+
+        /* Best lap highlight */
+        .best-lap {
+            color: var(--fire-yellow);
+            font-weight: 700;
+            background: linear-gradient(90deg, rgba(255, 165, 0, 0.2), transparent);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border-left: 3px solid var(--fire-yellow);
+            text-shadow: 0 0 10px rgba(255, 165, 0, 0.5);
+        }
+
+        .best-lap::before {
+            content: "🏆 ";
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            color: var(--smoke);
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .results-table {
+                overflow-x: auto;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 12px 8px;
+            }
+
+            th {
+                font-size: 16px;
+            }
+
+            td:first-child {
+                font-size: 20px;
+            }
+
+            .pilot-name {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <a href="index.html"><img src="etna-logo.jpg" alt="Etna Racing Club"></a>
+            <div class="brand-text">
+                <h1>Etna Racing Club</h1>
+                <p>Risultati Gara</p>
+            </div>
+        </div>
+        <a href="archivio.html" class="back-btn">← Archivio</a>
+    </header>
+
+    <main class="container">
+        <div class="race-header">
+            <h1 class="race-title">Dragon Trail</h1>
+            <p class="race-subtitle">Campionato C1 • Traiettorie Gelate 2026</p>
+        </div>
+
+        <div class="results-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pos</th>
+                        <th>Pilota</th>
+                        <th>Auto</th>
+                        <th>Tempo Totale</th>
+                        <th>Best Lap</th>
+                        <th>Punti</th>
+                        <th>Extra Punti</th>
+                        <th>Punti Totali</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="pos-1">1°</td>
+                        <td class="pilot-name">Pyer</td>
+                        <td>Huracan</td>
+                        <td>27'16"266</td>
+                        <td class="best-lap">1'43"018</td>
+                        <td>25</td>
+                        <td>1+1</td>
+                        <td><strong>27</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="pos-2">2°</td>
+                        <td class="pilot-name">Claudio</td>
+                        <td>Nismo</td>
+                        <td>a 17"438</td>
+                        <td>1'45"376</td>
+                        <td>18</td>
+                        <td>-</td>
+                        <td><strong>18</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="pos-3">3°</td>
+                        <td class="pilot-name">Luca</td>
+                        <td>Suzuki</td>
+                        <td>a 1 Giro</td>
+                        <td>1'50"720</td>
+                        <td>15</td>
+                        <td>-</td>
+                        <td><strong>15</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 Etna Racing Club • Sicilia, Italia</p>
+    </footer>
+</body>
+</html>
