@@ -130,6 +130,8 @@
             transition: background .12s, transform .08s;
             text-align:left;
             font-family: Roboto, Arial, sans-serif;
+            display:block;
+            text-decoration:none;
         }
         .child-item:hover{ background: linear-gradient(90deg, rgba(255,80,20,0.12), transparent); transform:translateY(-2px); }
 
@@ -163,7 +165,7 @@
             <a href="index.html" class="back-link">← Torna alla Home</a>
 
             <h1 id="page-title" class="page-title">Archivio</h1>
-            <p class="lead">Seleziona l'anno e poi il campionato per vedere gli eventi. Per ora i link sono dropdown con elementi di esempio.</p>
+            <p class="lead">Seleziona l'anno e poi il campionato per vedere gli eventi.</p>
 
             <div class="archive-card" role="region" aria-label="Archivio anni">
                 <div class="year">
@@ -181,7 +183,7 @@
                             </button>
 
                             <ul id="c1-list" class="child-list" role="list">
-                                <li><button class="child-item" type="button">Dragon Trail</button></li>
+                                <li><a href="2025-c1-dragon_trail.html" class="child-item">Dragon Trail ✅</a></li>
                                 <li><button class="child-item" type="button">Lago Maggiore</button></li>
                                 <li><button class="child-item" type="button">Daytona - Ovale</button></li>
                                 <li><button class="child-item" type="button">Le Mans</button></li>
@@ -214,12 +216,12 @@
                     </ul>
                 </div>
 
-                <p class="note">Nota: le sotto-voci (tracce) sono per ora segnaposto; al click mostrano un messaggio. Posso collegarle a pagine evento reali quando vuoi.</p>
+                <p class="note">Le gare disponibili sono contrassegnate con ✅. Clicca per vedere i risultati!</p>
             </div>
 
             <div class="footer-section" aria-hidden="true">
                 <p class="footer-motto">🏁 Gareggia con Onore • Rispetta le Regole • Divertiti 🌋</p>
-                <p class="footer-copyright">© 2026 Etna Racing Club • Sicilia, Italia</p>
+                <p class="footer-copyright">© 2025 Etna Racing Club • Sicilia, Italia</p>
             </div>
         </div>
     </section>
@@ -253,11 +255,11 @@
             });
         });
 
-        // Child items and simple items: placeholder behavior
-        document.querySelectorAll('.child-item, .item').forEach(it => {
+        // Simple items: placeholder behavior (only for buttons, not links)
+        document.querySelectorAll('.item, .child-item[type="button"]').forEach(it => {
             it.addEventListener('click', (e) => {
                 e.stopPropagation();
-                alert('Hai selezionato: ' + it.textContent + '\n(Questa è una voce di esempio — in futuro collego la pagina evento o il download.)');
+                alert('Hai selezionato: ' + it.textContent + '\n(Questa è una voce di esempio — in futuro collego la pagina evento.)');
             });
         });
     </script>
