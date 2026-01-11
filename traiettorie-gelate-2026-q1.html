@@ -108,6 +108,41 @@
             clip-path: polygon(10px 0%, calc(100% - 10px) 0%, 100% 50%, calc(100% - 10px) 100%, 10px 100%, 0% 50%);
         }
 
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            margin-top: 14px;
+            transition: transform .18s ease, box-shadow .18s ease;
+            font-family: 'Rajdhani', sans-serif;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .btn-home {
+            background: linear-gradient(135deg, var(--fire-red), #d04400);
+            color: #fff;
+            box-shadow: 0 8px 30px rgba(255,80,20,0.35);
+            border: 2px solid rgba(255,80,20,0.15);
+        }
+
+        .btn-results {
+            background: linear-gradient(135deg, rgba(77,208,255,0.08), rgba(77,208,255,0.14));
+            color: var(--ice-blue);
+            border: 2px solid rgba(77,208,255,0.25);
+            box-shadow: 0 6px 24px rgba(77,208,255,0.06);
+        }
+
+        .home-button {
+            margin-top: 18px;
+        }
+
         .container {
             position: relative;
             z-index: 5;
@@ -327,6 +362,14 @@
             margin-right: 8px;
         }
 
+        .card-actions {
+            margin-top: 18px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
         .footer {
             position: relative;
             z-index: 10;
@@ -372,6 +415,16 @@
             .race-specs {
                 grid-template-columns: 1fr;
             }
+
+            .card-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -388,6 +441,10 @@
         <h1 class="main-title">Traiettorie Gelate</h1>
         <p class="subtitle">Championship Series</p>
         <div class="season-badge">GR.3 ONLY • CAMPTIONATO 1 - 2026</div>
+
+        <div class="home-button">
+            <a class="btn btn-home" href="index.html" title="Torna alla Home">Torna alla Home</a>
+        </div>
     </header>
 
     <div class="container">
@@ -414,12 +471,12 @@
                             <div class="info-value">Giappone</div>
                         </div>
                         <div class="info-item">
-                            <div class="info-label">Difficoltà</div>
+                            <div class="info-label">Difficolt��</div>
                             <div class="info-value">Alta</div>
                         </div>
                     </div>
                     <p class="circuit-description">
-                        Situato nelle montagne di Kyushu, Autopolis è un circuito tecnico che mette alla prova piloti e macchine. Con i suoi rapidi cambi di elevazione e curve cieche, richiede precisione assoluta e grande coraggio.
+                        Situato nelle montagne di Kyushu, Autopolis è un circuito tecnico che mette alla prova piloti e macchine. Con i suoi rapidi cambi di elevazione e curve cieche, richiede precis[...]
                     </p>
                     
                     <div class="race-details">
@@ -456,6 +513,10 @@
                             <li>Ultima chicane tecnica prima del traguardo</li>
                         </ul>
                     </div>
+
+                    <div class="card-actions">
+                        <a class="btn btn-results" href="risultati-01.html" title="Risultati Autopolis">Risultati</a>
+                    </div>
                 </div>
             </div>
 
@@ -485,7 +546,7 @@
                         </div>
                     </div>
                     <p class="circuit-description">
-                        Leggendario circuito di San Paolo, Interlagos scorre in senso antiorario con una combinazione unica di curve veloci e lente. La sua atmosfera elettrica e il layout impegnativo lo rendono uno dei preferiti dai piloti.
+                        Leggendario circuito di San Paolo, Interlagos scorre in senso antiorario con una combinazione unica di curve veloci e lente. La sua atmosfera elettrica e il layout impegnativo [...]
                     </p>
                     
                     <div class="race-details">
@@ -522,6 +583,10 @@
                             <li>Reta Oposta: l'opportunità di sorpasso principale</li>
                         </ul>
                     </div>
+
+                    <div class="card-actions">
+                        <a class="btn btn-results" href="risultati-02.html" title="Risultati Interlagos">Risultati</a>
+                    </div>
                 </div>
             </div>
 
@@ -551,7 +616,7 @@
                         </div>
                     </div>
                     <p class="circuit-description">
-                        Immerso nelle Alpi Stiriane, il Red Bull Ring è compatto ma spettacolare. Con solo 10 curve e lunghi rettilinei, favorisce battaglie ruota a ruota e sorpassi audaci in uno scenario montano mozzafiato.
+                        Immerso nelle Alpi Stiriane, il Red Bull Ring è compatto ma spettacolare. Con solo 10 curve e lunghi rettilinei, favorisce battaglie ruota a ruota e sorpassi audaci in uno sce[...]
                     </p>
                     
                     <div class="race-details">
@@ -588,6 +653,10 @@
                             <li>Ultima curva decisiva per il tempo sul giro</li>
                         </ul>
                     </div>
+
+                    <div class="card-actions">
+                        <a class="btn btn-results" href="risultati-03.html" title="Risultati Red Bull Ring">Risultati</a>
+                    </div>
                 </div>
             </div>
 
@@ -617,7 +686,7 @@
                         </div>
                     </div>
                     <p class="circuit-description">
-                        Circuito originale di Gran Turismo, Deep Forest serpeggia attraverso una foresta fitta con cambi di elevazione drammatici. Il suo mix di curve cieche e sezioni veloci richiede memorizzazione perfetta e grande fiducia.
+                        Circuito originale di Gran Turismo, Deep Forest serpeggia attraverso una foresta fitta con cambi di elevazione drammatici. Il suo mix di curve cieche e sezioni veloci richiede [...]
                     </p>
                     
                     <div class="race-details">
@@ -654,6 +723,10 @@
                             <li>Ultima curva veloce prima del rettilineo</li>
                         </ul>
                     </div>
+
+                    <div class="card-actions">
+                        <a class="btn btn-results" href="risultati-04.html" title="Risultati Deep Forest">Risultati</a>
+                    </div>
                 </div>
             </div>
 
@@ -683,7 +756,7 @@
                         </div>
                     </div>
                     <p class="circuit-description">
-                        Considerato uno dei circuiti più impegnativi al mondo, Suzuka è l'unico tracciato a figura di 8 nel motorsport. Le sue curve leggendarie come Spoon e 130R sono il test definitivo di abilità e coraggio per chiudere il campionato
+                        Considerato uno dei circuiti più impegnativi al mondo, Suzuka è l'unico tracciato a figura di 8 nel motorsport. Le sue curve leggendarie come Spoon e 130R sono il test defini[...]
                     </p>
                     
                     <div class="race-details">
@@ -720,6 +793,10 @@
                             <li>130R: la curva più veloce e pericolosa</li>
                             <li>Chicane finale tecnica</li>
                         </ul>
+                    </div>
+
+                    <div class="card-actions">
+                        <a class="btn btn-results" href="risultati-05.html" title="Risultati Suzuka">Risultati</a>
                     </div>
                 </div>
             </div>
