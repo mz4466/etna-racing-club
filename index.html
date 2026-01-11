@@ -374,6 +374,16 @@
                 inset 0 0 30px rgba(255, 140, 66, 0.2);
         }
 
+        /* Make info-card usable as a link/button when it's an anchor */
+        .info-card[role="button"] {
+            text-decoration: none;
+            color: inherit;
+        }
+        .info-card[role="button"]:focus {
+            outline: none;
+            box-shadow: 0 0 0 6px rgba(255, 80, 20, 0.12);
+        }
+
         .info-card-icon {
             font-size: 48px;
             margin-bottom: 15px;
@@ -866,12 +876,12 @@
             </div>
 
             <div class="championship-grid">
-                <div class="info-card">
-                    <!-- Archivio: immagine + valore "Gare" -->
+                <a href="archivio.html" class="info-card" role="button" aria-label="Archivio gare">
+                    <!-- Archivio: immagine + valore "Gare" - ora è un link -->
                     <img class="info-card-image" src="archive.png" alt="Archivio gare">
                     <div class="info-card-label">Archivio</div>
                     <div class="info-card-value">Gare</div>
-                </div>
+                </a>
                 <div class="info-card">
                     <!-- Video: immagine contestuale + valore "e altro" -->
                     <img class="info-card-image" src="video.png" alt="Video e altro">
