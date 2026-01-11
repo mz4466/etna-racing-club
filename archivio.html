@@ -7,246 +7,142 @@
     <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300,400,500,600,700&family=Russo+One&family=Roboto:wght@300,400,700&display=swap" rel="stylesheet">
     <style>
         /* Copiato dalla grafica principale per coerenza */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root{
+            --volcano-red:#ff5014;
+            --lava-orange:#ff8c42;
+            --fire-yellow:#ffa500;
+            --cream:#fff5e6;
+            --smoke:#c9b8a3;
         }
 
-        :root {
-            --volcano-red: #ff5014;
-            --lava-orange: #ff8c42;
-            --fire-yellow: #ffa500;
-            --deep-maroon: #4a0e0e;
-            --dark-brown: #2d0a0a;
-            --cream: #fff5e6;
-            --smoke: #c9b8a3;
-            --pure-black: #000000;
-        }
-
-        body {
+        body{
             font-family: 'Roboto', sans-serif;
             background: linear-gradient(to bottom, #000000 0%, #0f0404 40%, #1b0606 100%);
             color: var(--cream);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            min-height: 100vh;
-            overflow-x: hidden;
+            min-height:100vh;
+            overflow-x:hidden;
         }
 
-        /* Hero backdrop (subtle) */
-        .hero-section {
-            position: relative;
-            padding: 40px 20px 80px;
-            overflow: hidden;
-        }
-
-        .volcano-backdrop {
-            position: absolute;
-            top: -10%;
-            left: 0;
-            width: 100%;
-            height: 60%;
-            background: 
-                radial-gradient(ellipse at 50% 120%, rgba(255, 80, 20, 0.22) 0%, transparent 45%),
-                radial-gradient(ellipse at 80% 80%, rgba(255, 140, 66, 0.12) 0%, transparent 40%),
+        .hero-section{ position:relative; padding:40px 20px 80px; overflow:hidden; }
+        .volcano-backdrop{
+            position:absolute; top:-10%; left:0; width:100%; height:60%;
+            background:
+                radial-gradient(ellipse at 50% 120%, rgba(255,80,20,0.22) 0%, transparent 45%),
+                radial-gradient(ellipse at 80% 80%, rgba(255,140,66,0.12) 0%, transparent 40%),
                 linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(26,5,5,0.08) 60%, rgba(45,10,10,0.15) 100%);
-            z-index: 0;
-            pointer-events: none;
+            z-index:0; pointer-events:none;
         }
 
-        .embers-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.6;
-        }
-
-        .ember {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: var(--fire-yellow);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--lava-orange);
-            animation: float-up linear infinite;
-            opacity: 0.9;
-        }
-        .ember:nth-child(1) { left: 8%; animation-duration: 14s; animation-delay: 0s; }
-        .ember:nth-child(2) { left: 18%; animation-duration: 11s; animation-delay: 2s; }
-        .ember:nth-child(3) { left: 28%; animation-duration: 13s; animation-delay: 4s; }
-        .ember:nth-child(4) { left: 42%; animation-duration: 15s; animation-delay: 1s; }
-        .ember:nth-child(5) { left: 52%; animation-duration: 12s; animation-delay: 3s; }
-        .ember:nth-child(6) { left: 62%; animation-duration: 16s; animation-delay: 5s; }
-        .ember:nth-child(7) { left: 72%; animation-duration: 13s; animation-delay: 2.5s; }
-        .ember:nth-child(8) { left: 82%; animation-duration: 15s; animation-delay: 4.5s; }
-        .ember:nth-child(9) { left: 92%; animation-duration: 14s; animation-delay: 1.5s; }
+        .embers-container{ position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1; opacity:0.6; }
+        .ember{ position:absolute; width:3px; height:3px; background:var(--fire-yellow); border-radius:50%; box-shadow:0 0 8px rgba(255,140,66,0.8); animation:float-up linear infinite; opacity:0.9; }
+        .ember:nth-child(1){ left:8%; animation-duration:14s; animation-delay:0s; }
+        .ember:nth-child(2){ left:18%; animation-duration:11s; animation-delay:2s; }
+        .ember:nth-child(3){ left:28%; animation-duration:13s; animation-delay:4s; }
+        .ember:nth-child(4){ left:42%; animation-duration:15s; animation-delay:1s; }
+        .ember:nth-child(5){ left:52%; animation-duration:12s; animation-delay:3s; }
+        .ember:nth-child(6){ left:62%; animation-duration:16s; animation-delay:5s; }
+        .ember:nth-child(7){ left:72%; animation-duration:13s; animation-delay:2.5s; }
+        .ember:nth-child(8){ left:82%; animation-duration:15s; animation-delay:4.5s; }
+        .ember:nth-child(9){ left:92%; animation-duration:14s; animation-delay:1.5s; }
 
         @keyframes float-up {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            20% { opacity: 1; }
-            80% { opacity: 0.8; }
-            100% { transform: translateY(-80px) scale(1.4); opacity: 0; }
+            0% { transform: translateY(100vh) scale(0); opacity:0; }
+            20%{ opacity:1; }
+            80%{ opacity:0.8; }
+            100%{ transform: translateY(-80px) scale(1.4); opacity:0; }
         }
 
-        .content {
-            position: relative;
-            z-index: 10;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 24px;
+        .content{ position:relative; z-index:10; max-width:1200px; margin:0 auto; padding:24px; }
+
+        .logo-row{ display:flex; align-items:center; justify-content:center; gap:30px; margin-bottom:18px; }
+        .club-logo{ width:220px; filter:drop-shadow(0 0 28px rgba(255,80,20,0.9)); }
+        .gt7-logo{ width:180px; filter:drop-shadow(0 0 18px rgba(0,0,0,0.6)); }
+
+        h1.page-title{
+            font-family:'Russo One', sans-serif;
+            font-size:clamp(28px,4.5vw,46px);
+            color:var(--fire-yellow);
+            text-transform:uppercase;
+            text-align:center;
+            margin-bottom:8px;
+            letter-spacing:4px;
         }
 
-        .logo-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 18px;
-        }
+        p.lead{ text-align:center; color:var(--smoke); margin-bottom:28px; max-width:900px; margin-left:auto; margin-right:auto; font-size:clamp(14px,2.3vw,18px); }
 
-        .club-logo {
-            width: 220px;
-            height: auto;
-            filter: drop-shadow(0 0 28px rgba(255,80,20,0.9));
+        .back-link{
+            display:inline-block; margin-bottom:18px; color:var(--cream); text-decoration:none;
+            background:transparent; border:2px solid rgba(255,80,20,0.12); padding:8px 14px; border-radius:10px; transition:all .18s;
         }
+        .back-link:hover{ border-color:var(--volcano-red); transform:translateY(-2px); }
 
-        .gt7-logo {
-            width: 180px;
-            height: auto;
-            filter: drop-shadow(0 0 18px rgba(0,0,0,0.6));
-        }
-
-        h1.page-title {
-            font-family: 'Russo One', sans-serif;
-            font-size: clamp(28px, 4.5vw, 46px);
-            color: var(--fire-yellow);
-            text-transform: uppercase;
-            text-align: center;
-            margin-bottom: 8px;
-            letter-spacing: 4px;
-        }
-
-        p.lead {
-            text-align: center;
-            color: var(--smoke);
-            margin-bottom: 28px;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-            font-size: clamp(14px, 2.3vw, 18px);
-        }
-
-        .back-link {
-            display:inline-block;
-            margin-bottom:18px;
-            color:var(--cream);
-            text-decoration:none;
-            background:transparent;
-            border:2px solid rgba(255,80,20,0.12);
-            padding:8px 14px;
-            border-radius:10px;
-            transition:all .18s;
-        }
-        .back-link:hover{
-            border-color:var(--volcano-red);
-            transform:translateY(-2px);
-        }
-
-        .archive-card {
+        .archive-card{
             background: linear-gradient(180deg, rgba(45,10,10,0.9), rgba(74,14,14,0.85));
-            border: 2px solid rgba(255,80,20,0.08);
-            padding: 26px;
-            border-radius: 16px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
-            max-width: 920px;
-            margin: 0 auto 40px;
+            border:2px solid rgba(255,80,20,0.08);
+            padding:26px; border-radius:16px; box-shadow:0 12px 40px rgba(0,0,0,0.6);
+            max-width:920px; margin:0 auto 40px;
         }
 
-        .year {
-            margin-bottom: 14px;
-        }
+        /* Year list */
+        .year{ margin-bottom:14px; }
 
         .year-button{
-            width:100%;
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            background:transparent;
-            color:var(--cream);
-            border:none;
-            padding:14px 16px;
-            font-size:18px;
-            font-family:'Teko', sans-serif;
-            letter-spacing:2px;
-            cursor:pointer;
-            text-transform:uppercase;
-            border-radius:10px;
-            transition:background .18s ease, box-shadow .18s ease, transform .12s;
+            width:100%; display:flex; align-items:center; justify-content:space-between;
+            background:transparent; color:var(--cream); border:none; padding:14px 16px; font-size:18px;
+            font-family:'Teko', sans-serif; letter-spacing:2px; cursor:pointer; text-transform:uppercase;
+            border-radius:10px; transition:background .18s ease, box-shadow .18s ease, transform .12s;
         }
-        .year-button:hover{ background: rgba(255,80,20,0.04); transform: translateY(-2px); }
+        .year-button:hover{ background:rgba(255,80,20,0.04); transform:translateY(-2px); }
         .year-button:focus{ outline:none; box-shadow:0 0 0 6px rgba(255,80,20,0.06); }
 
-        .arrow{ transition:transform .2s ease; color:var(--smoke); font-size:16px; }
-        .arrow.open{ transform: rotate(90deg); color:var(--fire-yellow); }
+        .arrow{ transition:transform .18s ease; color:var(--smoke); font-size:16px; }
+        .arrow.open{ transform:rotate(90deg); color:var(--fire-yellow); }
 
-        .year-list{
-            margin-top:8px;
-            padding:8px 12px 12px 12px;
-            list-style:none;
-            display:none;
-            border-radius:8px;
-            background: linear-gradient(90deg, rgba(255,80,20,0.02), transparent);
-        }
+        .year-list{ margin-top:8px; padding:8px 12px 12px 12px; list-style:none; display:none; border-radius:8px; background: linear-gradient(90deg, rgba(255,80,20,0.02), transparent); }
         .year-list.show{ display:block; }
 
         .year-list li{ margin:8px 0; }
-        .year-list .item{
-            width:100%;
-            text-align:left;
+
+        /* Item styles */
+        .item, .item-toggle{
+            width:100%; text-align:left;
             background: linear-gradient(90deg, rgba(255,80,20,0.04), rgba(0,0,0,0));
             border:1px solid rgba(201,184,163,0.06);
-            padding:10px 12px;
-            color:var(--cream);
-            border-radius:8px;
-            cursor:pointer;
-            font-family: Roboto, Arial, sans-serif;
+            padding:10px 12px; color:var(--cream); border-radius:8px; cursor:pointer;
+            font-family: Roboto, Arial, sans-serif; transition:background .12s, transform .08s;
+            display:flex; align-items:center; justify-content:space-between;
+        }
+        .item:hover, .item-toggle:hover{ background: linear-gradient(90deg, rgba(255,80,20,0.12), rgba(0,0,0,0)); transform:translateY(-2px); }
+
+        /* Nested child list */
+        .child-list{ margin-top:8px; padding-left:12px; list-style:none; display:none; }
+        .child-list.show{ display:block; }
+        .child-list li{ margin:8px 0; }
+
+        .child-item{
+            background: linear-gradient(90deg, rgba(255,80,20,0.03), transparent);
+            border:1px solid rgba(201,184,163,0.05);
+            padding:8px 10px; border-radius:8px; color:var(--cream); cursor:pointer;
             transition: background .12s, transform .08s;
+            text-align:left;
+            font-family: Roboto, Arial, sans-serif;
         }
-        .year-list .item:hover{ background: linear-gradient(90deg, rgba(255,80,20,0.12), rgba(0,0,0,0)); transform: translateY(-2px); }
+        .child-item:hover{ background: linear-gradient(90deg, rgba(255,80,20,0.12), transparent); transform:translateY(-2px); }
 
-        .note{
-            margin-top:14px;
-            color:var(--smoke);
-            font-size:14px;
-        }
+        .note{ margin-top:14px; color:var(--smoke); font-size:14px; }
 
-        .footer-section {
-            text-align: center;
-            margin-top: 40px;
-            padding: 30px 20px;
-            border-top: 2px solid rgba(255,80,20,0.08);
-        }
-        .footer-motto{
-            font-family:'Teko', sans-serif;
-            color:var(--smoke);
-            margin-bottom:10px;
-        }
-        .footer-copyright{
-            color: rgba(201,184,163,0.6);
-            font-size:13px;
-        }
+        .footer-section{ text-align:center; margin-top:40px; padding:30px 20px; border-top:2px solid rgba(255,80,20,0.08); }
+        .footer-motto{ font-family:'Teko', sans-serif; color:var(--smoke); margin-bottom:10px; }
+        .footer-copyright{ color: rgba(201,184,163,0.6); font-size:13px; }
 
         @media (max-width:768px){
-            .club-logo{ width:160px; }
-            .gt7-logo{ width:140px; }
-            .archive-card{ padding:18px; }
-            .year-button{ font-size:16px; padding:12px; }
+            .club-logo{ width:160px; } .gt7-logo{ width:140px; } .archive-card{ padding:18px; } .year-button{ font-size:16px; padding:12px; }
         }
+
     </style>
 </head>
 <body>
@@ -267,7 +163,7 @@
             <a href="index.html" class="back-link">← Torna alla Home</a>
 
             <h1 id="page-title" class="page-title">Archivio</h1>
-            <p class="lead">Seleziona l'anno per vedere gli eventi archiviati. Qui sotto trovi il 2025 con i campionati disponibili.</p>
+            <p class="lead">Seleziona l'anno e poi il campionato per vedere gli eventi. Per ora i link sono dropdown con elementi di esempio.</p>
 
             <div class="archive-card" role="region" aria-label="Archivio anni">
                 <div class="year">
@@ -275,9 +171,41 @@
                         <span>2025</span>
                         <span class="arrow" aria-hidden="true">▶</span>
                     </button>
+
                     <ul id="list-2025" class="year-list" role="list">
-                        <li><button class="item" type="button">Campionato 1 - Sole &amp; Sorpassi</button></li>
-                        <li><button class="item" type="button">Campionato 2 - Ruggiti d'Autunno</button></li>
+                        <!-- Campionato 1: ha sotto-lista -->
+                        <li>
+                            <button class="item-toggle" aria-expanded="false" data-target="c1-list">
+                                <span>Campionato 1 - Sole &amp; Sorpassi</span>
+                                <span class="arrow" aria-hidden="true">▶</span>
+                            </button>
+
+                            <ul id="c1-list" class="child-list" role="list">
+                                <li><button class="child-item" type="button">Dragon Trail</button></li>
+                                <li><button class="child-item" type="button">Lago Maggiore</button></li>
+                                <li><button class="child-item" type="button">Daytona - Ovale</button></li>
+                                <li><button class="child-item" type="button">Le Mans</button></li>
+                                <li><button class="child-item" type="button">Alsace</button></li>
+                            </ul>
+                        </li>
+
+                        <!-- Campionato 2: ha sotto-lista -->
+                        <li>
+                            <button class="item-toggle" aria-expanded="false" data-target="c2-list">
+                                <span>Campionato 2 - Ruggiti d'Autunno</span>
+                                <span class="arrow" aria-hidden="true">▶</span>
+                            </button>
+
+                            <ul id="c2-list" class="child-list" role="list">
+                                <li><button class="child-item" type="button">Mount Panorama</button></li>
+                                <li><button class="child-item" type="button">Trial Mountain</button></li>
+                                <li><button class="child-item" type="button">SPA</button></li>
+                                <li><button class="child-item" type="button">Sardegna - Stradale</button></li>
+                                <li><button class="child-item" type="button">Laguna Seca</button></li>
+                            </ul>
+                        </li>
+
+                        <!-- Altre voci rimangono semplici elementi -->
                         <li><button class="item" type="button">Trofeo Abarth</button></li>
                         <li><button class="item" type="button">Kart</button></li>
                         <li><button class="item" type="button">Formula</button></li>
@@ -286,7 +214,7 @@
                     </ul>
                 </div>
 
-                <p class="note">Nota: le voci sono pronte; al click per ora mostrano un segnaposto. Posso collegarle a pagine evento/pdfs su richiesta.</p>
+                <p class="note">Nota: le sotto-voci (tracce) sono per ora segnaposto; al click mostrano un messaggio. Posso collegarle a pagine evento reali quando vuoi.</p>
             </div>
 
             <div class="footer-section" aria-hidden="true">
@@ -297,23 +225,39 @@
     </section>
 
     <script>
-        // Toggle dropdown lists
+        // Toggle anni
         document.querySelectorAll('.year-button').forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', (e) => {
                 const targetId = btn.getAttribute('data-target');
                 const list = document.getElementById(targetId);
                 const expanded = btn.getAttribute('aria-expanded') === 'true';
                 btn.setAttribute('aria-expanded', String(!expanded));
                 list.classList.toggle('show', !expanded);
                 const arrow = btn.querySelector('.arrow');
-                if(!expanded) arrow.classList.add('open'); else arrow.classList.remove('open');
+                if (!expanded) arrow.classList.add('open'); else arrow.classList.remove('open');
             });
         });
 
-        // Item buttons sono segnaposto per ora
-        document.querySelectorAll('.year-list .item').forEach(it => {
-            it.addEventListener('click', () => {
-                alert('Hai cliccato su: ' + it.textContent + '\n(Questa è una voce dell\'archivio 2025 — in futuro collegherò la pagina evento o il download.)');
+        // Toggle campionati (elementi con sotto-lista)
+        document.querySelectorAll('.item-toggle').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Prevent the year-button handler if nested
+                e.stopPropagation();
+                const targetId = btn.getAttribute('data-target');
+                const list = document.getElementById(targetId);
+                const expanded = btn.getAttribute('aria-expanded') === 'true';
+                btn.setAttribute('aria-expanded', String(!expanded));
+                list.classList.toggle('show', !expanded);
+                const arrow = btn.querySelector('.arrow');
+                if (!expanded) arrow.classList.add('open'); else arrow.classList.remove('open');
+            });
+        });
+
+        // Child items and simple items: placeholder behavior
+        document.querySelectorAll('.child-item, .item').forEach(it => {
+            it.addEventListener('click', (e) => {
+                e.stopPropagation();
+                alert('Hai selezionato: ' + it.textContent + '\n(Questa è una voce di esempio — in futuro collego la pagina evento o il download.)');
             });
         });
     </script>
