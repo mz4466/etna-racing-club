@@ -267,7 +267,7 @@
             <a href="index.html" class="back-link">← Torna alla Home</a>
 
             <h1 id="page-title" class="page-title">Archivio</h1>
-            <p class="lead">Seleziona l'anno per vedere gli eventi archiviati. Per ora ogni anno contiene le voci 1, 2, 3 e 4.</p>
+            <p class="lead">Seleziona l'anno per vedere gli eventi archiviati. Qui sotto trovi il 2025 con i campionati disponibili.</p>
 
             <div class="archive-card" role="region" aria-label="Archivio anni">
                 <div class="year">
@@ -276,38 +276,28 @@
                         <span class="arrow" aria-hidden="true">▶</span>
                     </button>
                     <ul id="list-2025" class="year-list" role="list">
-                        <li><button class="item" type="button">1</button></li>
-                        <li><button class="item" type="button">2</button></li>
-                        <li><button class="item" type="button">3</button></li>
-                        <li><button class="item" type="button">4</button></li>
+                        <li><button class="item" type="button">Campionato 1 - Sole &amp; Sorpassi</button></li>
+                        <li><button class="item" type="button">Campionato 2 - Ruggiti d'Autunno</button></li>
+                        <li><button class="item" type="button">Trofeo Abarth</button></li>
+                        <li><button class="item" type="button">Kart</button></li>
+                        <li><button class="item" type="button">Formula</button></li>
+                        <li><button class="item" type="button">Cronoscalata</button></li>
+                        <li><button class="item" type="button">Storiche</button></li>
                     </ul>
                 </div>
 
-                <div class="year">
-                    <button class="year-button" aria-expanded="false" data-target="list-2024">
-                        <span>2024</span>
-                        <span class="arrow" aria-hidden="true">▶</span>
-                    </button>
-                    <ul id="list-2024" class="year-list" role="list">
-                        <li><button class="item" type="button">1</button></li>
-                        <li><button class="item" type="button">2</button></li>
-                        <li><button class="item" type="button">3</button></li>
-                        <li><button class="item" type="button">4</button></li>
-                    </ul>
-                </div>
-
-                <p class="note">Nota: gli elementi sono attualmente segnaposto. In futuro posso collegarli alle pagine evento o ai download.</p>
+                <p class="note">Nota: le voci sono pronte; al click per ora mostrano un segnaposto. Posso collegarle a pagine evento/pdfs su richiesta.</p>
             </div>
 
             <div class="footer-section" aria-hidden="true">
                 <p class="footer-motto">🏁 Gareggia con Onore • Rispetta le Regole • Divertiti 🌋</p>
-                <p class="footer-copyright">© 2025 Etna Racing Club • Sicilia, Italia</p>
+                <p class="footer-copyright">© 2026 Etna Racing Club • Sicilia, Italia</p>
             </div>
         </div>
     </section>
 
     <script>
-        // Toggle dropdown lists (stesso comportamento già proposto)
+        // Toggle dropdown lists
         document.querySelectorAll('.year-button').forEach(btn => {
             btn.addEventListener('click', () => {
                 const targetId = btn.getAttribute('data-target');
@@ -323,7 +313,7 @@
         // Item buttons sono segnaposto per ora
         document.querySelectorAll('.year-list .item').forEach(it => {
             it.addEventListener('click', () => {
-                alert('Hai cliccato su: ' + it.textContent + '\n(Sei su pagina Archivio — in futuro verrà collegata a pagine evento reali.)');
+                alert('Hai cliccato su: ' + it.textContent + '\n(Questa è una voce dell\'archivio 2025 — in futuro collegherò la pagina evento o il download.)');
             });
         });
     </script>
