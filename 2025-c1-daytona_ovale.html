@@ -318,6 +318,40 @@
             font-size: 14px;
         }
 
+        .race-nav {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .race-nav-btn {
+            font-family: 'Teko', sans-serif;
+            font-size: 14px;
+            padding: 8px 16px;
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.1), transparent);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 6px;
+            color: var(--champagne);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .race-nav-btn:hover {
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), transparent);
+            border-color: var(--primary-gold);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+        }
+
+        .race-nav-btn.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             header {
@@ -465,8 +499,11 @@
                 </div>
 
                 <div class="race-info">
-                    <strong>Gara 3 di 5</strong><br>
-                    Prossima: Le Mans
+                    <strong>Gara 3 di 5</strong>
+                    <div class="race-nav">
+                        <a href="2025-c1-lago_maggiore.html" class="race-nav-btn">← Precedente</a>
+                        <a href="2025-c1-le_mans.html" class="race-nav-btn">Prossima →</a>
+                    </div>
                 </div>
             </div>
         </div>
