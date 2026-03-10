@@ -749,12 +749,15 @@
   }
 
   // ── NAVIGATION ──
-  // Each menu card links to a separate page.
-  // For now, if the page doesn't exist yet, show a toast instead of a 404.
+  // Pages not yet built show a toast. Add to BUILT_PAGES as each one is created.
+  const BUILT_PAGES = ['crea-campionato.html'];
+
   function navTo(e, page) {
-    // Comment this block out once the pages exist
-    e.preventDefault();
-    showToast('📌 ' + page + ' — in costruzione');
+    if (!BUILT_PAGES.includes(page)) {
+      e.preventDefault();
+      showToast('📌 ' + page + ' — in costruzione');
+    }
+    // else navigate normally
   }
 
   function showToast(msg) {
