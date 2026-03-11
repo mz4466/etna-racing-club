@@ -398,21 +398,7 @@ async function loadCalendario() {
       throw new Error('not found');
     }
   } catch {
-    // Default data — shown until admin publishes real data
-    championships = [
-      {
-        name: 'Traiettorie Gelate',
-        year: '2026',
-        cat: 'Campionato',
-        slug: 'C1',
-        cars: 'GR.3 — Solo',
-        desc: 'Il primo campionato della stagione 2026. Circuiti invernali e meteo variabile.',
-        status: 'in-corso',
-        file: 'traiettorie-gelate-2026-q1.html',
-        totalRounds: 5,
-        completedRounds: 3,
-      }
-    ];
+    championships = [];
   }
 
   renderCards(championships);
