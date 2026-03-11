@@ -461,7 +461,7 @@ function renderCards(data) {
       </div>
       <div class="card-footer">
         <div class="card-rounds-dots">${dots}</div>
-        ${c.file ? `<span class="view-btn">Vai al Campionato →</span>` : `<span style="font-family:Teko,sans-serif;font-size:12px;letter-spacing:2px;color:#555;text-transform:uppercase;">In arrivo</span>`}
+        ${c.file ? `<a href="${c.file}" class="view-btn">Risultati →</a>` : `<a href="${c.file || '#'}" class="view-btn">Risultati →</a>`}
       </div>`;
 
     grid.appendChild(card);
