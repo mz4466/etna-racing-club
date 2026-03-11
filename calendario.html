@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etna Racing Club — Calendario Campionati</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@300;400;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --volcano-red: #ff5014;
+    --lava-orange: #ff8c42;
+    --fire-yellow: #ffa500;
+    --deep-maroon: #4a0e0e;
+    --dark-brown: #2d0a0a;
+    --cream: #fff5e6;
+    --smoke: #c9b8a3;
+    --pure-black: #000000;
+    --card-bg: rgba(74,14,14,0.55);
+    --border-col: rgba(255,80,20,0.4);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--pure-black);
+    color: var(--cream);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(255,80,20,0.18) 0%, transparent 55%),
+      linear-gradient(to bottom, #0a0000 0%, #000000 100%);
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    text-align: center;
+    padding: 56px 24px 40px;
+    border-bottom: 2px solid rgba(255,80,20,0.25);
+    position: relative;
+  }
+
+  .header-logo {
+    width: 72px; height: 72px;
+    object-fit: contain;
+    margin-bottom: 18px;
+    filter: drop-shadow(0 0 18px rgba(255,80,20,0.7));
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%,100% { filter: drop-shadow(0 0 18px rgba(255,80,20,0.7)); }
+    50%      { filter: drop-shadow(0 0 32px rgba(255,140,66,1)); }
+  }
+
+  .header-club {
+    font-family: 'Teko', sans-serif;
+    font-size: 13px;
+    letter-spacing: 5px;
+    color: var(--fire-yellow);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .header-title {
+    font-family: 'Russo One', sans-serif;
+    font-size: clamp(32px, 7vw, 64px);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, #fff 0%, var(--fire-yellow) 40%, var(--lava-orange) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+
+  .header-sub {
+    font-family: 'Teko', sans-serif;
+    font-size: 16px;
+    letter-spacing: 4px;
+    color: var(--smoke);
+    text-transform: uppercase;
+  }
+
+  .divider {
+    width: 160px; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--volcano-red), var(--fire-yellow), var(--volcano-red), transparent);
+    margin: 28px auto 0;
+    box-shadow: 0 0 14px var(--volcano-red);
+  }
+
+  /* ── FILTERS ── */
+  .filters {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 28px 24px 0;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .filter-btn {
+    font-family: 'Teko', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 7px 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,80,20,0.4);
+    background: transparent;
+    color: var(--smoke);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover,
+  .filter-btn.active {
+    background: var(--volcano-red);
+    border-color: var(--fire-yellow);
+    color: #fff;
+  }
+
+  /* ── GRID ── */
+  .wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 36px 24px 60px;
+  }
+
+  .section-label {
+    font-family: 'Teko', sans-serif;
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: rgba(255,80,20,0.7);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,80,20,0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,80,20,0.2);
+  }
+
+  .champ-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 44px;
+  }
+
+  /* ── CHAMPIONSHIP CARD ── */
+  .champ-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border-col);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    animation: cardIn 0.4s cubic-bezier(0.22,1,0.36,1) both;
+  }
+
+  @keyframes cardIn {
+    from { opacity:0; transform:translateY(16px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  .champ-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--fire-yellow);
+    box-shadow: 0 16px 48px rgba(255,80,20,0.35);
+  }
+
+  .champ-card.status-in-corso {
+    border-color: var(--fire-yellow);
+    box-shadow: 0 0 24px rgba(255,165,0,0.2);
+  }
+
+  .champ-card.status-concluso {
+    opacity: 0.65;
+    filter: grayscale(30%);
+  }
+
+  .card-top {
+    padding: 20px 20px 14px;
+    border-bottom: 1px solid rgba(255,80,20,0.15);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .cat-badge {
+    font-family: 'Russo One', sans-serif;
+    font-size: 13px;
+    background: var(--volcano-red);
+    color: #fff;
+    border-radius: 7px;
+    padding: 4px 12px;
+    flex-shrink: 0;
+    margin-top: 3px;
+    letter-spacing: 1px;
+  }
+
+  .card-name-wrap { flex: 1; }
+
+  .card-name {
+    font-family: 'Russo One', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--cream);
+    line-height: 1.2;
+  }
+
+  .card-season {
+    font-family: 'Teko', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: rgba(201,184,163,0.6);
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  .status-pill {
+    font-family: 'Teko', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    flex-shrink: 0;
+  }
+
+  .pill-in-corso   { background: linear-gradient(90deg, var(--volcano-red), var(--fire-yellow)); color: #fff; animation: pill-glow 2s ease-in-out infinite; }
+  .pill-prossimo   { background: rgba(201,184,163,0.15); color: var(--smoke); border: 1px solid rgba(201,184,163,0.3); }
+  .pill-concluso   { background: rgba(100,100,100,0.2); color: #666; border: 1px solid #333; }
+
+  @keyframes pill-glow {
+    0%,100% { box-shadow: 0 2px 10px rgba(255,80,20,0.4); }
+    50%      { box-shadow: 0 4px 20px rgba(255,165,0,0.7); }
+  }
+
+  .card-body { padding: 14px 20px; flex: 1; }
+
+  .card-cars {
+    font-family: 'Teko', sans-serif;
+    font-size: 15px;
+    letter-spacing: 2px;
+    color: var(--fire-yellow);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .card-rounds {
+    font-size: 13px;
+    color: rgba(201,184,163,0.6);
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: rgba(201,184,163,0.5);
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  .card-footer {
+    padding: 12px 20px;
+    border-top: 1px solid rgba(255,80,20,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-rounds-dots {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+
+  .round-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,80,20,0.25);
+    border: 1px solid rgba(255,80,20,0.4);
+    transition: background 0.2s;
+  }
+
+  .round-dot.done    { background: var(--fire-yellow); border-color: var(--fire-yellow); box-shadow: 0 0 4px var(--fire-yellow); }
+  .round-dot.current { background: var(--volcano-red); border-color: var(--lava-orange); animation: dot-pulse 1.2s ease-in-out infinite; }
+
+  @keyframes dot-pulse {
+    0%,100% { box-shadow: 0 0 4px var(--volcano-red); }
+    50%      { box-shadow: 0 0 10px var(--lava-orange); }
+  }
+
+  .view-btn {
+    font-family: 'Teko', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--fire-yellow);
+    text-decoration: none;
+    border: 1px solid rgba(255,165,0,0.4);
+    border-radius: 12px;
+    padding: 5px 14px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .view-btn:hover { background: rgba(255,165,0,0.12); border-color: var(--fire-yellow); }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(201,184,163,0.3);
+  }
+
+  .empty-state .empty-icon { font-size: 48px; margin-bottom: 16px; }
+
+  .empty-state p {
+    font-family: 'Teko', sans-serif;
+    font-size: 16px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  /* ── BACK LINK ── */
+  .back-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    font-family: 'Teko', sans-serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: rgba(201,184,163,0.5);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover { color: var(--cream); }
+
+  @media (max-width: 600px) {
+    .champ-grid { grid-template-columns: 1fr; }
+    .card-top { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <img src="etna-logo.jpg" alt="Etna Racing Club" class="header-logo">
+  <div class="header-club">Etna Racing Club</div>
+  <h1 class="header-title">Calendario Campionati</h1>
+  <div class="header-sub">Stagione 2026 — Tutti i Campionati</div>
+  <div class="divider"></div>
+</header>
+
+<div class="filters" id="filters">
+  <button class="filter-btn active" onclick="filterCards('all', this)">Tutti</button>
+  <button class="filter-btn" onclick="filterCards('in-corso', this)">🔥 In Corso</button>
+  <button class="filter-btn" onclick="filterCards('prossimo', this)">⏳ Prossimamente</button>
+  <button class="filter-btn" onclick="filterCards('concluso', this)">✅ Conclusi</button>
+</div>
+
+<div class="wrap">
+  <div class="section-label">Campionati Stagione 2026</div>
+  <div class="champ-grid" id="champGrid">
+    <!-- Cards injected by JS from calendario.json -->
+  </div>
+  <a href="index.html" class="back-link">← Torna alla Home</a>
+</div>
+
+<script>
+// Loads championship data from calendario.json
+// Falls back to a default list if the file doesn't exist yet
+
+async function loadCalendario() {
+  let championships = [];
+
+  try {
+    const r = await fetch('calendario.json?nocache=' + Date.now());
+    if (r.ok) {
+      championships = await r.json();
+    } else {
+      throw new Error('not found');
+    }
+  } catch {
+    // Default data — shown until admin publishes real data
+    championships = [
+      {
+        name: 'Traiettorie Gelate',
+        year: '2026',
+        cat: 'Campionato',
+        slug: 'C1',
+        cars: 'GR.3 — Solo',
+        desc: 'Il primo campionato della stagione 2026. Circuiti invernali e meteo variabile.',
+        status: 'in-corso',
+        file: 'traiettorie-gelate-2026-q1.html',
+        totalRounds: 5,
+        completedRounds: 3,
+      }
+    ];
+  }
+
+  renderCards(championships);
+}
+
+function renderCards(data) {
+  const grid = document.getElementById('champGrid');
+  grid.innerHTML = '';
+
+  if (!data.length) {
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1">
+        <div class="empty-icon">🏁</div>
+        <p>Nessun campionato registrato</p>
+      </div>`;
+    return;
+  }
+
+  data.forEach((c, i) => {
+    const statusLabel = c.status === 'in-corso'
+      ? '<span class="status-pill pill-in-corso">🔥 In Corso</span>'
+      : c.status === 'concluso'
+        ? '<span class="status-pill pill-concluso">✅ Concluso</span>'
+        : '<span class="status-pill pill-prossimo">⏳ Prossimamente</span>';
+
+    // Round dots
+    let dots = '';
+    for (let r = 0; r < (c.totalRounds || 0); r++) {
+      const cls = r < (c.completedRounds || 0)
+        ? 'done'
+        : r === (c.completedRounds || 0) && c.status === 'in-corso'
+          ? 'current'
+          : '';
+      dots += `<div class="round-dot ${cls}" title="Round ${r+1}"></div>`;
+    }
+
+    const roundsLabel = c.totalRounds
+      ? `${c.totalRounds} round${c.totalRounds > 1 ? 's' : ''}`
+      : '';
+
+    const card = document.createElement(c.file ? 'a' : 'div');
+    card.className = `champ-card status-${c.status}`;
+    card.dataset.status = c.status;
+    if (c.file) { card.href = c.file; }
+    card.style.animationDelay = `${i * 0.07}s`;
+
+    card.innerHTML = `
+      <div class="card-top">
+        <div class="cat-badge">${c.slug || c.cat}</div>
+        <div class="card-name-wrap">
+          <div class="card-name">${c.name}</div>
+          <div class="card-season">${c.year} · ${c.cat}</div>
+        </div>
+        ${statusLabel}
+      </div>
+      <div class="card-body">
+        ${c.cars ? `<div class="card-cars">${c.cars}</div>` : ''}
+        ${roundsLabel ? `<div class="card-rounds">📅 ${roundsLabel}</div>` : ''}
+        ${c.desc ? `<div class="card-desc">${c.desc}</div>` : ''}
+      </div>
+      <div class="card-footer">
+        <div class="card-rounds-dots">${dots}</div>
+        ${c.file ? `<span class="view-btn">Vai al Campionato →</span>` : `<span style="font-family:Teko,sans-serif;font-size:12px;letter-spacing:2px;color:#555;text-transform:uppercase;">In arrivo</span>`}
+      </div>`;
+
+    grid.appendChild(card);
+  });
+}
+
+function filterCards(status, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  document.querySelectorAll('.champ-card').forEach(card => {
+    card.style.display = (status === 'all' || card.dataset.status === status) ? '' : 'none';
+  });
+}
+
+loadCalendario();
+</script>
+</body>
+</html>

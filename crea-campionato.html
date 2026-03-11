@@ -1332,6 +1332,15 @@ async function publish() {
 
   toast('Pubblicazione in corso…', '');
 
+  // 1. Publish the championship HTML page
+  const ok = await pushFile(token, fname, html, `Add/update championship: ${fname}`);
+  if (!ok) return;
+
+  // 2. Update calendario.json
+  await updateCalendario(token, fname);
+}
+
+async function pushFile(token, fname, content, message) {
   try {
     let sha = null;
     const check = await fetch(`https://api.github.com/repos/${REPO}/contents/${fname}?ref=${BRANCH}`, {
@@ -1340,8 +1349,8 @@ async function publish() {
     if (check.ok) { const d = await check.json(); sha = d.sha; }
 
     const body = {
-      message: `Add/update championship: ${fname}`,
-      content: btoa(unescape(encodeURIComponent(html))),
+      message,
+      content: btoa(unescape(encodeURIComponent(content))),
       branch: BRANCH,
     };
     if (sha) body.sha = sha;
@@ -1356,10 +1365,83 @@ async function publish() {
       body: JSON.stringify(body),
     });
 
-    if (r.ok) toast(`✓ ${fname} pubblicato!`, 'ok');
-    else { const e = await r.json(); toast('Errore: ' + (e.message||'sconosciuto'), 'err'); }
+    if (!r.ok) {
+      const e = await r.json();
+      toast('Errore: ' + (e.message || 'sconosciuto'), 'err');
+      return false;
+    }
+    return true;
   } catch(e) {
     toast('Errore di rete: ' + e.message, 'err');
+    return false;
+  }
+}
+
+async function updateCalendario(token, fname) {
+  const name  = document.getElementById('champName').value.trim() || 'Campionato';
+  const year  = document.getElementById('champYear').value || '2026';
+  const cat   = document.getElementById('champCat').value;
+  const cars  = document.getElementById('champCars').value.trim();
+  const desc  = document.getElementById('champDesc').value.trim();
+  const slug  = document.getElementById('champSlug').value.trim();
+  const cards = document.querySelectorAll('.race-card');
+  const totalRounds = cards.length;
+
+  const newEntry = {
+    name, year, cat,
+    slug: slug || cat,
+    cars, desc,
+    status: 'prossimo',
+    file: fname,
+    totalRounds,
+    completedRounds: 0
+  };
+
+  try {
+    // Fetch existing calendario.json
+    let existing = [];
+    let sha = null;
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json?ref=${BRANCH}`, {
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (r.ok) {
+      const d = await r.json();
+      sha = d.sha;
+      existing = JSON.parse(atob(d.content.replace(/\n/g, '')));
+    }
+
+    // Add or update entry
+    const idx = existing.findIndex(e => e.file === fname);
+    if (idx >= 0) {
+      // preserve status & completedRounds if already exists
+      newEntry.status = existing[idx].status || 'prossimo';
+      newEntry.completedRounds = existing[idx].completedRounds || 0;
+      existing[idx] = newEntry;
+    } else {
+      existing.push(newEntry);
+    }
+
+    const body = {
+      message: `Update calendario.json: add ${fname}`,
+      content: btoa(unescape(encodeURIComponent(JSON.stringify(existing, null, 2)))),
+      branch: BRANCH,
+    };
+    if (sha) body.sha = sha;
+
+    const wr = await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `token ${token}`,
+        Accept: 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (wr.ok) toast(`✓ ${fname} pubblicato e calendario aggiornato!`, 'ok');
+    else toast('Campionato pubblicato ma calendario.json non aggiornato', '');
+  } catch(e) {
+    toast('Campionato pubblicato ma errore calendario: ' + e.message, '');
   }
 }
 
