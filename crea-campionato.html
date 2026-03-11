@@ -563,6 +563,69 @@
     display: flex; gap: 10px; justify-content: flex-end;
   }
 
+  /* ── HELP MODAL ── */
+  .help-section {
+    margin-bottom: 24px;
+  }
+
+  .help-title {
+    font-family: 'Teko', sans-serif;
+    font-size: 17px;
+    letter-spacing: 2px;
+    color: var(--gold-hi);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .help-section p {
+    font-size: 15px;
+    color: var(--text-mid);
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+
+  .help-section ul,
+  .help-section ol {
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .help-section li {
+    font-size: 15px;
+    color: var(--text-mid);
+    line-height: 1.6;
+  }
+
+  .help-section li strong { color: var(--text); }
+  .help-section li em { color: #4fc3f7; font-style: normal; }
+
+  .help-section code {
+    background: var(--bg-input);
+    border: 1px solid var(--border-hi);
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-family: monospace;
+    font-size: 13px;
+    color: #4fc3f7;
+  }
+
+  .help-note {
+    background: var(--gold-dim);
+    border: 1px solid rgba(201,162,39,0.25);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 14px;
+    color: var(--text-mid);
+    line-height: 1.6;
+    margin-top: 8px;
+  }
+
+  .help-note strong { color: var(--gold); }
+
   /* scrollbar */
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
@@ -583,6 +646,7 @@
     <div class="status-dot" id="statusDot"></div>
     <span id="statusText">Non connesso</span>
   </div>
+  <button class="btn-back" onclick="openHelp()">❓ Guida</button>
   <a href="admin.html" class="btn-back">← Admin</a>
 </header>
 
@@ -716,6 +780,89 @@
     <div class="modal-foot">
       <button class="btn btn-outline" onclick="closePreview()">Chiudi</button>
       <button class="btn btn-gold" onclick="downloadHTML()">⬇ Scarica HTML</button>
+    </div>
+  </div>
+</div>
+
+<!-- HELP MODAL -->
+<div class="modal-bg" id="helpModal">
+  <div class="modal-box" style="max-width:680px;">
+    <div class="modal-head">
+      <div class="modal-head-title">📖 GUIDA — CREA CAMPIONATO</div>
+      <button class="modal-close" onclick="closeHelp()">✕</button>
+    </div>
+    <div class="modal-body" style="overflow-y:auto;padding:28px 32px;max-height:600px;">
+
+      <div class="help-section">
+        <div class="help-title">1. Informazioni Campionato</div>
+        <p>Inizia compilando i campi nella sezione in alto:</p>
+        <ul>
+          <li><strong>Nome Campionato</strong> — Il nome ufficiale, es. <em>"Traiettorie Gelate"</em>. Verrà usato come titolo nella pagina generata.</li>
+          <li><strong>Anno</strong> — L'anno della stagione, es. <em>2026</em>.</li>
+          <li><strong>Categoria</strong> — Scegli tra Campionato, Trofeo o Open.</li>
+          <li><strong>Classe Auto</strong> — Le auto ammesse, es. <em>"GR.3 — Solo"</em>.</li>
+          <li><strong>Stagione / Suffix</strong> — Un suffisso opzionale per distinguere campionati dello stesso anno, es. <em>"q1"</em> o <em>"autunno"</em>. Serve anche per generare il nome del file.</li>
+          <li><strong>Descrizione</strong> — Testo opzionale che appare come sottotitolo nella pagina pubblica.</li>
+        </ul>
+      </div>
+
+      <div class="help-section">
+        <div class="help-title">2. Nome File Generato</div>
+        <p>Nella barra laterale sinistra trovi il <strong>nome del file</strong> che verrà creato nel repository GitHub. Viene generato automaticamente dal nome, anno, categoria e suffix che inserisci. Esempio: <code>traiettorie-gelate-2026-campionato-q1.html</code></p>
+      </div>
+
+      <div class="help-section">
+        <div class="help-title">3. Aggiungere i Round</div>
+        <p>Clicca il pulsante <strong>"＋ Aggiungi Round"</strong> per inserire una gara nel calendario. Per ogni round puoi configurare:</p>
+        <ul>
+          <li><strong>Round #</strong> — Numero progressivo della gara.</li>
+          <li><strong>Circuito</strong> — Nome della pista, es. <em>Autopolis</em>.</li>
+          <li><strong>Data Gara</strong> — La data programmata.</li>
+          <li><strong>Giri</strong> — Numero di giri della gara.</li>
+          <li><strong>Meteo</strong> — Condizioni atmosferiche previste.</li>
+          <li><strong>Consumo Gomme / Carburante</strong> — Moltiplicatori di usura.</li>
+          <li><strong>Gomme Disponibili</strong> — Mescole ammesse, es. <em>Soft / Medium / Hard</em>.</li>
+          <li><strong>Note</strong> — Informazioni aggiuntive, es. <em>"Pit stop obbligatorio"</em>.</li>
+          <li><strong>Link Risultati</strong> — Una volta pubblicati i risultati, inserisci qui il nome del file HTML, es. <em>risultati-01.html</em>. Il pulsante nella pagina pubblica si attiverà automaticamente.</li>
+        </ul>
+      </div>
+
+      <div class="help-section">
+        <div class="help-title">4. Gestire i Round</div>
+        <ul>
+          <li>Clicca sull'<strong>intestazione</strong> di un round per espanderlo o comprimerlo.</li>
+          <li>Puoi aggiungere <strong>quanti round vuoi</strong> senza limiti.</li>
+          <li>Clicca <strong>"✕ Rimuovi Round"</strong> in fondo al round per eliminarlo.</li>
+          <li>Il riepilogo nella barra laterale mostra tutti i round aggiunti in tempo reale.</li>
+        </ul>
+      </div>
+
+      <div class="help-section">
+        <div class="help-title">5. Anteprima</div>
+        <p>Clicca <strong>"👁 Anteprima"</strong> per vedere come apparirà la pagina pubblica prima di pubblicarla. L'anteprima si aggiorna ogni volta che la apri.</p>
+      </div>
+
+      <div class="help-section">
+        <div class="help-title">6. Pubblicare su GitHub</div>
+        <ol>
+          <li>Inserisci il tuo <strong>Personal Access Token (PAT)</strong> GitHub nella barra laterale. Il token deve avere i permessi <em>Contents: Read & Write</em> sul repository.</li>
+          <li>Clicca <strong>"Verifica Connessione"</strong> — il pallino verde conferma che la connessione funziona.</li>
+          <li>Clicca <strong>"⬆ Pubblica su GitHub"</strong>. Il file verrà creato (o aggiornato se esiste già) direttamente nel repository <code>mz4466/etna-racing-club</code>.</li>
+        </ol>
+      </div>
+
+      <div class="help-section">
+        <div class="help-title">7. Scaricare HTML</div>
+        <p>Se preferisci, clicca <strong>"⬇ Scarica HTML"</strong> per scaricare il file in locale e caricarlo manualmente su GitHub.</p>
+      </div>
+
+      <div class="help-note">
+        💡 <strong>Suggerimento:</strong> Puoi tornare su questa pagina in qualsiasi momento per aggiornare il campionato — basta ripubblicare. GitHub sovrascriverà automaticamente il file esistente.
+      </div>
+
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-gold" onclick="closeHelp()">Ho capito ✓</button>
     </div>
   </div>
 </div>
@@ -1215,6 +1362,9 @@ async function publish() {
     toast('Errore di rete: ' + e.message, 'err');
   }
 }
+
+function openHelp() { document.getElementById('helpModal').classList.add('open'); }
+function closeHelp() { document.getElementById('helpModal').classList.remove('open'); }
 
 function togglePAT() {
   const i = document.getElementById('patInput');
