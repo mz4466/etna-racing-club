@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERC Admin — Gestisci Calendario</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@300;400;600&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #07070f;
+    --bg-card:   #0e0e1c;
+    --bg-input:  #13131f;
+    --border:    #1e1e30;
+    --border-hi: #2a2a42;
+    --gold:      #c9a227;
+    --gold-hi:   #e8c547;
+    --gold-dim:  rgba(201,162,39,0.10);
+    --gold-glow: rgba(201,162,39,0.22);
+    --red:       #c0392b;
+    --green:     #27ae60;
+    --blue:      #4fc3f7;
+    --orange:    #ff5014;
+    --text:      #e8e0d0;
+    --text-dim:  #4a4460;
+    --text-mid:  #8a8098;
+
+    /* status colours */
+    --s-incorso:   #ffa500;
+    --s-prossimo:  #8a8098;
+    --s-concluso:  #27ae60;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow Condensed', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    background: linear-gradient(90deg, #0a0a18, #0e0c1a);
+    border-bottom: 1px solid var(--border-hi);
+    padding: 0 32px;
+    height: 62px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .topbar-logo img { width: 34px; height: 34px; object-fit: contain; filter: drop-shadow(0 0 6px var(--gold-glow)); }
+  .topbar-title { font-family: 'Russo One', sans-serif; font-size: 15px; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; }
+  .topbar-divider { width: 1px; height: 24px; background: var(--border-hi); }
+  .topbar-section { font-family: 'Teko', sans-serif; font-size: 13px; letter-spacing: 4px; color: var(--text-dim); text-transform: uppercase; }
+  .topbar-spacer { flex: 1; }
+
+  .github-status { display: flex; align-items: center; gap: 8px; font-family: 'Teko', sans-serif; font-size: 14px; letter-spacing: 1px; color: var(--text-dim); }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-dim); transition: background 0.3s; }
+  .status-dot.ok  { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .status-dot.err { background: var(--red); }
+
+  .btn-back { background: none; border: 1px solid var(--border-hi); border-radius: 6px; color: var(--text-mid); font-family: 'Teko', sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; padding: 6px 14px; cursor: pointer; text-decoration: none; transition: border-color 0.2s, color 0.2s; }
+  .btn-back:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── LAYOUT ── */
+  .page-body { display: grid; grid-template-columns: 260px 1fr; flex: 1; min-height: 0; }
+
+  /* ── SIDEBAR ── */
+  .sidebar { background: #0a0a16; border-right: 1px solid var(--border); padding: 24px 18px; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; }
+  .sidebar-block { display: flex; flex-direction: column; gap: 8px; }
+  .sidebar-label { font-family: 'Teko', sans-serif; font-size: 11px; letter-spacing: 3px; color: var(--text-dim); text-transform: uppercase; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+  .pat-wrap { position: relative; }
+  .pat-wrap input { width: 100%; background: var(--bg-input); border: 1px solid var(--border); border-radius: 7px; padding: 9px 34px 9px 11px; color: var(--text); font-family: 'Barlow Condensed', sans-serif; font-size: 13px; outline: none; transition: border-color 0.2s; }
+  .pat-wrap input:focus { border-color: var(--gold); }
+  .pat-toggle { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 13px; }
+
+  .repo-note { font-size: 11px; color: var(--text-dim); line-height: 1.6; }
+  .repo-note span { color: var(--blue); }
+
+  .btn { font-family: 'Teko', sans-serif; font-size: 15px; letter-spacing: 2px; text-transform: uppercase; padding: 9px 18px; border-radius: 7px; cursor: pointer; border: 1px solid; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-verify { width: 100%; background: var(--gold-dim); border: 1px solid var(--gold); color: var(--gold-hi); font-family: 'Teko', sans-serif; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; padding: 8px; border-radius: 7px; cursor: pointer; transition: background 0.2s; }
+  .btn-verify:hover { background: var(--gold); color: #000; }
+  .btn-github { background: linear-gradient(135deg, #196327, #238636); border-color: #2ea043; color: #fff; width: 100%; justify-content: center; font-size: 14px; }
+  .btn-github:hover { background: linear-gradient(135deg, #238636, #2ea043); }
+  .btn-github:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-outline { background: transparent; border-color: var(--border-hi); color: var(--text-mid); }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── MAIN ── */
+  .main { padding: 32px 36px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; }
+
+  .page-title { font-family: 'Russo One', sans-serif; font-size: 22px; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; }
+  .page-sub { font-family: 'Teko', sans-serif; font-size: 14px; letter-spacing: 3px; color: var(--text-dim); text-transform: uppercase; margin-top: 3px; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border-hi); border-radius: 12px; padding: 24px; }
+  .card-title { font-family: 'Teko', sans-serif; font-size: 17px; letter-spacing: 3px; color: var(--gold-hi); text-transform: uppercase; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+
+  /* ── CHAMPIONSHIP ROWS ── */
+  .champ-list { display: flex; flex-direction: column; gap: 10px; min-height: 60px; }
+
+  .champ-row {
+    background: var(--bg-input);
+    border: 1px solid var(--border-hi);
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 36px 1fr auto auto auto;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    transition: border-color 0.2s, box-shadow 0.2s, opacity 0.2s;
+    cursor: default;
+    user-select: none;
+  }
+
+  .champ-row:hover { border-color: var(--border-hi); }
+
+  .champ-row.dragging {
+    opacity: 0.4;
+    border-color: var(--gold);
+  }
+
+  .champ-row.drag-over {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 2px var(--gold-dim);
+    background: rgba(201,162,39,0.06);
+  }
+
+  .drag-handle {
+    cursor: grab;
+    color: var(--text-dim);
+    font-size: 18px;
+    text-align: center;
+    padding: 4px;
+    border-radius: 4px;
+    transition: color 0.15s;
+    line-height: 1;
+  }
+
+  .drag-handle:hover { color: var(--gold); }
+  .drag-handle:active { cursor: grabbing; }
+
+  .champ-info { min-width: 0; }
+
+  .champ-name {
+    font-family: 'Russo One', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .champ-meta {
+    font-family: 'Teko', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* Status select */
+  .status-select {
+    appearance: none;
+    background: var(--bg-card);
+    border: 1px solid var(--border-hi);
+    border-radius: 20px;
+    padding: 5px 28px 5px 12px;
+    font-family: 'Teko', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238a8098'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    min-width: 150px;
+  }
+
+  .status-select:focus { border-color: var(--gold); }
+  .status-select option { background: var(--bg-card); }
+
+  .status-select.s-incorso  { color: var(--s-incorso);  border-color: rgba(255,165,0,0.4); }
+  .status-select.s-prossimo { color: var(--s-prossimo); border-color: var(--border-hi); }
+  .status-select.s-concluso { color: var(--s-concluso); border-color: rgba(39,174,96,0.4); }
+
+  /* Completed rounds input */
+  .rounds-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Teko', sans-serif;
+    font-size: 13px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .rounds-wrap input {
+    width: 44px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-hi);
+    border-radius: 6px;
+    padding: 5px 7px;
+    color: var(--gold);
+    font-family: 'Teko', sans-serif;
+    font-size: 15px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .rounds-wrap input:focus { border-color: var(--gold); }
+
+  /* Delete btn */
+  .del-btn {
+    background: none;
+    border: 1px solid transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    border-radius: 6px;
+    padding: 5px 8px;
+    font-size: 15px;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+    line-height: 1;
+  }
+
+  .del-btn:hover { color: var(--red); border-color: var(--red); background: rgba(192,57,43,0.1); }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--text-dim);
+    border: 2px dashed var(--border-hi);
+    border-radius: 10px;
+  }
+
+  .empty-state .ei { font-size: 36px; margin-bottom: 12px; }
+  .empty-state p { font-family: 'Teko', sans-serif; font-size: 15px; letter-spacing: 3px; text-transform: uppercase; }
+
+  /* Loading */
+  .loading-state { text-align: center; padding: 40px; color: var(--text-dim); font-family: 'Teko', sans-serif; font-size: 15px; letter-spacing: 3px; text-transform: uppercase; }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-family: 'Teko', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* Action row */
+  .action-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+
+  /* Toast */
+  #toast { position: fixed; bottom: 28px; right: 28px; background: var(--bg-card); border: 1px solid var(--gold); border-radius: 8px; padding: 12px 20px; font-family: 'Teko', sans-serif; font-size: 15px; letter-spacing: 1px; color: var(--text); z-index: 999; opacity: 0; transform: translateY(12px); transition: opacity 0.3s, transform 0.3s; pointer-events: none; }
+  #toast.show { opacity: 1; transform: translateY(0); }
+  #toast.ok  { border-color: var(--green); color: var(--green); }
+  #toast.err { border-color: var(--red); color: var(--red); }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+  @media (max-width: 900px) {
+    .page-body { grid-template-columns: 1fr; }
+    .champ-row { grid-template-columns: 36px 1fr; gap: 10px; }
+    .status-select, .rounds-wrap, .del-btn { grid-column: 2; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-logo"><img src="etna-logo.jpg" alt="ERC"></div>
+  <div class="topbar-title">Etna Racing Club</div>
+  <div class="topbar-divider"></div>
+  <div class="topbar-section">Gestisci Calendario</div>
+  <div class="topbar-spacer"></div>
+  <div class="github-status">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusText">Non connesso</span>
+  </div>
+  <a href="admin.html" class="btn-back">← Admin</a>
+</header>
+
+<div class="page-body">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-block">
+      <div class="sidebar-label">GitHub</div>
+      <div class="pat-wrap">
+        <input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+        <button class="pat-toggle" onclick="togglePAT()">👁</button>
+      </div>
+      <button class="btn-verify" onclick="verifyAndLoad()">Connetti e Carica</button>
+      <div class="repo-note">Repository: <span>mz4466/etna-racing-club</span><br>Branch: <span>main</span></div>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-label">Legenda Stato</div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--s-incorso)"></div>In Corso</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--s-prossimo)"></div>Prossimamente</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--s-concluso)"></div>Concluso</div>
+      </div>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-label">Azioni</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <button class="btn btn-github" id="saveBtn" onclick="saveToGitHub()" disabled>⬆ Salva su GitHub</button>
+        <button class="btn btn-outline" onclick="reloadFromGitHub()">↺ Ricarica da GitHub</button>
+      </div>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-label">Info</div>
+      <div class="repo-note" style="line-height:1.8;">
+        • Trascina le righe per riordinare<br>
+        • Cambia lo stato dal menu a tendina<br>
+        • Imposta i round completati<br>
+        • Clicca Salva per aggiornare il sito
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div>
+      <div class="page-title">🗓️ Gestisci Calendario</div>
+      <div class="page-sub">Ordina i campionati e aggiorna gli stati</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        📋 Campionati Registrati
+        <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text-dim);font-weight:300;letter-spacing:1px;margin-left:4px;" id="countLabel"></span>
+        <div style="flex:1"></div>
+        <span style="font-family:'Teko',sans-serif;font-size:12px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;">
+          ☰ Trascina per riordinare
+        </span>
+      </div>
+
+      <div class="champ-list" id="champList">
+        <div class="loading-state">Inserisci il token e clicca "Connetti e Carica"</div>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="btn btn-github" id="saveBtn2" onclick="saveToGitHub()" disabled style="width:auto;">⬆ Salva su GitHub</button>
+      <button class="btn btn-outline" onclick="reloadFromGitHub()">↺ Ricarica</button>
+    </div>
+
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const REPO   = 'mz4466/etna-racing-club';
+const BRANCH = 'main';
+
+let championships = [];
+let dragSrcIdx = null;
+
+// ── TOKEN ──
+function getToken() { return document.getElementById('patInput').value.trim(); }
+
+function togglePAT() {
+  const i = document.getElementById('patInput');
+  i.type = i.type === 'password' ? 'text' : 'password';
+}
+
+// ── CONNECT + LOAD ──
+async function verifyAndLoad() {
+  const token = getToken();
+  if (!token) { toast('Inserisci un token PAT', 'err'); return; }
+
+  try {
+    const r = await fetch(`https://api.github.com/repos/${REPO}`, {
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (!r.ok) throw new Error();
+    document.getElementById('statusDot').className = 'status-dot ok';
+    document.getElementById('statusText').textContent = 'Connesso';
+    document.getElementById('saveBtn').disabled = false;
+    document.getElementById('saveBtn2').disabled = false;
+    toast('✓ Connesso', 'ok');
+    await loadFromGitHub();
+  } catch {
+    document.getElementById('statusDot').className = 'status-dot err';
+    document.getElementById('statusText').textContent = 'Errore';
+    toast('Token non valido', 'err');
+  }
+}
+
+async function loadFromGitHub() {
+  const token = getToken();
+  toast('Caricamento…', '');
+  try {
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json?ref=${BRANCH}`, {
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (!r.ok) throw new Error('File non trovato');
+    const d = await r.json();
+    championships = JSON.parse(atob(d.content.replace(/\n/g,'')));
+    renderList();
+    toast(`✓ Caricati ${championships.length} campionati`, 'ok');
+  } catch(e) {
+    toast('Errore: ' + e.message, 'err');
+    championships = [];
+    renderList();
+  }
+}
+
+async function reloadFromGitHub() {
+  if (!getToken()) { toast('Inserisci prima il token', 'err'); return; }
+  await loadFromGitHub();
+}
+
+// ── RENDER ──
+function renderList() {
+  const list = document.getElementById('champList');
+  const count = document.getElementById('countLabel');
+  count.textContent = championships.length ? `(${championships.length})` : '';
+
+  if (!championships.length) {
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="ei">📭</div>
+        <p>Nessun campionato nel calendario</p>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = '';
+  championships.forEach((c, i) => {
+    const row = document.createElement('div');
+    row.className = 'champ-row';
+    row.draggable = true;
+    row.dataset.idx = i;
+
+    const statusClass = 'status-select s-' + (c.status || 'prossimo').replace('-','');
+
+    row.innerHTML = `
+      <div class="drag-handle" title="Trascina per riordinare">⠿</div>
+
+      <div class="champ-info">
+        <div class="champ-name">${c.name || '—'}</div>
+        <div class="champ-meta">${c.year || ''} · ${c.cat || ''} ${c.cars ? '· ' + c.cars : ''}</div>
+      </div>
+
+      <div class="rounds-wrap">
+        <span>R completati</span>
+        <input
+          type="number"
+          min="0"
+          max="${c.totalRounds || 99}"
+          value="${c.completedRounds || 0}"
+          title="Round completati"
+          onchange="updateField(${i}, 'completedRounds', parseInt(this.value) || 0)"
+        >
+        <span style="color:var(--text-dim);">/ ${c.totalRounds || '?'}</span>
+      </div>
+
+      <select class="${statusClass}" onchange="updateStatus(${i}, this)">
+        <option value="in-corso"  ${c.status==='in-corso'  ? 'selected':''}>🔥 In Corso</option>
+        <option value="prossimo"  ${c.status==='prossimo'  ? 'selected':''}>⏳ Prossimamente</option>
+        <option value="concluso"  ${c.status==='concluso'  ? 'selected':''}>✅ Concluso</option>
+      </select>
+
+      <button class="del-btn" onclick="deleteEntry(${i})" title="Rimuovi dal calendario">✕</button>
+    `;
+
+    // Drag events
+    row.addEventListener('dragstart', onDragStart);
+    row.addEventListener('dragover',  onDragOver);
+    row.addEventListener('dragleave', onDragLeave);
+    row.addEventListener('drop',      onDrop);
+    row.addEventListener('dragend',   onDragEnd);
+
+    list.appendChild(row);
+  });
+}
+
+// ── FIELD UPDATE ──
+function updateField(idx, field, value) {
+  championships[idx][field] = value;
+}
+
+function updateStatus(idx, select) {
+  const val = select.value;
+  championships[idx].status = val;
+  select.className = 'status-select s-' + val.replace('-','');
+}
+
+function deleteEntry(idx) {
+  const name = championships[idx].name || 'questo campionato';
+  if (!confirm(`Rimuovere "${name}" dal calendario? (non elimina il file HTML)`)) return;
+  championships.splice(idx, 1);
+  renderList();
+  toast('Rimosso dal calendario', '');
+}
+
+// ── DRAG & DROP ──
+function onDragStart(e) {
+  dragSrcIdx = parseInt(this.dataset.idx);
+  this.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', dragSrcIdx);
+}
+
+function onDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('.champ-row').forEach(r => r.classList.remove('drag-over'));
+  this.classList.add('drag-over');
+}
+
+function onDragLeave() {
+  this.classList.remove('drag-over');
+}
+
+function onDrop(e) {
+  e.preventDefault();
+  const targetIdx = parseInt(this.dataset.idx);
+  if (dragSrcIdx === null || dragSrcIdx === targetIdx) return;
+
+  const moved = championships.splice(dragSrcIdx, 1)[0];
+  championships.splice(targetIdx, 0, moved);
+  renderList();
+  toast('Ordine aggiornato — ricordati di salvare', '');
+}
+
+function onDragEnd() {
+  document.querySelectorAll('.champ-row').forEach(r => {
+    r.classList.remove('dragging', 'drag-over');
+  });
+  dragSrcIdx = null;
+}
+
+// ── SAVE TO GITHUB ──
+async function saveToGitHub() {
+  const token = getToken();
+  if (!token) { toast('Token mancante', 'err'); return; }
+
+  toast('Salvataggio in corso…', '');
+
+  try {
+    // Get current SHA
+    let sha = null;
+    const check = await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json?ref=${BRANCH}`, {
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (check.ok) { const d = await check.json(); sha = d.sha; }
+
+    const body = {
+      message: 'Update calendario.json via admin panel',
+      content: btoa(unescape(encodeURIComponent(JSON.stringify(championships, null, 2)))),
+      branch: BRANCH,
+    };
+    if (sha) body.sha = sha;
+
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `token ${token}`,
+        Accept: 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (r.ok) toast('✓ Calendario salvato su GitHub!', 'ok');
+    else { const e = await r.json(); toast('Errore: ' + (e.message||'sconosciuto'), 'err'); }
+  } catch(e) {
+    toast('Errore di rete: ' + e.message, 'err');
+  }
+}
+
+// ── TOAST ──
+function toast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show' + (type ? ' '+type : '');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.className = '', 3200);
+}
+</script>
+</body>
+</html>

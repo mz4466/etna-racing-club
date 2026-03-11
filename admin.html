@@ -400,8 +400,10 @@
   /* Menu cards */
   .menu-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
+    max-width: 720px;
+    margin: 0 auto;
   }
 
   .menu-card {
@@ -634,6 +636,13 @@
           <div class="card-desc">Inserisci e pubblica i risultati delle gare. Aggiorna le classifiche in tempo reale.</div>
         </a>
 
+        <a class="menu-card" href="gestisci-calendario.html" onclick="navTo(event,'gestisci-calendario.html')">
+          <span class="card-icon">🗓️</span>
+          <div class="card-line"></div>
+          <div class="card-title">Gestisci Calendario</div>
+          <div class="card-desc">Riordina i campionati, cambia il loro stato e aggiorna il calendario pubblico.</div>
+        </a>
+
       </div>
     </div>
   </div>
@@ -750,7 +759,7 @@
 
   // ── NAVIGATION ──
   // Pages not yet built show a toast. Add to BUILT_PAGES as each one is created.
-  const BUILT_PAGES = ['crea-campionato.html'];
+  const BUILT_PAGES = ['crea-campionato.html', 'gestisci-calendario.html'];
 
   function navTo(e, page) {
     if (!BUILT_PAGES.includes(page)) {
