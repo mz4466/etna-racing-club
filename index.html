@@ -576,7 +576,7 @@
 
         <div class="content-wrapper">
             <div class="logo-row">
-                <img class="club-logo" src="etna-logo.jpg" alt="Etna Racing Club logo" loading="lazy">
+                <img class="club-logo" src="etna-logo.jpg" alt="Etna Racing Club logo" loading="lazy" id="ercLogo" onclick="secretClick()">
                 <img class="gt7-logo" src="gt7.jpg" alt="Gran Turismo 7 logo" loading="lazy">
             </div>
 
@@ -681,5 +681,14 @@
             </div>
         </div>
     </section>
+    <script>
+      let _sc = 0, _st;
+      function secretClick() {
+        clearTimeout(_st);
+        _sc++;
+        if (_sc >= 3) { _sc = 0; window.location.href = 'admin.html'; }
+        _st = setTimeout(() => _sc = 0, 1000);
+      }
+    </script>
 </body>
 </html>
