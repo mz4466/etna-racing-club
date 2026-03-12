@@ -10,5 +10,17 @@
     "file": "test-1-2025-campionato-1.html",
     "totalRounds": 3,
     "completedRounds": 0
+  },
+  {
+    "name": "Risveglio dei motori",
+    "year": "2026",
+    "cat": "Campionato",
+    "slug": "Primavera",
+    "cars": "Gr.3",
+    "desc": "Quest oe il campionato mondiale di giovanni",
+    "status": "prossimo",
+    "file": "risveglio-dei-motori-2026-campionato-primavera.html",
+    "totalRounds": 3,
+    "completedRounds": 0
   }
 ]
