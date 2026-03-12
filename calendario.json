@@ -6,7 +6,7 @@
     "slug": "1",
     "cars": "GR.3",
     "desc": "Questo e un test",
-    "status": "in-corso",
+    "status": "concluso",
     "file": "test-1-2025-campionato-1.html",
     "totalRounds": 3,
     "completedRounds": 0
@@ -18,9 +18,9 @@
     "slug": "Primavera",
     "cars": "Gr.3",
     "desc": "Quest oe il campionato mondiale di giovanni",
-    "status": "prossimo",
+    "status": "in-corso",
     "file": "risveglio-dei-motori-2026-campionato-primavera.html",
     "totalRounds": 3,
-    "completedRounds": 0
+    "completedRounds": 2
   }
 ]
