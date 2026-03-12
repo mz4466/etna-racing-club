@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERC Admin — Gestisci Piloti</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@300;400;600&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#07070f; --bg-card:#0e0e1c; --bg-input:#13131f;
+    --border:#1e1e30; --border-hi:#2a2a42;
+    --gold:#c9a227; --gold-hi:#e8c547; --gold-dim:rgba(201,162,39,0.10); --gold-glow:rgba(201,162,39,0.22);
+    --red:#c0392b; --green:#27ae60; --blue:#4fc3f7; --orange:#ff5014;
+    --text:#e8e0d0; --text-dim:#4a4460; --text-mid:#8a8098;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh;display:flex;flex-direction:column;}
+
+  /* TOPBAR */
+  .topbar{background:linear-gradient(90deg,#0a0a18,#0e0c1a);border-bottom:1px solid var(--border-hi);padding:0 32px;height:62px;display:flex;align-items:center;gap:14px;flex-shrink:0;box-shadow:0 2px 20px rgba(0,0,0,.5);position:sticky;top:0;z-index:100;}
+  .topbar-logo img{width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 0 6px var(--gold-glow));}
+  .topbar-title{font-family:'Russo One',sans-serif;font-size:15px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;}
+  .topbar-divider{width:1px;height:24px;background:var(--border-hi);}
+  .topbar-section{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:4px;color:var(--text-dim);text-transform:uppercase;}
+  .topbar-spacer{flex:1;}
+  .github-status{display:flex;align-items:center;gap:8px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--text-dim);}
+  .status-dot{width:7px;height:7px;border-radius:50%;background:var(--text-dim);transition:background .3s;}
+  .status-dot.ok{background:var(--green);box-shadow:0 0 6px var(--green);}
+  .status-dot.err{background:var(--red);}
+  .btn-back{background:none;border:1px solid var(--border-hi);border-radius:6px;color:var(--text-mid);font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;cursor:pointer;text-decoration:none;transition:border-color .2s,color .2s;}
+  .btn-back:hover{border-color:var(--gold);color:var(--gold);}
+
+  /* LAYOUT */
+  .page-body{display:grid;grid-template-columns:260px 1fr;flex:1;min-height:0;}
+
+  /* SIDEBAR */
+  .sidebar{background:#0a0a16;border-right:1px solid var(--border);padding:24px 18px;display:flex;flex-direction:column;gap:20px;overflow-y:auto;}
+  .sidebar-block{display:flex;flex-direction:column;gap:8px;}
+  .sidebar-label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;padding-bottom:6px;border-bottom:1px solid var(--border);}
+  .pat-wrap{position:relative;}
+  .pat-wrap input{width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:7px;padding:9px 34px 9px 11px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+  .pat-wrap input:focus{border-color:var(--gold);}
+  .pat-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:13px;}
+  .repo-note{font-size:11px;color:var(--text-dim);line-height:1.6;}
+  .repo-note span{color:var(--blue);}
+  .btn-verify{width:100%;background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold-hi);font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;padding:8px;border-radius:7px;cursor:pointer;transition:background .2s;}
+  .btn-verify:hover{background:var(--gold);color:#000;}
+  .btn{font-family:'Teko',sans-serif;font-size:15px;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;border-radius:7px;cursor:pointer;border:1px solid;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+  .btn-add{background:var(--gold);border-color:var(--gold-hi);color:#000;font-weight:700;width:100%;justify-content:center;}
+  .btn-add:hover{background:var(--gold-hi);}
+  .btn-outline{background:transparent;border-color:var(--border-hi);color:var(--text-mid);}
+  .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+  .sidebar-stat{display:flex;justify-content:space-between;align-items:center;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--text-mid);}
+  .sidebar-stat span{color:var(--gold);font-size:20px;font-weight:600;}
+
+  /* MAIN */
+  .main{padding:32px 36px;overflow-y:auto;display:flex;flex-direction:column;gap:24px;}
+  .page-title{font-family:'Russo One',sans-serif;font-size:22px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;}
+  .page-sub{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;margin-top:3px;}
+
+  /* SEARCH BAR */
+  .search-bar{display:flex;gap:10px;align-items:center;}
+  .search-bar input{flex:1;background:var(--bg-card);border:1px solid var(--border-hi);border-radius:8px;padding:10px 14px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;outline:none;transition:border-color .2s;}
+  .search-bar input:focus{border-color:var(--gold);}
+
+  /* PILOTS GRID */
+  .pilots-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+
+  .pilot-card{
+    background:var(--bg-card);
+    border:1px solid var(--border-hi);
+    border-radius:14px;
+    overflow:hidden;
+    transition:border-color .25s,box-shadow .25s,transform .25s;
+    animation:fadeUp .35s cubic-bezier(.22,1,.36,1) both;
+  }
+  .pilot-card:hover{border-color:var(--gold);box-shadow:0 8px 32px rgba(201,162,39,.12);transform:translateY(-3px);}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+  .pilot-photo-wrap{position:relative;height:160px;overflow:hidden;background:linear-gradient(135deg,#0d0d1e,#1a1a2e);}
+  .pilot-photo-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+  .pilot-card:hover .pilot-photo-wrap img{transform:scale(1.06);}
+  .pilot-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:52px;color:var(--border-hi);}
+  .pilot-photo-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,15,.85) 0%,transparent 60%);}
+
+  .pilot-card-body{padding:14px 16px;}
+  .pilot-name{font-family:'Russo One',sans-serif;font-size:17px;color:var(--text);letter-spacing:1px;text-transform:uppercase;}
+  .pilot-psn{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-top:2px;}
+  .pilot-meta{margin-top:8px;display:flex;flex-direction:column;gap:3px;}
+  .pilot-meta-row{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text-mid);display:flex;gap:6px;align-items:baseline;}
+  .pilot-meta-row .lbl{color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;min-width:50px;}
+  .pilot-badges{margin-top:10px;display:flex;flex-wrap:wrap;gap:5px;}
+  .pilot-badge{background:var(--gold-dim);border:1px solid rgba(201,162,39,.2);border-radius:20px;padding:3px 10px;font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:var(--gold);text-transform:uppercase;}
+  .pilot-card-footer{padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;}
+  .btn-sm{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:6px;cursor:pointer;border:1px solid;transition:all .2s;}
+  .btn-edit{background:transparent;border-color:var(--border-hi);color:var(--text-mid);}
+  .btn-edit:hover{border-color:var(--gold);color:var(--gold);}
+  .btn-del{background:transparent;border-color:transparent;color:var(--text-dim);}
+  .btn-del:hover{border-color:var(--red);color:var(--red);background:rgba(192,57,43,.08);}
+
+  /* EMPTY / LOADING */
+  .empty-state{text-align:center;padding:56px 20px;color:var(--text-dim);}
+  .empty-state .ei{font-size:44px;margin-bottom:14px;}
+  .empty-state p{font-family:'Teko',sans-serif;font-size:16px;letter-spacing:3px;text-transform:uppercase;}
+  .loading-msg{color:var(--text-dim);font-family:'Teko',sans-serif;font-size:15px;letter-spacing:3px;text-transform:uppercase;padding:40px;text-align:center;}
+
+  /* MODAL */
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:center;justify-content:center;padding:20px;}
+  .modal-bg.open{display:flex;}
+  .modal-box{background:var(--bg-card);border:1px solid var(--gold);border-radius:14px;width:100%;max-width:680px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;}
+  .modal-head{display:flex;align-items:center;padding:16px 22px;border-bottom:1px solid var(--border);gap:12px;}
+  .modal-head-title{font-family:'Russo One',sans-serif;font-size:15px;color:var(--gold);letter-spacing:2px;flex:1;text-transform:uppercase;}
+  .modal-close{background:none;border:1px solid var(--border-hi);color:var(--text-dim);cursor:pointer;border-radius:5px;padding:4px 11px;font-size:17px;transition:border-color .2s,color .2s;}
+  .modal-close:hover{border-color:var(--red);color:var(--red);}
+  .modal-body{flex:1;overflow-y:auto;padding:22px;}
+  .modal-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;}
+
+  /* FORM */
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .form-grid.full{grid-template-columns:1fr;}
+  .field{display:flex;flex-direction:column;gap:5px;}
+  .field label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;}
+  .field input,.field textarea,.field select{background:var(--bg-input);border:1px solid var(--border);border-radius:7px;padding:9px 12px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s;width:100%;}
+  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-dim);}
+  .field textarea{resize:vertical;min-height:72px;}
+  .form-section{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;padding:14px 0 6px;border-bottom:1px solid var(--border);margin-bottom:4px;grid-column:1/-1;}
+
+  .photo-preview{width:100%;height:120px;object-fit:cover;border-radius:8px;border:1px solid var(--border);margin-top:6px;display:none;background:var(--bg-input);}
+
+  .btn-github{background:linear-gradient(135deg,#196327,#238636);border-color:#2ea043;color:#fff;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;padding:9px 22px;border-radius:7px;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:6px;}
+  .btn-github:hover{background:linear-gradient(135deg,#238636,#2ea043);}
+  .btn-cancel{background:transparent;border:1px solid var(--border-hi);color:var(--text-mid);font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;padding:9px 22px;border-radius:7px;cursor:pointer;transition:border-color .2s,color .2s;}
+  .btn-cancel:hover{border-color:var(--red);color:var(--red);}
+
+  /* TOAST */
+  #toast{position:fixed;bottom:28px;right:28px;background:var(--bg-card);border:1px solid var(--gold);border-radius:8px;padding:12px 20px;font-family:'Teko',sans-serif;font-size:15px;letter-spacing:1px;color:var(--text);z-index:999;opacity:0;transform:translateY(12px);transition:opacity .3s,transform .3s;pointer-events:none;}
+  #toast.show{opacity:1;transform:translateY(0);}
+  #toast.ok{border-color:var(--green);color:var(--green);}
+  #toast.err{border-color:var(--red);color:var(--red);}
+
+  ::-webkit-scrollbar{width:5px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--border-hi);border-radius:3px;}
+  ::-webkit-scrollbar-thumb:hover{background:var(--gold);}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-logo"><img src="etna-logo.jpg" alt="ERC"></div>
+  <div class="topbar-title">Etna Racing Club</div>
+  <div class="topbar-divider"></div>
+  <div class="topbar-section">Gestisci Piloti</div>
+  <div class="topbar-spacer"></div>
+  <div class="github-status">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusText">Non connesso</span>
+  </div>
+  <a href="admin.html" class="btn-back">← Admin</a>
+</header>
+
+<div class="page-body">
+
+  <aside class="sidebar">
+    <div class="sidebar-block">
+      <div class="sidebar-label">GitHub</div>
+      <div class="pat-wrap">
+        <input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+        <button class="pat-toggle" onclick="togglePAT()">👁</button>
+      </div>
+      <button class="btn-verify" onclick="verifyAndLoad()">Connetti e Carica</button>
+      <div class="repo-note">Repository: <span>mz4466/etna-racing-club</span><br>Branch: <span>main</span></div>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-label">Piloti</div>
+      <div class="sidebar-stat">Totale <span id="statTotal">—</span></div>
+      <button class="btn btn-add" onclick="openModal()">＋ Aggiungi Pilota</button>
+      <button class="btn btn-outline" onclick="reload()" style="width:100%;justify-content:center;">↺ Ricarica</button>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-label">Pagina Pubblica</div>
+      <div class="repo-note" style="line-height:1.8;">
+        La pagina <span>piloti.html</span> si aggiorna automaticamente leggendo i dati da GitHub.<br><br>
+        I dati sono salvati in <span>piloti_schede/</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div>
+      <div class="page-title">🏎️ Gestisci Piloti</div>
+      <div class="page-sub">Aggiungi, modifica e rimuovi i piloti del club</div>
+    </div>
+
+    <div class="search-bar">
+      <input type="search" id="searchInput" placeholder="Cerca per nome, PSN, auto..." oninput="filterPilots()">
+    </div>
+
+    <div id="pilotsGrid" class="pilots-grid">
+      <div class="loading-msg">Connetti GitHub per caricare i piloti</div>
+    </div>
+  </main>
+</div>
+
+<!-- ADD / EDIT MODAL -->
+<div class="modal-bg" id="modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-title" id="modalTitle">Aggiungi Pilota</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-section">Dati Principali</div>
+        <div class="field">
+          <label>Nome Completo *</label>
+          <input type="text" id="fNome" placeholder='es. Giovanni "Mbare" Russo'>
+        </div>
+        <div class="field">
+          <label>PSN ID *</label>
+          <input type="text" id="fPsn" placeholder="es. SicilianRacer_GT">
+        </div>
+        <div class="field">
+          <label>Nazione</label>
+          <input type="text" id="fNazione" placeholder="es. Italia 🇮🇹">
+        </div>
+        <div class="field">
+          <label>Auto Preferita</label>
+          <input type="text" id="fAuto" placeholder="es. Ferrari 296 GT3 Gr.3">
+        </div>
+
+        <div class="form-section">Profilo di Guida</div>
+        <div class="field">
+          <label>Stile di Guida</label>
+          <input type="text" id="fStile" placeholder="es. Aggressivo, Consistente...">
+        </div>
+        <div class="field">
+          <label>Pista Preferita ❤️</label>
+          <input type="text" id="fPistaAma" placeholder="es. Nürburgring GP">
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Pista Odiata 💀</label>
+          <input type="text" id="fPistaOdia" placeholder="es. Sarthe">
+        </div>
+
+        <div class="form-section">Extra</div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Bio / Descrizione</label>
+          <textarea id="fBio" placeholder="Breve descrizione del pilota, storia, curiosità..."></textarea>
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Badges (separati da virgola)</label>
+          <input type="text" id="fBadges" placeholder="es. Rain Master, Fair Play, Pole Position King">
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <label>URL Foto</label>
+          <input type="text" id="fFoto" placeholder="https://..." oninput="previewPhoto()">
+          <img id="photoPreview" class="photo-preview" alt="Anteprima foto">
+        </div>
+
+        <div class="form-section">File</div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Slug (nome file) *</label>
+          <input type="text" id="fSlug" placeholder="es. giovanni-russo" oninput="sanitizeSlug()">
+          <div style="font-size:11px;color:var(--text-dim);margin-top:3px;">Sarà salvato come <span id="slugPreview" style="color:var(--blue);">piloti_schede/—.json</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal()">Annulla</button>
+      <button class="btn-github" onclick="savePilot()">⬆ Salva su GitHub</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const REPO   = 'mz4466/etna-racing-club';
+const BRANCH = 'main';
+const FOLDER = 'piloti_schede';
+
+let allPilots  = [];  // [{slug, data}, ...]
+let editingSlug = null;
+
+function getToken(){ return document.getElementById('patInput').value.trim(); }
+function togglePAT(){ const i=document.getElementById('patInput'); i.type=i.type==='password'?'text':'password'; }
+
+// ── CONNECT ──
+async function verifyAndLoad(){
+  const token = getToken();
+  if(!token){ toast('Inserisci un token PAT','err'); return; }
+  try {
+    const r = await fetch(`https://api.github.com/repos/${REPO}`,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
+    if(!r.ok) throw new Error();
+    document.getElementById('statusDot').className='status-dot ok';
+    document.getElementById('statusText').textContent='Connesso';
+    toast('✓ Connesso','ok');
+    await loadPilots();
+  } catch {
+    document.getElementById('statusDot').className='status-dot err';
+    document.getElementById('statusText').textContent='Errore';
+    toast('Token non valido','err');
+  }
+}
+
+async function reload(){ if(!getToken()){ toast('Connetti prima','err'); return; } await loadPilots(); }
+
+// ── LOAD PILOTS ──
+async function loadPilots(){
+  const token = getToken();
+  toast('Caricamento piloti…','');
+  document.getElementById('pilotsGrid').innerHTML='<div class="loading-msg">Caricamento...</div>';
+
+  try {
+    // List files in piloti_schede/
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${FOLDER}?ref=${BRANCH}`,{
+      headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+    });
+
+    if(!r.ok){
+      // folder doesn't exist yet
+      allPilots=[];
+      renderGrid();
+      toast('Cartella piloti_schede non trovata — verrà creata al primo salvataggio','');
+      return;
+    }
+
+    const files = await r.json();
+    const jsonFiles = files.filter(f=>f.name.endsWith('.json') && f.name!=='index.json');
+
+    if(!jsonFiles.length){ allPilots=[]; renderGrid(); toast('Nessun pilota trovato',''); return; }
+
+    const results = await Promise.all(jsonFiles.map(async f=>{
+      const fr = await fetch(f.download_url);
+      if(!fr.ok) return null;
+      const data = await fr.json();
+      return { slug: f.name.replace('.json',''), data };
+    }));
+
+    allPilots = results.filter(Boolean);
+    renderGrid();
+    document.getElementById('statTotal').textContent = allPilots.length;
+    toast(`✓ ${allPilots.length} piloti caricati`,'ok');
+  } catch(e){
+    toast('Errore: '+e.message,'err');
+    allPilots=[];
+    renderGrid();
+  }
+}
+
+// ── RENDER ──
+function renderGrid(list){
+  const pilots = list || allPilots;
+  const grid = document.getElementById('pilotsGrid');
+  document.getElementById('statTotal').textContent = allPilots.length || '—';
+
+  if(!pilots.length){
+    grid.innerHTML=`<div class="empty-state"><div class="ei">🏎️</div><p>Nessun pilota registrato</p></div>`;
+    return;
+  }
+
+  grid.innerHTML='';
+  pilots.forEach(({slug,data},i)=>{
+    const card = document.createElement('div');
+    card.className='pilot-card';
+    card.style.animationDelay=`${i*0.06}s`;
+
+    const photoHTML = data.foto
+      ? `<img src="${esc(data.foto)}" alt="${esc(data.nome)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+      : '';
+    const placeholderStyle = data.foto ? 'display:none' : '';
+
+    const badgesHTML = (data.badges||[]).map(b=>`<span class="pilot-badge">${esc(b)}</span>`).join('');
+
+    card.innerHTML=`
+      <div class="pilot-photo-wrap">
+        ${photoHTML}
+        <div class="pilot-photo-placeholder" style="${placeholderStyle}">🪖</div>
+        <div class="pilot-photo-overlay"></div>
+      </div>
+      <div class="pilot-card-body">
+        <div class="pilot-name">${esc(data.nome||'—')}</div>
+        <div class="pilot-psn">🎮 ${esc(data.psn||'—')}</div>
+        <div class="pilot-meta">
+          ${data.nazione?`<div class="pilot-meta-row"><span class="lbl">Nazione</span>${esc(data.nazione)}</div>`:''}
+          ${data.auto?`<div class="pilot-meta-row"><span class="lbl">Auto</span>${esc(data.auto)}</div>`:''}
+          ${data.stile?`<div class="pilot-meta-row"><span class="lbl">Stile</span>${esc(data.stile)}</div>`:''}
+          ${data.pistaAma?`<div class="pilot-meta-row"><span class="lbl">❤️</span>${esc(data.pistaAma)}</div>`:''}
+          ${data.pistaOdia?`<div class="pilot-meta-row"><span class="lbl">💀</span>${esc(data.pistaOdia)}</div>`:''}
+        </div>
+        ${badgesHTML?`<div class="pilot-badges">${badgesHTML}</div>`:''}
+        ${data.bio?`<div style="margin-top:8px;font-size:13px;color:var(--text-mid);line-height:1.5;font-style:italic;">"${esc(data.bio)}"</div>`:''}
+      </div>
+      <div class="pilot-card-footer">
+        <button class="btn-sm btn-edit" onclick="editPilot('${slug}')">✏️ Modifica</button>
+        <button class="btn-sm btn-del" onclick="deletePilot('${slug}','${esc(data.nome||slug)}')">✕</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function filterPilots(){
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  if(!q){ renderGrid(); return; }
+  const filtered = allPilots.filter(({slug,data})=>{
+    return [data.nome,data.psn,data.auto,data.nazione,data.stile,slug].some(v=>v&&v.toLowerCase().includes(q));
+  });
+  renderGrid(filtered);
+}
+
+// ── MODAL ──
+function openModal(slug){
+  editingSlug = slug || null;
+  clearForm();
+
+  if(slug){
+    const p = allPilots.find(p=>p.slug===slug);
+    if(!p) return;
+    const d = p.data;
+    document.getElementById('modalTitle').textContent = 'Modifica Pilota';
+    document.getElementById('fNome').value    = d.nome    || '';
+    document.getElementById('fPsn').value     = d.psn     || '';
+    document.getElementById('fNazione').value = d.nazione || '';
+    document.getElementById('fAuto').value    = d.auto    || '';
+    document.getElementById('fStile').value   = d.stile   || '';
+    document.getElementById('fPistaAma').value = d.pistaAma || '';
+    document.getElementById('fPistaOdia').value= d.pistaOdia|| '';
+    document.getElementById('fBio').value     = d.bio     || '';
+    document.getElementById('fBadges').value  = (d.badges||[]).join(', ');
+    document.getElementById('fFoto').value    = d.foto    || '';
+    document.getElementById('fSlug').value    = slug;
+    document.getElementById('fSlug').readOnly = true;
+    previewPhoto();
+    updateSlugPreview();
+  } else {
+    document.getElementById('modalTitle').textContent = 'Aggiungi Pilota';
+    document.getElementById('fSlug').readOnly = false;
+  }
+
+  document.getElementById('modal').classList.add('open');
+}
+
+function editPilot(slug){ openModal(slug); }
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  editingSlug=null;
+}
+
+function clearForm(){
+  ['fNome','fPsn','fNazione','fAuto','fStile','fPistaAma','fPistaOdia','fBio','fBadges','fFoto','fSlug'].forEach(id=>{
+    document.getElementById(id).value='';
+  });
+  document.getElementById('photoPreview').style.display='none';
+  updateSlugPreview();
+}
+
+function previewPhoto(){
+  const url = document.getElementById('fFoto').value.trim();
+  const img  = document.getElementById('photoPreview');
+  if(url){ img.src=url; img.style.display='block'; }
+  else { img.style.display='none'; }
+}
+
+function sanitizeSlug(){
+  const el = document.getElementById('fSlug');
+  el.value = el.value.toLowerCase().replace(/[^a-z0-9\-]/g,'-').replace(/-+/g,'-');
+  updateSlugPreview();
+}
+
+function updateSlugPreview(){
+  const s = document.getElementById('fSlug').value.trim() || '—';
+  document.getElementById('slugPreview').textContent = `piloti_schede/${s}.json`;
+}
+
+// ── SAVE ──
+async function savePilot(){
+  const token = getToken();
+  if(!token){ toast('Token mancante','err'); return; }
+
+  const nome = document.getElementById('fNome').value.trim();
+  const slug = document.getElementById('fSlug').value.trim();
+  if(!nome||!slug){ toast('Nome e Slug sono obbligatori','err'); return; }
+
+  const payload = {
+    nome,
+    psn:       document.getElementById('fPsn').value.trim(),
+    nazione:   document.getElementById('fNazione').value.trim(),
+    auto:      document.getElementById('fAuto').value.trim(),
+    stile:     document.getElementById('fStile').value.trim(),
+    pistaAma:  document.getElementById('fPistaAma').value.trim(),
+    pistaOdia: document.getElementById('fPistaOdia').value.trim(),
+    bio:       document.getElementById('fBio').value.trim(),
+    badges:    document.getElementById('fBadges').value.split(',').map(s=>s.trim()).filter(Boolean),
+    foto:      document.getElementById('fFoto').value.trim(),
+  };
+
+  toast('Salvataggio…','');
+
+  try {
+    await putFile(`${FOLDER}/${slug}.json`, JSON.stringify(payload,null,2), `${editingSlug?'Update':'Add'} pilot: ${slug}`, token);
+    toast(`✓ ${nome} salvato!`,'ok');
+    closeModal();
+    await loadPilots();
+  } catch(e){
+    toast('Errore: '+e.message,'err');
+  }
+}
+
+// ── DELETE ──
+async function deletePilot(slug, nome){
+  if(!confirm(`Rimuovere ${nome} dal roster? Questa azione è irreversibile.`)) return;
+  const token = getToken();
+  if(!token){ toast('Token mancante','err'); return; }
+  toast('Eliminazione…','');
+  try {
+    const path = `${FOLDER}/${slug}.json`;
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`,{
+      headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+    });
+    if(!r.ok) throw new Error('File non trovato');
+    const d = await r.json();
+    const del = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`,{
+      method:'DELETE',
+      headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify({message:`Remove pilot: ${slug}`,sha:d.sha,branch:BRANCH})
+    });
+    if(!del.ok) throw new Error('Eliminazione fallita');
+    toast(`✓ ${nome} rimosso`,'ok');
+    await loadPilots();
+  } catch(e){
+    toast('Errore: '+e.message,'err');
+  }
+}
+
+// ── GITHUB HELPER ──
+async function putFile(path, content, message, token){
+  let sha=null;
+  const check = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`,{
+    headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+  });
+  if(check.ok){ const d=await check.json(); sha=d.sha; }
+
+  const body={message,content:btoa(unescape(encodeURIComponent(content))),branch:BRANCH};
+  if(sha) body.sha=sha;
+
+  const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`,{
+    method:'PUT',
+    headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  });
+  if(!r.ok){ const e=await r.json(); throw new Error(e.message||r.status); }
+  return r.json();
+}
+
+function esc(s){ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function toast(msg,type){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='show'+(type?' '+type:'');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.className='',3200);
+}
+
+// auto-fill slug from name
+document.getElementById('fNome').addEventListener('input',()=>{
+  if(editingSlug) return;
+  const nome = document.getElementById('fNome').value.trim();
+  const slug = nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  document.getElementById('fSlug').value=slug;
+  updateSlugPreview();
+});
+</script>
+</body>
+</html>
