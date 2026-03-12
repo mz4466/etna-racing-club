@@ -64,35 +64,35 @@
   .search-bar input:focus{border-color:var(--gold);}
 
   /* PILOTS GRID */
-  .pilots-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+  .pilots-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:14px;}
 
   .pilot-card{
-    background:var(--bg-card);
-    border:1px solid var(--border-hi);
-    border-radius:14px;
-    overflow:hidden;
+    background:var(--bg-card);border:1px solid var(--border-hi);border-radius:12px;overflow:hidden;
+    display:grid;grid-template-columns:140px 1fr;
     transition:border-color .25s,box-shadow .25s,transform .25s;
     animation:fadeUp .35s cubic-bezier(.22,1,.36,1) both;
+    min-height:175px;
   }
-  .pilot-card:hover{border-color:var(--gold);box-shadow:0 8px 32px rgba(201,162,39,.12);transform:translateY(-3px);}
+  .pilot-card:hover{border-color:var(--gold);box-shadow:0 8px 32px rgba(201,162,39,.12);transform:translateY(-2px);}
 
   @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
-  .pilot-photo-wrap{position:relative;height:160px;overflow:hidden;background:linear-gradient(135deg,#0d0d1e,#1a1a2e);}
-  .pilot-photo-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
-  .pilot-card:hover .pilot-photo-wrap img{transform:scale(1.06);}
-  .pilot-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:52px;color:var(--border-hi);}
-  .pilot-photo-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,15,.85) 0%,transparent 60%);}
+  .pilot-photo-wrap{position:relative;overflow:hidden;background:linear-gradient(135deg,#0d0d1e,#1a1a2e);}
+  .pilot-photo-wrap img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .4s;display:block;}
+  .pilot-card:hover .pilot-photo-wrap img{transform:scale(1.05);}
+  .pilot-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:46px;color:var(--border-hi);}
+  .pilot-photo-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,transparent 70%,var(--bg-card) 100%);pointer-events:none;}
 
-  .pilot-card-body{padding:14px 16px;}
-  .pilot-name{font-family:'Russo One',sans-serif;font-size:17px;color:var(--text);letter-spacing:1px;text-transform:uppercase;}
-  .pilot-psn{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-top:2px;}
-  .pilot-meta{margin-top:8px;display:flex;flex-direction:column;gap:3px;}
-  .pilot-meta-row{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text-mid);display:flex;gap:6px;align-items:baseline;}
-  .pilot-meta-row .lbl{color:var(--text-dim);font-size:11px;letter-spacing:2px;text-transform:uppercase;min-width:50px;}
-  .pilot-badges{margin-top:10px;display:flex;flex-wrap:wrap;gap:5px;}
-  .pilot-badge{background:var(--gold-dim);border:1px solid rgba(201,162,39,.2);border-radius:20px;padding:3px 10px;font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:var(--gold);text-transform:uppercase;}
-  .pilot-card-footer{padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;}
+  .pilot-card-body{padding:14px 14px 0;display:flex;flex-direction:column;min-width:0;}
+  .pilot-name{font-family:'Russo One',sans-serif;font-size:15px;color:var(--text);letter-spacing:1px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .pilot-psn{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-top:2px;margin-bottom:8px;}
+  .pilot-meta{display:flex;flex-direction:column;gap:2px;flex:1;}
+  .pilot-meta-row{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--text-mid);display:flex;gap:6px;align-items:baseline;padding-bottom:2px;border-bottom:1px solid rgba(255,255,255,.025);}
+  .pilot-meta-row:last-child{border-bottom:none;}
+  .pilot-meta-row .lbl{color:var(--text-dim);font-size:10px;letter-spacing:2px;text-transform:uppercase;min-width:46px;}
+  .pilot-badges{margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;padding-bottom:8px;}
+  .pilot-badge{background:var(--gold-dim);border:1px solid rgba(201,162,39,.2);border-radius:20px;padding:2px 9px;font-family:'Teko',sans-serif;font-size:11px;letter-spacing:1px;color:var(--gold);text-transform:uppercase;}
+  .pilot-card-footer{padding:8px 14px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;grid-column:2;}
   .btn-sm{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:6px;cursor:pointer;border:1px solid;transition:all .2s;}
   .btn-edit{background:transparent;border-color:var(--border-hi);color:var(--text-mid);}
   .btn-edit:hover{border-color:var(--gold);color:var(--gold);}
@@ -388,7 +388,6 @@ function renderGrid(list){
       <div class="pilot-photo-wrap">
         ${photoHTML}
         <div class="pilot-photo-placeholder" style="${placeholderStyle}">🪖</div>
-        <div class="pilot-photo-overlay"></div>
       </div>
       <div class="pilot-card-body">
         <div class="pilot-name">${esc(data.nome||'—')}</div>
@@ -401,7 +400,7 @@ function renderGrid(list){
           ${data.pistaOdia?`<div class="pilot-meta-row"><span class="lbl">💀</span>${esc(data.pistaOdia)}</div>`:''}
         </div>
         ${badgesHTML?`<div class="pilot-badges">${badgesHTML}</div>`:''}
-        ${data.bio?`<div style="margin-top:8px;font-size:13px;color:var(--text-mid);line-height:1.5;font-style:italic;">"${esc(data.bio)}"</div>`:''}
+        ${data.bio?`<div style="margin-top:6px;font-size:12px;color:var(--text-dim);line-height:1.5;font-style:italic;padding-bottom:8px;">"${esc(data.bio)}"</div>`:''}
       </div>
       <div class="pilot-card-footer">
         <button class="btn-sm btn-edit" onclick="editPilot('${slug}')">✏️ Modifica</button>
