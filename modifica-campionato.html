@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERC Admin — Modifica Campionato</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@300;400;600&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #07070f;
+    --bg-card:   #0e0e1c;
+    --bg-input:  #13131f;
+    --border:    #1e1e30;
+    --border-hi: #2a2a42;
+    --gold:      #c9a227;
+    --gold-hi:   #e8c547;
+    --gold-dim:  rgba(201,162,39,0.10);
+    --gold-glow: rgba(201,162,39,0.22);
+    --red:       #c0392b;
+    --green:     #27ae60;
+    --blue:      #4fc3f7;
+    --text:      #e8e0d0;
+    --text-dim:  #4a4460;
+    --text-mid:  #8a8098;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow Condensed', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    background: linear-gradient(90deg, #0a0a18, #0e0c1a);
+    border-bottom: 1px solid var(--border-hi);
+    padding: 0 32px;
+    height: 62px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .topbar-logo img { width: 34px; height: 34px; object-fit: contain; filter: drop-shadow(0 0 6px var(--gold-glow)); }
+  .topbar-title { font-family: 'Russo One', sans-serif; font-size: 15px; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; }
+  .topbar-divider { width: 1px; height: 24px; background: var(--border-hi); }
+  .topbar-section { font-family: 'Teko', sans-serif; font-size: 13px; letter-spacing: 4px; color: var(--text-dim); text-transform: uppercase; }
+  .topbar-spacer { flex: 1; }
+
+  .github-status { display: flex; align-items: center; gap: 8px; font-family: 'Teko', sans-serif; font-size: 14px; letter-spacing: 1px; color: var(--text-dim); }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-dim); transition: background 0.3s; }
+  .status-dot.ok  { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .status-dot.err { background: var(--red); }
+
+  .btn-back { background: none; border: 1px solid var(--border-hi); border-radius: 6px; color: var(--text-mid); font-family: 'Teko', sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; padding: 6px 14px; cursor: pointer; text-decoration: none; transition: border-color 0.2s, color 0.2s; }
+  .btn-back:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── LAYOUT ── */
+  .page-body { display: grid; grid-template-columns: 260px 1fr; flex: 1; min-height: 0; }
+
+  /* ── SIDEBAR ── */
+  .sidebar { background: #0a0a16; border-right: 1px solid var(--border); padding: 24px 18px; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; }
+  .sidebar-block { display: flex; flex-direction: column; gap: 8px; }
+  .sidebar-label { font-family: 'Teko', sans-serif; font-size: 11px; letter-spacing: 3px; color: var(--text-dim); text-transform: uppercase; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+  .pat-wrap { position: relative; }
+  .pat-wrap input { width: 100%; background: var(--bg-input); border: 1px solid var(--border); border-radius: 7px; padding: 9px 34px 9px 11px; color: var(--text); font-family: 'Barlow Condensed', sans-serif; font-size: 13px; outline: none; transition: border-color 0.2s; }
+  .pat-wrap input:focus { border-color: var(--gold); }
+  .pat-toggle { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 13px; }
+
+  .repo-note { font-size: 11px; color: var(--text-dim); line-height: 1.6; }
+  .repo-note span { color: var(--blue); }
+
+  .btn-verify { width: 100%; background: var(--gold-dim); border: 1px solid var(--gold); color: var(--gold-hi); font-family: 'Teko', sans-serif; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; padding: 8px; border-radius: 7px; cursor: pointer; transition: background 0.2s; }
+  .btn-verify:hover { background: var(--gold); color: #000; }
+
+  .btn { font-family: 'Teko', sans-serif; font-size: 15px; letter-spacing: 2px; text-transform: uppercase; padding: 9px 18px; border-radius: 7px; cursor: pointer; border: 1px solid; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-gold { background: var(--gold); border-color: var(--gold-hi); color: #000; font-weight: 700; }
+  .btn-gold:hover { background: var(--gold-hi); }
+  .btn-outline { background: transparent; border-color: var(--border-hi); color: var(--text-mid); }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-github { background: linear-gradient(135deg, #196327, #238636); border-color: #2ea043; color: #fff; width: 100%; justify-content: center; font-size: 14px; }
+  .btn-github:hover { background: linear-gradient(135deg, #238636, #2ea043); }
+  .btn-github:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-red { background: transparent; border-color: var(--red); color: var(--red); }
+  .btn-red:hover { background: rgba(192,57,43,0.15); }
+  .btn-preview { background: rgba(79,195,247,0.1); border-color: var(--blue); color: var(--blue); }
+  .btn-preview:hover { background: rgba(79,195,247,0.2); }
+
+  /* ── MAIN ── */
+  .main { padding: 32px 36px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; }
+
+  .page-title { font-family: 'Russo One', sans-serif; font-size: 22px; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; }
+  .page-sub { font-family: 'Teko', sans-serif; font-size: 14px; letter-spacing: 3px; color: var(--text-dim); text-transform: uppercase; margin-top: 3px; }
+
+  /* ── CARD ── */
+  .card { background: var(--bg-card); border: 1px solid var(--border-hi); border-radius: 12px; padding: 24px; }
+  .card-title { font-family: 'Teko', sans-serif; font-size: 17px; letter-spacing: 3px; color: var(--gold-hi); text-transform: uppercase; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+
+  /* ── STEP 1: SELECT CHAMPIONSHIP ── */
+  #stepSelect { display: flex; flex-direction: column; gap: 12px; }
+
+  .champ-pick-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .champ-pick-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-hi);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    text-align: left;
+    width: 100%;
+    animation: slideIn 0.3s cubic-bezier(0.22,1,0.36,1) both;
+  }
+
+  @keyframes slideIn {
+    from { opacity:0; transform:translateY(10px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  .champ-pick-btn:hover { border-color: var(--gold); background: var(--gold-dim); }
+
+  .pick-cat {
+    font-family: 'Russo One', sans-serif;
+    font-size: 12px;
+    background: var(--gold);
+    color: #000;
+    border-radius: 5px;
+    padding: 3px 10px;
+    flex-shrink: 0;
+  }
+
+  .pick-info { flex: 1; }
+  .pick-name { font-family: 'Russo One', sans-serif; font-size: 15px; color: var(--text); letter-spacing: 1px; text-transform: uppercase; }
+  .pick-meta { font-family: 'Teko', sans-serif; font-size: 13px; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; margin-top: 2px; }
+
+  .pick-arrow { color: var(--text-dim); font-size: 18px; flex-shrink: 0; transition: transform 0.2s, color 0.2s; }
+  .champ-pick-btn:hover .pick-arrow { transform: translateX(4px); color: var(--gold); }
+
+  .empty-pick { text-align: center; padding: 40px; color: var(--text-dim); font-family: 'Teko', sans-serif; font-size: 15px; letter-spacing: 3px; text-transform: uppercase; }
+
+  /* ── STEP 2: EDIT FORM (same as crea-campionato) ── */
+  #stepEdit { display: none; flex-direction: column; gap: 24px; }
+
+  .editing-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(201,162,39,0.08);
+    border: 1px solid rgba(201,162,39,0.25);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-family: 'Teko', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .editing-badge button {
+    margin-left: auto;
+    background: none;
+    border: 1px solid var(--border-hi);
+    color: var(--text-dim);
+    border-radius: 5px;
+    padding: 4px 12px;
+    font-family: 'Teko', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .editing-badge button:hover { border-color: var(--red); color: var(--red); }
+
+  .form-row { display: grid; gap: 14px; margin-bottom: 14px; }
+  .form-row.col2 { grid-template-columns: 1fr 1fr; }
+  .form-row.col3 { grid-template-columns: 2fr 1fr 1fr; }
+  .form-row.col4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-family: 'Teko', sans-serif; font-size: 11px; letter-spacing: 3px; color: var(--text-dim); text-transform: uppercase; }
+  .field input, .field select, .field textarea { background: var(--bg-input); border: 1px solid var(--border); border-radius: 7px; padding: 10px 12px; color: var(--text); font-family: 'Barlow Condensed', sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; width: 100%; }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-dim); }
+  .field select option { background: var(--bg-card); }
+  .field textarea { resize: vertical; min-height: 70px; }
+
+  /* ── ROUNDS ── */
+  .races-list { display: flex; flex-direction: column; gap: 14px; }
+
+  .race-card { background: var(--bg-input); border: 1px solid var(--border-hi); border-radius: 10px; overflow: hidden; animation: slideIn 0.3s cubic-bezier(0.22,1,0.36,1) both; }
+
+  .race-card-header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: rgba(201,162,39,0.05); border-bottom: 1px solid var(--border); cursor: pointer; user-select: none; }
+  .race-card-header:hover { background: rgba(201,162,39,0.09); }
+
+  .round-badge { font-family: 'Russo One', sans-serif; font-size: 13px; color: #000; background: var(--gold); border-radius: 6px; padding: 3px 10px; flex-shrink: 0; }
+  .race-card-name { font-family: 'Teko', sans-serif; font-size: 18px; letter-spacing: 2px; color: var(--text); flex: 1; text-transform: uppercase; }
+  .race-card-name.empty { color: var(--text-dim); font-style: italic; }
+  .race-card-meta { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; color: var(--text-dim); flex-shrink: 0; }
+  .chevron { color: var(--text-dim); font-size: 12px; transition: transform 0.2s; flex-shrink: 0; }
+  .race-card.collapsed .chevron { transform: rotate(-90deg); }
+
+  .race-card-body { padding: 18px 16px; display: grid; grid-template-columns: 1fr; gap: 14px; }
+  .race-card.collapsed .race-card-body { display: none; }
+  .race-card-body .form-row { margin-bottom: 0; }
+
+  .race-card-footer { padding: 10px 16px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+
+  .add-round-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px; background: transparent; border: 2px dashed var(--border-hi); border-radius: 10px; color: var(--text-dim); font-family: 'Teko', sans-serif; font-size: 16px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; transition: border-color 0.2s, color 0.2s, background 0.2s; }
+  .add-round-btn:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-dim); font-family: 'Teko', sans-serif; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; padding: 7px 14px; border-radius: 6px; cursor: pointer; transition: border-color 0.15s, color 0.15s, background 0.15s; }
+  .btn-ghost:hover { border-color: var(--red); color: var(--red); background: rgba(192,57,43,0.08); }
+
+  .filename-tag { font-family: 'Barlow Condensed', monospace; font-size: 13px; color: var(--blue); background: rgba(79,195,247,0.08); border: 1px solid rgba(79,195,247,0.2); border-radius: 5px; padding: 5px 12px; letter-spacing: 1px; }
+
+  .action-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+
+  /* ── MODAL PREVIEW ── */
+  .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 200; align-items: center; justify-content: center; }
+  .modal-bg.open { display: flex; }
+  .modal-box { background: var(--bg-card); border: 1px solid var(--gold); border-radius: 12px; width: 94vw; max-width: 1000px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; }
+  .modal-head { display: flex; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--border); gap: 12px; }
+  .modal-head-title { font-family: 'Russo One', sans-serif; font-size: 13px; color: var(--gold); letter-spacing: 2px; flex: 1; }
+  .modal-close { background: none; border: 1px solid var(--border-hi); color: var(--text-dim); cursor: pointer; border-radius: 5px; padding: 4px 11px; font-size: 17px; transition: border-color 0.2s, color 0.2s; }
+  .modal-close:hover { border-color: var(--red); color: var(--red); }
+  .modal-body { flex: 1; overflow: hidden; }
+  .modal-body iframe { width: 100%; height: 100%; border: none; min-height: 580px; }
+  .modal-foot { padding: 12px 20px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+
+  /* ── TOAST ── */
+  #toast { position: fixed; bottom: 28px; right: 28px; background: var(--bg-card); border: 1px solid var(--gold); border-radius: 8px; padding: 12px 20px; font-family: 'Teko', sans-serif; font-size: 15px; letter-spacing: 1px; color: var(--text); z-index: 999; opacity: 0; transform: translateY(12px); transition: opacity 0.3s, transform 0.3s; pointer-events: none; }
+  #toast.show { opacity: 1; transform: translateY(0); }
+  #toast.ok  { border-color: var(--green); color: var(--green); }
+  #toast.err { border-color: var(--red);   color: var(--red); }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-logo"><img src="etna-logo.jpg" alt="ERC"></div>
+  <div class="topbar-title">Etna Racing Club</div>
+  <div class="topbar-divider"></div>
+  <div class="topbar-section">Modifica Campionato</div>
+  <div class="topbar-spacer"></div>
+  <div class="github-status">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusText">Non connesso</span>
+  </div>
+  <a href="admin.html" class="btn-back">← Admin</a>
+</header>
+
+<div class="page-body">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-block">
+      <div class="sidebar-label">GitHub</div>
+      <div class="pat-wrap">
+        <input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+        <button class="pat-toggle" onclick="togglePAT()">👁</button>
+      </div>
+      <button class="btn-verify" onclick="verifyAndLoad()">Connetti e Carica</button>
+      <div class="repo-note">Repository: <span>mz4466/etna-racing-club</span><br>Branch: <span>main</span></div>
+    </div>
+
+    <div class="sidebar-block" id="sidebarFilename" style="display:none;">
+      <div class="sidebar-label">File in modifica</div>
+      <div class="filename-tag" id="filenameTag">—</div>
+    </div>
+
+    <div class="sidebar-block" id="sidebarActions" style="display:none;">
+      <div class="sidebar-label">Azioni</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <button class="btn btn-preview" onclick="openPreview()">👁 Anteprima</button>
+        <button class="btn btn-github" id="publishBtn" onclick="publish()">⬆ Pubblica Modifiche</button>
+        <button class="btn btn-outline" onclick="downloadHTML()">⬇ Scarica HTML</button>
+      </div>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-label">Rounds</div>
+      <div id="sidebarSummary" style="font-family:'Teko',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:1px;line-height:1.9;">
+        —
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div>
+      <div class="page-title">✏️ Modifica Campionato</div>
+      <div class="page-sub">Seleziona un campionato esistente da modificare</div>
+    </div>
+
+    <!-- STEP 1: pick a championship -->
+    <div class="card" id="stepSelect">
+      <div class="card-title">📋 Campionati Disponibili</div>
+      <div id="pickList">
+        <div class="empty-pick">Connetti GitHub per caricare i campionati</div>
+      </div>
+    </div>
+
+    <!-- STEP 2: edit form -->
+    <div id="stepEdit">
+
+      <div class="editing-badge">
+        ✏️ Stai modificando: <strong id="editingLabel">—</strong>
+        <button onclick="backToList()">← Cambia</button>
+      </div>
+
+      <!-- Championship Info -->
+      <div class="card">
+        <div class="card-title">⚙️ Informazioni Campionato</div>
+        <div class="form-row col3">
+          <div class="field"><label>Nome Campionato</label><input type="text" id="champName" oninput="updateAll()"></div>
+          <div class="field"><label>Anno</label><input type="number" id="champYear" min="2020" max="2099" oninput="updateAll()"></div>
+          <div class="field">
+            <label>Categoria</label>
+            <select id="champCat" onchange="updateAll()">
+              <option>Campionato</option>
+              <option>Trofeo</option>
+              <option>Open</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row col2">
+          <div class="field"><label>Classe Auto</label><input type="text" id="champCars" oninput="updateAll()"></div>
+          <div class="field"><label>Stagione / Suffix</label><input type="text" id="champSlug" oninput="updateAll()"></div>
+        </div>
+        <div class="form-row" style="grid-template-columns:1fr;">
+          <div class="field"><label>Descrizione (opzionale)</label><textarea id="champDesc"></textarea></div>
+        </div>
+      </div>
+
+      <!-- Rounds -->
+      <div class="card">
+        <div class="card-title">
+          🗓️ Calendario Gare
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text-dim);font-weight:300;letter-spacing:1px;margin-left:6px;" id="roundCount"></span>
+        </div>
+        <div class="races-list" id="racesList"></div>
+        <button class="add-round-btn" onclick="addRound()" style="margin-top:14px;">＋ Aggiungi Round</button>
+      </div>
+
+      <!-- Actions -->
+      <div class="action-row">
+        <button class="btn btn-preview" onclick="openPreview()">👁 Anteprima</button>
+        <button class="btn btn-gold" onclick="publish()">⬆ Pubblica Modifiche</button>
+        <button class="btn btn-outline" onclick="downloadHTML()">⬇ Scarica HTML</button>
+        <div style="flex:1"></div>
+        <button class="btn btn-red" onclick="backToList()">← Cambia Campionato</button>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<!-- PREVIEW MODAL -->
+<div class="modal-bg" id="previewModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-title" id="modalTitle">ANTEPRIMA</div>
+      <button class="modal-close" onclick="closePreview()">✕</button>
+    </div>
+    <div class="modal-body"><iframe id="previewFrame"></iframe></div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closePreview()">Chiudi</button>
+      <button class="btn btn-gold" onclick="downloadHTML()">⬇ Scarica</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const REPO   = 'mz4466/etna-racing-club';
+const BRANCH = 'main';
+
+let championships = [];
+let currentChamp  = null;  // the calendario.json entry being edited
+let roundCounter  = 0;
+
+// ── AUTH ──
+function getToken() { return document.getElementById('patInput').value.trim(); }
+function togglePAT() { const i = document.getElementById('patInput'); i.type = i.type==='password'?'text':'password'; }
+
+async function verifyAndLoad() {
+  const token = getToken();
+  if (!token) { toast('Inserisci un token PAT', 'err'); return; }
+  try {
+    const r = await fetch(`https://api.github.com/repos/${REPO}`, {
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (!r.ok) throw new Error();
+    document.getElementById('statusDot').className = 'status-dot ok';
+    document.getElementById('statusText').textContent = 'Connesso';
+    toast('✓ Connesso', 'ok');
+    await loadCalendario();
+  } catch {
+    document.getElementById('statusDot').className = 'status-dot err';
+    document.getElementById('statusText').textContent = 'Errore';
+    toast('Token non valido', 'err');
+  }
+}
+
+async function loadCalendario() {
+  const token = getToken();
+  toast('Caricamento lista campionati…', '');
+  try {
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json?ref=${BRANCH}`, {
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (!r.ok) throw new Error('calendario.json non trovato');
+    const d = await r.json();
+    championships = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\s/g,'')))));
+    renderPickList();
+    toast(`✓ ${championships.length} campionati trovati`, 'ok');
+  } catch(e) {
+    toast('Errore: ' + e.message, 'err');
+    championships = [];
+    renderPickList();
+  }
+}
+
+// ── STEP 1: PICK LIST ──
+function renderPickList() {
+  const list = document.getElementById('pickList');
+  if (!championships.length) {
+    list.innerHTML = '<div class="empty-pick">Nessun campionato nel calendario</div>';
+    return;
+  }
+  list.innerHTML = '';
+  championships.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'champ-pick-btn';
+    btn.style.animationDelay = `${i * 0.06}s`;
+    btn.innerHTML = `
+      <div class="pick-cat">${c.cat || '—'}</div>
+      <div class="pick-info">
+        <div class="pick-name">${c.name}</div>
+        <div class="pick-meta">${c.year} · ${c.cars || ''} · ${c.totalRounds || 0} rounds · <span style="color:${c.status==='in-corso'?'#ffa500':c.status==='concluso'?'#27ae60':'#8a8098'}">${c.status}</span></div>
+      </div>
+      <div class="pick-arrow">→</div>
+    `;
+    btn.onclick = () => loadChampionship(c);
+    list.appendChild(btn);
+  });
+}
+
+// ── STEP 2: LOAD & EDIT ──
+async function loadChampionship(entry) {
+  const token = getToken();
+  currentChamp = entry;
+  toast(`Caricamento ${entry.file}…`, '');
+
+  try {
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${entry.file}?ref=${BRANCH}`, {
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (!r.ok) throw new Error('File HTML non trovato nel repo');
+    const d = await r.json();
+    const html = decodeURIComponent(escape(atob(d.content.replace(/\s/g,''))));
+
+    // Parse the existing HTML to repopulate fields
+    populateFromHTML(entry, html);
+    showEditStep();
+    toast('✓ Campionato caricato', 'ok');
+  } catch(e) {
+    toast('Errore: ' + e.message, 'err');
+  }
+}
+
+function populateFromHTML(entry, html) {
+  // Populate top-level fields from calendario.json entry
+  document.getElementById('champName').value = entry.name  || '';
+  document.getElementById('champYear').value = entry.year  || '2026';
+  document.getElementById('champCars').value = entry.cars  || '';
+  document.getElementById('champDesc').value = entry.desc  || '';
+  document.getElementById('champSlug').value = entry.slug  || '';
+
+  // Set category
+  const catSel = document.getElementById('champCat');
+  for (let o of catSel.options) { if (o.value === entry.cat) { o.selected = true; break; } }
+
+  // Parse rounds from HTML
+  document.getElementById('racesList').innerHTML = '';
+  roundCounter = 0;
+
+  // Extract round data from the generated HTML using a parser
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  const roundCards = doc.querySelectorAll('.round-card');
+
+  if (roundCards.length > 0) {
+    roundCards.forEach(rc => {
+      const circuit  = rc.querySelector('.round-circuit')?.textContent?.trim() || '';
+      const dateRaw  = rc.querySelector('.round-date')?.textContent?.trim() || '';
+      const pills    = [...rc.querySelectorAll('.detail-pill')].map(p => p.textContent.trim());
+      const noteEl   = rc.querySelector('.round-note');
+      const note     = noteEl ? noteEl.textContent.replace('📌','').trim() : '';
+      const resultsEl = rc.querySelector('.results-btn:not(.upcoming)');
+      const results  = resultsEl ? resultsEl.getAttribute('href') || '' : '';
+
+      // Parse pills
+      let weather='🌥️ Nuvoloso', tire='x3', fuel='x4', types='';
+      pills.forEach(p => {
+        if (p.startsWith('🔄')) { /* laps */ }
+        else if (['☀️','🌥️','🌧️','⛈️','❄️'].some(w => p.startsWith(w))) weather = p;
+        else if (p.startsWith('🏎️')) tire = p.replace('🏎️ Gomme','').trim();
+        else if (p.startsWith('⛽')) fuel = p.replace('⛽ Carb.','').trim();
+        else if (p.startsWith('🔵')) types = p.replace('🔵','').trim();
+      });
+
+      // Parse laps
+      const lapsMatch = pills.find(p => p.startsWith('🔄'));
+      const laps = lapsMatch ? lapsMatch.replace('🔄','').replace('giri','').trim() : '17';
+
+      // Parse date back to YYYY-MM-DD
+      let dateVal = '';
+      try {
+        const months = {gennaio:'01',febbraio:'02',marzo:'03',aprile:'04',maggio:'05',giugno:'06',luglio:'07',agosto:'08',settembre:'09',ottobre:'10',novembre:'11',dicembre:'12'};
+        const parts = dateRaw.toLowerCase().split(' ');
+        if (parts.length >= 3) dateVal = `${parts[2]}-${months[parts[1]]||'01'}-${parts[0].padStart(2,'0')}`;
+      } catch {}
+
+      addRoundWithData({ circuit, date: dateVal, laps, weather, tire, fuel, types, note, results });
+    });
+  } else {
+    // Fallback: add empty rounds based on totalRounds
+    for (let i = 0; i < (entry.totalRounds || 1); i++) addRound();
+  }
+
+  updateAll();
+}
+
+function showEditStep() {
+  document.getElementById('stepSelect').style.display = 'none';
+  document.getElementById('stepEdit').style.display   = 'flex';
+  document.getElementById('sidebarFilename').style.display = '';
+  document.getElementById('sidebarActions').style.display  = '';
+  document.getElementById('filenameTag').textContent = currentChamp.file || '—';
+  document.getElementById('editingLabel').textContent = `${currentChamp.name} ${currentChamp.year}`;
+}
+
+function backToList() {
+  document.getElementById('stepSelect').style.display = '';
+  document.getElementById('stepEdit').style.display   = 'none';
+  document.getElementById('sidebarFilename').style.display = 'none';
+  document.getElementById('sidebarActions').style.display  = 'none';
+  document.getElementById('racesList').innerHTML = '';
+  roundCounter = 0;
+  currentChamp = null;
+}
+
+// ── ROUNDS ──
+function addRound() { addRoundWithData({}); }
+
+function addRoundWithData(data) {
+  roundCounter++;
+  const id  = roundCounter;
+  const pos = document.getElementById('racesList').children.length + 1;
+
+  const el = document.createElement('div');
+  el.className = 'race-card';
+  el.id = `round-${id}`;
+  el.innerHTML = roundHTML(id, pos, data);
+  document.getElementById('racesList').appendChild(el);
+
+  // Set select values after insert
+  if (data.weather) setVal(`rweather-${id}`, data.weather);
+  if (data.tire)    setVal(`rtire-${id}`,    data.tire);
+  if (data.fuel)    setVal(`rfuel-${id}`,    data.fuel);
+
+  syncRound(id);
+  updateAll();
+}
+
+function roundHTML(id, pos, d={}) {
+  return `
+    <div class="race-card-header" onclick="toggleRound(${id})">
+      <div class="round-badge">R${pos}</div>
+      <div class="race-card-name ${d.circuit?'':'empty'}" id="rname-${id}">${d.circuit ? d.circuit.toUpperCase() : 'Nuovo Round'}</div>
+      <div class="race-card-meta" id="rmeta-${id}"></div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="race-card-body">
+      <div class="form-row col4">
+        <div class="field"><label>Round #</label><input type="number" value="${pos}" min="1" id="rnum-${id}"></div>
+        <div class="field"><label>Circuito</label><input type="text" value="${d.circuit||''}" class="circuit-input" id="rcircuit-${id}" oninput="syncRound(${id})"></div>
+        <div class="field"><label>Data Gara</label><input type="date" value="${d.date||''}" id="rdate-${id}" oninput="syncRound(${id})"></div>
+        <div class="field"><label>Giri</label><input type="number" value="${d.laps||17}" min="1" id="rlaps-${id}"></div>
+      </div>
+      <div class="form-row col4">
+        <div class="field">
+          <label>Meteo</label>
+          <select id="rweather-${id}" onchange="syncRound(${id})">
+            <option value="☀️ Soleggiato">☀️ Soleggiato</option>
+            <option value="🌥️ Nuvoloso">🌥️ Nuvoloso</option>
+            <option value="🌧️ Pioggia">🌧️ Pioggia</option>
+            <option value="⛈️ Temporale">⛈️ Temporale</option>
+            <option value="❄️ Neve">❄️ Neve</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Consumo Gomme</label>
+          <select id="rtire-${id}" onchange="syncRound(${id})">
+            <option value="x1">x1</option><option value="x2">x2</option>
+            <option value="x3">x3</option><option value="x4">x4</option><option value="x6">x6</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Consumo Carburante</label>
+          <select id="rfuel-${id}" onchange="syncRound(${id})">
+            <option value="x1">x1</option><option value="x2">x2</option><option value="x3">x3</option>
+            <option value="x4">x4</option><option value="x5">x5</option>
+          </select>
+        </div>
+        <div class="field"><label>Gomme Disponibili</label><input type="text" value="${d.types||''}" placeholder="Soft / Medium / Hard" id="rtypes-${id}"></div>
+      </div>
+      <div class="form-row col2">
+        <div class="field"><label>Note (opzionale)</label><input type="text" value="${d.note||''}" placeholder="es. Pit stop obbligatorio" id="rnotes-${id}"></div>
+        <div class="field"><label>Link Risultati</label><input type="text" value="${d.results||''}" placeholder="es. risultati-01.html" id="rresults-${id}"></div>
+      </div>
+    </div>
+    <div class="race-card-footer">
+      <button class="btn-ghost" onclick="removeRound(${id})">✕ Rimuovi Round</button>
+    </div>`;
+}
+
+function setVal(id, val) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  for (let o of el.options) { if (o.value === val) { o.selected = true; return; } }
+}
+
+function toggleRound(id) { document.getElementById(`round-${id}`).classList.toggle('collapsed'); }
+
+function syncRound(id) {
+  const circuit = val(`rcircuit-${id}`);
+  const date    = val(`rdate-${id}`);
+  const weather = val(`rweather-${id}`);
+  const tire    = val(`rtire-${id}`);
+  const fuel    = val(`rfuel-${id}`);
+
+  const nameEl = document.getElementById(`rname-${id}`);
+  if (circuit) { nameEl.textContent = circuit.toUpperCase(); nameEl.classList.remove('empty'); }
+  else { nameEl.textContent = 'Nuovo Round'; nameEl.classList.add('empty'); }
+
+  const dateFmt = date ? new Date(date).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'}) : '';
+  document.getElementById(`rmeta-${id}`).textContent = [dateFmt, weather, `Gomme ${tire}`, `Carb. ${fuel}`].filter(Boolean).join(' · ');
+  updateAll();
+}
+
+function removeRound(id) {
+  const card = document.getElementById(`round-${id}`);
+  card.style.transition = 'opacity 0.25s, transform 0.25s';
+  card.style.opacity = '0'; card.style.transform = 'translateX(20px)';
+  setTimeout(() => { card.remove(); rebadge(); updateAll(); }, 280);
+}
+
+function rebadge() {
+  document.querySelectorAll('.race-card').forEach((c,i) => {
+    const b = c.querySelector('.round-badge');
+    if (b) b.textContent = `R${i+1}`;
+  });
+}
+
+function val(id) { const e = document.getElementById(id); return e ? e.value.trim() : ''; }
+
+function updateAll() {
+  const cards = document.querySelectorAll('.race-card');
+  document.getElementById('roundCount').textContent = cards.length ? `(${cards.length} round)` : '';
+
+  let sum = '';
+  cards.forEach((card, i) => {
+    const id = card.id.replace('round-','');
+    const circuit = val(`rcircuit-${id}`) || '—';
+    const date = val(`rdate-${id}`);
+    const dateFmt = date ? new Date(date).toLocaleDateString('it-IT',{day:'2-digit',month:'short'}) : '—';
+    sum += `<div style="padding:3px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center;">
+      <span style="color:var(--gold);min-width:22px;">R${i+1}</span>
+      <span style="flex:1;color:var(--text);">${circuit}</span>
+      <span style="color:var(--text-dim);font-size:12px;">${dateFmt}</span>
+    </div>`;
+  });
+  document.getElementById('sidebarSummary').innerHTML = sum || '<span style="color:var(--text-dim)">—</span>';
+}
+
+// ── HTML BUILD (same as crea-campionato) ──
+function buildHTML() {
+  const name = document.getElementById('champName').value.trim() || 'Campionato';
+  const year = document.getElementById('champYear').value || '2026';
+  const cat  = document.getElementById('champCat').value;
+  const cars = document.getElementById('champCars').value.trim();
+  const desc = document.getElementById('champDesc').value.trim();
+  const cards = document.querySelectorAll('.race-card');
+
+  let roundsHTML = '';
+  cards.forEach((card, i) => {
+    const id      = card.id.replace('round-','');
+    const rnum    = val(`rnum-${id}`) || (i+1);
+    const circuit = val(`rcircuit-${id}`) || '—';
+    const date    = val(`rdate-${id}`);
+    const laps    = val(`rlaps-${id}`) || '—';
+    const weather = val(`rweather-${id}`);
+    const tire    = val(`rtire-${id}`);
+    const fuel    = val(`rfuel-${id}`);
+    const types   = val(`rtypes-${id}`);
+    const note    = val(`rnotes-${id}`);
+    const results = val(`rresults-${id}`);
+    const dateFmt = date ? new Date(date).toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'}) : 'Data TBD';
+    const btnHTML = results ? `<a href="${results}" class="results-btn">📋 Risultati</a>` : `<span class="results-btn upcoming">In arrivo</span>`;
+    const notesHTML = note ? `<div class="round-note">📌 ${note}</div>` : '';
+
+    roundsHTML += `
+    <div class="round-card">
+      <div class="round-header">
+        <div class="round-num">R${rnum}</div>
+        <div class="round-info">
+          <div class="round-circuit">${circuit}</div>
+          <div class="round-date">${dateFmt}</div>
+        </div>
+        ${btnHTML}
+      </div>
+      <div class="round-details">
+        <div class="detail-pill">${weather}</div>
+        <div class="detail-pill">🔄 ${laps} giri</div>
+        <div class="detail-pill">🏎️ Gomme ${tire}</div>
+        <div class="detail-pill">⛽ Carb. ${fuel}</div>
+        ${types ? `<div class="detail-pill">🔵 ${types}</div>` : ''}
+      </div>
+      ${notesHTML}
+    </div>`;
+  });
+
+  return `<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${name} ${year} — Etna Racing Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@300;400;600&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#07070f;--bg-card:#0e0e1c;--border:#1e1e30;--border-hi:#2a2a42;--gold:#c9a227;--gold-hi:#e8c547;--gold-dim:rgba(201,162,39,0.10);--text:#e8e0d0;--text-dim:#5a5470;--text-mid:#8a8098;--red:#c0392b;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh;}
+  .champ-header{background:linear-gradient(180deg,rgba(10,10,24,0.98) 0%,var(--bg) 100%);border-bottom:2px solid var(--gold);padding:36px 24px 28px;text-align:center;}
+  .champ-logo{width:64px;height:64px;object-fit:contain;margin-bottom:14px;filter:drop-shadow(0 0 12px rgba(201,162,39,0.3));}
+  .champ-season{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;}
+  .champ-name{font-family:'Russo One',sans-serif;font-size:32px;color:var(--text);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px;}
+  .champ-sub{font-family:'Teko',sans-serif;font-size:16px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;}
+  .champ-desc{max-width:560px;margin:12px auto 0;font-size:16px;color:var(--text-mid);line-height:1.5;}
+  .cat-badge{display:inline-block;margin-top:14px;background:var(--gold-dim);border:1px solid rgba(201,162,39,0.3);border-radius:20px;padding:4px 18px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
+  .wrap{max-width:820px;margin:0 auto;padding:32px 20px;}
+  .section-title{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:4px;color:var(--text-dim);text-transform:uppercase;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+  .round-card{background:var(--bg-card);border:1px solid var(--border-hi);border-radius:10px;padding:18px 20px;margin-bottom:12px;transition:border-color 0.2s,box-shadow 0.2s;}
+  .round-card:hover{border-color:var(--gold);box-shadow:0 4px 20px rgba(201,162,39,0.08);}
+  .round-header{display:flex;align-items:center;gap:16px;margin-bottom:12px;}
+  .round-num{font-family:'Russo One',sans-serif;font-size:13px;color:#000;background:var(--gold);border-radius:6px;padding:4px 12px;flex-shrink:0;}
+  .round-circuit{font-family:'Russo One',sans-serif;font-size:18px;color:var(--text);letter-spacing:1px;text-transform:uppercase;}
+  .round-date{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;margin-top:2px;}
+  .round-info{flex:1;}
+  .results-btn{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;padding:7px 16px;border-radius:6px;text-decoration:none;border:1px solid var(--gold);color:var(--gold);flex-shrink:0;transition:background 0.2s;}
+  .results-btn:hover{background:var(--gold-dim);}
+  .results-btn.upcoming{border-color:var(--border-hi);color:var(--text-dim);pointer-events:none;}
+  .round-details{display:flex;flex-wrap:wrap;gap:8px;}
+  .detail-pill{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--text-mid);}
+  .round-note{margin-top:10px;font-size:14px;color:var(--text-dim);font-style:italic;}
+  .back-link{display:block;text-align:center;margin-top:28px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:var(--text-dim);text-decoration:none;text-transform:uppercase;transition:color 0.2s;}
+  .back-link:hover{color:var(--text);}
+</style>
+</head>
+<body>
+<header class="champ-header">
+  <img src="etna-logo.jpg" alt="Etna Racing Club" class="champ-logo">
+  <div class="champ-season">Etna Racing Club — ${year}</div>
+  <div class="champ-name">${name}</div>
+  <div class="champ-sub">${cars || cat}</div>
+  ${desc ? `<div class="champ-desc">${desc}</div>` : ''}
+  <div class="cat-badge">${cat} · ${year}</div>
+</header>
+<div class="wrap">
+  <div class="section-title">📅 Calendario — ${cards.length} round${cards.length!==1?'s':''}</div>
+  ${roundsHTML || '<p style="color:var(--text-dim);font-family:Teko,sans-serif;letter-spacing:2px;">Nessun round configurato.</p>'}
+  <a href="index.html" class="back-link">← Torna alla Home</a>
+</div>
+</body>
+</html>`;
+}
+
+// ── PREVIEW ──
+function openPreview() {
+  document.getElementById('previewFrame').srcdoc = buildHTML();
+  document.getElementById('modalTitle').textContent = 'ANTEPRIMA — ' + (currentChamp?.file || '').toUpperCase();
+  document.getElementById('previewModal').classList.add('open');
+}
+function closePreview() { document.getElementById('previewModal').classList.remove('open'); }
+
+// ── DOWNLOAD ──
+function downloadHTML() {
+  const blob = new Blob([buildHTML()], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = currentChamp?.file || 'campionato.html';
+  a.click();
+}
+
+// ── PUBLISH ──
+async function publish() {
+  const token = getToken();
+  if (!token) { toast('Token mancante', 'err'); return; }
+  if (!currentChamp) { toast('Nessun campionato selezionato', 'err'); return; }
+
+  const html  = buildHTML();
+  const fname = currentChamp.file;
+  toast('Pubblicazione in corso…', '');
+
+  try {
+    let sha = null;
+    const check = await fetch(`https://api.github.com/repos/${REPO}/contents/${fname}?ref=${BRANCH}`, {
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (check.ok) { const d = await check.json(); sha = d.sha; }
+
+    const body = { message: `Update championship: ${fname}`, content: btoa(unescape(encodeURIComponent(html))), branch: BRANCH };
+    if (sha) body.sha = sha;
+
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${fname}`, {
+      method: 'PUT',
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+
+    if (r.ok) {
+      // Also update calendario.json entry
+      await updateCalendarioEntry(token, fname);
+      toast(`✓ ${fname} aggiornato!`, 'ok');
+    } else {
+      const e = await r.json();
+      toast('Errore: ' + (e.message||'sconosciuto'), 'err');
+    }
+  } catch(e) { toast('Errore di rete: ' + e.message, 'err'); }
+}
+
+async function updateCalendarioEntry(token, fname) {
+  try {
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json?ref=${BRANCH}`, {
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (!r.ok) return;
+    const d = await r.json();
+    const list = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\s/g,'')))));
+    const idx = list.findIndex(e => e.file === fname);
+    if (idx >= 0) {
+      list[idx].name  = document.getElementById('champName').value.trim();
+      list[idx].year  = document.getElementById('champYear').value;
+      list[idx].cat   = document.getElementById('champCat').value;
+      list[idx].cars  = document.getElementById('champCars').value.trim();
+      list[idx].desc  = document.getElementById('champDesc').value.trim();
+      list[idx].slug  = document.getElementById('champSlug').value.trim();
+      list[idx].totalRounds = document.querySelectorAll('.race-card').length;
+
+      const body = { message: `Update calendario.json: ${fname}`, content: btoa(unescape(encodeURIComponent(JSON.stringify(list, null, 2)))), branch: BRANCH, sha: d.sha };
+      await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json`, {
+        method: 'PUT',
+        headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+    }
+  } catch {}
+}
+
+function toast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show' + (type ? ' '+type : '');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.className = '', 3200);
+}
+</script>
+</body>
+</html>

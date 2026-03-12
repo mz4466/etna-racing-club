@@ -400,9 +400,9 @@
   /* Menu cards */
   .menu-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    max-width: 720px;
+    max-width: 900px;
     margin: 0 auto;
   }
 
@@ -643,6 +643,13 @@
           <div class="card-desc">Riordina i campionati, cambia il loro stato e aggiorna il calendario pubblico.</div>
         </a>
 
+        <a class="menu-card" href="modifica-campionato.html" onclick="navTo(event,'modifica-campionato.html')">
+          <span class="card-icon">✏️</span>
+          <div class="card-line"></div>
+          <div class="card-title">Modifica Campionato</div>
+          <div class="card-desc">Carica un campionato esistente, modifica rounds e dettagli, e ripubblica.</div>
+        </a>
+
       </div>
     </div>
   </div>
@@ -759,7 +766,7 @@
 
   // ── NAVIGATION ──
   // Pages not yet built show a toast. Add to BUILT_PAGES as each one is created.
-  const BUILT_PAGES = ['crea-campionato.html', 'gestisci-calendario.html'];
+  const BUILT_PAGES = ['crea-campionato.html', 'gestisci-calendario.html', 'modifica-campionato.html'];
 
   function navTo(e, page) {
     if (!BUILT_PAGES.includes(page)) {
