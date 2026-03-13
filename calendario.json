@@ -1,17 +1,5 @@
 [
   {
-    "name": "Test 1",
-    "year": "2025",
-    "cat": "Campionato",
-    "slug": "1",
-    "cars": "GR.3",
-    "desc": "Questo e un test",
-    "status": "concluso",
-    "file": "test-1-2025-campionato-1.html",
-    "totalRounds": 3,
-    "completedRounds": 0
-  },
-  {
     "name": "Risveglio dei motori",
     "year": "2026",
     "cat": "Campionato",
