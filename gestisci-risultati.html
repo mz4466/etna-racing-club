@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERC Admin — Gestisci Risultati</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@300;400;600&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#07070f; --bg-card:#0e0e1c; --bg-input:#13131f;
+    --border:#1e1e30; --border-hi:#2a2a42;
+    --gold:#c9a227; --gold-hi:#e8c547; --gold-dim:rgba(201,162,39,0.10); --gold-glow:rgba(201,162,39,0.22);
+    --red:#c0392b; --green:#27ae60; --blue:#4fc3f7; --orange:#ff5014;
+    --silver:#b0b8c8; --bronze:#cd7f32;
+    --text:#e8e0d0; --text-dim:#4a4460; --text-mid:#8a8098;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh;display:flex;flex-direction:column;}
+
+  /* TOPBAR */
+  .topbar{background:linear-gradient(90deg,#0a0a18,#0e0c1a);border-bottom:1px solid var(--border-hi);padding:0 32px;height:62px;display:flex;align-items:center;gap:14px;flex-shrink:0;box-shadow:0 2px 20px rgba(0,0,0,.5);position:sticky;top:0;z-index:100;}
+  .topbar-logo img{width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 0 6px var(--gold-glow));}
+  .topbar-title{font-family:'Russo One',sans-serif;font-size:15px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;}
+  .topbar-divider{width:1px;height:24px;background:var(--border-hi);}
+  .topbar-section{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:4px;color:var(--text-dim);text-transform:uppercase;}
+  .topbar-spacer{flex:1;}
+  .github-status{display:flex;align-items:center;gap:8px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--text-dim);}
+  .status-dot{width:7px;height:7px;border-radius:50%;background:var(--text-dim);transition:background .3s;}
+  .status-dot.ok{background:var(--green);box-shadow:0 0 6px var(--green);}
+  .status-dot.err{background:var(--red);}
+  .btn-back{background:none;border:1px solid var(--border-hi);border-radius:6px;color:var(--text-mid);font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;cursor:pointer;text-decoration:none;transition:border-color .2s,color .2s;}
+  .btn-back:hover{border-color:var(--gold);color:var(--gold);}
+
+  /* LAYOUT */
+  .page-body{display:grid;grid-template-columns:260px 1fr;flex:1;min-height:0;}
+
+  /* SIDEBAR */
+  .sidebar{background:#0a0a16;border-right:1px solid var(--border);padding:24px 18px;display:flex;flex-direction:column;gap:20px;overflow-y:auto;}
+  .sidebar-block{display:flex;flex-direction:column;gap:8px;}
+  .sidebar-label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;padding-bottom:6px;border-bottom:1px solid var(--border);}
+  .pat-wrap{position:relative;}
+  .pat-wrap input{width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:7px;padding:9px 34px 9px 11px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+  .pat-wrap input:focus{border-color:var(--gold);}
+  .pat-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:13px;}
+  .repo-note{font-size:11px;color:var(--text-dim);line-height:1.6;}
+  .repo-note span{color:var(--blue);}
+  .btn-verify{width:100%;background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold-hi);font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;padding:8px;border-radius:7px;cursor:pointer;transition:background .2s;}
+  .btn-verify:hover{background:var(--gold);color:#000;}
+
+  .btn{font-family:'Teko',sans-serif;font-size:15px;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;border-radius:7px;cursor:pointer;border:1px solid;transition:all .2s;display:inline-flex;align-items:center;gap:6px;justify-content:center;}
+  .btn-gold{background:var(--gold);border-color:var(--gold-hi);color:#000;font-weight:700;width:100%;}
+  .btn-gold:hover{background:var(--gold-hi);}
+  .btn-gold:disabled{opacity:.35;cursor:not-allowed;}
+  .btn-github{background:linear-gradient(135deg,#196327,#238636);border-color:#2ea043;color:#fff;width:100%;}
+  .btn-github:hover{background:linear-gradient(135deg,#238636,#2ea043);}
+  .btn-github:disabled{opacity:.35;cursor:not-allowed;}
+  .btn-outline{background:transparent;border-color:var(--border-hi);color:var(--text-mid);width:100%;}
+  .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+  .btn-preview{background:rgba(79,195,247,.1);border-color:var(--blue);color:var(--blue);width:100%;}
+  .btn-preview:hover{background:rgba(79,195,247,.2);}
+
+  /* MAIN */
+  .main{padding:28px 32px;overflow-y:auto;display:flex;flex-direction:column;gap:22px;}
+  .page-title{font-family:'Russo One',sans-serif;font-size:22px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;}
+  .page-sub{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;margin-top:3px;}
+
+  /* CARD */
+  .card{background:var(--bg-card);border:1px solid var(--border-hi);border-radius:12px;padding:22px;}
+  .card-title{font-family:'Teko',sans-serif;font-size:17px;letter-spacing:3px;color:var(--gold-hi);text-transform:uppercase;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+
+  /* FORM ELEMENTS */
+  .form-grid{display:grid;gap:12px;}
+  .form-grid.col2{grid-template-columns:1fr 1fr;}
+  .form-grid.col3{grid-template-columns:1fr 1fr 1fr;}
+  .form-grid.col4{grid-template-columns:1fr 1fr 1fr 1fr;}
+  .field{display:flex;flex-direction:column;gap:5px;}
+  .field label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;}
+  .field input,.field select,.field textarea{background:var(--bg-input);border:1px solid var(--border);border-radius:7px;padding:9px 12px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s;width:100%;}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-dim);}
+  .field select option{background:var(--bg-card);}
+
+  /* RESULTS TABLE EDITOR */
+  .results-editor{width:100%;border-collapse:collapse;margin-top:4px;}
+  .results-editor th{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;}
+  .results-editor td{padding:5px 4px;vertical-align:middle;}
+
+  .results-editor input{background:var(--bg-input);border:1px solid var(--border);border-radius:5px;padding:7px 8px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;outline:none;width:100%;transition:border-color .2s;}
+  .results-editor input:focus{border-color:var(--gold);}
+  .results-editor select{background:var(--bg-input);border:1px solid var(--border);border-radius:5px;padding:7px 8px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;outline:none;width:100%;transition:border-color .2s;}
+  .results-editor select:focus{border-color:var(--gold);}
+
+  /* position badge */
+  .pos-cell{font-family:'Russo One',sans-serif;font-size:16px;text-align:center;width:36px;flex-shrink:0;}
+  .pos-1{color:var(--gold);}
+  .pos-2{color:var(--silver);}
+  .pos-3{color:var(--bronze);}
+
+  /* fastest lap checkbox */
+  .fl-check{width:18px;height:18px;accent-color:var(--gold);cursor:pointer;margin:auto;display:block;}
+
+  /* DNF/DSQ select */
+  select.status-normal{color:var(--text);}
+  select.status-dnf{color:var(--orange);}
+  select.status-dsq{color:var(--red);}
+
+  .row-del{background:none;border:none;color:var(--text-dim);cursor:pointer;padding:4px 8px;border-radius:4px;font-size:16px;transition:color .15s,background .15s;}
+  .row-del:hover{color:var(--red);background:rgba(192,57,43,.1);}
+
+  .add-pilot-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;background:transparent;border:2px dashed var(--border-hi);border-radius:8px;color:var(--text-dim);font-family:'Teko',sans-serif;font-size:15px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-top:10px;transition:border-color .2s,color .2s,background .2s;}
+  .add-pilot-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);}
+
+  /* STANDINGS PREVIEW */
+  .standings-list{display:flex;flex-direction:column;gap:6px;margin-top:4px;}
+  .standing-row{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:7px;font-family:'Barlow Condensed',sans-serif;}
+  .standing-pos{font-family:'Russo One',sans-serif;font-size:15px;min-width:28px;}
+  .standing-name{flex:1;font-size:15px;color:var(--text);}
+  .standing-pts{font-family:'Russo One',sans-serif;font-size:16px;color:var(--gold);}
+
+  /* PILOT AUTOCOMPLETE */
+  .autocomplete-wrap{position:relative;}
+  .autocomplete-dropdown{position:absolute;top:100%;left:0;right:0;background:var(--bg-card);border:1px solid var(--gold);border-radius:6px;z-index:50;max-height:180px;overflow-y:auto;display:none;box-shadow:0 8px 24px rgba(0,0,0,.6);}
+  .autocomplete-dropdown.open{display:block;}
+  .ac-item{padding:8px 12px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--text);transition:background .15s;}
+  .ac-item:hover{background:var(--gold-dim);color:var(--gold);}
+
+  /* TOAST */
+  #toast{position:fixed;bottom:28px;right:28px;background:var(--bg-card);border:1px solid var(--gold);border-radius:8px;padding:12px 20px;font-family:'Teko',sans-serif;font-size:15px;letter-spacing:1px;color:var(--text);z-index:999;opacity:0;transform:translateY(12px);transition:opacity .3s,transform .3s;pointer-events:none;}
+  #toast.show{opacity:1;transform:translateY(0);}
+  #toast.ok{border-color:var(--green);color:var(--green);}
+  #toast.err{border-color:var(--red);color:var(--red);}
+
+  /* MODAL */
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:200;align-items:center;justify-content:center;padding:20px;}
+  .modal-bg.open{display:flex;}
+  .modal-box{background:var(--bg-card);border:1px solid var(--gold);border-radius:14px;width:100%;max-width:1100px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;}
+  .modal-head{display:flex;align-items:center;padding:14px 20px;border-bottom:1px solid var(--border);gap:12px;}
+  .modal-head-title{font-family:'Russo One',sans-serif;font-size:13px;color:var(--gold);letter-spacing:2px;flex:1;text-transform:uppercase;}
+  .modal-close{background:none;border:1px solid var(--border-hi);color:var(--text-dim);cursor:pointer;border-radius:5px;padding:4px 11px;font-size:17px;transition:border-color .2s,color .2s;}
+  .modal-close:hover{border-color:var(--red);color:var(--red);}
+  .modal-body{flex:1;overflow:hidden;}
+  .modal-body iframe{width:100%;height:100%;border:none;min-height:620px;}
+
+  ::-webkit-scrollbar{width:5px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--border-hi);border-radius:3px;}
+  ::-webkit-scrollbar-thumb:hover{background:var(--gold);}
+
+  @media(max-width:900px){.page-body{grid-template-columns:1fr;}.form-grid.col4{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-logo"><img src="etna-logo.jpg" alt="ERC"></div>
+  <div class="topbar-title">Etna Racing Club</div>
+  <div class="topbar-divider"></div>
+  <div class="topbar-section">Gestisci Risultati</div>
+  <div class="topbar-spacer"></div>
+  <div class="github-status">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusText">Non connesso</span>
+  </div>
+  <a href="admin.html" class="btn-back">← Admin</a>
+</header>
+
+<div class="page-body">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-block">
+      <div class="sidebar-label">GitHub</div>
+      <div class="pat-wrap">
+        <input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+        <button class="pat-toggle" onclick="togglePAT()">👁</button>
+      </div>
+      <button class="btn-verify" onclick="verifyAndLoad()">Connetti e Carica</button>
+      <div class="repo-note">Repository: <span>mz4466/etna-racing-club</span></div>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-label">Azioni</div>
+      <button class="btn btn-preview" id="btnPreview" onclick="openPreview()" disabled>👁 Anteprima</button>
+      <button class="btn btn-github" id="btnPublish" onclick="publish()" disabled style="margin-top:6px;">⬆ Pubblica su GitHub</button>
+      <button class="btn btn-outline" id="btnDownload" onclick="downloadHTML()" disabled style="margin-top:6px;">⬇ Scarica HTML</button>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-label">File output</div>
+      <div class="repo-note" id="outputFilename" style="color:var(--blue);word-break:break-all;">—</div>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-label">Classifica Preview</div>
+      <div class="standings-list" id="standingsSidebar">
+        <div style="font-family:'Teko',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:1px;">Compila i risultati per vedere la classifica</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div>
+      <div class="page-title">🏁 Gestisci Risultati</div>
+      <div class="page-sub">Inserisci i risultati di gara e pubblica la pagina</div>
+    </div>
+
+    <!-- STEP 1: RACE INFO -->
+    <div class="card">
+      <div class="card-title">📋 Informazioni Gara</div>
+      <div class="form-grid col2" style="margin-bottom:12px;">
+        <div class="field">
+          <label>Campionato</label>
+          <select id="champSelect" onchange="onChampChange()">
+            <option value="">— Connetti per caricare —</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Round</label>
+          <select id="roundSelect" onchange="onRoundChange()">
+            <option value="">— Seleziona campionato —</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid col3" style="margin-bottom:12px;">
+        <div class="field">
+          <label>Circuito</label>
+          <input type="text" id="circuitoInput" placeholder="es. Trial Mountain" oninput="updateOutputFilename()">
+        </div>
+        <div class="field">
+          <label>Data Gara</label>
+          <input type="date" id="dataInput">
+        </div>
+        <div class="field">
+          <label>Numero Giri</label>
+          <input type="number" id="giريInput" min="1" value="17" placeholder="17">
+        </div>
+      </div>
+      <div class="form-grid col2">
+        <div class="field">
+          <label>Gara # di #</label>
+          <div style="display:flex;gap:8px;">
+            <input type="number" id="garaNum" min="1" value="1" style="width:60px;" oninput="updateOutputFilename()">
+            <span style="align-self:center;color:var(--text-dim);font-family:'Teko',sans-serif;font-size:16px;">di</span>
+            <input type="number" id="garaTot" min="1" value="5" style="width:60px;">
+          </div>
+        </div>
+        <div class="field">
+          <label>File output</label>
+          <input type="text" id="outputFilenameInput" placeholder="es. 2025-c2-trial-mountain.html" oninput="document.getElementById('outputFilename').textContent=this.value||'—'">
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: RESULTS TABLE -->
+    <div class="card">
+      <div class="card-title">
+        🏎️ Risultati Gara
+        <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text-dim);font-weight:300;margin-left:6px;" id="rowCountLabel"></span>
+        <div style="flex:1;"></div>
+        <button class="btn btn-outline" onclick="autoFillPoints()" style="width:auto;font-size:12px;padding:5px 12px;">⚡ Auto Punti GT7</button>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table class="results-editor">
+          <thead>
+            <tr>
+              <th style="width:36px;">Pos</th>
+              <th style="min-width:160px;">Pilota</th>
+              <th style="min-width:110px;">Tempo Totale</th>
+              <th style="min-width:100px;">Best Lap</th>
+              <th style="width:60px;text-align:center;">FL 🟣</th>
+              <th style="width:70px;text-align:center;">Pole 🟡</th>
+              <th style="width:56px;">Punti</th>
+              <th style="width:80px;">Extra Pts</th>
+              <th style="width:72px;">Totale</th>
+              <th style="width:80px;">Stato</th>
+              <th style="width:32px;"></th>
+            </tr>
+          </thead>
+          <tbody id="resultsBody">
+          </tbody>
+        </table>
+      </div>
+
+      <button class="add-pilot-btn" onclick="addRow()">＋ Aggiungi Pilota</button>
+    </div>
+
+    <!-- STEP 3: PREV/NEXT NAV -->
+    <div class="card">
+      <div class="card-title">🔗 Navigazione Gare</div>
+      <div class="form-grid col2">
+        <div class="field">
+          <label>← Gara Precedente (file)</label>
+          <input type="text" id="prevRace" placeholder="es. 2025-c2-mount-panorama.html">
+        </div>
+        <div class="field">
+          <label>Gara Successiva → (file)</label>
+          <input type="text" id="nextRace" placeholder="es. 2025-c2-spa.html">
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTION ROW -->
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <button class="btn btn-preview" onclick="openPreview()" id="btnPreview2" disabled style="width:auto;">👁 Anteprima</button>
+      <button class="btn btn-gold" onclick="publish()" id="btnPublish2" disabled style="width:auto;">⬆ Pubblica su GitHub</button>
+      <button class="btn btn-outline" onclick="downloadHTML()" id="btnDownload2" disabled style="width:auto;">⬇ Scarica HTML</button>
+    </div>
+
+  </main>
+</div>
+
+<!-- PREVIEW MODAL -->
+<div class="modal-bg" id="previewModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-title" id="modalTitle">ANTEPRIMA</div>
+      <button class="modal-close" onclick="closePreview()">✕</button>
+    </div>
+    <div class="modal-body"><iframe id="previewFrame"></iframe></div>
+  </div>
+</div>
+
+<!-- AUTOCOMPLETE DROPDOWN (shared) -->
+<div class="autocomplete-dropdown" id="acDropdown"></div>
+
+<div id="toast"></div>
+
+<script>
+const REPO   = 'mz4466/etna-racing-club';
+const BRANCH = 'main';
+const GT7_PTS = [25,18,15,12,10,8,6,4,2,1];
+
+let token = '';
+let calendarioData  = [];  // from calendario.json
+let champHtmlMap    = {};  // slug -> html string of championship file
+let pilotNames      = [];  // from piloti_schede/
+let rowCounter      = 0;
+let currentAcInput  = null;
+
+function getToken(){ return document.getElementById('patInput').value.trim(); }
+function togglePAT(){ const i=document.getElementById('patInput'); i.type=i.type==='password'?'text':'password'; }
+
+// ── CONNECT ──
+async function verifyAndLoad(){
+  token = getToken();
+  if(!token){ toast('Inserisci un token PAT','err'); return; }
+  try {
+    const r = await fetch(`https://api.github.com/repos/${REPO}`,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
+    if(!r.ok) throw new Error();
+    document.getElementById('statusDot').className='status-dot ok';
+    document.getElementById('statusText').textContent='Connesso';
+    toast('✓ Connesso','ok');
+    await Promise.all([loadCalendario(), loadPilots()]);
+    enableActions();
+  } catch {
+    document.getElementById('statusDot').className='status-dot err';
+    document.getElementById('statusText').textContent='Errore';
+    toast('Token non valido','err');
+  }
+}
+
+function enableActions(){
+  ['btnPreview','btnPublish','btnDownload','btnPreview2','btnPublish2','btnDownload2'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.disabled=false;
+  });
+}
+
+// ── LOAD CALENDARIO ──
+async function loadCalendario(){
+  try {
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json?ref=${BRANCH}`,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
+    if(!r.ok) throw new Error();
+    const d = await r.json();
+    calendarioData = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\s/g,'')))));
+    populateChampSelect();
+    toast(`✓ ${calendarioData.length} campionati caricati`,'ok');
+  } catch(e){ toast('Errore calendario: '+e.message,'err'); }
+}
+
+function populateChampSelect(){
+  const sel = document.getElementById('champSelect');
+  sel.innerHTML = '<option value="">— Seleziona campionato —</option>';
+  calendarioData.forEach((c,i)=>{
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${c.name} ${c.year} (${c.cat})`;
+    sel.appendChild(opt);
+  });
+}
+
+function onChampChange(){
+  const idx = document.getElementById('champSelect').value;
+  const rSel = document.getElementById('roundSelect');
+  rSel.innerHTML='<option value="">— Seleziona round —</option>';
+  if(idx==='') return;
+  const champ = calendarioData[idx];
+  document.getElementById('champSelect').dataset.file = champ.file;
+  const total = champ.totalRounds||0;
+  for(let i=1;i<=total;i++){
+    const opt=document.createElement('option');
+    opt.value=i;
+    opt.textContent=`Round ${i}`;
+    rSel.appendChild(opt);
+  }
+  document.getElementById('garaTot').value = total;
+  updateOutputFilename();
+}
+
+function onRoundChange(){
+  const round = document.getElementById('roundSelect').value;
+  if(round) document.getElementById('garaNum').value = round;
+  updateOutputFilename();
+}
+
+function updateOutputFilename(){
+  const champIdx = document.getElementById('champSelect').value;
+  const round = document.getElementById('roundSelect').value || document.getElementById('garaNum').value;
+  const circ  = document.getElementById('circuitoInput').value.trim();
+  if(!champIdx||!circ) return;
+  const champ = calendarioData[champIdx];
+  const year  = champ.year||'2025';
+  const slug  = `${year}-${(champ.slug||champ.name).toLowerCase().replace(/[^a-z0-9]+/g,'-')}-r${round}-${circ.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.html`;
+  document.getElementById('outputFilenameInput').value = slug;
+  document.getElementById('outputFilename').textContent = slug;
+}
+
+// ── LOAD PILOTS ──
+async function loadPilots(){
+  try {
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/piloti_schede?ref=${BRANCH}`,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
+    if(!r.ok) return;
+    const files = await r.json();
+    const jsons = files.filter(f=>f.name.endsWith('.json'));
+    const pilots = await Promise.all(jsons.map(async f=>{
+      const jr = await fetch(f.download_url);
+      if(!jr.ok) return null;
+      return jr.json();
+    }));
+    pilotNames = pilots.filter(Boolean).map(p=>p.nome||p.psn||'').filter(Boolean);
+  } catch {}
+}
+
+// ── ROWS ──
+function addRow(data={}){
+  rowCounter++;
+  const id = rowCounter;
+  const pos = document.getElementById('resultsBody').children.length + 1;
+
+  const tr = document.createElement('tr');
+  tr.id = `row-${id}`;
+  tr.dataset.rowId = id;
+
+  const posClass = pos<=3 ? `pos-${pos}` : '';
+
+  tr.innerHTML = `
+    <td><div class="pos-cell ${posClass}" id="pos-${id}">${pos}°</div></td>
+    <td>
+      <div class="autocomplete-wrap">
+        <input type="text" placeholder="Nome pilota" value="${esc(data.nome||'')}" id="nome-${id}"
+          oninput="onNomeInput(${id},this)" autocomplete="off">
+      </div>
+    </td>
+    <td><input type="text" placeholder="26'42&quot;124" value="${esc(data.tempo||'')}" id="tempo-${id}" oninput="updateStandings()"></td>
+    <td><input type="text" placeholder="1'52&quot;144" value="${esc(data.bestLap||'')}" id="bestlap-${id}" oninput="updateStandings()"></td>
+    <td style="text-align:center;"><input type="checkbox" class="fl-check" id="fl-${id}" ${data.fl?'checked':''} onchange="autoFillPoints();updateStandings()"></td>
+    <td style="text-align:center;"><input type="checkbox" class="fl-check" id="pole-${id}" ${data.pole?'checked':''} onchange="autoFillPoints();updateStandings()"></td>
+    <td><input type="number" min="0" value="${data.punti??''}" id="punti-${id}" oninput="calcTotal(${id});updateStandings()" style="text-align:center;"></td>
+    <td><input type="text" value="${esc(data.extra||'')}" id="extra-${id}" placeholder="-" oninput="calcTotal(${id});updateStandings()" style="text-align:center;"></td>
+    <td><input type="number" min="0" value="${data.totale??''}" id="totale-${id}" style="text-align:center;background:rgba(201,162,39,.06);border-color:rgba(201,162,39,.3);" readonly></td>
+    <td>
+      <select id="stato-${id}" class="status-normal" onchange="onStatoChange(${id})">
+        <option value="ok" ${(!data.stato||data.stato==='ok')?'selected':''}>✅ OK</option>
+        <option value="dnf" ${data.stato==='dnf'?'selected':''}>🚫 DNF</option>
+        <option value="dsq" ${data.stato==='dsq'?'selected':''}>❌ DSQ</option>
+      </select>
+    </td>
+    <td><button class="row-del" onclick="removeRow(${id})" title="Rimuovi">✕</button></td>
+  `;
+  document.getElementById('resultsBody').appendChild(tr);
+  updateRowCount();
+  if(data.punti!==undefined) calcTotal(id);
+  updateStandings();
+}
+
+function onStatoChange(id){
+  const sel = document.getElementById(`stato-${id}`);
+  sel.className = `status-${sel.value==='ok'?'normal':sel.value}`;
+  if(sel.value!=='ok'){
+    document.getElementById(`punti-${id}`).value=0;
+    document.getElementById(`extra-${id}`).value='-';
+    document.getElementById(`totale-${id}`).value=0;
+    updateStandings();
+  }
+}
+
+function calcTotal(id){
+  const punti  = parseInt(document.getElementById(`punti-${id}`)?.value)||0;
+  const extra  = document.getElementById(`extra-${id}`)?.value||'';
+  // parse extra: could be "1+1", "2", "-"
+  let extraVal = 0;
+  extra.replace(/-/g,'').split('+').forEach(p=>{const n=parseInt(p.trim());if(!isNaN(n))extraVal+=n;});
+  const tot = punti + extraVal;
+  const totEl = document.getElementById(`totale-${id}`);
+  if(totEl) totEl.value = tot||'';
+}
+
+function removeRow(id){
+  const el = document.getElementById(`row-${id}`);
+  if(el){ el.style.opacity='0'; el.style.transform='translateX(20px)'; el.style.transition='.2s'; setTimeout(()=>{el.remove();renumberRows();updateStandings();},220); }
+}
+
+function renumberRows(){
+  const rows = document.querySelectorAll('#resultsBody tr');
+  rows.forEach((r,i)=>{
+    const id=r.dataset.rowId;
+    const posEl=document.getElementById(`pos-${id}`);
+    if(posEl){
+      posEl.textContent=`${i+1}°`;
+      posEl.className='pos-cell'+(i<3?` pos-${i+1}`:'');
+    }
+  });
+  updateRowCount();
+}
+
+function updateRowCount(){
+  const n = document.getElementById('resultsBody').children.length;
+  document.getElementById('rowCountLabel').textContent = n?`(${n} piloti)`:'';
+}
+
+// ── GT7 AUTO POINTS ──
+function autoFillPoints(){
+  const rows = document.querySelectorAll('#resultsBody tr');
+  rows.forEach((r,i)=>{
+    const id=r.dataset.rowId;
+    const stato=document.getElementById(`stato-${id}`)?.value;
+    if(stato!=='ok'){ return; }
+    const pts = GT7_PTS[i]||0;
+    const fl  = document.getElementById(`fl-${id}`)?.checked;
+    const pole= document.getElementById(`pole-${id}`)?.checked;
+    document.getElementById(`punti-${id}`).value=pts;
+    const extras=[];
+    if(fl)  extras.push('1');  // fastest lap bonus
+    if(pole)extras.push('1');  // pole bonus
+    document.getElementById(`extra-${id}`).value=extras.length?extras.join('+'):'-';
+    calcTotal(id);
+  });
+  updateStandings();
+}
+
+// ── PILOT AUTOCOMPLETE ──
+function onNomeInput(id, input){
+  updateStandings();
+  const q = input.value.trim().toLowerCase();
+  const dropdown = document.getElementById('acDropdown');
+  if(!q||!pilotNames.length){ dropdown.classList.remove('open'); return; }
+  const matches = pilotNames.filter(n=>n.toLowerCase().includes(q)).slice(0,8);
+  if(!matches.length){ dropdown.classList.remove('open'); return; }
+
+  // position dropdown under input
+  const rect = input.getBoundingClientRect();
+  dropdown.style.position='fixed';
+  dropdown.style.top=(rect.bottom+window.scrollY+2)+'px';
+  dropdown.style.left=rect.left+'px';
+  dropdown.style.width=rect.width+'px';
+
+  dropdown.innerHTML='';
+  matches.forEach(name=>{
+    const item=document.createElement('div');
+    item.className='ac-item';
+    item.textContent=name;
+    item.onmousedown=()=>{
+      document.getElementById(`nome-${id}`).value=name;
+      dropdown.classList.remove('open');
+      updateStandings();
+    };
+    dropdown.appendChild(item);
+  });
+  dropdown.classList.add('open');
+  currentAcInput=id;
+}
+
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.autocomplete-wrap')) document.getElementById('acDropdown').classList.remove('open');
+});
+
+// ── STANDINGS ──
+function updateStandings(){
+  const rows = document.querySelectorAll('#resultsBody tr');
+  const pilots={};
+  rows.forEach(r=>{
+    const id=r.dataset.rowId;
+    const nome=(document.getElementById(`nome-${id}`)?.value||'').trim();
+    const totale=parseInt(document.getElementById(`totale-${id}`)?.value)||0;
+    if(nome) pilots[nome]=(pilots[nome]||0)+totale;
+  });
+  const sorted=Object.entries(pilots).sort((a,b)=>b[1]-a[1]);
+  const container=document.getElementById('standingsSidebar');
+  if(!sorted.length){ container.innerHTML='<div style="font-family:\'Teko\',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:1px;">Aggiungi piloti per vedere la classifica</div>'; return; }
+  container.innerHTML=sorted.map(([nome,pts],i)=>`
+    <div class="standing-row">
+      <div class="standing-pos ${i<3?`pos-${i+1}`:''}">${i+1}°</div>
+      <div class="standing-name">${esc(nome)}</div>
+      <div class="standing-pts">${pts}</div>
+    </div>`).join('');
+}
+
+// ── COLLECT DATA ──
+function collectRows(){
+  const rows=document.querySelectorAll('#resultsBody tr');
+  return Array.from(rows).map((r,i)=>{
+    const id=r.dataset.rowId;
+    return {
+      pos:     i+1,
+      nome:    document.getElementById(`nome-${id}`)?.value.trim()||'',
+      tempo:   document.getElementById(`tempo-${id}`)?.value.trim()||'',
+      bestLap: document.getElementById(`bestlap-${id}`)?.value.trim()||'',
+      fl:      document.getElementById(`fl-${id}`)?.checked||false,
+      pole:    document.getElementById(`pole-${id}`)?.checked||false,
+      punti:   parseInt(document.getElementById(`punti-${id}`)?.value)||0,
+      extra:   document.getElementById(`extra-${id}`)?.value.trim()||'-',
+      totale:  parseInt(document.getElementById(`totale-${id}`)?.value)||0,
+      stato:   document.getElementById(`stato-${id}`)?.value||'ok',
+    };
+  });
+}
+
+function collectStandings(){
+  const pilots={};
+  collectRows().forEach(r=>{ if(r.nome) pilots[r.nome]=(pilots[r.nome]||0)+r.totale; });
+  return Object.entries(pilots).sort((a,b)=>b[1]-a[1]).map(([nome,pts],i)=>({pos:i+1,nome,pts}));
+}
+
+// ── BUILD HTML ──
+function buildHTML(){
+  const champIdx  = document.getElementById('champSelect').value;
+  const champ     = champIdx!=='' ? calendarioData[champIdx] : null;
+  const circuito  = document.getElementById('circuitoInput').value.trim()||'Gara';
+  const data      = document.getElementById('dataInput').value;
+  const garaNum   = document.getElementById('garaNum').value||'1';
+  const garaTot   = document.getElementById('garaTot').value||'?';
+  const prevRace  = document.getElementById('prevRace').value.trim();
+  const nextRace  = document.getElementById('nextRace').value.trim();
+  const champName = champ ? `${champ.name} ${champ.year}` : 'Etna Racing Club';
+  const champFile = champ ? champ.file : 'index.html';
+  const dateFmt   = data ? new Date(data).toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'}) : '';
+
+  const rows = collectRows();
+  const standings = collectStandings();
+
+  // fastest lap pilot
+  const flRow = rows.find(r=>r.fl);
+
+  const rowsHTML = rows.map(r=>{
+    const posClass = r.pos<=3 ? `pos-${r.pos}` : '';
+    const nameClass = r.pos<=3 ? 'pilot-name-top' : 'pilot-name';
+    const flClass  = r.fl ? 'best-lap' : '';
+    const statoTag = r.stato==='dnf'?'<span class="dnf-tag">DNF</span>':r.stato==='dsq'?'<span class="dsq-tag">DSQ</span>':'';
+    return `<tr class="${r.stato!=='ok'?'row-retired':''}">
+      <td class="${posClass}">${r.pos}°${statoTag}</td>
+      <td class="${nameClass}">${esc(r.nome)}</td>
+      <td>${esc(r.tempo)}</td>
+      <td class="${flClass}">${esc(r.bestLap)}</td>
+      <td>${r.punti}</td>
+      <td>${esc(r.extra)}</td>
+      <td><strong>${r.totale}</strong></td>
+    </tr>`;
+  }).join('');
+
+  const standingsHTML = standings.map(s=>{
+    const posClass = s.pos<=3?`pos-${s.pos}`:'';
+    return `<div class="standings-item">
+      <span class="standings-position ${posClass}">${s.pos}°</span>
+      <span class="standings-driver">${esc(s.nome)}</span>
+      <span class="standings-points">${s.pts}</span>
+    </div>`;
+  }).join('');
+
+  const prevBtn = prevRace
+    ? `<a href="${prevRace}" class="race-nav-btn">← Precedente</a>`
+    : `<span class="race-nav-btn disabled">← Precedente</span>`;
+  const nextBtn = nextRace
+    ? `<a href="${nextRace}" class="race-nav-btn">Successiva →</a>`
+    : `<span class="race-nav-btn disabled">Successiva →</span>`;
+
+  return `<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${esc(circuito)} — Risultati | Etna Racing Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@300,400,500,600,700&family=Russo+One&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--gold:#FFD700;--light-gold:#FFC107;--dark-gold:#B8860B;--champagne:#F7E7CE;--cream:#fff5e6;--smoke:#c9b8a3;--silver:#C0C0C0;--bronze:#CD7F32;--bg:#07070f;--bg-card:#0e0e1c;--border:rgba(255,215,0,0.15);}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Barlow Condensed',sans-serif;background:linear-gradient(180deg,#000 0%,#07070f 60%,#0e0e1c 100%);color:var(--cream);min-height:100vh;padding:20px;}
+  header{max-width:1400px;margin:0 auto 36px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  .brand{display:flex;gap:18px;align-items:center;}
+  .brand img{width:58px;height:auto;border-radius:8px;box-shadow:0 6px 18px rgba(255,215,0,0.3);}
+  .brand-text h1{font-family:'Russo One',sans-serif;font-size:26px;color:var(--gold);letter-spacing:2px;}
+  .brand-text p{font-size:12px;color:var(--smoke);letter-spacing:1px;}
+  .back-btn{font-family:'Russo One',sans-serif;background:linear-gradient(90deg,var(--dark-gold),var(--gold));color:#000;font-weight:700;text-decoration:none;padding:11px 22px;border-radius:8px;font-size:13px;letter-spacing:1px;transition:transform .3s,box-shadow .3s;box-shadow:0 4px 15px rgba(255,215,0,0.3);}
+  .back-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,215,0,0.5);}
+  .container{max-width:1400px;margin:0 auto;}
+  .race-header{text-align:center;margin-bottom:36px;padding:28px 20px;background:linear-gradient(135deg,rgba(26,26,26,0.9),rgba(13,13,13,0.95));border:2px solid var(--gold);border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,0.8),0 0 40px rgba(255,215,0,0.15);}
+  .race-title{font-family:'Russo One',sans-serif;font-size:clamp(32px,6vw,54px);color:var(--gold);text-transform:uppercase;letter-spacing:3px;margin-bottom:8px;text-shadow:0 0 20px rgba(255,215,0,0.6);}
+  .race-subtitle{font-family:'Teko',sans-serif;font-size:clamp(18px,4vw,26px);color:var(--champagne);letter-spacing:2px;text-transform:uppercase;}
+  .race-date{font-family:'Teko',sans-serif;font-size:15px;letter-spacing:3px;color:var(--smoke);margin-top:6px;text-transform:uppercase;}
+  .results-wrapper{display:grid;grid-template-columns:1fr 360px;gap:28px;margin-bottom:40px;}
+  @media(max-width:1024px){.results-wrapper{grid-template-columns:1fr;}}
+  .results-table{background:linear-gradient(135deg,rgba(26,26,26,0.95),rgba(13,13,13,0.98));border:2px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,0.8);}
+  .standings-card{background:linear-gradient(135deg,rgba(26,26,26,0.95),rgba(13,13,13,0.98));border:2px solid var(--border);border-radius:14px;padding:22px;box-shadow:0 10px 40px rgba(0,0,0,0.8);position:sticky;top:20px;}
+  .standings-title{font-family:'Russo One',sans-serif;font-size:22px;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:18px;text-align:center;text-shadow:0 0 15px rgba(255,215,0,0.5);}
+  .standings-item{display:flex;align-items:center;justify-content:space-between;padding:12px 10px;margin-bottom:8px;background:linear-gradient(90deg,rgba(255,215,0,0.07),transparent);border:1px solid rgba(255,215,0,0.12);border-radius:9px;transition:all .3s;}
+  .standings-item:hover{background:linear-gradient(90deg,rgba(255,215,0,0.14),transparent);transform:translateX(4px);}
+  .standings-position{font-family:'Russo One',sans-serif;font-size:22px;min-width:38px;}
+  .standings-driver{font-family:'Teko',sans-serif;font-size:19px;flex:1;margin:0 8px;}
+  .standings-points{font-family:'Russo One',sans-serif;font-size:20px;color:var(--gold);}
+  .race-info{text-align:center;margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,215,0,0.12);color:var(--smoke);font-size:14px;}
+  .race-nav{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
+  .race-nav-btn{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;padding:7px 14px;background:linear-gradient(90deg,rgba(255,215,0,0.08),transparent);border:1px solid rgba(255,215,0,0.25);border-radius:6px;color:var(--champagne);text-decoration:none;transition:all .3s;display:inline-block;}
+  .race-nav-btn:hover{background:linear-gradient(90deg,rgba(255,215,0,0.18),transparent);border-color:var(--gold);transform:translateY(-2px);}
+  .race-nav-btn.disabled{opacity:0.35;cursor:not-allowed;pointer-events:none;}
+  table{width:100%;border-collapse:collapse;}
+  thead{background:linear-gradient(135deg,#1a1a1a,#2d2d2d);}
+  th{font-family:'Teko',sans-serif;font-size:18px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:2px;padding:16px 14px;text-align:left;border-bottom:2px solid var(--gold);}
+  th:first-child{text-align:center;width:70px;}
+  tbody tr{border-bottom:1px solid rgba(255,215,0,0.08);transition:background .3s;}
+  tbody tr:hover{background:rgba(255,215,0,0.04);}
+  tbody tr.row-retired{opacity:0.55;}
+  td{padding:18px 14px;font-size:15px;color:var(--cream);}
+  td:first-child{text-align:center;font-family:'Russo One',sans-serif;font-size:26px;}
+  .pos-1{color:var(--gold);text-shadow:0 0 10px rgba(255,215,0,0.5);}
+  .pos-2{color:var(--silver);text-shadow:0 0 10px rgba(192,192,192,0.5);}
+  .pos-3{color:var(--bronze);text-shadow:0 0 10px rgba(205,127,50,0.5);}
+  .pilot-name{font-family:'Teko',sans-serif;font-size:21px;font-weight:600;color:var(--light-gold);}
+  .pilot-name-top{font-family:'Russo One',sans-serif;font-size:18px;color:var(--champagne);}
+  .best-lap{color:var(--gold);font-weight:700;background:linear-gradient(90deg,rgba(255,215,0,0.18),transparent);padding:4px 8px;border-radius:4px;border-left:3px solid var(--gold);text-shadow:0 0 8px rgba(255,215,0,0.5);}
+  .best-lap::before{content:"🏆 ";}
+  .dnf-tag,.dsq-tag{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:2px;padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:middle;}
+  .dnf-tag{background:rgba(255,80,20,0.2);color:#ff5014;border:1px solid rgba(255,80,20,0.3);}
+  .dsq-tag{background:rgba(192,57,43,0.2);color:#e74c3c;border:1px solid rgba(192,57,43,0.3);}
+  footer{text-align:center;margin-top:50px;color:var(--smoke);font-size:13px;padding-bottom:30px;}
+  @media(max-width:768px){header{flex-direction:column;text-align:center;}table{font-size:13px;}th,td{padding:10px 8px;}td:first-child{font-size:18px;}.pilot-name{font-size:16px;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <a href="index.html"><img src="etna-logo.jpg" alt="Etna Racing Club"></a>
+    <div class="brand-text">
+      <h1>Etna Racing Club</h1>
+      <p>Risultati Gara</p>
+    </div>
+  </div>
+  <a href="${champFile}" class="back-btn">← ${esc(champName)}</a>
+</header>
+<main class="container">
+  <div class="race-header">
+    <h1 class="race-title">${esc(circuito)}</h1>
+    <p class="race-subtitle">${esc(champName)}</p>
+    ${dateFmt?`<p class="race-date">${dateFmt}</p>`:''}
+  </div>
+  <div class="results-wrapper">
+    <div class="results-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Pos</th>
+            <th>Pilota</th>
+            <th>Tempo Totale</th>
+            <th>Best Lap</th>
+            <th>Punti</th>
+            <th>Extra</th>
+            <th>Totale</th>
+          </tr>
+        </thead>
+        <tbody>${rowsHTML}</tbody>
+      </table>
+    </div>
+    <div class="standings-card">
+      <h2 class="standings-title">🏆 Classifica</h2>
+      ${standingsHTML}
+      <div class="race-info">
+        <strong>Gara ${garaNum} di ${garaTot}</strong>
+        <div class="race-nav">${prevBtn}${nextBtn}</div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer>© 2026 Etna Racing Club • Sicilia, Italia</footer>
+</body>
+</html>`;
+}
+
+// ── PREVIEW ──
+function openPreview(){
+  document.getElementById('previewFrame').srcdoc=buildHTML();
+  document.getElementById('previewModal').classList.add('open');
+}
+function closePreview(){ document.getElementById('previewModal').classList.remove('open'); }
+
+// ── DOWNLOAD ──
+function downloadHTML(){
+  const fname = document.getElementById('outputFilenameInput').value.trim()||'risultati.html';
+  const blob=new Blob([buildHTML()],{type:'text/html'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=fname;
+  a.click();
+}
+
+// ── PUBLISH ──
+async function publish(){
+  token=getToken();
+  if(!token){ toast('Token mancante','err'); return; }
+  const fname=document.getElementById('outputFilenameInput').value.trim();
+  if(!fname){ toast('Imposta il nome del file output','err'); return; }
+
+  toast('Pubblicazione…','');
+  try {
+    // 1. save results HTML
+    await putFile(fname, buildHTML(), `Add race results: ${fname}`);
+
+    // 2. save JSON data
+    const jsonFname = fname.replace('.html','.json');
+    const jsonData = {
+      circuito: document.getElementById('circuitoInput').value.trim(),
+      data:     document.getElementById('dataInput').value,
+      garaNum:  document.getElementById('garaNum').value,
+      garaTot:  document.getElementById('garaTot').value,
+      champIdx: document.getElementById('champSelect').value,
+      prevRace: document.getElementById('prevRace').value.trim(),
+      nextRace: document.getElementById('nextRace').value.trim(),
+      rows:     collectRows(),
+      standings:collectStandings(),
+    };
+    await putFile(`risultati/${jsonFname}`, JSON.stringify(jsonData,null,2), `Add race data: ${jsonFname}`);
+
+    // 3. update championship HTML to link this result file
+    await linkResultToChampionship(fname);
+
+    toast(`✓ Pubblicato: ${fname}`,'ok');
+  } catch(e){
+    toast('Errore: '+e.message,'err');
+  }
+}
+
+async function linkResultToChampionship(resultFile){
+  const champIdx = document.getElementById('champSelect').value;
+  if(champIdx==='') return;
+  const champ = calendarioData[champIdx];
+  if(!champ?.file) return;
+
+  try {
+    // load champ HTML
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${champ.file}?ref=${BRANCH}`,{
+      headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+    });
+    if(!r.ok) return;
+    const d=await r.json();
+    let html=decodeURIComponent(escape(atob(d.content.replace(/\s/g,''))));
+    const roundNum=parseInt(document.getElementById('roundSelect').value||document.getElementById('garaNum').value)||1;
+    // Replace "In arrivo" button or placeholder for this round's results link
+    // Look for round card with matching round number and update href
+    const oldPattern=new RegExp(`(<div class="round-card">[\\s\\S]*?R${roundNum}[\\s\\S]*?)<span class="results-btn upcoming">In arrivo</span>`);
+    if(oldPattern.test(html)){
+      html=html.replace(oldPattern,`$1<a href="${resultFile}" class="results-btn">📋 Risultati</a>`);
+    } else {
+      // Try updating existing link
+      const linkPattern=new RegExp(`(R${roundNum}[\\s\\S]{0,200}results-btn[^>]*href=")[^"]*"`);
+      if(linkPattern.test(html)){
+        html=html.replace(linkPattern,`$1${resultFile}"`);
+      }
+    }
+    await putFile(champ.file, html, `Link results R${roundNum} in ${champ.file}`, d.sha);
+  } catch(e){ console.warn('Could not auto-link to championship:',e.message); }
+}
+
+async function putFile(path, content, message, sha=null){
+  if(!sha){
+    const check=await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`,{
+      headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+    });
+    if(check.ok){ const d=await check.json(); sha=d.sha; }
+  }
+  const body={message,content:btoa(unescape(encodeURIComponent(content))),branch:BRANCH};
+  if(sha) body.sha=sha;
+  const r=await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`,{
+    method:'PUT',
+    headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  });
+  if(!r.ok){ const e=await r.json(); throw new Error(e.message||r.status); }
+  return r.json();
+}
+
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+function toast(msg,type){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='show'+(type?' '+type:'');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.className='',3500);
+}
+
+// start with 3 empty rows
+addRow(); addRow(); addRow();
+</script>
+</body>
+</html>
