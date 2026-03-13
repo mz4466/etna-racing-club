@@ -346,19 +346,29 @@ function togglePAT(){ const i=document.getElementById('patInput'); i.type=i.type
 async function verifyAndLoad(){
   token = getToken();
   if(!token){ toast('Inserisci un token PAT','err'); return; }
+
+  // Step 1: verify token only
+  let repoOk = false;
   try {
     const r = await fetch(`https://api.github.com/repos/${REPO}`,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
-    if(!r.ok) throw new Error();
-    document.getElementById('statusDot').className='status-dot ok';
-    document.getElementById('statusText').textContent='Connesso';
-    toast('✓ Connesso','ok');
-    await Promise.all([loadCalendario(), loadPilots()]);
-    enableActions();
-  } catch {
+    repoOk = r.ok;
+  } catch {}
+
+  if(!repoOk){
     document.getElementById('statusDot').className='status-dot err';
-    document.getElementById('statusText').textContent='Errore';
-    toast('Token non valido','err');
+    document.getElementById('statusText').textContent='Errore token';
+    toast('Token non valido o connessione fallita','err');
+    return;
   }
+
+  document.getElementById('statusDot').className='status-dot ok';
+  document.getElementById('statusText').textContent='Connesso';
+  toast('✓ Connesso','ok');
+
+  // Step 2: load data independently so one failure doesn't block the other
+  await loadCalendario();
+  await loadPilots();
+  enableActions();
 }
 
 function enableActions(){
@@ -371,12 +381,16 @@ function enableActions(){
 async function loadCalendario(){
   try {
     const r = await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json?ref=${BRANCH}`,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
-    if(!r.ok) throw new Error();
+    if(!r.ok) throw new Error(`HTTP ${r.status} — calendario.json non trovato`);
     const d = await r.json();
+    if(!d.content) throw new Error('Contenuto calendario.json vuoto');
     calendarioData = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\s/g,'')))));
     populateChampSelect();
-    toast(`✓ ${calendarioData.length} campionati caricati`,'ok');
-  } catch(e){ toast('Errore calendario: '+e.message,'err'); }
+    toast(`✓ ${calendarioData.length} campionat${calendarioData.length===1?'o':'i'} caricati`,'ok');
+  } catch(e){
+    toast('Errore caricamento calendario: '+e.message,'err');
+    console.error('loadCalendario:', e);
+  }
 }
 
 function populateChampSelect(){
