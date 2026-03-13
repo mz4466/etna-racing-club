@@ -338,6 +338,7 @@ let champHtmlMap    = {};  // slug -> html string of championship file
 let pilotNames      = [];  // from piloti_schede/
 let rowCounter      = 0;
 let currentAcInput  = null;
+let champRoundsData = {}; // file -> [{circuit, date, laps, weather, tire, fuel}]
 
 function getToken(){ return document.getElementById('patInput').value.trim(); }
 function togglePAT(){ const i=document.getElementById('patInput'); i.type=i.type==='password'?'text':'password'; }
@@ -411,30 +412,106 @@ function populateChampSelect(){
   });
 }
 
-function onChampChange(){
+async function onChampChange(){
   const idx = document.getElementById('champSelect').value;
   const rSel = document.getElementById('roundSelect');
-  rSel.innerHTML='<option value="">— Seleziona round —</option>';
-  if(idx==='') return;
+  rSel.innerHTML='<option value="">— Caricamento rounds… —</option>';
+  if(idx==='') { rSel.innerHTML='<option value="">— Seleziona round —</option>'; return; }
   const champ = calendarioData[idx];
-  // Store bestOf for this championship
   document.getElementById('champSelect').dataset.bestOf = champ.bestOf||'';
   document.getElementById('champSelect').dataset.totalRounds = champ.totalRounds||'';
   document.getElementById('champSelect').dataset.file = champ.file;
   const total = champ.totalRounds||0;
-  for(let i=1;i<=total;i++){
+
+  // Try to load round details from the championship HTML
+  await loadChampRounds(champ);
+
+  rSel.innerHTML='<option value="">— Seleziona round —</option>';
+  for(var i=1;i<=total;i++){
     const opt=document.createElement('option');
     opt.value=i;
-    opt.textContent=`Round ${i}`;
+    const rd = champRoundsData[champ.file] && champRoundsData[champ.file][i-1];
+    opt.textContent = rd && rd.circuit ? 'R'+i+' — '+rd.circuit : 'Round '+i;
     rSel.appendChild(opt);
   }
   document.getElementById('garaTot').value = total;
   updateOutputFilename();
 }
 
+async function loadChampRounds(champ){
+  if(!champ.file) return;
+  if(champRoundsData[champ.file]) return; // already loaded
+  try {
+    const r = await fetch('https://api.github.com/repos/'+REPO+'/contents/'+champ.file+'?ref='+BRANCH,{
+      headers:{Authorization:'token '+token,Accept:'application/vnd.github.v3+json'}
+    });
+    if(!r.ok) return;
+    const d = await r.json();
+    const html = decodeURIComponent(escape(atob(d.content.replace(/\s/g,''))));
+    champRoundsData[champ.file] = parseRoundsFromHTML(html);
+  } catch(e){ console.warn('Could not load round details:', e.message); }
+}
+
+function parseRoundsFromHTML(html){
+  const rounds = [];
+  // Parse round-card divs from the championship HTML
+  const cardRegex = /<div class="round-card">([\s\S]*?)<\/div>\s*<\/div>\s*<\/div>/g;
+  var match;
+  while((match = cardRegex.exec(html)) !== null){
+    const block = match[1];
+    // Extract circuit name
+    const circuitMatch = block.match(/<div class="round-circuit">([^<]+)<\/div>/);
+    // Extract date
+    const dateMatch = block.match(/<div class="round-date">([^<]+)<\/div>/);
+    // Extract laps from detail pill
+    const lapsMatch = block.match(/(\d+)\s*giri/i);
+    // Extract weather
+    const weatherMatch = block.match(/<div class="detail-pill">([☀️🌥️🌧️⛈️❄️][^<]*)<\/div>/);
+    // Extract tire consumption
+    const tireMatch = block.match(/Gomme\s*(x\d+)/i);
+    // Extract fuel
+    const fuelMatch = block.match(/Carb\.\s*(x\d+)/i);
+
+    rounds.push({
+      circuit:  circuitMatch  ? circuitMatch[1].trim()  : '',
+      date:     dateMatch     ? parseDateIT(dateMatch[1].trim()) : '',
+      laps:     lapsMatch     ? lapsMatch[1] : '',
+      weather:  weatherMatch  ? weatherMatch[1].trim()  : '',
+      tire:     tireMatch     ? tireMatch[1] : '',
+      fuel:     fuelMatch     ? fuelMatch[1] : '',
+    });
+  }
+  return rounds;
+}
+
+function parseDateIT(str){
+  // Convert "15 marzo 2026" -> "2026-03-15"
+  const months = {gennaio:'01',febbraio:'02',marzo:'03',aprile:'04',maggio:'05',giugno:'06',
+                  luglio:'07',agosto:'08',settembre:'09',ottobre:'10',novembre:'11',dicembre:'12'};
+  const m = str.toLowerCase().match(/(\d{1,2})\s+(\w+)\s+(\d{4})/);
+  if(!m) return '';
+  const month = months[m[2]];
+  if(!month) return '';
+  return m[3]+'-'+month+'-'+(m[1].length===1?'0':'')+m[1];
+}
+
 function onRoundChange(){
   const round = document.getElementById('roundSelect').value;
-  if(round) document.getElementById('garaNum').value = round;
+  if(!round) return;
+  document.getElementById('garaNum').value = round;
+
+  // Auto-fill round details from parsed championship data
+  const champIdx = document.getElementById('champSelect').value;
+  if(champIdx !== ''){
+    const champ = calendarioData[champIdx];
+    const rounds = champ && champ.file ? champRoundsData[champ.file] : null;
+    const rd = rounds ? rounds[parseInt(round)-1] : null;
+    if(rd){
+      if(rd.circuit) document.getElementById('circuitoInput').value = rd.circuit;
+      if(rd.date)    document.getElementById('dataInput').value = rd.date;
+      if(rd.laps)    document.getElementById('giريInput').value = rd.laps;
+    }
+  }
   updateOutputFilename();
 }
 
