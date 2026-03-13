@@ -1109,11 +1109,12 @@ async function executeDelete() {
 }
 
 async function deleteFile(token, path) {
-  // Get SHA first
+  // Get SHA first — if file doesn't exist, skip silently (404 is fine)
   const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`, {
     headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
   });
-  if (!r.ok) return; // file doesn't exist, skip silently
+  if (!r.ok) return; // 404 or other — file not present, nothing to delete
+
   const d = await r.json();
 
   const dr = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
@@ -1125,7 +1126,8 @@ async function deleteFile(token, path) {
     },
     body: JSON.stringify({ message: `Delete: ${path}`, sha: d.sha, branch: BRANCH })
   });
-  if (!dr.ok) {
+  // 404 on DELETE also means already gone — only throw on other errors
+  if (!dr.ok && dr.status !== 404) {
     const e = await dr.json();
     throw new Error(`Impossibile eliminare ${path}: ${e.message}`);
   }
