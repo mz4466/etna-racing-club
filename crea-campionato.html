@@ -1405,9 +1405,33 @@ async function updateCalendario(token, fname) {
   const cars  = document.getElementById('champCars').value.trim();
   const desc  = document.getElementById('champDesc').value.trim();
   const slug   = document.getElementById('champSlug').value.trim();
-  const bestOf = parseInt(document.getElementById('champBestOf')?.value)||0;
+  const bestOfEl = document.getElementById('champBestOf'); const bestOf = parseInt(bestOfEl ? bestOfEl.value : 0)||0;
   const cards  = document.querySelectorAll('.race-card');
   const totalRounds = cards.length;
+
+  // Collect round details to store in calendario.json
+  const roundsDetail = [];
+  cards.forEach(function(card) {
+    var rid = card.id.replace('round-','');
+    var circEl = document.getElementById('rcircuit-'+rid);
+    var dateEl = document.getElementById('rdate-'+rid);
+    var lapsEl = document.getElementById('rlaps-'+rid);
+    var weatherEl = document.getElementById('rweather-'+rid);
+    var tireEl = document.getElementById('rtire-'+rid);
+    var fuelEl = document.getElementById('rfuel-'+rid);
+    var typesEl = document.getElementById('rtypes-'+rid);
+    var notesEl = document.getElementById('rnotes-'+rid);
+    roundsDetail.push({
+      circuit: circEl    ? circEl.value.trim()    : '',
+      date:    dateEl    ? dateEl.value            : '',
+      laps:    lapsEl    ? lapsEl.value            : '17',
+      weather: weatherEl ? weatherEl.value         : '',
+      tire:    tireEl    ? tireEl.value            : '',
+      fuel:    fuelEl    ? fuelEl.value            : '',
+      types:   typesEl   ? typesEl.value.trim()    : '',
+      notes:   notesEl   ? notesEl.value.trim()    : '',
+    });
+  });
 
   const newEntry = {
     name, year, cat,
@@ -1417,7 +1441,8 @@ async function updateCalendario(token, fname) {
     file: fname,
     totalRounds,
     completedRounds: 0,
-    bestOf: bestOf || null
+    bestOf: bestOf || null,
+    rounds: roundsDetail
   };
 
   try {
