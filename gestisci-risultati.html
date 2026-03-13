@@ -882,7 +882,7 @@ async function publish(){
     const jsonFname = fname.replace('.html','.json');
     const champIdx = document.getElementById('champSelect').value;
     const champ    = champIdx!=='' ? calendarioData[champIdx] : null;
-    const isLastRound = champ && parseInt(document.getElementById('garaNum').value)>==(champ.totalRounds||0);
+    const isLastRound = champ && parseInt(document.getElementById('garaNum').value) >= (champ.totalRounds||0);
     const jsonData = {
       circuito: document.getElementById('circuitoInput').value.trim(),
       data:     document.getElementById('dataInput').value,
