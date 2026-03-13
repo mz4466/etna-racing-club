@@ -515,8 +515,8 @@ async function loadCalendario() {
   const token = getToken();
   toast('Caricamento lista campionati…', '');
   try {
-    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json?ref=${BRANCH}`, {
-      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json?ref=${BRANCH}&_=${Date.now()}`, {
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Cache-Control': 'no-cache' }
     });
     if (!r.ok) throw new Error('calendario.json non trovato');
     const d = await r.json();
@@ -978,7 +978,38 @@ async function updateCalendarioEntry(token, fname) {
       list[idx].cars  = document.getElementById('champCars').value.trim();
       list[idx].desc  = document.getElementById('champDesc').value.trim();
       list[idx].slug  = document.getElementById('champSlug').value.trim();
-      list[idx].totalRounds = document.querySelectorAll('.race-card').length;
+
+      const cards = document.querySelectorAll('.race-card');
+      list[idx].totalRounds = cards.length;
+
+      // Save round details so gestisci-risultati can auto-fill them
+      const roundsDetail = [];
+      cards.forEach(function(card) {
+        var rid = card.id.replace('round-','');
+        var circEl    = document.getElementById('rcircuit-'+rid);
+        var dateEl    = document.getElementById('rdate-'+rid);
+        var lapsEl    = document.getElementById('rlaps-'+rid);
+        var weatherEl = document.getElementById('rweather-'+rid);
+        var tireEl    = document.getElementById('rtire-'+rid);
+        var fuelEl    = document.getElementById('rfuel-'+rid);
+        var typesEl   = document.getElementById('rtypes-'+rid);
+        var notesEl   = document.getElementById('rnotes-'+rid);
+        roundsDetail.push({
+          circuit: circEl    ? circEl.value.trim()  : '',
+          date:    dateEl    ? dateEl.value          : '',
+          laps:    lapsEl    ? lapsEl.value          : '17',
+          weather: weatherEl ? weatherEl.value       : '',
+          tire:    tireEl    ? tireEl.value          : '',
+          fuel:    fuelEl    ? fuelEl.value          : '',
+          types:   typesEl   ? typesEl.value.trim()  : '',
+          notes:   notesEl   ? notesEl.value.trim()  : '',
+        });
+      });
+      list[idx].rounds = roundsDetail;
+
+      // Preserve bestOf if set
+      const bestOfEl = document.getElementById('champBestOf');
+      if(bestOfEl) list[idx].bestOf = parseInt(bestOfEl.value)||null;
 
       const body = { message: `Update calendario.json: ${fname}`, content: btoa(unescape(encodeURIComponent(JSON.stringify(list, null, 2)))), branch: BRANCH, sha: d.sha };
       await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json`, {
@@ -1134,8 +1165,8 @@ async function deleteFile(token, path) {
 }
 
 async function removeFromCalendario(token, fileToRemove) {
-  const r = await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json?ref=${BRANCH}`, {
-    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+  const r = await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json?ref=${BRANCH}&_=${Date.now()}`, {
+    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Cache-Control': 'no-cache' }
   });
   if (!r.ok) return;
   const d   = await r.json();
