@@ -396,6 +396,9 @@ function onChampChange(){
   rSel.innerHTML='<option value="">— Seleziona round —</option>';
   if(idx==='') return;
   const champ = calendarioData[idx];
+  // Store bestOf for this championship
+  document.getElementById('champSelect').dataset.bestOf = champ.bestOf||'';
+  document.getElementById('champSelect').dataset.totalRounds = champ.totalRounds||'';
   document.getElementById('champSelect').dataset.file = champ.file;
   const total = champ.totalRounds||0;
   for(let i=1;i<=total;i++){
@@ -587,22 +590,25 @@ document.addEventListener('click',e=>{
 
 // ── STANDINGS ──
 function updateStandings(){
-  const rows = document.querySelectorAll('#resultsBody tr');
-  const pilots={};
-  rows.forEach(r=>{
-    const id=r.dataset.rowId;
-    const nome=(document.getElementById(`nome-${id}`)?.value||'').trim();
-    const totale=parseInt(document.getElementById(`totale-${id}`)?.value)||0;
-    if(nome) pilots[nome]=(pilots[nome]||0)+totale;
-  });
-  const sorted=Object.entries(pilots).sort((a,b)=>b[1]-a[1]);
-  const container=document.getElementById('standingsSidebar');
-  if(!sorted.length){ container.innerHTML='<div style="font-family:\'Teko\',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:1px;">Aggiungi piloti per vedere la classifica</div>'; return; }
-  container.innerHTML=sorted.map(([nome,pts],i)=>`
+  const standings = collectStandings(false); // live: no drop rule mid-champ
+  const container = document.getElementById('standingsSidebar');
+  if(!standings.length){
+    container.innerHTML='<div style="font-family:\'Teko\',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:1px;">Aggiungi piloti per vedere la classifica</div>';
+    return;
+  }
+
+  // Show bestOf notice if set
+  const bestOf = parseInt(document.getElementById('champSelect').dataset.bestOf)||0;
+  const totalRounds = parseInt(document.getElementById('champSelect').dataset.totalRounds)||0;
+  const noticeHTML = bestOf && bestOf < totalRounds
+    ? `<div style="font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:var(--gold);background:rgba(201,162,39,0.07);border:1px solid rgba(201,162,39,0.2);border-radius:5px;padding:5px 8px;margin-bottom:8px;">⚡ Regola scarto: migliori ${bestOf}/${totalRounds} — si applica a fine campionato</div>`
+    : '';
+
+  container.innerHTML = noticeHTML + standings.map((s,i)=>`
     <div class="standing-row">
       <div class="standing-pos ${i<3?`pos-${i+1}`:''}">${i+1}°</div>
-      <div class="standing-name">${esc(nome)}</div>
-      <div class="standing-pts">${pts}</div>
+      <div class="standing-name">${esc(s.nome)}</div>
+      <div class="standing-pts">${s.pts}</div>
     </div>`).join('');
 }
 
@@ -626,10 +632,31 @@ function collectRows(){
   });
 }
 
-function collectStandings(){
-  const pilots={};
-  collectRows().forEach(r=>{ if(r.nome) pilots[r.nome]=(pilots[r.nome]||0)+r.totale; });
-  return Object.entries(pilots).sort((a,b)=>b[1]-a[1]).map(([nome,pts],i)=>({pos:i+1,nome,pts}));
+function collectStandings(applyBestOf=false){
+  // Group scores per pilot
+  const pilotScores={};
+  collectRows().forEach(r=>{
+    if(!r.nome) return;
+    if(!pilotScores[r.nome]) pilotScores[r.nome]=[];
+    pilotScores[r.nome].push(r.totale);
+  });
+
+  // Apply bestOf drop rule if requested
+  const bestOf   = parseInt(document.getElementById('champSelect').dataset.bestOf)||0;
+  const totalRounds = parseInt(document.getElementById('champSelect').dataset.totalRounds)||0;
+  // Drop rule: only if applyBestOf=true AND bestOf set AND all rounds completed
+  const shouldDrop = applyBestOf && bestOf > 0 && totalRounds > 0 && bestOf < totalRounds;
+
+  const pilots = Object.entries(pilotScores).map(([nome, scores])=>{
+    let usedScores = scores;
+    if(shouldDrop && scores.length >= totalRounds){
+      // Sort desc, take best N
+      usedScores = [...scores].sort((a,b)=>b-a).slice(0, bestOf);
+    }
+    return { nome, pts: usedScores.reduce((s,v)=>s+v,0) };
+  });
+
+  return pilots.sort((a,b)=>b.pts-a.pts).map((p,i)=>({...p, pos:i+1}));
 }
 
 // ── BUILD HTML ──
@@ -667,6 +694,12 @@ function buildHTML(){
       <td><strong>${r.totale}</strong></td>
     </tr>`;
   }).join('');
+
+  // bestOf note for generated HTML
+  const bestOfVal = champ?.bestOf||0;
+  const bestOfNote = bestOfVal && bestOfVal < parseInt(garaTot||0)
+    ? `<div style="font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:#c9a227;background:rgba(201,162,39,0.08);border:1px solid rgba(201,162,39,0.2);border-radius:5px;padding:5px 10px;margin-bottom:12px;">⚡ Migliori ${bestOfVal} risultati su ${garaTot}</div>`
+    : '';
 
   const standingsHTML = standings.map(s=>{
     const posClass = s.pos<=3?`pos-${s.pos}`:'';
@@ -781,6 +814,7 @@ function buildHTML(){
     </div>
     <div class="standings-card">
       <h2 class="standings-title">🏆 Classifica</h2>
+      ${bestOfNote}
       ${standingsHTML}
       <div class="race-info">
         <strong>Gara ${garaNum} di ${garaTot}</strong>
@@ -825,16 +859,20 @@ async function publish(){
 
     // 2. save JSON data
     const jsonFname = fname.replace('.html','.json');
+    const champIdx = document.getElementById('champSelect').value;
+    const champ    = champIdx!=='' ? calendarioData[champIdx] : null;
+    const isLastRound = champ && parseInt(document.getElementById('garaNum').value)>==(champ.totalRounds||0);
     const jsonData = {
       circuito: document.getElementById('circuitoInput').value.trim(),
       data:     document.getElementById('dataInput').value,
       garaNum:  document.getElementById('garaNum').value,
       garaTot:  document.getElementById('garaTot').value,
-      champIdx: document.getElementById('champSelect').value,
+      champIdx,
       prevRace: document.getElementById('prevRace').value.trim(),
       nextRace: document.getElementById('nextRace').value.trim(),
       rows:     collectRows(),
-      standings:collectStandings(),
+      standings:collectStandings(isLastRound), // apply drop rule only on final round
+      bestOf:   champ?.bestOf||null,
     };
     await putFile(`risultati/${jsonFname}`, JSON.stringify(jsonData,null,2), `Add race data: ${jsonFname}`);
 

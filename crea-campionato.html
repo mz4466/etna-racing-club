@@ -690,6 +690,7 @@
       <div id="summary" style="font-family:'Teko',sans-serif;font-size:14px;color:var(--text-dim);letter-spacing:1px;line-height:1.8;">
         Nessun round aggiunto.
       </div>
+      <div id="bestOfHint" style="display:none;margin-top:8px;padding:7px 10px;background:rgba(201,162,39,0.08);border:1px solid rgba(201,162,39,0.25);border-radius:6px;font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;color:var(--gold);"></div>
     </div>
 
   </aside>
@@ -735,10 +736,18 @@
           <input type="text" id="champSlug" placeholder="es. q1  oppure  autunno" oninput="updateAll()">
         </div>
       </div>
-      <div class="form-row" style="grid-template-columns:1fr;">
+      <div class="form-row col2">
         <div class="field">
           <label>Descrizione / Sottotitolo (opzionale)</label>
           <textarea id="champDesc" placeholder="Breve descrizione del campionato..."></textarea>
+        </div>
+        <div class="field">
+          <label>Migliore su… gare <span style="color:var(--gold);font-size:11px;">(regola scarto)</span></label>
+          <input type="number" id="champBestOf" min="1" placeholder="es. 5  — lascia vuoto = conta tutto" oninput="updateAll()">
+          <span style="font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:var(--text-dim);margin-top:5px;line-height:1.6;display:block;">
+            Conta solo i migliori <em style="color:var(--gold);">N</em> risultati per pilota scartando i peggiori.
+            La regola si applica solo a campionato concluso.
+          </span>
         </div>
       </div>
     </div>
@@ -1060,6 +1069,18 @@ function updateAll() {
   const cards = document.querySelectorAll('.race-card');
   const count = cards.length;
   document.getElementById('roundCount').textContent = count ? `(${count} round)` : '';
+
+  // bestOf hint in summary
+  const bestOfVal = parseInt(document.getElementById('champBestOf')?.value)||0;
+  const bestOfEl  = document.getElementById('bestOfHint');
+  if(bestOfEl){
+    if(bestOfVal && bestOfVal < count){
+      bestOfEl.textContent = `⚡ Regola scarto: migliori ${bestOfVal} di ${count} gare`;
+      bestOfEl.style.display='block';
+    } else {
+      bestOfEl.style.display='none';
+    }
+  }
 
   let sumHTML = '';
   if (count === 0) {
@@ -1383,8 +1404,9 @@ async function updateCalendario(token, fname) {
   const cat   = document.getElementById('champCat').value;
   const cars  = document.getElementById('champCars').value.trim();
   const desc  = document.getElementById('champDesc').value.trim();
-  const slug  = document.getElementById('champSlug').value.trim();
-  const cards = document.querySelectorAll('.race-card');
+  const slug   = document.getElementById('champSlug').value.trim();
+  const bestOf = parseInt(document.getElementById('champBestOf')?.value)||0;
+  const cards  = document.querySelectorAll('.race-card');
   const totalRounds = cards.length;
 
   const newEntry = {
@@ -1394,7 +1416,8 @@ async function updateCalendario(token, fname) {
     status: 'prossimo',
     file: fname,
     totalRounds,
-    completedRounds: 0
+    completedRounds: 0,
+    bestOf: bestOf || null
   };
 
   try {
