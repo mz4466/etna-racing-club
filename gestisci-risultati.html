@@ -490,9 +490,9 @@ function addRow(data={}){
     <td><input type="text" placeholder="1'52&quot;144" value="${esc(data.bestLap||'')}" id="bestlap-${id}" oninput="updateStandings()"></td>
     <td style="text-align:center;"><input type="checkbox" class="fl-check" id="fl-${id}" ${data.fl?'checked':''} onchange="autoFillPoints();updateStandings()"></td>
     <td style="text-align:center;"><input type="checkbox" class="fl-check" id="pole-${id}" ${data.pole?'checked':''} onchange="autoFillPoints();updateStandings()"></td>
-    <td><input type="number" min="0" value="${data.punti??''}" id="punti-${id}" oninput="calcTotal(${id});updateStandings()" style="text-align:center;"></td>
+    <td><input type="number" min="0" value="${data.punti!==undefined?data.punti:''}" id="punti-${id}" oninput="calcTotal(${id});updateStandings()" style="text-align:center;"></td>
     <td><input type="text" value="${esc(data.extra||'')}" id="extra-${id}" placeholder="-" oninput="calcTotal(${id});updateStandings()" style="text-align:center;"></td>
-    <td><input type="number" min="0" value="${data.totale??''}" id="totale-${id}" style="text-align:center;background:rgba(201,162,39,.06);border-color:rgba(201,162,39,.3);" readonly></td>
+    <td><input type="number" min="0" value="${data.totale!==undefined?data.totale:''}" id="totale-${id}" style="text-align:center;background:rgba(201,162,39,.06);border-color:rgba(201,162,39,.3);" readonly></td>
     <td>
       <select id="stato-${id}" class="status-normal" onchange="onStatoChange(${id})">
         <option value="ok" ${(!data.stato||data.stato==='ok')?'selected':''}>✅ OK</option>
@@ -520,8 +520,8 @@ function onStatoChange(id){
 }
 
 function calcTotal(id){
-  const punti  = parseInt(document.getElementById(`punti-${id}`)?.value)||0;
-  const extra  = document.getElementById(`extra-${id}`)?.value||'';
+  const punti  = parseInt(( document.getElementById(`punti-${id}`) ? document.getElementById(`punti-${id}`).value : ''))||0;
+  const extra  = ( document.getElementById(`extra-${id}`) ? document.getElementById(`extra-${id}`).value : '')||'';
   // parse extra: could be "1+1", "2", "-"
   let extraVal = 0;
   extra.replace(/-/g,'').split('+').forEach(p=>{const n=parseInt(p.trim());if(!isNaN(n))extraVal+=n;});
@@ -558,11 +558,11 @@ function autoFillPoints(){
   const rows = document.querySelectorAll('#resultsBody tr');
   rows.forEach((r,i)=>{
     const id=r.dataset.rowId;
-    const stato=document.getElementById(`stato-${id}`)?.value;
+    const stato=( document.getElementById(`stato-${id}`) ? document.getElementById(`stato-${id}`).value : '');
     if(stato!=='ok'){ return; }
     const pts = GT7_PTS[i]||0;
-    const fl  = document.getElementById(`fl-${id}`)?.checked;
-    const pole= document.getElementById(`pole-${id}`)?.checked;
+    const fl  = ( document.getElementById(`fl-${id}`) ? document.getElementById(`fl-${id}`).checked : false);
+    const pole= ( document.getElementById(`pole-${id}`) ? document.getElementById(`pole-${id}`).checked : false);
     document.getElementById(`punti-${id}`).value=pts;
     const extras=[];
     if(fl)  extras.push('1');  // fastest lap bonus
@@ -640,15 +640,15 @@ function collectRows(){
     const id=r.dataset.rowId;
     return {
       pos:     i+1,
-      nome:    document.getElementById(`nome-${id}`)?.value.trim()||'',
-      tempo:   document.getElementById(`tempo-${id}`)?.value.trim()||'',
-      bestLap: document.getElementById(`bestlap-${id}`)?.value.trim()||'',
-      fl:      document.getElementById(`fl-${id}`)?.checked||false,
-      pole:    document.getElementById(`pole-${id}`)?.checked||false,
-      punti:   parseInt(document.getElementById(`punti-${id}`)?.value)||0,
-      extra:   document.getElementById(`extra-${id}`)?.value.trim()||'-',
-      totale:  parseInt(document.getElementById(`totale-${id}`)?.value)||0,
-      stato:   document.getElementById(`stato-${id}`)?.value||'ok',
+      nome:    ( document.getElementById(`nome-${id}`) ? document.getElementById(`nome-${id}`).value.trim() : ''),
+      tempo:   ( document.getElementById(`tempo-${id}`) ? document.getElementById(`tempo-${id}`).value.trim() : ''),
+      bestLap: ( document.getElementById(`bestlap-${id}`) ? document.getElementById(`bestlap-${id}`).value.trim() : ''),
+      fl:      ( document.getElementById(`fl-${id}`) ? document.getElementById(`fl-${id}`).checked : false)||false,
+      pole:    ( document.getElementById(`pole-${id}`) ? document.getElementById(`pole-${id}`).checked : false)||false,
+      punti:   parseInt(( document.getElementById(`punti-${id}`) ? document.getElementById(`punti-${id}`).value : ''))||0,
+      extra:   ( document.getElementById(`extra-${id}`) ? document.getElementById(`extra-${id}`).value : '').trim()||'-',
+      totale:  parseInt(( document.getElementById(`totale-${id}`) ? document.getElementById(`totale-${id}`).value : 0))||0,
+      stato:   ( document.getElementById(`stato-${id}`) ? document.getElementById(`stato-${id}`).value : '')||'ok',
     };
   });
 }
@@ -677,7 +677,7 @@ function collectStandings(applyBestOf=false){
     return { nome, pts: usedScores.reduce((s,v)=>s+v,0) };
   });
 
-  return pilots.sort((a,b)=>b.pts-a.pts).map((p,i)=>({...p, pos:i+1}));
+  return pilots.sort((a,b)=>b.pts-a.pts).map(function(p,i){ return {nome:p.nome, pts:p.pts, pos:i+1}; });
 }
 
 // ── BUILD HTML ──
@@ -717,7 +717,7 @@ function buildHTML(){
   }).join('');
 
   // bestOf note for generated HTML
-  const bestOfVal = champ?.bestOf||0;
+  const bestOfVal = (champ && champ.bestOf ? champ.bestOf : 0);
   const bestOfNote = bestOfVal && bestOfVal < parseInt(garaTot||0)
     ? `<div style="font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:#c9a227;background:rgba(201,162,39,0.08);border:1px solid rgba(201,162,39,0.2);border-radius:5px;padding:5px 10px;margin-bottom:12px;">⚡ Migliori ${bestOfVal} risultati su ${garaTot}</div>`
     : '';
@@ -893,7 +893,7 @@ async function publish(){
       nextRace: document.getElementById('nextRace').value.trim(),
       rows:     collectRows(),
       standings:collectStandings(isLastRound), // apply drop rule only on final round
-      bestOf:   champ?.bestOf||null,
+      bestOf:   (champ ? champ.bestOf||null : null),
     };
     await putFile(`risultati/${jsonFname}`, JSON.stringify(jsonData,null,2), `Add race data: ${jsonFname}`);
 
@@ -910,7 +910,7 @@ async function linkResultToChampionship(resultFile){
   const champIdx = document.getElementById('champSelect').value;
   if(champIdx==='') return;
   const champ = calendarioData[champIdx];
-  if(!champ?.file) return;
+  if(!champ || !champ.file) return;
 
   try {
     // load champ HTML
