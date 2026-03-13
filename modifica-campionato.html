@@ -153,6 +153,76 @@
 
   .empty-pick { text-align: center; padding: 40px; color: var(--text-dim); font-family: 'Teko', sans-serif; font-size: 15px; letter-spacing: 3px; text-transform: uppercase; }
 
+  .champ-pick-row { display: flex; align-items: stretch; gap: 8px; animation: slideIn 0.3s cubic-bezier(0.22,1,0.36,1) both; }
+  .champ-pick-row .champ-pick-btn { animation: none; flex: 1; }
+
+  .btn-delete-champ {
+    flex-shrink: 0;
+    background: transparent;
+    border: 1px solid rgba(192,57,43,0.3);
+    border-radius: 10px;
+    color: var(--text-dim);
+    font-size: 16px;
+    width: 44px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .btn-delete-champ:hover { background: rgba(192,57,43,0.15); border-color: var(--red); color: var(--red); }
+
+  /* ── CONFIRM MODAL ── */
+  .confirm-modal-bg {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.88); z-index: 300;
+    align-items: center; justify-content: center;
+  }
+  .confirm-modal-bg.open { display: flex; }
+
+  .confirm-modal {
+    background: var(--bg-card);
+    border: 1px solid var(--red);
+    border-radius: 14px;
+    padding: 32px 28px;
+    width: 100%; max-width: 440px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 30px rgba(192,57,43,0.15);
+  }
+  .confirm-icon { font-size: 40px; margin-bottom: 14px; display: block; }
+  .confirm-title {
+    font-family: 'Russo One', sans-serif; font-size: 16px;
+    color: var(--red); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px;
+  }
+  .confirm-desc {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 15px;
+    color: var(--text-mid); line-height: 1.6; margin-bottom: 8px;
+  }
+  .confirm-files {
+    background: var(--bg-input); border: 1px solid var(--border-hi);
+    border-radius: 8px; padding: 10px 14px; margin: 14px 0;
+    text-align: left; max-height: 140px; overflow-y: auto;
+  }
+  .confirm-file-item {
+    font-family: 'Barlow Condensed', monospace; font-size: 13px;
+    color: var(--text-dim); padding: 3px 0;
+    border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;
+  }
+  .confirm-file-item:last-child { border-bottom: none; }
+  .confirm-file-item .fi-icon { font-size: 11px; flex-shrink: 0; }
+  .confirm-warning {
+    font-family: 'Teko', sans-serif; font-size: 13px; letter-spacing: 2px;
+    color: var(--red); text-transform: uppercase; margin-bottom: 20px; opacity: 0.8;
+  }
+  .confirm-btns { display: flex; gap: 10px; justify-content: center; }
+  .confirm-btns .btn { min-width: 130px; justify-content: center; }
+  .btn-danger { background: var(--red); border-color: #e74c3c; color: #fff; font-weight: 700; }
+  .btn-danger:hover { background: #e74c3c; }
+  .btn-danger:disabled { opacity: 0.4; cursor: not-allowed; }
+  .delete-progress {
+    font-family: 'Teko', sans-serif; font-size: 13px; letter-spacing: 2px;
+    color: var(--text-dim); text-transform: uppercase; margin-top: 14px;
+    min-height: 20px; text-align: center;
+  }
+
   /* ── STEP 2: EDIT FORM (same as crea-campionato) ── */
   #stepEdit { display: none; flex-direction: column; gap: 24px; }
 
@@ -394,6 +464,22 @@
 
 <div id="toast"></div>
 
+<!-- DELETE CONFIRM MODAL -->
+<div class="confirm-modal-bg" id="confirmDeleteModal">
+  <div class="confirm-modal">
+    <span class="confirm-icon">🗑️</span>
+    <div class="confirm-title">Elimina Campionato</div>
+    <div class="confirm-desc" id="confirmDesc">Stai per eliminare questo campionato e tutti i file collegati.</div>
+    <div class="confirm-files" id="confirmFileList"></div>
+    <div class="confirm-warning">⚠️ Operazione irreversibile</div>
+    <div class="confirm-btns">
+      <button class="btn btn-outline" onclick="closeConfirmDelete()">Annulla</button>
+      <button class="btn btn-danger" id="confirmDeleteBtn" onclick="executeDelete()">🗑 Elimina Tutto</button>
+    </div>
+    <div class="delete-progress" id="deleteProgress"></div>
+  </div>
+</div>
+
 <script>
 const REPO   = 'mz4466/etna-racing-club';
 const BRANCH = 'main';
@@ -453,9 +539,12 @@ function renderPickList() {
   }
   list.innerHTML = '';
   championships.forEach((c, i) => {
+    const row = document.createElement('div');
+    row.className = 'champ-pick-row';
+    row.style.animationDelay = `${i * 0.06}s`;
+
     const btn = document.createElement('button');
     btn.className = 'champ-pick-btn';
-    btn.style.animationDelay = `${i * 0.06}s`;
     btn.innerHTML = `
       <div class="pick-cat">${c.cat || '—'}</div>
       <div class="pick-info">
@@ -465,7 +554,16 @@ function renderPickList() {
       <div class="pick-arrow">→</div>
     `;
     btn.onclick = () => loadChampionship(c);
-    list.appendChild(btn);
+
+    const delBtn = document.createElement('button');
+    delBtn.className = 'btn-delete-champ';
+    delBtn.title = 'Elimina campionato';
+    delBtn.innerHTML = '🗑';
+    delBtn.onclick = (e) => { e.stopPropagation(); confirmDelete(c); };
+
+    row.appendChild(btn);
+    row.appendChild(delBtn);
+    list.appendChild(row);
   });
 }
 
@@ -898,6 +996,165 @@ function toast(msg, type) {
   t.className = 'show' + (type ? ' '+type : '');
   clearTimeout(t._t);
   t._t = setTimeout(() => t.className = '', 3200);
+}
+
+// ── DELETE CHAMPIONSHIP ──
+let champToDelete = null;
+
+function confirmDelete(champ) {
+  champToDelete = champ;
+
+  document.getElementById('confirmDesc').textContent =
+    `Stai per eliminare "${champ.name} ${champ.year}" e tutti i file collegati da GitHub.`;
+
+  // Build file list to show user
+  const files = buildDeleteFileList(champ);
+  const listEl = document.getElementById('confirmFileList');
+  listEl.innerHTML = files.map(f =>
+    `<div class="confirm-file-item"><span class="fi-icon">${f.icon}</span><span>${f.path}</span></div>`
+  ).join('');
+
+  document.getElementById('deleteProgress').textContent = '';
+  document.getElementById('confirmDeleteBtn').disabled = false;
+  document.getElementById('confirmDeleteModal').classList.add('open');
+}
+
+function closeConfirmDelete() {
+  document.getElementById('confirmDeleteModal').classList.remove('open');
+  champToDelete = null;
+}
+
+function buildDeleteFileList(champ) {
+  const files = [];
+  // Championship HTML
+  if (champ.file) files.push({ icon: '📄', path: champ.file });
+  // Result files — scan risultati/ for matches to this champ slug/year
+  // We'll discover them live during executeDelete; show a placeholder here
+  files.push({ icon: '📁', path: `risultati/ — file del campionato (verranno cercati)` });
+  files.push({ icon: '📋', path: 'calendario.json — voce del campionato' });
+  return files;
+}
+
+async function executeDelete() {
+  if (!champToDelete) return;
+  const token = getToken();
+  if (!token) { toast('Token mancante', 'err'); return; }
+
+  const btn      = document.getElementById('confirmDeleteBtn');
+  const progress = document.getElementById('deleteProgress');
+  btn.disabled   = true;
+  const champ    = champToDelete;
+
+  const setProgress = (msg) => { progress.textContent = msg; };
+
+  try {
+    // 1. Delete championship HTML file
+    if (champ.file) {
+      setProgress(`🗑 Eliminazione ${champ.file}…`);
+      await deleteFile(token, champ.file);
+    }
+
+    // 2. Scan risultati/ folder for matching files
+    setProgress('🔍 Ricerca file risultati…');
+    let resultFiles = [];
+    try {
+      const r = await fetch(`https://api.github.com/repos/${REPO}/contents/risultati?ref=${BRANCH}`, {
+        headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+      });
+      if (r.ok) {
+        const allFiles = await r.json();
+        // Match files that belong to this championship by slug/year pattern
+        const champSlug = (champ.slug || champ.name || '').toLowerCase().replace(/[^a-z0-9]/g, '-');
+        const champYear = String(champ.year || '');
+        resultFiles = allFiles.filter(f => {
+          const name = f.name.toLowerCase();
+          return name.includes(champYear) && (
+            name.includes(champSlug) ||
+            name.includes((champ.name||'').toLowerCase().replace(/[^a-z0-9]/g,'-').slice(0,8))
+          );
+        });
+      }
+    } catch(e) { console.warn('Could not list risultati:', e.message); }
+
+    // 3. Delete each result file (JSON + HTML)
+    for (const f of resultFiles) {
+      setProgress(`🗑 Eliminazione risultati/${f.name}…`);
+      await deleteFile(token, `risultati/${f.name}`);
+      // Also delete the HTML counterpart if it's a .json
+      if (f.name.endsWith('.json')) {
+        const htmlName = f.name.replace('.json', '.html');
+        setProgress(`🗑 Eliminazione ${htmlName}…`);
+        try { await deleteFile(token, htmlName); } catch {}
+      }
+    }
+
+    // 4. Remove from calendario.json
+    setProgress('📋 Aggiornamento calendario.json…');
+    await removeFromCalendario(token, champ.file);
+
+    setProgress('✓ Eliminazione completata!');
+    toast(`✓ "${champ.name}" eliminato`, 'ok');
+
+    // Refresh list
+    setTimeout(async () => {
+      closeConfirmDelete();
+      await verifyAndLoad();
+    }, 1200);
+
+  } catch(e) {
+    setProgress('Errore: ' + e.message);
+    toast('Errore durante eliminazione: ' + e.message, 'err');
+    btn.disabled = false;
+  }
+}
+
+async function deleteFile(token, path) {
+  // Get SHA first
+  const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`, {
+    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+  });
+  if (!r.ok) return; // file doesn't exist, skip silently
+  const d = await r.json();
+
+  const dr = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `token ${token}`,
+      Accept: 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ message: `Delete: ${path}`, sha: d.sha, branch: BRANCH })
+  });
+  if (!dr.ok) {
+    const e = await dr.json();
+    throw new Error(`Impossibile eliminare ${path}: ${e.message}`);
+  }
+}
+
+async function removeFromCalendario(token, fileToRemove) {
+  const r = await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json?ref=${BRANCH}`, {
+    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+  });
+  if (!r.ok) return;
+  const d   = await r.json();
+  const sha = d.sha;
+  let data  = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\s/g,'')))));
+  data      = data.filter(c => c.file !== fileToRemove);
+
+  await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `token ${token}`,
+      Accept: 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      message: `Remove championship from calendario: ${fileToRemove}`,
+      content: btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2)))),
+      sha,
+      branch: BRANCH
+    })
+  });
 }
 </script>
 </body>
