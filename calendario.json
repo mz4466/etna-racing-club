@@ -11,5 +11,40 @@
     "totalRounds": 3,
     "completedRounds": 0,
     "bestOf": 3
+  },
+  {
+    "name": "test 3",
+    "year": "2023",
+    "cat": "Campionato",
+    "slug": "Estate",
+    "cars": "gr4",
+    "desc": "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
+    "status": "prossimo",
+    "file": "test-3-2023-campionato-estate.html",
+    "totalRounds": 2,
+    "completedRounds": 0,
+    "bestOf": 3,
+    "rounds": [
+      {
+        "circuit": "giogio",
+        "date": "2026-03-10",
+        "laps": "17",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x3",
+        "fuel": "x4",
+        "types": "Soft",
+        "notes": ""
+      },
+      {
+        "circuit": "miomio",
+        "date": "2026-04-04",
+        "laps": "1",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x3",
+        "fuel": "x4",
+        "types": "Medie",
+        "notes": "Pit 2"
+      }
+    ]
   }
 ]
