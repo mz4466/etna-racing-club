@@ -1041,9 +1041,14 @@ function renderPilotPickerList(q){
     list.innerHTML = '<div class="pilot-modal-empty">Nessun pilota trovato</div>';
     return;
   }
-  list.innerHTML = filtered.map(function(name){
-    return '<div class="pilot-modal-item" onclick="selectPilotFromPicker('+JSON.stringify(name)+')">' + esc(name) + '</div>';
-  }).join('');
+  list.innerHTML = '';
+  filtered.forEach(function(name){
+    var item = document.createElement('div');
+    item.className = 'pilot-modal-item';
+    item.textContent = name;
+    item.addEventListener('click', function(){ selectPilotFromPicker(name); });
+    list.appendChild(item);
+  });
 }
 
 function selectPilotFromPicker(name){
