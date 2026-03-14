@@ -613,8 +613,8 @@ function populateFromHTML(entry, html) {
 
   if (roundCards.length > 0) {
     roundCards.forEach(rc => {
-      const circuit  = rc.querySelector('.round-circuit')?.textContent?.trim() || '';
-      const dateRaw  = rc.querySelector('.round-date')?.textContent?.trim() || '';
+      var _rcc = rc.querySelector('.round-circuit'); const circuit = _rcc ? _rcc.textContent.trim() : '';
+      var _rcd = rc.querySelector('.round-date'); const dateRaw = _rcd ? _rcd.textContent.trim() : '';
       const pills    = [...rc.querySelectorAll('.detail-pill')].map(p => p.textContent.trim());
       const noteEl   = rc.querySelector('.round-note');
       const note     = noteEl ? noteEl.textContent.replace('📌','').trim() : '';
@@ -911,7 +911,7 @@ function buildHTML() {
 // ── PREVIEW ──
 function openPreview() {
   document.getElementById('previewFrame').srcdoc = buildHTML();
-  document.getElementById('modalTitle').textContent = 'ANTEPRIMA — ' + (currentChamp?.file || '').toUpperCase();
+  document.getElementById('modalTitle').textContent = 'ANTEPRIMA — ' + (currentChamp && currentChamp.file ? currentChamp.file.toUpperCase() : '');
   document.getElementById('previewModal').classList.add('open');
 }
 function closePreview() { document.getElementById('previewModal').classList.remove('open'); }
@@ -921,7 +921,7 @@ function downloadHTML() {
   const blob = new Blob([buildHTML()], {type:'text/html'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = currentChamp?.file || 'campionato.html';
+  a.download = (currentChamp && currentChamp.file) ? currentChamp.file : 'campionato.html';
   a.click();
 }
 
