@@ -208,6 +208,7 @@
     <div class="sidebar-block">
       <div class="sidebar-label">File output</div>
       <div class="repo-note" id="outputFilename" style="color:var(--blue);word-break:break-all;">—</div>
+      <div id="existingResultsBadge" style="display:none;margin-top:6px;padding:6px 10px;background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.3);border-radius:6px;font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:var(--green);">✏️ MODIFICA RISULTATI ESISTENTI</div>
     </div>
 
     <div class="sidebar-block">
@@ -472,7 +473,7 @@ function onRoundChange(){
   if(!round) return;
   document.getElementById('garaNum').value = round;
 
-  // Auto-fill from calendario.json rounds array (saved by crea-campionato)
+  // Auto-fill from calendario.json rounds array
   const champIdx = document.getElementById('champSelect').value;
   if(champIdx !== ''){
     const champ = calendarioData[champIdx];
@@ -484,6 +485,9 @@ function onRoundChange(){
     }
   }
   updateOutputFilename();
+
+  // After filename is set, try to load existing results
+  setTimeout(tryLoadExistingResults, 100);
 }
 
 function updateOutputFilename(){
@@ -1066,6 +1070,60 @@ function selectPilotFromPicker(name){
 document.getElementById('pilotPickerModal').addEventListener('click', function(e){
   if(e.target === this) closePilotPicker();
 });
+
+// ── LOAD EXISTING RESULTS ──
+async function tryLoadExistingResults(){
+  // Only attempt if connected
+  if(!token) return;
+
+  const fname = document.getElementById('outputFilenameInput').value.trim();
+  if(!fname || fname === '—') return;
+
+  const jsonFname = 'risultati/' + fname.replace('.html', '.json');
+
+  try {
+    const r = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + jsonFname + '?ref=' + BRANCH, {
+      headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json' }
+    });
+
+    // Hide badge by default
+    document.getElementById('existingResultsBadge').style.display = 'none';
+
+    if(!r.ok) return; // no existing results — fresh entry
+
+    const d = await r.json();
+    const data = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\s/g,'')))));
+
+    // Show "editing existing" badge
+    document.getElementById('existingResultsBadge').style.display = 'block';
+    toast('✓ Risultati esistenti caricati — puoi modificarli', 'ok');
+
+    // Populate race info fields
+    if(data.circuito) document.getElementById('circuitoInput').value = data.circuito;
+    if(data.data)     document.getElementById('dataInput').value = data.data;
+    if(data.garaNum)  document.getElementById('garaNum').value = data.garaNum;
+    if(data.garaTot)  document.getElementById('garaTot').value = data.garaTot;
+    if(data.prevRace) document.getElementById('prevRace').value = data.prevRace;
+    if(data.nextRace) document.getElementById('nextRace').value = data.nextRace;
+    if(data.outputFilename) {
+      document.getElementById('outputFilenameInput').value = data.outputFilename;
+      document.getElementById('outputFilename').textContent = data.outputFilename;
+    }
+
+    // Clear existing rows and repopulate
+    document.getElementById('resultsBody').innerHTML = '';
+    rowCounter = 0;
+
+    if(data.rows && data.rows.length){
+      data.rows.forEach(function(row){ addRow(row); });
+    }
+
+    updateOutputFilename();
+
+  } catch(e){
+    console.warn('tryLoadExistingResults:', e.message);
+  }
+}
 
 // start with 3 empty rows
 addRow(); addRow(); addRow();
