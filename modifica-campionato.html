@@ -495,39 +495,34 @@ function togglePAT() { const i = document.getElementById('patInput'); i.type = i
 async function verifyAndLoad() {
   const token = getToken();
   if (!token) { toast('Inserisci un token PAT', 'err'); return; }
+  document.getElementById('statusDot').className = 'status-dot';
+  document.getElementById('statusText').textContent = 'Connessione…';
+  // Skip /repos check (CORS issues) — go straight to calendario.json as auth proof
   try {
-    const r = await fetch(`https://api.github.com/repos/${REPO}`, {
-      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
-    });
-    if (!r.ok) throw new Error();
+    await loadCalendario();
     document.getElementById('statusDot').className = 'status-dot ok';
     document.getElementById('statusText').textContent = 'Connesso';
-    toast('✓ Connesso', 'ok');
-    await loadCalendario();
-  } catch {
+  } catch(e) {
     document.getElementById('statusDot').className = 'status-dot err';
     document.getElementById('statusText').textContent = 'Errore';
-    toast('Token non valido', 'err');
+    toast('Errore: ' + e.message, 'err');
   }
 }
 
 async function loadCalendario() {
   const token = getToken();
   toast('Caricamento lista campionati…', '');
-  try {
-    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json?ref=${BRANCH}&_=${Date.now()}`, {
-      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Cache-Control': 'no-cache' }
-    });
-    if (!r.ok) throw new Error('calendario.json non trovato');
-    const d = await r.json();
-    championships = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\s/g,'')))));
-    renderPickList();
-    toast(`✓ ${championships.length} campionati trovati`, 'ok');
-  } catch(e) {
-    toast('Errore: ' + e.message, 'err');
-    championships = [];
-    renderPickList();
-  }
+  const r = await fetch('https://api.github.com/repos/' + REPO + '/contents/calendario.json?ref=' + BRANCH + '&_=' + Date.now(), {
+    headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json' }
+  });
+  if(r.status === 401) throw new Error('Token non valido (401)');
+  if(r.status === 403) throw new Error('Permessi insufficienti (403)');
+  if(r.status === 404) throw new Error('calendario.json non trovato (404)');
+  if(!r.ok) throw new Error('Errore GitHub: HTTP ' + r.status);
+  const d = await r.json();
+  championships = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\s/g,'')))));
+  renderPickList();
+  toast('✓ ' + championships.length + ' campionati trovati', 'ok');
 }
 
 // ── STEP 1: PICK LIST ──
