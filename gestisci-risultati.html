@@ -140,6 +140,27 @@
   .modal-body{flex:1;overflow:hidden;}
   .modal-body iframe{width:100%;height:100%;border:none;min-height:620px;}
 
+  /* PILOT PICKER BUTTON */
+  .pilot-cell{display:flex;gap:4px;align-items:center;}
+  .pilot-cell input{flex:1;min-width:0;}
+  .btn-pick-pilot{flex-shrink:0;background:var(--gold-dim);border:1px solid var(--gold);border-radius:5px;color:var(--gold);cursor:pointer;font-size:13px;padding:6px 8px;transition:background .15s;line-height:1;}
+  .btn-pick-pilot:hover{background:var(--gold);color:#000;}
+
+  /* PILOT LIST MODAL */
+  .pilot-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:center;justify-content:center;padding:20px;}
+  .pilot-modal-bg.open{display:flex;}
+  .pilot-modal{background:var(--bg-card);border:1px solid var(--gold);border-radius:12px;width:100%;max-width:420px;max-height:70vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.8);}
+  .pilot-modal-head{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);gap:10px;}
+  .pilot-modal-title{font-family:'Russo One',sans-serif;font-size:13px;color:var(--gold);letter-spacing:2px;flex:1;text-transform:uppercase;}
+  .pilot-modal-search{background:var(--bg-input);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;outline:none;width:100%;transition:border-color .2s;}
+  .pilot-modal-search:focus{border-color:var(--gold);}
+  .pilot-modal-close{background:none;border:1px solid var(--border-hi);color:var(--text-dim);cursor:pointer;border-radius:5px;padding:3px 10px;font-size:16px;}
+  .pilot-modal-close:hover{border-color:var(--red);color:var(--red);}
+  .pilot-modal-list{overflow-y:auto;padding:8px;}
+  .pilot-modal-item{padding:10px 12px;border-radius:7px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:15px;color:var(--text);transition:background .12s,color .12s;border:1px solid transparent;margin-bottom:4px;}
+  .pilot-modal-item:hover{background:var(--gold-dim);border-color:var(--gold);color:var(--gold-hi);}
+  .pilot-modal-empty{padding:24px;text-align:center;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;}
+
   ::-webkit-scrollbar{width:5px;}
   ::-webkit-scrollbar-track{background:var(--bg);}
   ::-webkit-scrollbar-thumb{background:var(--border-hi);border-radius:3px;}
@@ -325,6 +346,18 @@
 <!-- AUTOCOMPLETE DROPDOWN (shared) -->
 <div class="autocomplete-dropdown" id="acDropdown"></div>
 
+<!-- PILOT PICKER MODAL -->
+<div class="pilot-modal-bg" id="pilotPickerModal">
+  <div class="pilot-modal">
+    <div class="pilot-modal-head">
+      <div class="pilot-modal-title">Seleziona Pilota</div>
+      <input type="text" class="pilot-modal-search" id="pilotPickerSearch" placeholder="Cerca..." oninput="filterPilotPicker(this.value)">
+      <button class="pilot-modal-close" onclick="closePilotPicker()">✕</button>
+    </div>
+    <div class="pilot-modal-list" id="pilotPickerList"></div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -496,9 +529,10 @@ function addRow(data={}){
   tr.innerHTML = `
     <td><div class="pos-cell ${posClass}" id="pos-${id}">${pos}°</div></td>
     <td>
-      <div class="autocomplete-wrap">
+      <div class="autocomplete-wrap pilot-cell">
         <input type="text" placeholder="Nome pilota" value="${esc(data.nome||'')}" id="nome-${id}"
           oninput="onNomeInput(${id},this)" autocomplete="off">
+        <button class="btn-pick-pilot" onclick="openPilotPicker(${id})" title="Scegli dalla rosa" type="button">▼</button>
       </div>
     </td>
     <td><input type="text" placeholder="26'42&quot;124" value="${esc(data.tempo||'')}" id="tempo-${id}" oninput="updateStandings()"></td>
@@ -977,6 +1011,56 @@ function toast(msg,type){
   t.textContent=msg; t.className='show'+(type?' '+type:'');
   clearTimeout(t._t); t._t=setTimeout(()=>t.className='',3500);
 }
+
+// ── PILOT PICKER MODAL ──
+var _pickerTargetId = null;
+
+function openPilotPicker(rowId){
+  _pickerTargetId = rowId;
+  document.getElementById('pilotPickerSearch').value = '';
+  renderPilotPickerList('');
+  document.getElementById('pilotPickerModal').classList.add('open');
+  setTimeout(function(){ document.getElementById('pilotPickerSearch').focus(); }, 80);
+}
+
+function closePilotPicker(){
+  document.getElementById('pilotPickerModal').classList.remove('open');
+  _pickerTargetId = null;
+}
+
+function filterPilotPicker(q){
+  renderPilotPickerList(q);
+}
+
+function renderPilotPickerList(q){
+  var list = document.getElementById('pilotPickerList');
+  var filtered = pilotNames.filter(function(n){
+    return !q || n.toLowerCase().indexOf(q.toLowerCase()) >= 0;
+  });
+  if(!filtered.length){
+    list.innerHTML = '<div class="pilot-modal-empty">Nessun pilota trovato</div>';
+    return;
+  }
+  list.innerHTML = filtered.map(function(name){
+    return '<div class="pilot-modal-item" onclick="selectPilotFromPicker('+JSON.stringify(name)+')">' + esc(name) + '</div>';
+  }).join('');
+}
+
+function selectPilotFromPicker(name){
+  if(_pickerTargetId !== null){
+    var input = document.getElementById('nome-' + _pickerTargetId);
+    if(input){
+      input.value = name;
+      updateStandings();
+    }
+  }
+  closePilotPicker();
+}
+
+// Close picker on backdrop click
+document.getElementById('pilotPickerModal').addEventListener('click', function(e){
+  if(e.target === this) closePilotPicker();
+});
 
 // start with 3 empty rows
 addRow(); addRow(); addRow();
