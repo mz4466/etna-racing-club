@@ -330,9 +330,16 @@ async function loadPilots(){
 
     const pilots = await Promise.all(jsonFiles.map(async f=>{
       try {
-        const jr = await fetch(`${BASE}/${FOLDER}/${f.name}`);
+        // Use GitHub API contents endpoint (works on both public and private repos)
+        // f.download_url may be blocked; use f.url (API) or decode content directly
+        const jr = await fetch(f.url);
         if(!jr.ok) return null;
-        return await jr.json();
+        const fd = await jr.json();
+        // GitHub API returns base64-encoded content
+        if(fd.content) {
+          return JSON.parse(decodeURIComponent(escape(atob(fd.content.replace(/\s/g,'')))));
+        }
+        return null;
       } catch { return null; }
     }));
 
