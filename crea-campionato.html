@@ -904,7 +904,7 @@ function addRound() {
 
   updateAll();
   // focus circuit field
-  setTimeout(() => el.querySelector('.circuit-input')?.focus(), 50);
+  setTimeout(function(){ var ci = el.querySelector('.circuit-input'); if(ci) ci.focus(); }, 50);
 }
 
 function roundHTML(id, pos) {
@@ -1071,7 +1071,7 @@ function updateAll() {
   document.getElementById('roundCount').textContent = count ? `(${count} round)` : '';
 
   // bestOf hint in summary
-  const bestOfVal = parseInt(document.getElementById('champBestOf')?.value)||0;
+  var _boe = document.getElementById('champBestOf'); const bestOfVal = parseInt(_boe ? _boe.value : 0)||0;
   const bestOfEl  = document.getElementById('bestOfHint');
   if(bestOfEl){
     if(bestOfVal && bestOfVal < count){
