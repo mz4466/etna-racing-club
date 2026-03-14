@@ -1089,7 +1089,17 @@ async function tryLoadExistingResults(){
     // Hide badge by default
     document.getElementById('existingResultsBadge').style.display = 'none';
 
-    if(!r.ok) return; // no existing results — fresh entry
+    if(!r.ok) {
+      // No existing results for this round — reset to clean state
+      document.getElementById('existingResultsBadge').style.display = 'none';
+      document.getElementById('resultsBody').innerHTML = '';
+      rowCounter = 0;
+      addRow(); addRow(); addRow();
+      // Clear nav fields
+      document.getElementById('prevRace').value = '';
+      document.getElementById('nextRace').value = '';
+      return;
+    }
 
     const d = await r.json();
     const data = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\s/g,'')))));
