@@ -1161,7 +1161,7 @@ async function deleteFile(token, path) {
 
 async function removeFromCalendario(token, fileToRemove) {
   const r = await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json?ref=${BRANCH}&_=${Date.now()}`, {
-    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Cache-Control': 'no-cache' }
+    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
   });
   if (!r.ok) return;
   const d   = await r.json();
