@@ -321,6 +321,22 @@
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+  /* Trophy picker */
+  .trophy-option {
+    border: 2px solid var(--border-hi);
+    border-radius: 10px;
+    padding: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.2s, background 0.2s;
+    background: rgba(255,255,255,0.02);
+  }
+  .trophy-option:hover { border-color: var(--gold); background: var(--gold-dim); }
+  .trophy-option.selected { border-color: var(--gold); background: var(--gold-dim); box-shadow: 0 0 12px rgba(201,162,39,0.2); }
+  .trophy-option img { width: 100%; max-width: 80px; height: 90px; object-fit: contain; display: block; margin: 0 auto 4px; }
+  .trophy-option .trophy-name { font-family: 'Teko', sans-serif; font-size: 11px; letter-spacing: 1px; color: var(--text-dim); text-transform: uppercase; line-height: 1.2; }
+  .trophy-option.selected .trophy-name { color: var(--gold); }
 </style>
 </head>
 <body>
@@ -421,6 +437,16 @@
         <div class="form-row" style="grid-template-columns:1fr;">
           <div class="field"><label>Descrizione (opzionale)</label><textarea id="champDesc"></textarea></div>
         </div>
+        <div class="form-row" style="grid-template-columns:1fr;">
+          <div class="field">
+            <label>Trofeo del Campionato <span style="color:var(--gold);font-size:11px;">(opzionale)</span></label>
+            <div id="trophyGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:6px;"></div>
+            <input type="hidden" id="champTrophy" value="">
+            <span style="font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:var(--text-dim);margin-top:5px;display:block;">
+              Clicca un trofeo per selezionarlo.
+            </span>
+          </div>
+        </div>
       </div>
 
       <!-- Rounds -->
@@ -489,6 +515,37 @@ let currentChamp  = null;  // the calendario.json entry being edited
 let roundCounter  = 0;
 
 // ── AUTH ──
+
+// ── TROPHY PICKER ──
+var TROPHIES = [
+  { file: 'GR3_Championship_Winner.png',   label: 'GR.3 Championship' },
+  { file: 'Formula1_Vincitore.png',        label: 'Formula 1' },
+  { file: 'F1_Vincitore.png',              label: 'F1 Vincitore' },
+  { file: 'Abarth_Scorpion_Challenge.png', label: 'Abarth Scorpion' },
+  { file: 'Classic_Vintage.png',           label: 'Classic Vintage' },
+  { file: 'Crono_Vincitore.png',           label: 'Crono Vincitore' },
+  { file: 'Crono_Scalata_Pikes_Peak.png',  label: 'Pikes Peak' },
+];
+
+function buildTrophyPicker(sel) {
+  var grid = document.getElementById('trophyGrid');
+  if (!grid) return;
+  grid.innerHTML = TROPHIES.map(function(t) {
+    var cls = 'trophy-option' + (sel === t.file ? ' selected' : '');
+    return '<div class="' + cls + '" onclick="selectTrophy(\x27' + t.file + '\x27)">'
+      + '<img src="../trophy_png/' + t.file + '" alt="' + t.label + '" onerror="this.style.opacity=0.3">'
+      + '<div class="trophy-name">' + t.label + '</div></div>';
+  }).join('');
+}
+
+function selectTrophy(file) {
+  var inp = document.getElementById('champTrophy');
+  inp.value = (inp.value === file) ? '' : file;
+  buildTrophyPicker(inp.value);
+}
+
+document.addEventListener('DOMContentLoaded', function() { buildTrophyPicker(''); });
+
 function getToken() { return document.getElementById('patInput').value.trim(); }
 function togglePAT() { const i = document.getElementById('patInput'); i.type = i.type==='password'?'text':'password'; }
 
@@ -591,6 +648,8 @@ function populateFromHTML(entry, html) {
   document.getElementById('champYear').value = entry.year  || '2026';
   document.getElementById('champCars').value = entry.cars  || '';
   document.getElementById('champDesc').value = entry.desc  || '';
+  document.getElementById('champTrophy').value = entry.trophy || '';
+  buildTrophyPicker(entry.trophy || '');
   document.getElementById('champSlug').value = entry.slug  || '';
 
   // Set category
@@ -1005,6 +1064,8 @@ async function updateCalendarioEntry(token, fname) {
       // Preserve bestOf if set
       const bestOfEl = document.getElementById('champBestOf');
       if(bestOfEl) list[idx].bestOf = parseInt(bestOfEl.value)||null;
+      const trophyEl = document.getElementById('champTrophy');
+      if(trophyEl) list[idx].trophy = trophyEl.value || null;
 
       const body = { message: `Update calendario.json: ${fname}`, content: btoa(unescape(encodeURIComponent(JSON.stringify(list, null, 2)))), branch: BRANCH, sha: d.sha };
       await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json`, {
