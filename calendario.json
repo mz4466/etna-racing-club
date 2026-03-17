@@ -1,18 +1,5 @@
 [
   {
-    "name": "Sole & Sorpassi",
-    "year": "2025",
-    "cat": "Campionato",
-    "slug": "Estate",
-    "cars": "Gr.3",
-    "desc": "slofoapnfwemg",
-    "status": "prossimo",
-    "file": "campionati/sole--sorpassi-2025-campionato-estate.html",
-    "totalRounds": 3,
-    "completedRounds": 0,
-    "bestOf": 3
-  },
-  {
     "name": "test 3",
     "year": "2023",
     "cat": "Campionato",
