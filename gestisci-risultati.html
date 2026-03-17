@@ -449,6 +449,8 @@ function onChampChange(){
   const idx = document.getElementById('champSelect').value;
   const rSel = document.getElementById('roundSelect');
   rSel.innerHTML='<option value="">— Seleziona round —</option>';
+  // Reset everything when championship changes
+  resetResultsForm();
   if(idx==='') return;
   const champ = calendarioData[idx];
   document.getElementById('champSelect').dataset.bestOf = champ.bestOf||'';
@@ -472,6 +474,9 @@ function onRoundChange(){
   const round = document.getElementById('roundSelect').value;
   if(!round) return;
   document.getElementById('garaNum').value = round;
+
+  // Reset rows immediately — tryLoadExistingResults will repopulate if results exist
+  resetResultsForm();
 
   // Auto-fill from calendario.json rounds array
   const champIdx = document.getElementById('champSelect').value;
@@ -1071,6 +1076,17 @@ document.getElementById('pilotPickerModal').addEventListener('click', function(e
   if(e.target === this) closePilotPicker();
 });
 
+// ── RESET FORM ──
+function resetResultsForm(){
+  document.getElementById('resultsBody').innerHTML = '';
+  rowCounter = 0;
+  addRow(); addRow(); addRow();
+  document.getElementById('prevRace').value = '';
+  document.getElementById('nextRace').value = '';
+  document.getElementById('existingResultsBadge').style.display = 'none';
+  updateStandings();
+}
+
 // ── LOAD EXISTING RESULTS ──
 async function tryLoadExistingResults(){
   // Only attempt if connected
@@ -1090,14 +1106,7 @@ async function tryLoadExistingResults(){
     document.getElementById('existingResultsBadge').style.display = 'none';
 
     if(!r.ok) {
-      // No existing results for this round — reset to clean state
-      document.getElementById('existingResultsBadge').style.display = 'none';
-      document.getElementById('resultsBody').innerHTML = '';
-      rowCounter = 0;
-      addRow(); addRow(); addRow();
-      // Clear nav fields
-      document.getElementById('prevRace').value = '';
-      document.getElementById('nextRace').value = '';
+      // No existing results — form already reset by onRoundChange
       return;
     }
 
