@@ -1078,11 +1078,21 @@ document.getElementById('pilotPickerModal').addEventListener('click', function(e
 
 // ── RESET FORM ──
 function resetResultsForm(){
+  // Race info fields
+  document.getElementById('circuitoInput').value = '';
+  document.getElementById('dataInput').value = '';
+  document.getElementById('giريInput').value = '17';
+  document.getElementById('garaNum').value = '1';
+  document.getElementById('outputFilenameInput').value = '';
+  document.getElementById('outputFilename').textContent = '—';
+  // Nav
+  document.getElementById('prevRace').value = '';
+  document.getElementById('nextRace').value = '';
+  // Results table
   document.getElementById('resultsBody').innerHTML = '';
   rowCounter = 0;
   addRow(); addRow(); addRow();
-  document.getElementById('prevRace').value = '';
-  document.getElementById('nextRace').value = '';
+  // Badge
   document.getElementById('existingResultsBadge').style.display = 'none';
   updateStandings();
 }
