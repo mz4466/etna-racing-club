@@ -934,7 +934,7 @@ async function publish(){
   toast('Pubblicazione…','');
   try {
     // 1. save results HTML
-    await putFile(fname, buildHTML(), `Add race results: ${fname}`);
+    await putFile('risultati/' + fname, buildHTML(), `Add race results: ${fname}`);
 
     // 2. save JSON data
     const jsonFname = fname.replace('.html','.json');
@@ -956,7 +956,7 @@ async function publish(){
     await putFile(`risultati/${jsonFname}`, JSON.stringify(jsonData,null,2), `Add race data: ${jsonFname}`);
 
     // 3. update championship HTML to link this result file
-    await linkResultToChampionship(fname);
+    await linkResultToChampionship('../risultati/' + fname);
 
     toast(`✓ Pubblicato: ${fname}`,'ok');
   } catch(e){
@@ -1154,6 +1154,7 @@ async function tryLoadExistingResults(){
   if(!fname || fname === '—') return;
 
   const jsonFname = 'risultati/' + fname.replace('.html', '.json');
+  const htmlFname = 'risultati/' + fname;
 
   try {
     const r = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + jsonFname + '?ref=' + BRANCH, {

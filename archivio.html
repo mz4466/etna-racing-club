@@ -296,7 +296,7 @@ async function loadArchive(){
           const pattern = new RegExp(`${(c.year||'')}.*(${(c.slug||'').replace(/[^a-z0-9]/gi,'.?')}|${(c.name||'').replace(/[^a-z0-9]/gi,'.?')}).*r${r}.*\\.json`,'i');
           const matchFile = resultFiles.find(f=>pattern.test(f));
           const hasResult = !!matchFile;
-          const htmlFile  = matchFile ? matchFile.replace('.json','.html') : null;
+          const htmlFile  = matchFile ? 'risultati/' + matchFile.replace('.json','.html') : null;
 
           // Try to get circuit name from file name
           let circuitLabel = `Round ${r}`;

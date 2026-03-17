@@ -672,7 +672,7 @@
       <div class="sidebar-label">File di output</div>
       <div class="filename-tag" id="filenameTag">—</div>
       <div class="repo-note" style="margin-top:4px;">
-        Il file verrà salvato nella root del repository.
+        Il file verrà salvato nella cartella <code>campionati/</code>.
       </div>
     </div>
 
@@ -1354,7 +1354,8 @@ async function publish() {
   toast('Pubblicazione in corso…', '');
 
   // 1. Publish the championship HTML page
-  const ok = await pushFile(token, fname, html, `Add/update championship: ${fname}`);
+  const champPath = 'campionati/' + fname;
+  const ok = await pushFile(token, champPath, html, `Add/update championship: ${fname}`);
   if (!ok) return;
 
   // 2. Update calendario.json
@@ -1438,7 +1439,7 @@ async function updateCalendario(token, fname) {
     slug: slug || cat,
     cars, desc,
     status: 'prossimo',
-    file: fname,
+    file: champPath,
     totalRounds,
     completedRounds: 0,
     bestOf: bestOf || null,
