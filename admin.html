@@ -260,9 +260,9 @@
     display: none;
     position: relative;
     z-index: 10;
-    min-height: 100vh;
+    height: 100vh;
     flex-direction: column;
-    overflow: visible;
+    overflow: hidden;
   }
 
   #dashboard.visible {
@@ -364,10 +364,10 @@
   .dash-body {
     flex: 1;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
-    padding: 60px 40px;
-    overflow-y: auto;
+    padding: 20px 40px;
+    overflow: hidden;
   }
 
   .dash-content {
@@ -376,8 +376,12 @@
   }
 
   .dash-welcome {
+    margin-bottom: 28px !important;
+  }
+
+  .dash-welcome {
     text-align: center;
-    margin-bottom: 52px;
+    margin-bottom: 24px;
   }
 
   .dash-welcome h1 {
@@ -401,7 +405,8 @@
   .menu-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    grid-auto-rows: 1fr;
+    gap: 16px;
     max-width: 900px;
     margin: 0 auto;
   }
@@ -410,7 +415,7 @@
     background: var(--bg-card);
     border: 1px solid var(--border-hi);
     border-radius: 14px;
-    padding: 36px 28px 30px;
+    padding: 24px 20px 20px;
     cursor: pointer;
     text-align: center;
     transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
