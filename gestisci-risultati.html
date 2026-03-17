@@ -544,8 +544,8 @@ function addRow(data={}){
         <button class="btn-pick-pilot" onclick="openPilotPicker(${id})" title="Scegli dalla rosa" type="button">▼</button>
       </div>
     </td>
-    <td><input type="text" placeholder="26'42&quot;124" value="${esc(data.tempo||'')}" id="tempo-${id}" oninput="updateStandings()"></td>
-    <td><input type="text" placeholder="1'52&quot;144" value="${esc(data.bestLap||'')}" id="bestlap-${id}" oninput="updateStandings()"></td>
+    <td><input type="text" placeholder="26'42''124" value="${esc(data.tempo||'')}" id="tempo-${id}" oninput="formatTime(this);updateStandings()" inputmode="numeric" maxlength="12"></td>
+    <td><input type="text" placeholder="1'52''144" value="${esc(data.bestLap||'')}" id="bestlap-${id}" oninput="formatTime(this);updateStandings()" inputmode="numeric" maxlength="10"></td>
     <td style="text-align:center;"><input type="checkbox" class="fl-check" id="fl-${id}" ${data.fl?'checked':''} onchange="autoFillPoints();updateStandings()"></td>
     <td style="text-align:center;"><input type="checkbox" class="fl-check" id="pole-${id}" ${data.pole?'checked':''} onchange="autoFillPoints();updateStandings()"></td>
     <td><input type="number" min="0" value="${data.punti!==undefined?data.punti:''}" id="punti-${id}" oninput="calcTotal(${id});updateStandings()" style="text-align:center;"></td>
@@ -1075,6 +1075,54 @@ function selectPilotFromPicker(name){
 document.getElementById('pilotPickerModal').addEventListener('click', function(e){
   if(e.target === this) closePilotPicker();
 });
+
+// ── TIME AUTO-FORMAT ──
+// Formats numeric input into M'SS''mmm or MM'SS''mmm
+// Handles both race total time and best lap
+// Also handles gap format: "a 17''438" or "a 1 Giro"
+function formatTime(input){
+  var raw = input.value;
+
+  // Don't format gap times (starting with 'a')
+  if(raw.toLowerCase().startsWith('a')) return;
+
+  // Strip everything except digits
+  var digits = raw.replace(/[^0-9]/g, '');
+  if(!digits) { input.value = ''; return; }
+
+  // Limit to 8 digits max (MM SS mmm)
+  if(digits.length > 8) digits = digits.slice(0, 8);
+
+  var result = '';
+
+  if(digits.length <= 3){
+    // Just milliseconds so far: show as-is
+    result = digits;
+  } else if(digits.length <= 5){
+    // SS''mmm
+    var sec = digits.slice(0, digits.length - 3);
+    var ms  = digits.slice(-3);
+    result = sec + "''" + ms;
+  } else {
+    // MM'SS''mmm
+    var msStart = digits.length - 3;
+    var secStart = msStart - 2;
+    var min = digits.slice(0, secStart);
+    var sec = digits.slice(secStart, msStart);
+    var ms  = digits.slice(msStart);
+    // Pad seconds to 2 digits
+    if(sec.length === 1) sec = '0' + sec;
+    result = min + "'" + sec + "''" + ms;
+  }
+
+  // Preserve cursor position
+  var pos = input.selectionStart;
+  var oldLen = input.value.length;
+  input.value = result;
+  var newLen = result.length;
+  // Move cursor to end if typing, otherwise keep relative position
+  input.selectionStart = input.selectionEnd = newLen;
+}
 
 // ── RESET FORM ──
 function resetResultsForm(){
