@@ -314,7 +314,6 @@
 const REPO   = 'mz4466';
 const RNAME  = 'etna-racing-club';
 const FOLDER = 'piloti_schede';
-const BASE   = `https://raw.githubusercontent.com/${REPO}/${RNAME}/main`;
 
 let allPilots = [];
 
@@ -370,10 +369,12 @@ function renderGrid(pilots){
     card.className='pilot-card';
     card.style.animationDelay=`${i*0.07}s`;
 
-    const photoHTML = p.foto
-      ? `<img src="${esc(p.foto)}" alt="${esc(p.nome)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+    // Support both base64 (p.foto from new admin) and filename (p.photo from old format)
+    var photoSrc = p.foto || (p.photo ? 'piloti_schede/' + p.photo : null);
+    const photoHTML = photoSrc
+      ? `<img src="${esc(photoSrc)}" alt="${esc(p.nome)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
       : '';
-    const placeholderStyle = p.foto ? 'display:none':'';
+    const placeholderStyle = photoSrc ? 'display:none':'';
 
     const badgesHTML = (p.badges||[]).map(b=>`<span class="badge">${esc(b)}</span>`).join('');
 
@@ -385,10 +386,10 @@ function renderGrid(pilots){
 
       <div class="card-body">
         <div class="card-name">${esc(p.nome||'—')}</div>
-        <div class="card-psn">🎮 ${esc(p.psn||'—')}</div>
+        <div class="card-psn">🎮 ${esc(p.psn||p.gt7Name||'—')}</div>
         <div class="card-meta">
-          ${p.nazione?`<div class="meta-row"><span class="meta-icon">🌍</span><span class="meta-label">Nazione</span><span class="meta-value">${esc(p.nazione)}</span></div>`:''}
-          ${p.auto?`<div class="meta-row"><span class="meta-icon">🚗</span><span class="meta-label">Auto</span><span class="meta-value">${esc(p.auto)}</span></div>`:''}
+          ${(p.nazione||p.country)?`<div class="meta-row"><span class="meta-icon">🌍</span><span class="meta-label">Nazione</span><span class="meta-value">${esc(p.nazione||p.country)}</span></div>`:''}
+          ${(p.auto||p.car)?`<div class="meta-row"><span class="meta-icon">🚗</span><span class="meta-label">Auto</span><span class="meta-value">${esc(p.auto||p.car)}</span></div>`:''}
           ${p.stile?`<div class="meta-row"><span class="meta-icon">🎯</span><span class="meta-label">Stile</span><span class="meta-value">${esc(p.stile)}</span></div>`:''}
         </div>
         ${(p.pistaAma||p.pistaOdia)?`
