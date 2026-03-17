@@ -1109,8 +1109,8 @@ async function executeDelete() {
       // Also delete the HTML counterpart if it's a .json
       if (f.name.endsWith('.json')) {
         const htmlName = f.name.replace('.json', '.html');
-        setProgress(`🗑 Eliminazione ${htmlName}…`);
-        try { await deleteFile(token, htmlName); } catch {}
+        setProgress(`🗑 Eliminazione risultati/${htmlName}…`);
+        try { await deleteFile(token, 'risultati/' + htmlName); } catch {}
       }
     }
 
