@@ -370,6 +370,7 @@ let token = '';
 let calendarioData  = [];  // from calendario.json
 let champHtmlMap    = {};  // slug -> html string of championship file
 let pilotNames      = [];  // from piloti_schede/
+let previousResults = {};  // champIdx -> { pilotName -> [pts per round] }
 let rowCounter      = 0;
 let currentAcInput  = null;
 
@@ -456,6 +457,8 @@ function onChampChange(){
   document.getElementById('champSelect').dataset.bestOf = champ.bestOf||'';
   document.getElementById('champSelect').dataset.totalRounds = champ.totalRounds||'';
   document.getElementById('champSelect').dataset.file = champ.file;
+  // Load previous results for standings accumulation
+  if(token) loadPreviousResults(idx);
   const total = champ.totalRounds||0;
   const rounds = champ.rounds||[];
 
@@ -522,6 +525,42 @@ async function loadPilots(){
     }));
     pilotNames = pilots.filter(Boolean).map(p=>p.nome||p.name||p.psn||'').filter(Boolean);
   } catch {}
+}
+
+// ── LOAD PREVIOUS RESULTS ──
+async function loadPreviousResults(champIdx){
+  previousResults[champIdx] = {};
+  try {
+    const r = await fetch('https://api.github.com/repos/' + REPO + '/contents/risultati?ref=' + BRANCH, {
+      headers:{Authorization:'token ' + token, Accept:'application/vnd.github.v3+json'}
+    });
+    if(!r.ok) return;
+    const files = await r.json();
+    const champ = calendarioData[champIdx];
+    if(!champ) return;
+
+    // Match files belonging to this championship by champIdx stored in JSON
+    const jsonFiles = files.filter(function(f){ return f.name.endsWith('.json'); });
+    const results = await Promise.all(jsonFiles.map(async function(f){
+      try {
+        var jr = await fetch(f.url, {headers:{Authorization:'token ' + token, Accept:'application/vnd.github.v3+json'}});
+        if(!jr.ok) return null;
+        var meta = await jr.json();
+        return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
+      } catch(e){ return null; }
+    }));
+
+    results.filter(Boolean).forEach(function(race){
+      // Only include races belonging to this championship
+      if(String(race.champIdx) !== String(champIdx)) return;
+      var rows = race.rows || [];
+      rows.forEach(function(row){
+        if(!row.nome) return;
+        if(!previousResults[champIdx][row.nome]) previousResults[champIdx][row.nome] = [];
+        previousResults[champIdx][row.nome].push({ pts: row.totale||0, round: parseInt(race.garaNum)||0 });
+      });
+    });
+  } catch(e){ console.warn('loadPreviousResults:', e.message); }
 }
 
 // ── ROWS ──
@@ -713,30 +752,44 @@ function collectRows(){
 }
 
 function collectStandings(applyBestOf=false){
-  // Group scores per pilot
-  const pilotScores={};
-  collectRows().forEach(r=>{
+  const champIdx = document.getElementById('champSelect').value;
+  const currentRound = parseInt(document.getElementById('garaNum').value)||0;
+
+  // Start with accumulated points from previous races
+  const pilotScores = {};  // nome -> [pts per round]
+
+  // Add previous rounds (excluding current round if already saved)
+  const prev = (champIdx !== '' && previousResults[champIdx]) ? previousResults[champIdx] : {};
+  Object.entries(prev).forEach(function([nome, rounds]){
+    if(!pilotScores[nome]) pilotScores[nome] = [];
+    rounds.forEach(function(r){
+      // Skip current round — we'll use live data for it
+      if(r.round !== currentRound) pilotScores[nome].push(r.pts);
+    });
+  });
+
+  // Add current race live data
+  collectRows().forEach(function(r){
     if(!r.nome) return;
-    if(!pilotScores[r.nome]) pilotScores[r.nome]=[];
+    if(!pilotScores[r.nome]) pilotScores[r.nome] = [];
     pilotScores[r.nome].push(r.totale);
   });
 
   // Apply bestOf drop rule if requested
-  const bestOf   = parseInt(document.getElementById('champSelect').dataset.bestOf)||0;
+  const bestOf = parseInt(document.getElementById('champSelect').dataset.bestOf)||0;
   const totalRounds = parseInt(document.getElementById('champSelect').dataset.totalRounds)||0;
-  // Drop rule: only if applyBestOf=true AND bestOf set AND all rounds completed
   const shouldDrop = applyBestOf && bestOf > 0 && totalRounds > 0 && bestOf < totalRounds;
 
-  const pilots = Object.entries(pilotScores).map(([nome, scores])=>{
-    let usedScores = scores;
-    if(shouldDrop && scores.length >= totalRounds){
+  const pilots = Object.entries(pilotScores).map(function([nome, scores]){
+    var usedScores = scores;
+    if(shouldDrop){
       // Sort desc, take best N
-      usedScores = [...scores].sort((a,b)=>b-a).slice(0, bestOf);
+      usedScores = scores.slice().sort(function(a,b){return b-a;}).slice(0, bestOf);
     }
-    return { nome, pts: usedScores.reduce((s,v)=>s+v,0) };
+    return { nome: nome, pts: usedScores.reduce(function(s,v){return s+v;},0) };
   });
 
-  return pilots.sort((a,b)=>b.pts-a.pts).map(function(p,i){ return {nome:p.nome, pts:p.pts, pos:i+1}; });
+  return pilots.sort(function(a,b){return b.pts-a.pts;}).map(function(p,i){ return {nome:p.nome, pts:p.pts, pos:i+1}; });
 }
 
 // ── BUILD HTML ──
