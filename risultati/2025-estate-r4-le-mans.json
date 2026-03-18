@@ -1,0 +1,65 @@
+{
+  "circuito": "Le Mans",
+  "data": "2025-08-31",
+  "garaNum": "1",
+  "garaTot": "5",
+  "champIdx": "0",
+  "prevRace": "",
+  "nextRace": "",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "antonio",
+      "tempo": "26'13''315",
+      "bestLap": "4'11''943",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Claudio",
+      "tempo": "a 2\"190",
+      "bestLap": "4'09''725",
+      "fl": true,
+      "pole": false,
+      "punti": 18,
+      "extra": "1",
+      "totale": 19,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Pyer",
+      "tempo": "a 1'32\"514",
+      "bestLap": "4'26''339",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "antonio",
+      "pts": 25,
+      "pos": 1
+    },
+    {
+      "nome": "Claudio",
+      "pts": 19,
+      "pos": 2
+    },
+    {
+      "nome": "Pyer",
+      "pts": 15,
+      "pos": 3
+    }
+  ],
+  "bestOf": 4
+}
