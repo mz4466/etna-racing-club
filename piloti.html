@@ -1,282 +1,442 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Piloti GT7 - Etna Racing Club</title>
-    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300,400,500,600,700&family=Russo+One&family=Roboto:wght@300,400,700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg:#07070a; --card:#121318; --accent:#ff5014; --accent2:#ff8c42; --muted:#c9b8a3; --cream:#fff5e6;
-            --gold:#c9a227; --gold-dim:rgba(201,162,39,0.12);
-        }
-        body { margin:0; font-family:'Roboto',sans-serif; background: linear-gradient(180deg,#020203 0%, #0b0b0d 60%); color:var(--cream); min-height:100vh; }
-        header { padding:28px; display:flex; align-items:center; justify-content:space-between; gap:20px; max-width:1400px; margin:0 auto; }
-        header .brand { display:flex; gap:18px; align-items:center; }
-        header .brand img { width:64px; height:auto; border-radius:8px; box-shadow:0 6px 18px rgba(255,80,20,0.2); }
-        header h1 { font-family:'Russo One',sans-serif; font-size:28px; margin:0; letter-spacing:2px; color:var(--accent2); }
-        .container { max-width:1200px; margin:20px auto; padding:20px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piloti — Etna Racing Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@300;400;600&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#07070f; --bg-card:#0e0e1c; --bg-card2:#0b0b18;
+    --border:#1e1e30; --border-hi:#2a2a42;
+    --gold:#c9a227; --gold-hi:#e8c547; --gold-dim:rgba(201,162,39,0.10); --gold-glow:rgba(201,162,39,0.25);
+    --orange:#ff5014; --text:#e8e0d0; --text-dim:#5a5470; --text-mid:#8a8098;
+  }
 
-        .controls { display:flex; gap:12px; align-items:center; margin-bottom:20px; }
-        .btn { background: linear-gradient(90deg,var(--accent),var(--accent2)); color:#fff; border:none; padding:12px 18px; border-radius:12px; cursor:pointer; font-family:'Russo One',sans-serif; letter-spacing:1px; box-shadow:0 10px 30px rgba(255,80,20,0.25); }
-        .btn.alt { background: transparent; border:2px solid rgba(201,184,163,0.12); color:var(--muted); }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 
-        .grid { display:flex; flex-direction:column; gap:18px; }
-        .pilot-card {
-            background: linear-gradient(180deg, rgba(18,19,24,0.9), rgba(8,8,10,0.9));
-            border:2px solid rgba(255,80,20,0.06);
-            padding:14px; border-radius:14px; box-shadow:0 8px 30px rgba(0,0,0,0.6);
-            display:flex; gap:20px; align-items:flex-start;
-        }
-        .pilot-photo { width:280px; min-width:280px; height:350px; object-fit:cover; border-radius:10px; display:block; }
-        .pilot-content { flex:1; display:flex; flex-direction:column; }
-        .pilot-name { font-family:'Teko',sans-serif; font-size:24px; margin:10px 0 2px; color:var(--accent2); }
-        .psn { color:var(--muted); font-size:0.85rem; margin-bottom:10px; }
-        .info { color:var(--cream); font-size:0.9rem; line-height:1.7; margin-bottom:8px; }
-        .catchphrase { color:var(--accent2); font-style:italic; font-size:0.85rem; margin-top:8px; }
-        .badges { margin-top:6px; display:flex; gap:8px; flex-wrap:wrap; }
-        .badge { background: rgba(255,140,66,0.12); padding:6px 10px; border-radius:999px; color:var(--muted); font-size:0.8rem; }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Barlow Condensed',sans-serif;
+    min-height:100vh;
+  }
 
-        /* ── TROPHIES ── */
-        .trophies-section {
-            margin-top:14px;
-            padding-top:12px;
-            border-top:1px solid rgba(201,162,39,0.15);
-        }
-        .trophies-label {
-            font-family:'Teko',sans-serif;
-            font-size:11px; letter-spacing:3px;
-            color:var(--gold); text-transform:uppercase;
-            margin-bottom:8px;
-        }
-        .trophies-row { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; }
-        .trophy-won {
-            display:flex; flex-direction:column; align-items:center; gap:4px;
-            background: var(--gold-dim);
-            border:1px solid rgba(201,162,39,0.25);
-            border-radius:10px;
-            padding:8px 10px;
-            min-width:80px; max-width:100px;
-        }
-        .trophy-won img {
-            width:60px; height:70px;
-            object-fit:contain;
-        }
-        .trophy-won-name {
-            font-family:'Teko',sans-serif;
-            font-size:10px; letter-spacing:1px;
-            color:var(--gold); text-transform:uppercase;
-            text-align:center; line-height:1.2;
-        }
-        .trophy-won-year {
-            font-size:9px; color:rgba(201,162,39,0.6);
-            font-family:'Teko',sans-serif; letter-spacing:1px;
-        }
+  /* ── HERO ── */
+  .hero{
+    position:relative;
+    background:linear-gradient(180deg,#0a0a1e 0%,#07070f 100%);
+    border-bottom:1px solid var(--border-hi);
+    padding:52px 24px 44px;
+    text-align:center;
+    overflow:hidden;
+  }
 
-        footer { max-width:1200px; margin:40px auto; color:rgba(201,184,163,0.7); font-size:14px; text-align:center; padding-bottom:40px; }
-        @media (max-width:768px){
-            header h1{font-size:20px}
-            header{flex-direction:column;text-align:center}
-            .pilot-card { flex-direction:column; }
-            .pilot-photo { width:100%; min-width:100%; height:300px; }
-        }
-    </style>
+  .hero::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(201,162,39,0.08) 0%,transparent 70%);
+    pointer-events:none;
+  }
+
+  /* ember particles */
+  .ember{position:absolute;border-radius:50%;pointer-events:none;animation:rise linear infinite;}
+  @keyframes rise{
+    0%  {transform:translateY(0) scale(1);opacity:.7;}
+    100%{transform:translateY(-120px) scale(0);opacity:0;}
+  }
+
+  .hero-logo{width:56px;height:56px;object-fit:contain;filter:drop-shadow(0 0 14px var(--gold-glow));margin-bottom:18px;}
+  .hero-eyebrow{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;}
+  .hero-title{font-family:'Russo One',sans-serif;font-size:clamp(28px,5vw,52px);color:var(--text);letter-spacing:4px;text-transform:uppercase;line-height:1;}
+  .hero-title span{color:var(--gold);}
+  .hero-sub{font-family:'Teko',sans-serif;font-size:16px;letter-spacing:4px;color:var(--text-dim);text-transform:uppercase;margin-top:10px;}
+
+  .hero-stats{
+    display:flex;
+    gap:32px;
+    justify-content:center;
+    margin-top:28px;
+    flex-wrap:wrap;
+  }
+  .hero-stat{text-align:center;}
+  .hero-stat-num{font-family:'Russo One',sans-serif;font-size:32px;color:var(--gold);line-height:1;}
+  .hero-stat-lbl{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;}
+
+  /* ── NAV ── */
+  .nav-strip{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 32px;
+    border-bottom:1px solid var(--border);
+    background:#080812;
+    position:sticky;
+    top:0;
+    z-index:50;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+
+  .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+  .nav-logo img{width:28px;height:28px;object-fit:contain;}
+  .nav-logo span{font-family:'Russo One',sans-serif;font-size:13px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;}
+
+  .nav-links{display:flex;gap:6px;}
+  .nav-link{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;text-decoration:none;padding:5px 12px;border-radius:5px;transition:color .2s,background .2s;}
+  .nav-link:hover,.nav-link.active{color:var(--gold);background:var(--gold-dim);}
+
+  .search-wrap{flex:1;max-width:280px;}
+  .search-wrap input{width:100%;background:var(--bg-card);border:1px solid var(--border-hi);border-radius:7px;padding:7px 12px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+  .search-wrap input:focus{border-color:var(--gold);}
+
+  /* ── MAIN ── */
+  .container{max-width:1200px;margin:0 auto;padding:40px 24px 60px;}
+
+  .section-header{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    margin-bottom:28px;
+  }
+  .section-title{font-family:'Russo One',sans-serif;font-size:18px;color:var(--text);letter-spacing:3px;text-transform:uppercase;}
+  .section-count{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:var(--text-dim);}
+
+  /* ── GRID ── */
+  .pilots-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(480px,1fr));
+    gap:16px;
+  }
+
+  /* ── CARD ── */
+  .pilot-card{
+    background:var(--bg-card);
+    border:1px solid var(--border-hi);
+    border-radius:14px;
+    overflow:hidden;
+    display:grid;
+    grid-template-columns:160px 1fr;
+    transition:border-color .3s,box-shadow .3s,transform .3s;
+    animation:fadeUp .5s cubic-bezier(.22,1,.36,1) both;
+    min-height:200px;
+  }
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+  .pilot-card:hover{
+    border-color:var(--gold);
+    box-shadow:0 8px 32px rgba(201,162,39,.14),0 0 0 1px rgba(201,162,39,.06);
+    transform:translateY(-3px);
+  }
+
+  /* ── LEFT: PHOTO ── */
+  .card-photo{
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(160deg,#0d0d20 0%,#1a1a30 100%);
+  }
+
+  .card-photo img{
+    width:100%;height:100%;
+    object-fit:cover;object-position:top center;
+    transition:transform .5s cubic-bezier(.22,1,.36,1);
+    display:block;
+  }
+
+  .pilot-card:hover .card-photo img{transform:scale(1.05);}
+
+  .card-photo-placeholder{
+    width:100%;height:100%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:52px;color:var(--border-hi);
+  }
+
+  /* subtle right-edge fade into card body */
+  .card-photo::after{
+    content:'';
+    position:absolute;inset:0;
+    background:linear-gradient(to right,transparent 70%,var(--bg-card) 100%);
+    pointer-events:none;
+  }
+
+  /* ── RIGHT: CONTENT ── */
+  .card-body{
+    padding:18px 18px 14px;
+    display:flex;
+    flex-direction:column;
+    gap:0;
+    min-width:0;
+  }
+
+  .card-name{
+    font-family:'Russo One',sans-serif;
+    font-size:19px;color:var(--text);
+    letter-spacing:2px;text-transform:uppercase;
+    line-height:1.1;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+
+  .card-psn{
+    font-family:'Teko',sans-serif;font-size:13px;
+    letter-spacing:2px;color:var(--gold);
+    text-transform:uppercase;margin-top:3px;margin-bottom:10px;
+  }
+
+  .card-meta{display:flex;flex-direction:column;gap:3px;flex:1;}
+  .meta-row{
+    display:flex;align-items:baseline;gap:6px;
+    font-size:13px;color:var(--text-mid);
+    padding-bottom:3px;
+    border-bottom:1px solid rgba(255,255,255,.025);
+  }
+  .meta-row:last-child{border-bottom:none;}
+  .meta-icon{font-size:13px;flex-shrink:0;width:18px;text-align:center;}
+  .meta-label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;min-width:46px;}
+  .meta-value{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+  .card-bio{
+    margin-top:8px;
+    font-size:12px;color:var(--text-dim);
+    line-height:1.5;font-style:italic;
+    border-top:1px solid var(--border);
+    padding-top:8px;
+  }
+
+  .card-badges{
+    margin-top:10px;
+    display:flex;flex-wrap:wrap;gap:4px;
+  }
+
+  .badge{
+    background:var(--gold-dim);
+    border:1px solid rgba(201,162,39,.2);
+    border-radius:20px;
+    padding:2px 9px;
+    font-family:'Teko',sans-serif;
+    font-size:11px;letter-spacing:1px;
+    color:var(--gold);text-transform:uppercase;
+  }
+
+  .tracks-pair{
+    display:flex;flex-wrap:wrap;gap:4px;
+    margin-top:6px;
+  }
+  .track-chip{
+    display:inline-flex;align-items:center;gap:4px;
+    background:rgba(255,255,255,.02);
+    border:1px solid var(--border);
+    border-radius:6px;padding:3px 8px;
+    font-size:11px;color:var(--text-mid);
+    white-space:nowrap;
+  }
+  .track-chip.love{border-color:rgba(255,100,100,.18);color:#e88;}
+  .track-chip.hate{border-color:rgba(100,100,255,.15);color:#aaf;}
+
+  /* ── EMPTY ── */
+  .empty{text-align:center;padding:80px 20px;color:var(--text-dim);}
+  .empty .ei{font-size:52px;margin-bottom:16px;}
+  .empty p{font-family:'Teko',sans-serif;font-size:18px;letter-spacing:4px;text-transform:uppercase;}
+
+  /* ── FOOTER ── */
+  .footer{
+    border-top:1px solid var(--border);
+    padding:28px 24px;
+    text-align:center;
+    font-family:'Teko',sans-serif;
+    font-size:13px;letter-spacing:2px;color:var(--text-dim);
+    text-transform:uppercase;
+  }
+  .footer a{color:var(--gold);text-decoration:none;}
+  .footer a:hover{color:var(--gold-hi);}
+
+  @media(max-width:640px){
+    .pilots-grid{grid-template-columns:1fr;}
+    .pilot-card{grid-template-columns:120px 1fr;}
+    .nav-strip{padding:10px 16px;}
+    .search-wrap{max-width:100%;width:100%;}
+  }
+</style>
 </head>
 <body>
-<header>
-    <div class="brand">
-        <a href="index.html"><img src="etna-logo.jpg" alt="logo"></a>
-        <div>
-            <h1>Etna Racing Club</h1>
-            <div style="font-size:12px;color:rgba(201,184,163,0.7)">Piloti GT7</div>
-        </div>
-    </div>
-    <div>
-        <button id="reload" class="btn alt">↻ Ricarica</button>
-    </div>
-</header>
 
-<main class="container">
-    <div class="controls">
-        <input id="search" type="search" placeholder="Cerca pilota, PSN, auto..." style="flex:1;padding:12px;border-radius:10px;border:1px solid rgba(201,184,163,0.06);background:#0b0b0d;color:var(--cream)">
-    </div>
-    <div id="grid" class="grid"></div>
-</main>
+<!-- STICKY NAV -->
+<nav class="nav-strip">
+  <a class="nav-logo" href="index.html">
+    <img src="etna-logo.jpg" alt="ERC">
+    <span>Etna Racing Club</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link" href="calendario.html">Calendario</a>
+    <a class="nav-link active" href="piloti.html">Piloti</a>
+  </div>
+  <div class="search-wrap">
+    <input type="search" id="searchInput" placeholder="Cerca pilota..." oninput="filterPilots()">
+  </div>
+</nav>
 
-<footer>
-    <div>© 2026 Etna Racing Club • Piloti GT7</div>
+<!-- HERO -->
+<section class="hero" id="hero">
+  <img class="hero-logo" src="etna-logo.jpg" alt="Etna Racing Club">
+  <div class="hero-eyebrow">Etna Racing Club</div>
+  <h1 class="hero-title">I Nostri <span>Piloti</span></h1>
+  <div class="hero-sub">Il roster ufficiale del club</div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num" id="statCount">—</div>
+      <div class="hero-stat-lbl">Piloti Attivi</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num" id="statNazioni">—</div>
+      <div class="hero-stat-lbl">Nazioni</div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<div class="container">
+  <div class="section-header">
+    <div class="section-title">Roster</div>
+    <div class="section-count" id="countLabel"></div>
+  </div>
+  <div class="pilots-grid" id="pilotsGrid">
+    <div class="empty"><div class="ei">⏳</div><p>Caricamento roster...</p></div>
+  </div>
+</div>
+
+<footer class="footer">
+  © 2026 Etna Racing Club &nbsp;·&nbsp; <a href="index.html">Home</a> &nbsp;·&nbsp; <a href="calendario.html">Calendario</a>
 </footer>
 
 <script>
-const BASE_API = 'https://api.github.com/repos/mz4466/etna-racing-club';
-const BRANCH   = 'main';
+const REPO   = 'mz4466';
+const RNAME  = 'etna-racing-club';
+const FOLDER = 'piloti_schede';
 
-const grid        = document.getElementById('grid');
-const reloadBtn   = document.getElementById('reload');
-const searchInput = document.getElementById('search');
+let allPilots = [];
 
-reloadBtn.onclick = () => loadAll();
-searchInput.oninput = function() {
-  var q = searchInput.value.trim().toLowerCase();
-  document.querySelectorAll('.pilot-card').forEach(function(card) {
-    card.style.display = card.innerText.toLowerCase().includes(q) ? '' : 'none';
-  });
-};
-
-// Map: pilotName (lowercase) → array of { champName, year, trophy }
-var pilotTrophies = {};
-
-async function loadAll() {
-  grid.innerHTML = '<div style="color:var(--muted)">Caricamento...</div>';
+async function loadPilots(){
   try {
-    // 1. Load calendario.json to get champ names, years, trophy filenames
-    var calRes = await fetch(BASE_API + '/contents/calendario.json?ref=' + BRANCH);
-    var calMeta = await calRes.json();
-    var calendario = JSON.parse(decodeURIComponent(escape(atob(calMeta.content.replace(/\s/g,'')))));
+    // List folder via GitHub API (no auth needed for public repo)
+    const r = await fetch(`https://api.github.com/repos/${REPO}/${RNAME}/contents/${FOLDER}?ref=main`);
+    if(!r.ok) throw new Error();
+    const files = await r.json();
+    const jsonFiles = files.filter(f=>f.name.endsWith('.json') && f.name !== 'index.json');
 
-    // 2. Load risultati/ folder listing
-    pilotTrophies = {};
-    try {
-      var rRes = await fetch(BASE_API + '/contents/risultati?ref=' + BRANCH);
-      if (rRes.ok) {
-        var rFiles = await rRes.json();
-        var jsonFiles = rFiles.filter(function(f) { return f.name.endsWith('.json'); });
+    if(!jsonFiles.length){ renderGrid([]); return; }
 
-        // Load each result file
-        var results = await Promise.all(jsonFiles.map(async function(f) {
-          try {
-            var r = await fetch(f.url);
-            if (!r.ok) return null;
-            var meta = await r.json();
-            return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
-          } catch(e) { return null; }
-        }));
-
-        results.filter(Boolean).forEach(function(race) {
-          // Only look at FINAL race of each championship (garaNum === garaTot)
-          var garaNum = parseInt(race.garaNum) || 0;
-          var garaTot = parseInt(race.garaTot) || 0;
-          if (garaNum !== garaTot || garaTot === 0) return;
-
-          // Find champion (pos 1 in final standings)
-          var standings = race.standings || [];
-          var champion = standings.find(function(s) { return s.pos === 1; });
-          if (!champion) return;
-
-          // Get championship info from calendario
-          var champIdx = parseInt(race.champIdx);
-          var champ = calendario[champIdx] || null;
-          if (!champ || !champ.trophy) return;
-
-          var key = champion.nome.toLowerCase().trim();
-          if (!pilotTrophies[key]) pilotTrophies[key] = [];
-          pilotTrophies[key].push({
-            champName: champ.name,
-            year: champ.year,
-            trophy: champ.trophy
-          });
-        });
-      }
-    } catch(e) { console.warn('Could not load trophies:', e.message); }
-
-    // 3. Load pilots via GitHub API (no index.json needed)
-    var folderRes = await fetch(BASE_API + '/contents/piloti_schede?ref=' + BRANCH);
-    if (!folderRes.ok) throw new Error('Cartella piloti_schede non trovata');
-    var folderFiles = await folderRes.json();
-    var jsonFiles = folderFiles.filter(function(f) {
-      return f.name.endsWith('.json') && f.name !== 'index.json';
-    });
-
-    var pilots = await Promise.all(jsonFiles.map(async function(f) {
+    const pilots = await Promise.all(jsonFiles.map(async f=>{
       try {
-        var r = await fetch(f.url);
-        if (!r.ok) return null;
-        var meta = await r.json();
-        return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
-      } catch(e) { return null; }
+        // Use GitHub API contents endpoint (works on both public and private repos)
+        // f.download_url may be blocked; use f.url (API) or decode content directly
+        const jr = await fetch(f.url);
+        if(!jr.ok) return null;
+        const fd = await jr.json();
+        // GitHub API returns base64-encoded content
+        if(fd.content) {
+          return JSON.parse(decodeURIComponent(escape(atob(fd.content.replace(/\s/g,'')))));
+        }
+        return null;
+      } catch { return null; }
     }));
 
-    grid.innerHTML = '';
-    var valid = pilots.filter(function(p) { return p && (p.nome || p.name || p.psn); });
-    valid.forEach(function(p) { renderPilot(p); });
-    if (!valid.length) grid.innerHTML = '<div style="color:var(--muted)">Nessuna scheda trovata</div>';
-
-  } catch(err) {
-    console.error(err);
-    grid.innerHTML = '<div style="color:var(--muted)">Impossibile caricare le schede.</div>';
+    allPilots = pilots.filter(p => p && (p.nome || p.psn));
+    updateStats();
+    renderGrid(allPilots);
+  } catch {
+    document.getElementById('pilotsGrid').innerHTML=`<div class="empty"><div class="ei">📭</div><p>Roster non disponibile</p></div>`;
   }
 }
 
-function renderPilot(p) {
-  var el = document.createElement('div');
-  el.className = 'pilot-card';
+function updateStats(){
+  document.getElementById('statCount').textContent = allPilots.length;
+  const nazioni = new Set(allPilots.map(p=>p.nazione).filter(Boolean));
+  document.getElementById('statNazioni').textContent = nazioni.size || '—';
+  document.getElementById('countLabel').textContent = `${allPilots.length} piloti registrati`;
+}
 
-  // Support both old format (name/photo/country/car/gt7Name) and new admin format (nome/foto/nazione/auto/psn)
-  var nome     = p.nome   || p.name  || '—';
-  var psn      = p.psn    || p.gt7Name || '—';
-  var nazione  = p.nazione || p.country || p.region || '';
-  var auto     = p.auto   || p.car   || '';
-  var stile    = p.stile  || p.strengths || '';
-  var pistaAma = p.pistaAma || p.favTrack || '';
-  var pistaOdia= p.pistaOdia|| p.hatedTrack || '';
-  var foto     = p.foto   || (p.photo ? (p.photo.startsWith('data:') ? p.photo : 'piloti_schede/' + p.photo) : null);
-  var locationStr = nazione ? '🌍 ' + esc(nazione) : '';
-  if (p.location) locationStr += ' • 📍 ' + esc(p.location);
+function renderGrid(pilots){
+  const grid = document.getElementById('pilotsGrid');
+  if(!pilots.length){
+    grid.innerHTML=`<div class="empty"><div class="ei">🏎️</div><p>Nessun pilota registrato</p></div>`;
+    return;
+  }
+  grid.innerHTML='';
+  pilots.forEach((p,i)=>{
+    const card = document.createElement('div');
+    card.className='pilot-card';
+    card.style.animationDelay=`${i*0.07}s`;
 
-  // Find trophies for this pilot
-  // Match by nome, psn, gt7Name (any of them)
-  var names = [p.nome, p.name, p.psn, p.gt7Name].filter(Boolean).map(function(n) { return n.toLowerCase().trim(); });
-  var won = [];
-  names.forEach(function(n) {
-    if (pilotTrophies[n]) {
-      pilotTrophies[n].forEach(function(t) {
-        // avoid duplicates
-        var exists = won.find(function(w) { return w.champName === t.champName && w.year === t.year; });
-        if (!exists) won.push(t);
-      });
-    }
+    // Support both base64 (p.foto from new admin) and filename (p.photo from old format)
+    var photoSrc = p.foto || p.photo || null;
+    const photoHTML = photoSrc
+      ? `<img src="${esc(photoSrc)}" alt="${esc(p.nome)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+      : '';
+    const placeholderStyle = photoSrc ? 'display:none':'';
+
+    const badgesHTML = (p.badges||[]).map(b=>`<span class="badge">${esc(b)}</span>`).join('');
+
+    card.innerHTML=`
+      <div class="card-photo">
+        ${photoHTML}
+        <div class="card-photo-placeholder" style="${placeholderStyle}">🪖</div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-name">${esc(p.nome||'—')}</div>
+        <div class="card-psn">🎮 ${esc(p.psn||p.gt7Name||'—')}</div>
+        <div class="card-meta">
+          ${(p.nazione||p.country)?`<div class="meta-row"><span class="meta-icon">🌍</span><span class="meta-label">Nazione</span><span class="meta-value">${esc(p.nazione||p.country)}</span></div>`:''}
+          ${(p.auto||p.car)?`<div class="meta-row"><span class="meta-icon">🚗</span><span class="meta-label">Auto</span><span class="meta-value">${esc(p.auto||p.car)}</span></div>`:''}
+          ${p.stile?`<div class="meta-row"><span class="meta-icon">🎯</span><span class="meta-label">Stile</span><span class="meta-value">${esc(p.stile)}</span></div>`:''}
+        </div>
+        ${(p.pistaAma||p.pistaOdia)?`
+        <div class="tracks-pair">
+          ${p.pistaAma?`<div class="track-chip love">❤️ ${esc(p.pistaAma)}</div>`:''}
+          ${p.pistaOdia?`<div class="track-chip hate">💀 ${esc(p.pistaOdia)}</div>`:''}
+        </div>`:''}
+        ${badgesHTML?`<div class="card-badges">${badgesHTML}</div>`:''}
+        ${p.bio?`<div class="card-bio">"${esc(p.bio)}"</div>`:''}
+      </div>
+    `;
+    grid.appendChild(card);
   });
 
-  var trophiesHTML = '';
-  if (won.length) {
-    trophiesHTML = '<div class="trophies-section">'
-      + '<div class="trophies-label">🏆 Campionati Vinti</div>'
-      + '<div class="trophies-row">'
-      + won.map(function(t) {
-          return '<div class="trophy-won">'
-            + '<img src="trophy_png/' + esc(t.trophy) + '" alt="' + esc(t.champName) + '">'
-            + '<div class="trophy-won-name">' + esc(t.champName) + '</div>'
-            + '<div class="trophy-won-year">' + esc(t.year) + '</div>'
-            + '</div>';
-        }).join('')
-      + '</div></div>';
-  }
-
-  var photoSrc = foto || 'https://via.placeholder.com/280x350?text=Pilota';
-
-  el.innerHTML = ''
-    + '<img class="pilot-photo" src="' + esc(photoSrc) + '" alt="' + esc(nome) + '" onerror="this.src=\'https://via.placeholder.com/280x350?text=Pilota\'">'
-    + '<div class="pilot-content">'
-    +   '<div class="pilot-name">' + esc(nome) + '</div>'
-    +   '<div class="psn">🎮 ' + esc(psn) + '</div>'
-    +   '<div class="info">'
-    +     (locationStr ? locationStr + '<br>' : '')
-    +     (auto ? '🚗 ' + esc(auto) + '<br>' : '')
-    +     (p.dr || p.sr ? '📊 DR: ' + esc(p.dr||'-') + ' • SR: ' + esc(p.sr||'-') + '<br>' : '')
-    +     (stile ? '💪 ' + esc(stile) + '<br>' : '')
-    +     (pistaAma ? '❤️ ' + esc(pistaAma) + (pistaOdia ? ' • 💀 ' + esc(pistaOdia) : '') : '')
-    +   '</div>'
-    +   (p.catchphrase ? '<div class="catchphrase">💬 "' + esc(p.catchphrase) + '"</div>' : '')
-    +   '<div class="badges">' + (p.badges||[]).map(function(b){ return '<span class="badge">' + esc(b) + '</span>'; }).join('') + '</div>'
-    +   trophiesHTML
-    + '</div>';
-
-  grid.appendChild(el);
+  // spawn embers
+  spawnEmbers();
 }
 
-function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function filterPilots(){
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  if(!q){ renderGrid(allPilots); return; }
+  renderGrid(allPilots.filter(p=>[p.nome,p.psn,p.auto,p.nazione,p.stile].some(v=>v&&v.toLowerCase().includes(q))));
+}
 
-loadAll();
+function spawnEmbers(){
+  const hero = document.getElementById('hero');
+  hero.querySelectorAll('.ember').forEach(e=>e.remove());
+  for(let i=0;i<12;i++){
+    const e=document.createElement('div');
+    e.className='ember';
+    const size=Math.random()*3+1;
+    e.style.cssText=`
+      width:${size}px;height:${size}px;
+      background:${Math.random()>.5?'var(--gold)':'var(--orange)'};
+      left:${Math.random()*100}%;
+      bottom:${Math.random()*30}%;
+      animation-duration:${2+Math.random()*3}s;
+      animation-delay:${Math.random()*4}s;
+      opacity:${.3+Math.random()*.5};
+    `;
+    hero.appendChild(e);
+  }
+}
+
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+loadPilots();
 </script>
 </body>
 </html>
