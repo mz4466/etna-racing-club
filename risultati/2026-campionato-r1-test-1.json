@@ -1,0 +1,65 @@
+{
+  "circuito": "test 1",
+  "data": "",
+  "garaNum": "1",
+  "garaTot": "2",
+  "champIdx": "1",
+  "prevRace": "",
+  "nextRace": "",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "ada",
+      "tempo": "12",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "sa",
+      "tempo": "1",
+      "bestLap": "",
+      "fl": false,
+      "pole": true,
+      "punti": 18,
+      "extra": "1",
+      "totale": 19,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "s",
+      "tempo": "3''636",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "ada",
+      "pts": 25,
+      "pos": 1
+    },
+    {
+      "nome": "sa",
+      "pts": 19,
+      "pos": 2
+    },
+    {
+      "nome": "s",
+      "pts": 15,
+      "pos": 3
+    }
+  ],
+  "bestOf": null
+}
