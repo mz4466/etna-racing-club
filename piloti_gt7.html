@@ -179,19 +179,25 @@ async function loadAll() {
       }
     } catch(e) { console.warn('Could not load trophies:', e.message); }
 
-    // 3. Load piloti_schede/index.json → pilot files
-    var idxRes = await fetch('piloti_schede/index.json');
-    if (!idxRes.ok) throw new Error('index.json non trovato');
-    var files = await idxRes.json();
+    // 3. Load pilots via GitHub API (no index.json needed)
+    var folderRes = await fetch(BASE_API + '/contents/piloti_schede?ref=' + BRANCH);
+    if (!folderRes.ok) throw new Error('Cartella piloti_schede non trovata');
+    var folderFiles = await folderRes.json();
+    var jsonFiles = folderFiles.filter(function(f) {
+      return f.name.endsWith('.json') && f.name !== 'index.json';
+    });
 
-    var pilots = await Promise.all(files.map(async function(f) {
-      var r = await fetch('piloti_schede/' + f);
-      if (!r.ok) return null;
-      return await r.json();
+    var pilots = await Promise.all(jsonFiles.map(async function(f) {
+      try {
+        var r = await fetch(f.url);
+        if (!r.ok) return null;
+        var meta = await r.json();
+        return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
+      } catch(e) { return null; }
     }));
 
     grid.innerHTML = '';
-    var valid = pilots.filter(Boolean);
+    var valid = pilots.filter(function(p) { return p && (p.nome || p.name || p.psn); });
     valid.forEach(function(p) { renderPilot(p); });
     if (!valid.length) grid.innerHTML = '<div style="color:var(--muted)">Nessuna scheda trovata</div>';
 
@@ -205,14 +211,21 @@ function renderPilot(p) {
   var el = document.createElement('div');
   el.className = 'pilot-card';
 
-  var locationStr = '';
-  if (p.region && p.location) locationStr = '🌍 ' + esc(p.region) + ' • 📍 ' + esc(p.location);
-  else if (p.region) locationStr = '🌍 ' + esc(p.region);
-  else if (p.country) locationStr = '🌍 ' + esc(p.country);
+  // Support both old format (name/photo/country/car/gt7Name) and new admin format (nome/foto/nazione/auto/psn)
+  var nome     = p.nome   || p.name  || '—';
+  var psn      = p.psn    || p.gt7Name || '—';
+  var nazione  = p.nazione || p.country || p.region || '';
+  var auto     = p.auto   || p.car   || '';
+  var stile    = p.stile  || p.strengths || '';
+  var pistaAma = p.pistaAma || p.favTrack || '';
+  var pistaOdia= p.pistaOdia|| p.hatedTrack || '';
+  var foto     = p.foto   || p.photo || null;  // old format: photo is filename in root; new format: foto is base64
+  var locationStr = nazione ? '🌍 ' + esc(nazione) : '';
+  if (p.location) locationStr += ' • 📍 ' + esc(p.location);
 
   // Find trophies for this pilot
   // Match by nome, psn, gt7Name (any of them)
-  var names = [p.name, p.nome, p.psn, p.gt7Name].filter(Boolean).map(function(n) { return n.toLowerCase().trim(); });
+  var names = [p.nome, p.name, p.psn, p.gt7Name].filter(Boolean).map(function(n) { return n.toLowerCase().trim(); });
   var won = [];
   names.forEach(function(n) {
     if (pilotTrophies[n]) {
@@ -239,17 +252,19 @@ function renderPilot(p) {
       + '</div></div>';
   }
 
+  var photoSrc = foto || 'https://via.placeholder.com/280x350?text=Pilota';
+
   el.innerHTML = ''
-    + '<img class="pilot-photo" src="' + esc(p.photo || '') + '" alt="' + esc(p.name || p.nome || '') + '" onerror="this.src=\'https://via.placeholder.com/280x350?text=Pilota\'">'
+    + '<img class="pilot-photo" src="' + esc(photoSrc) + '" alt="' + esc(nome) + '" onerror="this.src=\'https://via.placeholder.com/280x350?text=Pilota\'">'
     + '<div class="pilot-content">'
-    +   '<div class="pilot-name">' + esc(p.name || p.nome || '—') + '</div>'
-    +   '<div class="psn">GT7: ' + esc(p.gt7Name || p.psn || '-') + ' • PSN: ' + esc(p.psn || '-') + '</div>'
+    +   '<div class="pilot-name">' + esc(nome) + '</div>'
+    +   '<div class="psn">🎮 ' + esc(psn) + '</div>'
     +   '<div class="info">'
     +     (locationStr ? locationStr + '<br>' : '')
-    +     '🚗 ' + esc(p.car || p.auto || '') + '<br>'
-    +     (p.dr || p.sr ? '📊 DR: ' + esc(p.dr || '-') + ' • SR: ' + esc(p.sr || '-') + '<br>' : '')
-    +     (p.strengths || p.stile ? '💪 ' + esc(p.strengths || p.stile || '') + '<br>' : '')
-    +     ((p.favTrack || p.pistaAma) ? '❤️ ' + esc(p.favTrack || p.pistaAma || '') + ' • 💀 ' + esc(p.hatedTrack || p.pistaOdia || '') : '')
+    +     (auto ? '🚗 ' + esc(auto) + '<br>' : '')
+    +     (p.dr || p.sr ? '📊 DR: ' + esc(p.dr||'-') + ' • SR: ' + esc(p.sr||'-') + '<br>' : '')
+    +     (stile ? '💪 ' + esc(stile) + '<br>' : '')
+    +     (pistaAma ? '❤️ ' + esc(pistaAma) + (pistaOdia ? ' • 💀 ' + esc(pistaOdia) : '') : '')
     +   '</div>'
     +   (p.catchphrase ? '<div class="catchphrase">💬 "' + esc(p.catchphrase) + '"</div>' : '')
     +   '<div class="badges">' + (p.badges||[]).map(function(b){ return '<span class="badge">' + esc(b) + '</span>'; }).join('') + '</div>'
