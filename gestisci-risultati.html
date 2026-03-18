@@ -948,7 +948,7 @@ function buildHTML(){
     <div class="standings-card">
       <h2 class="standings-title">🏆 Classifica</h2>
       ${bestOfNote}
-      <div id="liveStandings"><div style="font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:#c9b8a3;text-align:center;padding:20px;">Caricamento classifica…</div></div>
+      ${standingsHTML}
       <div class="race-info">
         <strong>Gara ${garaNum} di ${garaTot}</strong>
         <div class="race-nav">${prevBtn}${nextBtn}</div>
@@ -958,61 +958,9 @@ function buildHTML(){
 </main>
 <footer>© 2026 Etna Racing Club • Sicilia, Italia</footer>
 </body>
-</html>`
-  + buildLiveStandingsScript(champIdx, garaNum, garaTot, champ, rows);
+</html>`;
 }
 
-function buildLiveStandingsScript(champIdx, garaNum, garaTot, champ, rows) {
-  var bestOf = champ && champ.bestOf ? champ.bestOf : 'null';
-  var rowData = JSON.stringify(rows.map(function(r){return{nome:r.nome,totale:r.totale};}));
-  return '<script>(function(){'
-    + 'var API="https://api.github.com/repos/mz4466/etna-racing-club";'
-    + 'var BRANCH="main";'
-    + 'var IDX="'+champIdx+'";'
-    + 'var RND='+garaNum+';'
-    + 'var BEST='+bestOf+';'
-    + 'var TOT='+garaTot+';'
-    + 'var ROWS='+rowData+';'
-    + 'async function go(){'
-    +   'var sc={};'
-    +   'ROWS.forEach(function(r){if(!r.nome)return;if(!sc[r.nome])sc[r.nome]=[];sc[r.nome].push(r.totale);});'
-    +   'try{'
-    +     'var res=await fetch(API+"/contents/risultati?ref="+BRANCH);'
-    +     'if(res.ok){'
-    +       'var files=await res.json();'
-    +       'await Promise.all(files.filter(function(f){return f.name.endsWith(".json");}).map(async function(f){'
-    +         'try{'
-    +           'var rr=await fetch(f.url);if(!rr.ok)return;'
-    +           'var m=await rr.json();if(!m.content)return;'
-    +           'var d=JSON.parse(decodeURIComponent(escape(atob(m.content.replace(/\\s/g,"")))));'
-    +           'if(String(d.champIdx)!==String(IDX))return;'
-    +           'if(parseInt(d.garaNum)===RND)return;'
-    +           '(d.rows||[]).forEach(function(r){if(!r.nome)return;if(!sc[r.nome])sc[r.nome]=[];sc[r.nome].push(r.totale||0);});'
-    +         '}catch(e){}'
-    +       '}));'
-    +     '}'
-    +   '}catch(e){}'
-    +   'var isLast=RND>=TOT;'
-    +   'var st=Object.entries(sc).map(function(e){'
-    +     'var nm=e[0];var ss=e[1];'
-    +     'if(isLast&&BEST&&BEST<TOT){ss=ss.slice().sort(function(a,b){return b-a;}).slice(0,BEST);}'
-    +     'return{nome:nm,pts:ss.reduce(function(s,v){return s+v;},0)};'
-    +   '}).sort(function(a,b){return b.pts-a.pts;});'
-    +   'var cl=["#FFD700","#C0C0C0","#CD7F32"];'
-    +   'var h=st.map(function(s,i){'
-    +     'return "\x3cdiv class=\"standings-item\"\x3e\x3cspan class=\"standings-position\" style=\"color:"+(cl[i]||"#F7E7CE")+"\"\x3e"+(i+1)+"\xb0\x3c/span\x3e\x3cspan class=\"standings-driver\"\x3e"+s.nome+"\x3c/span\x3e\x3cspan class=\"standings-points\"\x3e"+s.pts+"\x3c/span\x3e\x3c/div\x3e";'
-    +   '}).join("");'
-    +   'document.getElementById("liveStandings").innerHTML=h||"\x3cdiv style=\"color:#c9b8a3;font-size:13px;text-align:center;\"\x3eNessun dato\x3c/div\x3e";'
-    + '}'
-    + 'go();'
-    + '})()</script>';
-}
-
-// ── PREVIEW ──
-function openPreview(){
-  document.getElementById('previewFrame').srcdoc=buildHTML();
-  document.getElementById('previewModal').classList.add('open');
-}
 function closePreview(){ document.getElementById('previewModal').classList.remove('open'); }
 
 // ── DOWNLOAD ──
