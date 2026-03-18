@@ -1,0 +1,82 @@
+{
+  "circuito": "Alsace",
+  "data": "2025-09-14",
+  "garaNum": "1",
+  "garaTot": "5",
+  "champIdx": "0",
+  "prevRace": "",
+  "nextRace": "",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Pyer",
+      "tempo": "29'58''501",
+      "bestLap": "1'55''068",
+      "fl": true,
+      "pole": false,
+      "punti": 25,
+      "extra": "1",
+      "totale": 26,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "antonio",
+      "tempo": "a 12\"643",
+      "bestLap": "1'56''852",
+      "fl": false,
+      "pole": true,
+      "punti": 18,
+      "extra": "1",
+      "totale": 19,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Claudio",
+      "tempo": "a 1'31\"165",
+      "bestLap": "1'58''035",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Luca",
+      "tempo": "a 1'45\"987",
+      "bestLap": "2'00''785",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Pyer",
+      "pts": 26,
+      "pos": 1
+    },
+    {
+      "nome": "antonio",
+      "pts": 19,
+      "pos": 2
+    },
+    {
+      "nome": "Claudio",
+      "pts": 15,
+      "pos": 3
+    },
+    {
+      "nome": "Luca",
+      "pts": 12,
+      "pos": 4
+    }
+  ],
+  "bestOf": 4
+}
