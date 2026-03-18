@@ -4,13 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Piloti GT7 - Etna Racing Club</title>
-
-    <!-- Font e stile coerenti con index -->
     <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300,400,500,600,700&family=Russo+One&family=Roboto:wght@300,400,700&display=swap" rel="stylesheet">
-
     <style>
         :root {
             --bg:#07070a; --card:#121318; --accent:#ff5014; --accent2:#ff8c42; --muted:#c9b8a3; --cream:#fff5e6;
+            --gold:#c9a227; --gold-dim:rgba(201,162,39,0.12);
         }
         body { margin:0; font-family:'Roboto',sans-serif; background: linear-gradient(180deg,#020203 0%, #0b0b0d 60%); color:var(--cream); min-height:100vh; }
         header { padding:28px; display:flex; align-items:center; justify-content:space-between; gap:20px; max-width:1400px; margin:0 auto; }
@@ -20,15 +18,9 @@
         .container { max-width:1200px; margin:20px auto; padding:20px; }
 
         .controls { display:flex; gap:12px; align-items:center; margin-bottom:20px; }
-        .btn {
-            background: linear-gradient(90deg,var(--accent),var(--accent2));
-            color:#fff; border:none; padding:12px 18px; border-radius:12px; cursor:pointer;
-            font-family:'Russo One',sans-serif; letter-spacing:1px;
-            box-shadow:0 10px 30px rgba(255,80,20,0.25);
-        }
+        .btn { background: linear-gradient(90deg,var(--accent),var(--accent2)); color:#fff; border:none; padding:12px 18px; border-radius:12px; cursor:pointer; font-family:'Russo One',sans-serif; letter-spacing:1px; box-shadow:0 10px 30px rgba(255,80,20,0.25); }
         .btn.alt { background: transparent; border:2px solid rgba(201,184,163,0.12); color:var(--muted); }
 
-        /* Grid cards */
         .grid { display:flex; flex-direction:column; gap:18px; }
         .pilot-card {
             background: linear-gradient(180deg, rgba(18,19,24,0.9), rgba(8,8,10,0.9));
@@ -45,10 +37,46 @@
         .badges { margin-top:6px; display:flex; gap:8px; flex-wrap:wrap; }
         .badge { background: rgba(255,140,66,0.12); padding:6px 10px; border-radius:999px; color:var(--muted); font-size:0.8rem; }
 
+        /* ── TROPHIES ── */
+        .trophies-section {
+            margin-top:14px;
+            padding-top:12px;
+            border-top:1px solid rgba(201,162,39,0.15);
+        }
+        .trophies-label {
+            font-family:'Teko',sans-serif;
+            font-size:11px; letter-spacing:3px;
+            color:var(--gold); text-transform:uppercase;
+            margin-bottom:8px;
+        }
+        .trophies-row { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; }
+        .trophy-won {
+            display:flex; flex-direction:column; align-items:center; gap:4px;
+            background: var(--gold-dim);
+            border:1px solid rgba(201,162,39,0.25);
+            border-radius:10px;
+            padding:8px 10px;
+            min-width:80px; max-width:100px;
+        }
+        .trophy-won img {
+            width:60px; height:70px;
+            object-fit:contain;
+        }
+        .trophy-won-name {
+            font-family:'Teko',sans-serif;
+            font-size:10px; letter-spacing:1px;
+            color:var(--gold); text-transform:uppercase;
+            text-align:center; line-height:1.2;
+        }
+        .trophy-won-year {
+            font-size:9px; color:rgba(201,162,39,0.6);
+            font-family:'Teko',sans-serif; letter-spacing:1px;
+        }
+
         footer { max-width:1200px; margin:40px auto; color:rgba(201,184,163,0.7); font-size:14px; text-align:center; padding-bottom:40px; }
-        @media (max-width:768px){ 
-            header h1{font-size:20px} 
-            header{flex-direction:column;text-align:center} 
+        @media (max-width:768px){
+            header h1{font-size:20px}
+            header{flex-direction:column;text-align:center}
             .pilot-card { flex-direction:column; }
             .pilot-photo { width:100%; min-width:100%; height:300px; }
         }
@@ -63,7 +91,6 @@
             <div style="font-size:12px;color:rgba(201,184,163,0.7)">Piloti GT7</div>
         </div>
     </div>
-
     <div>
         <button id="reload" class="btn alt">↻ Ricarica</button>
     </div>
@@ -73,97 +100,168 @@
     <div class="controls">
         <input id="search" type="search" placeholder="Cerca pilota, PSN, auto..." style="flex:1;padding:12px;border-radius:10px;border:1px solid rgba(201,184,163,0.06);background:#0b0b0d;color:var(--cream)">
     </div>
-
-    <div id="grid" class="grid">
-        <!-- card renderate via JS -->
-    </div>
+    <div id="grid" class="grid"></div>
 </main>
 
 <footer>
-    <div>© 2025 Etna Racing Club • Piloti GT7</div>
+    <div>© 2026 Etna Racing Club • Piloti GT7</div>
 </footer>
 
 <script>
-/*
-  Logica:
-  - Caricamento: piloti_schede/index.json (array di filenames) -> fetch ogni file JSON -> render card
-*/
+const BASE_API = 'https://api.github.com/repos/mz4466/etna-racing-club';
+const BRANCH   = 'main';
 
-const grid = document.getElementById('grid');
-const reloadBtn = document.getElementById('reload');
+const grid        = document.getElementById('grid');
+const reloadBtn   = document.getElementById('reload');
 const searchInput = document.getElementById('search');
 
 reloadBtn.onclick = () => loadAll();
-
-searchInput.oninput = () => {
-    const q = searchInput.value.trim().toLowerCase();
-    document.querySelectorAll('.pilot-card').forEach(card => {
-        const text = card.innerText.toLowerCase();
-        card.style.display = text.includes(q) ? '' : 'none';
-    });
+searchInput.oninput = function() {
+  var q = searchInput.value.trim().toLowerCase();
+  document.querySelectorAll('.pilot-card').forEach(function(card) {
+    card.style.display = card.innerText.toLowerCase().includes(q) ? '' : 'none';
+  });
 };
 
-async function loadAll(){
-    grid.innerHTML = '<div style="color:var(--muted)">Caricamento...</div>';
-    try {
-        // index.json memorizza array di file, es: ["giovanni-mz4466.json", "alex.json"]
-        const idxRes = await fetch('piloti_schede/index.json');
-        if (!idxRes.ok) throw new Error('index.json non trovato');
-        const files = await idxRes.json();
+// Map: pilotName (lowercase) → array of { champName, year, trophy }
+var pilotTrophies = {};
 
-        const pilots = await Promise.all(files.map(async f => {
-            const r = await fetch('piloti_schede/' + f);
+async function loadAll() {
+  grid.innerHTML = '<div style="color:var(--muted)">Caricamento...</div>';
+  try {
+    // 1. Load calendario.json to get champ names, years, trophy filenames
+    var calRes = await fetch(BASE_API + '/contents/calendario.json?ref=' + BRANCH);
+    var calMeta = await calRes.json();
+    var calendario = JSON.parse(decodeURIComponent(escape(atob(calMeta.content.replace(/\s/g,'')))));
+
+    // 2. Load risultati/ folder listing
+    pilotTrophies = {};
+    try {
+      var rRes = await fetch(BASE_API + '/contents/risultati?ref=' + BRANCH);
+      if (rRes.ok) {
+        var rFiles = await rRes.json();
+        var jsonFiles = rFiles.filter(function(f) { return f.name.endsWith('.json'); });
+
+        // Load each result file
+        var results = await Promise.all(jsonFiles.map(async function(f) {
+          try {
+            var r = await fetch(f.url);
             if (!r.ok) return null;
-            return await r.json();
+            var meta = await r.json();
+            return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
+          } catch(e) { return null; }
         }));
 
-        grid.innerHTML = '';
-        pilots.filter(Boolean).forEach(p => renderPilot(p));
-        if (pilots.filter(Boolean).length === 0) grid.innerHTML = '<div style="color:var(--muted)">Nessuna scheda trovata</div>';
-    } catch (err) {
-        console.error(err);
-        grid.innerHTML = '<div style="color:var(--muted)">Impossibile caricare le schede. Controlla che la cartella piloti_schede e index.json esistano.</div>';
-    }
+        results.filter(Boolean).forEach(function(race) {
+          // Only look at FINAL race of each championship (garaNum === garaTot)
+          var garaNum = parseInt(race.garaNum) || 0;
+          var garaTot = parseInt(race.garaTot) || 0;
+          if (garaNum !== garaTot || garaTot === 0) return;
+
+          // Find champion (pos 1 in final standings)
+          var standings = race.standings || [];
+          var champion = standings.find(function(s) { return s.pos === 1; });
+          if (!champion) return;
+
+          // Get championship info from calendario
+          var champIdx = parseInt(race.champIdx);
+          var champ = calendario[champIdx] || null;
+          if (!champ || !champ.trophy) return;
+
+          var key = champion.nome.toLowerCase().trim();
+          if (!pilotTrophies[key]) pilotTrophies[key] = [];
+          pilotTrophies[key].push({
+            champName: champ.name,
+            year: champ.year,
+            trophy: champ.trophy
+          });
+        });
+      }
+    } catch(e) { console.warn('Could not load trophies:', e.message); }
+
+    // 3. Load piloti_schede/index.json → pilot files
+    var idxRes = await fetch('piloti_schede/index.json');
+    if (!idxRes.ok) throw new Error('index.json non trovato');
+    var files = await idxRes.json();
+
+    var pilots = await Promise.all(files.map(async function(f) {
+      var r = await fetch('piloti_schede/' + f);
+      if (!r.ok) return null;
+      return await r.json();
+    }));
+
+    grid.innerHTML = '';
+    var valid = pilots.filter(Boolean);
+    valid.forEach(function(p) { renderPilot(p); });
+    if (!valid.length) grid.innerHTML = '<div style="color:var(--muted)">Nessuna scheda trovata</div>';
+
+  } catch(err) {
+    console.error(err);
+    grid.innerHTML = '<div style="color:var(--muted)">Impossibile caricare le schede.</div>';
+  }
 }
 
-function renderPilot(p){
-    const el = document.createElement('div');
-    el.className = 'pilot-card';
-    
-    // Build location string
-    let locationStr = '';
-    if (p.region && p.location) {
-        locationStr = `🌍 ${escapeHtml(p.region)} • 📍 ${escapeHtml(p.location)}`;
-    } else if (p.region) {
-        locationStr = `🌍 ${escapeHtml(p.region)}`;
-    } else if (p.country) {
-        locationStr = `🌍 ${escapeHtml(p.country)}`;
+function renderPilot(p) {
+  var el = document.createElement('div');
+  el.className = 'pilot-card';
+
+  var locationStr = '';
+  if (p.region && p.location) locationStr = '🌍 ' + esc(p.region) + ' • 📍 ' + esc(p.location);
+  else if (p.region) locationStr = '🌍 ' + esc(p.region);
+  else if (p.country) locationStr = '🌍 ' + esc(p.country);
+
+  // Find trophies for this pilot
+  // Match by nome, psn, gt7Name (any of them)
+  var names = [p.name, p.nome, p.psn, p.gt7Name].filter(Boolean).map(function(n) { return n.toLowerCase().trim(); });
+  var won = [];
+  names.forEach(function(n) {
+    if (pilotTrophies[n]) {
+      pilotTrophies[n].forEach(function(t) {
+        // avoid duplicates
+        var exists = won.find(function(w) { return w.champName === t.champName && w.year === t.year; });
+        if (!exists) won.push(t);
+      });
     }
-    
-    el.innerHTML = `
-        <img class="pilot-photo" src="${p.photo || 'https://via.placeholder.com/600x400?text=Pilota'}" alt="${escapeHtml(p.name)}">
-        <div class="pilot-content">
-            <div class="pilot-name">${escapeHtml(p.name)}</div>
-            <div class="psn">GT7: ${escapeHtml(p.gt7Name || p.psn || '-')} • PSN: ${escapeHtml(p.psn || '-')}</div>
-            <div class="info">
-                ${locationStr ? locationStr + '<br>' : ''}
-                🚗 ${escapeHtml(p.car || '')}<br>
-                📊 DR: ${escapeHtml(p.dr || '-')} • SR: ${escapeHtml(p.sr || '-')}<br>
-                💪 ${escapeHtml(p.strengths || '')}<br>
-                ❤️ ${escapeHtml(p.favTrack || '')} • 💀 ${escapeHtml(p.hatedTrack || '')}
-            </div>
-            ${p.catchphrase ? `<div class="catchphrase">💬 "${escapeHtml(p.catchphrase)}"</div>` : ''}
-            <div class="badges">${(p.badges||[]).map(b => `<span class="badge">${escapeHtml(b)}</span>`).join('')}</div>
-        </div>
-    `;
-    grid.appendChild(el);
+  });
+
+  var trophiesHTML = '';
+  if (won.length) {
+    trophiesHTML = '<div class="trophies-section">'
+      + '<div class="trophies-label">🏆 Campionati Vinti</div>'
+      + '<div class="trophies-row">'
+      + won.map(function(t) {
+          return '<div class="trophy-won">'
+            + '<img src="trophy_png/' + esc(t.trophy) + '" alt="' + esc(t.champName) + '">'
+            + '<div class="trophy-won-name">' + esc(t.champName) + '</div>'
+            + '<div class="trophy-won-year">' + esc(t.year) + '</div>'
+            + '</div>';
+        }).join('')
+      + '</div></div>';
+  }
+
+  el.innerHTML = ''
+    + '<img class="pilot-photo" src="' + esc(p.photo || '') + '" alt="' + esc(p.name || p.nome || '') + '" onerror="this.src=\'https://via.placeholder.com/280x350?text=Pilota\'">'
+    + '<div class="pilot-content">'
+    +   '<div class="pilot-name">' + esc(p.name || p.nome || '—') + '</div>'
+    +   '<div class="psn">GT7: ' + esc(p.gt7Name || p.psn || '-') + ' • PSN: ' + esc(p.psn || '-') + '</div>'
+    +   '<div class="info">'
+    +     (locationStr ? locationStr + '<br>' : '')
+    +     '🚗 ' + esc(p.car || p.auto || '') + '<br>'
+    +     (p.dr || p.sr ? '📊 DR: ' + esc(p.dr || '-') + ' • SR: ' + esc(p.sr || '-') + '<br>' : '')
+    +     (p.strengths || p.stile ? '💪 ' + esc(p.strengths || p.stile || '') + '<br>' : '')
+    +     ((p.favTrack || p.pistaAma) ? '❤️ ' + esc(p.favTrack || p.pistaAma || '') + ' • 💀 ' + esc(p.hatedTrack || p.pistaOdia || '') : '')
+    +   '</div>'
+    +   (p.catchphrase ? '<div class="catchphrase">💬 "' + esc(p.catchphrase) + '"</div>' : '')
+    +   '<div class="badges">' + (p.badges||[]).map(function(b){ return '<span class="badge">' + esc(b) + '</span>'; }).join('') + '</div>'
+    +   trophiesHTML
+    + '</div>';
+
+  grid.appendChild(el);
 }
 
-function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c])); }
+function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 
-/* inizializza */
 loadAll();
-
 </script>
 </body>
 </html>
