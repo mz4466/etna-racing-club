@@ -535,7 +535,7 @@ function buildTrophyPicker(sel) {
   grid.innerHTML = TROPHIES.map(function(t) {
     var cls = 'trophy-option' + (sel === t.file ? ' selected' : '');
     return '<div class="' + cls + '" onclick="selectTrophy(\x27' + t.file + '\x27)">'
-      + '<img src="../trophy_png/' + t.file + '" alt="' + t.label + '" onerror="this.style.opacity=0.3">'
+      + '<img src="trophy_png/' + t.file + '" alt="' + t.label + '" onerror="this.style.opacity=0.3">'
       + '<div class="trophy-name">' + t.label + '</div></div>';
   }).join('');
 }
