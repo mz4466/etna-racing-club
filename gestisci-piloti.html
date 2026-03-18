@@ -302,16 +302,19 @@ async function verifyAndLoad(){
   const token = getToken();
   if(!token){ toast('Inserisci un token PAT','err'); return; }
   try {
-    const r = await fetch(`https://api.github.com/repos/${REPO}`,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
-    if(!r.ok) throw new Error();
+    // Verify by fetching piloti_schede folder directly (avoids CORS issue with /repos endpoint)
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${FOLDER}?ref=${BRANCH}`,{
+      headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+    });
+    if(r.status===401||r.status===403) throw new Error('Token non valido');
     document.getElementById('statusDot').className='status-dot ok';
     document.getElementById('statusText').textContent='Connesso';
     toast('✓ Connesso','ok');
     await loadPilots();
-  } catch {
+  } catch(e) {
     document.getElementById('statusDot').className='status-dot err';
     document.getElementById('statusText').textContent='Errore';
-    toast('Token non valido','err');
+    toast(e.message||'Token non valido','err');
   }
 }
 
@@ -343,9 +346,12 @@ async function loadPilots(){
     if(!jsonFiles.length){ allPilots=[]; renderGrid(); toast('Nessun pilota trovato',''); return; }
 
     const results = await Promise.all(jsonFiles.map(async f=>{
-      const fr = await fetch(f.download_url);
+      const fr = await fetch(f.url, {
+        headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+      });
       if(!fr.ok) return null;
-      const data = await fr.json();
+      const meta = await fr.json();
+      const data = JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
       return { slug: f.name.replace('.json',''), data };
     }));
 
