@@ -120,7 +120,27 @@
     <div class="standings-card">
       <h2 class="standings-title">🏆 Classifica</h2>
       
-      <div id="champStandings"><div style="font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:#c9b8a3;text-align:center;padding:16px;">Caricamento...</div></div>
+      <div id="champStandings"><div class="standings-item">
+      <span class="standings-position pos-1">1°</span>
+      <span class="standings-driver">Pyer</span>
+      <span class="standings-points">52</span>
+    </div><div class="standings-item">
+      <span class="standings-position pos-2">2°</span>
+      <span class="standings-driver">Claudio</span>
+      <span class="standings-points">36</span>
+    </div><div class="standings-item">
+      <span class="standings-position pos-3">3°</span>
+      <span class="standings-driver">Fabio</span>
+      <span class="standings-points">15</span>
+    </div><div class="standings-item">
+      <span class="standings-position ">4°</span>
+      <span class="standings-driver">carmine</span>
+      <span class="standings-points">15</span>
+    </div><div class="standings-item">
+      <span class="standings-position ">5°</span>
+      <span class="standings-driver">antonio</span>
+      <span class="standings-points">0</span>
+    </div></div>
       <div class="race-info">
         <strong>Gara 3 di 3</strong>
         <div class="race-nav"><span class="race-nav-btn disabled">← Precedente</span><span class="race-nav-btn disabled">Successiva →</span></div>
@@ -143,13 +163,15 @@
     return Promise.all((files||[]).filter(function(f){return f.name.endsWith(".json");}).map(function(f){
       return fetch(f.url).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}).then(function(m){
         if(!m||!m.content)return;
-        var d=JSON.parse(decodeURIComponent(escape(atob(m.content.replace(/s/g,"")))));
-        if(String(d.champIdx)!==_si)return;
-        if(parseInt(d.garaNum)===_rn)return;
-        (d.rows||[]).forEach(function(r){if(r.nome){if(!sc[r.nome])sc[r.nome]=[];sc[r.nome].push(r.totale||0);}});
+        try{
+          var d=JSON.parse(decodeURIComponent(escape(atob(m.content.replace(/s/g,"")))));
+          if(String(d.champIdx)!==_si)return;
+          if(parseInt(d.garaNum)===_rn)return;
+          (d.rows||[]).forEach(function(r){if(r.nome){if(!sc[r.nome])sc[r.nome]=[];sc[r.nome].push(r.totale||0);}});
+        }catch(e){}
       });
     }));
-  }).then(function(){
+  }).catch(function(){}).then(function(){
     var isLast=_rn>=_rt;
     var bo=_bo;var rt=_rt;
     var st=Object.entries(sc).map(function(e){
