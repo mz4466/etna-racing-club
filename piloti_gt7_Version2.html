@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Piloti GT7 - Etna Racing Club</title>
+
+    <!-- Font e stile coerenti con index -->
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300,400,500,600,700&family=Russo+One&family=Roboto:wght@300,400,700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg:#07070a; --card:#121318; --accent:#ff5014; --accent2:#ff8c42; --muted:#c9b8a3; --cream:#fff5e6;
+        }
+        body { margin:0; font-family:'Roboto',sans-serif; background: linear-gradient(180deg,#020203 0%, #0b0b0d 60%); color:var(--cream); min-height:100vh; }
+        header { padding:28px; display:flex; align-items:center; justify-content:space-between; gap:20px; max-width:1400px; margin:0 auto; }
+        header .brand { display:flex; gap:18px; align-items:center; }
+        header .brand img { width:64px; height:auto; border-radius:8px; box-shadow:0 6px 18px rgba(255,80,20,0.2); }
+        header h1 { font-family:'Russo One',sans-serif; font-size:28px; margin:0; letter-spacing:2px; color:var(--accent2); }
+        .container { max-width:1200px; margin:20px auto; padding:20px; }
+
+        .controls { display:flex; gap:12px; align-items:center; margin-bottom:20px; }
+        .btn {
+            background: linear-gradient(90deg,var(--accent),var(--accent2));
+            color:#fff; border:none; padding:12px 18px; border-radius:12px; cursor:pointer;
+            font-family:'Russo One',sans-serif; letter-spacing:1px;
+            box-shadow:0 10px 30px rgba(255,80,20,0.25);
+        }
+        .btn.alt { background: transparent; border:2px solid rgba(201,184,163,0.12); color:var(--muted); }
+
+        /* Grid cards */
+        .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap:18px; }
+        .pilot-card {
+            background: linear-gradient(180deg, rgba(18,19,24,0.9), rgba(8,8,10,0.9));
+            border:2px solid rgba(255,80,20,0.06);
+            padding:14px; border-radius:14px; box-shadow:0 8px 30px rgba(0,0,0,0.6);
+        }
+        .pilot-photo { width:100%; height:180px; object-fit:cover; border-radius:10px; display:block; }
+        .pilot-name { font-family:'Teko',sans-serif; font-size:20px; margin:10px 0 2px; color:var(--accent2); }
+        .psn { color:var(--muted); font-size:0.9rem; margin-bottom:8px; }
+        .info { color:var(--cream); font-size:0.95rem; line-height:1.6; margin-bottom:8px; }
+        .badges { margin-top:6px; display:flex; gap:8px; flex-wrap:wrap; }
+        .badge { background: rgba(255,140,66,0.12); padding:6px 10px; border-radius:999px; color:var(--muted); font-size:0.8rem; }
+
+        /* Modal */
+        .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; align-items:center; justify-content:center; z-index:60; }
+        .modal { width:100%; max-width:720px; background:#0b0b0d; border-radius:12px; padding:18px; border:1px solid rgba(255,80,20,0.06); }
+        .modal h3 { margin-top:0; font-family:'Russo One',sans-serif; color:var(--accent2); }
+        .form-row { display:flex; gap:10px; margin-bottom:10px; }
+        .form-row input, .form-row textarea, .form-row select { flex:1; padding:10px; border-radius:8px; border:1px solid rgba(201,184,163,0.06); background:#0b0b0d; color:var(--cream); }
+        .form-row textarea { min-height:90px; resize:vertical; }
+        .form-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:8px; }
+
+        footer { max-width:1200px; margin:40px auto; color:rgba(201,184,163,0.7); font-size:14px; text-align:center; padding-bottom:40px; }
+        @media (max-width:600px){ header h1{font-size:20px} .form-row{flex-direction:column} }
+    </style>
+</head>
+<body>
+<header>
+    <div class="brand">
+        <a href="index.html"><img src="etna-logo.jpg" alt="logo"></a>
+        <div>
+            <h1>Etna Racing Club</h1>
+            <div style="font-size:12px;color:rgba(201,184,163,0.7)">Piloti GT7</div>
+        </div>
+    </div>
+
+    <div>
+        <button id="openAdd" class="btn">➕ Aggiungi Pilota</button>
+    </div>
+</header>
+
+<main class="container">
+    <div class="controls">
+        <input id="search" type="search" placeholder="Cerca pilota, PSN, auto..." style="flex:1;padding:12px;border-radius:10px;border:1px solid rgba(201,184,163,0.06);background:#0b0b0d;color:var(--cream)">
+        <button id="reload" class="btn alt">↻ Ricarica</button>
+    </div>
+
+    <div id="grid" class="grid">
+        <!-- card renderate via JS -->
+    </div>
+</main>
+
+<!-- modal form -->
+<div id="modal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <h3 id="modalTitle">Aggiungi Nuovo Pilota</h3>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:10px">Compila i campi e salva. Per il salvataggio su GitHub segui le istruzioni sotto il form.</div>
+
+        <div class="form-row">
+            <input id="nome" placeholder='Nome e nickname (es. Giovanni "Mbare")'>
+            <input id="psn" placeholder="PSN (es. SicilianRacer)">
+        </div>
+        <div class="form-row">
+            <input id="country" placeholder="Nazione (es. Italia)">
+            <input id="car" placeholder="Auto (es. Ferrari Gr.3)">
+        </div>
+        <div class="form-row">
+            <input id="style" placeholder="Stile (es. Aggressivo)">
+            <input id="favTrack" placeholder="Pista preferita">
+        </div>
+        <div class="form-row">
+            <input id="hatedTrack" placeholder="Pista odiata">
+            <input id="photo" placeholder="URL foto (opzionale)">
+        </div>
+        <div style="margin-bottom:10px">
+            <textarea id="badges" placeholder="Badges separati da virgola (es. Rain Master, Fair Play)"></textarea>
+        </div>
+
+        <div style="font-size:13px;color:var(--muted);margin-bottom:10px">
+            Nome file (per il salvataggio): <input id="slug" placeholder="es. giovanni-mbare" style="padding:6px;border-radius:6px;border:1px solid rgba(201,184,163,0.06);background:#0b0b0d;color:var(--cream);">
+        </div>
+
+        <div class="form-actions">
+            <button id="cancel" class="btn alt">Annulla</button>
+            <button id="save" class="btn">Salva su GitHub (demo)</button>
+        </div>
+
+        <div style="margin-top:10px;font-size:13px;color:var(--muted)">
+            NOTE: il salvataggio diretto richiede un token GitHub (PAT) con permessi repo. Non inserire un token pubblico sul sito. Usa questa funzione solo per test o con un backend sicuro. Vedi le istruzioni sotto.
+        </div>
+        <div style="margin-top:8px;">
+            <label style="font-size:13px;color:var(--muted)">Token (solo demo):</label>
+            <input id="githubToken" placeholder="Token GitHub (demo ONLY)" style="width:100%;padding:8px;border-radius:6px;border:1px solid rgba(201,184,163,0.06);background:#0b0b0d;color:var(--cream);margin-top:6px">
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div>© Etna Racing Club • Piloti GT7</div>
+</footer>
+
+<script>
+/*
+  Logica:
+  - Caricamento: piloti_schede/index.json (array di filenames) -> fetch ogni file JSON -> render card
+  - Aggiungi: forma crea oggetto, poi lo salva come file JSON su GitHub usando API (demo)
+  Nota: in produzione usare backend.
+*/
+
+const owner = 'mz4466';          // aggiorna se diverso
+const repo = 'etna-racing-club';// aggiorna se diverso
+const branch = 'main';          // branch usato per i commit
+
+const grid = document.getElementById('grid');
+const openAdd = document.getElementById('openAdd');
+const modal = document.getElementById('modal');
+const cancel = document.getElementById('cancel');
+const save = document.getElementById('save');
+const reloadBtn = document.getElementById('reload');
+const searchInput = document.getElementById('search');
+
+openAdd.onclick = () => { modal.style.display = 'flex'; modal.setAttribute('aria-hidden','false'); }
+cancel.onclick = () => { modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); }
+
+reloadBtn.onclick = () => loadAll();
+
+searchInput.oninput = () => {
+    const q = searchInput.value.trim().toLowerCase();
+    document.querySelectorAll('.pilot-card').forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(q) ? '' : 'none';
+    });
+};
+
+async function loadAll(){
+    grid.innerHTML = '<div style="color:var(--muted)">Caricamento...</div>';
+    try {
+        // index.json memorizza array di file, es: ["giovanni-mbare.json", "alex.json"]
+        const idxRes = await fetch('piloti_schede/index.json');
+        if (!idxRes.ok) throw new Error('index.json non trovato');
+        const files = await idxRes.json();
+
+        const pilots = await Promise.all(files.map(async f => {
+            const r = await fetch('piloti_schede/' + f);
+            if (!r.ok) return null;
+            return await r.json();
+        }));
+
+        grid.innerHTML = '';
+        pilots.filter(Boolean).forEach(p => renderPilot(p));
+        if (pilots.filter(Boolean).length === 0) grid.innerHTML = '<div style="color:var(--muted)">Nessuna scheda trovata</div>';
+    } catch (err) {
+        console.error(err);
+        grid.innerHTML = '<div style="color:var(--muted)">Impossibile caricare le schede. Controlla che la cartella piloti_schede e index.json esistano.</div>';
+    }
+}
+
+function renderPilot(p){
+    const el = document.createElement('div');
+    el.className = 'pilot-card';
+    el.innerHTML = `
+        <img class="pilot-photo" src="${p.photo || 'https://via.placeholder.com/600x400?text=Pilota'}" alt="${escapeHtml(p.name)}">
+        <div class="pilot-name">${escapeHtml(p.name)}</div>
+        <div class="psn">PSN: ${escapeHtml(p.psn || '-')}</div>
+        <div class="info">
+            ${escapeHtml(p.country || '')}<br>
+            🚗 ${escapeHtml(p.car || '')}<br>
+            🛞 Stile: ${escapeHtml(p.style || '')}<br>
+            ❤️ ${escapeHtml(p.favTrack || '')} • 💀 ${escapeHtml(p.hatedTrack || '')}
+        </div>
+        <div class="badges">${(p.badges||[]).map(b => `<span class="badge">${escapeHtml(b)}</span>`).join('')}</div>
+    `;
+    grid.appendChild(el);
+}
+
+function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c])); }
+
+/* Salvataggio demo su GitHub: PUT /repos/:owner/:repo/contents/:path */
+save.onclick = async () => {
+    const name = document.getElementById('nome').value.trim();
+    const psn = document.getElementById('psn').value.trim();
+    const country = document.getElementById('country').value.trim();
+    const car = document.getElementById('car').value.trim();
+    const style = document.getElementById('style').value.trim();
+    const favTrack = document.getElementById('favTrack').value.trim();
+    const hatedTrack = document.getElementById('hatedTrack').value.trim();
+    const photo = document.getElementById('photo').value.trim();
+    const badges = document.getElementById('badges').value.split(',').map(s=>s.trim()).filter(Boolean);
+    let slug = document.getElementById('slug').value.trim();
+    const token = document.getElementById('githubToken').value.trim();
+
+    if (!name || !slug) return alert('Compila almeno Nome e Nome file (slug).');
+
+    // normalizza slug
+    slug = slug.replace(/[^a-z0-9\-]/gi,'-').toLowerCase();
+
+    const payload = {
+        name, psn, country, car, style, favTrack, hatedTrack, photo, badges
+    };
+
+    // 1) Salva il file piloti_schede/slug.json
+    // 2) Aggiorna piloti_schede/index.json aggiungendo il nuovo filename (se non presente)
+    if (!token) return alert('Inserisci token GitHub per demo. Non farlo se il sito è pubblico.');
+
+    try {
+        // crea/aggiorna file singolo
+        const path = `piloti_schede/${slug}.json`;
+        await putFileOnGitHub(path, JSON.stringify(payload, null, 2), `Aggiungi scheda pilota ${slug}`, token);
+
+        // aggiorna index.json
+        // scarica index.json esistente (content base64)
+        const idxPath = 'piloti_schede/index.json';
+        const idxRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${idxPath}?ref=${branch}`, { headers: { Authorization: `token ${token}` }});
+        let indexArr = [];
+        let shaIndex = null;
+        if (idxRes.ok){
+            const idxJson = await idxRes.json();
+            shaIndex = idxJson.sha;
+            indexArr = await (new Function('return ' + atob(idxJson.content)))(); // parse content
+        }
+        if (!Array.isArray(indexArr)) indexArr = [];
+        const filename = `${slug}.json`;
+        if (!indexArr.includes(filename)){
+            indexArr.push(filename);
+            await putFileOnGitHub(idxPath, JSON.stringify(indexArr, null, 2), `Aggiorna index schede (aggiungi ${filename})`, token, shaIndex);
+        }
+
+        alert('Scheda salvata! Ricarica la pagina per vedere la nuova scheda.');
+        modal.style.display = 'none';
+        loadAll();
+    } catch (err) {
+        console.error(err);
+        alert('Errore durante il salvataggio. Controlla console.');
+    }
+};
+
+/* helper: crea o aggiorna file su GitHub via API PUT
+   se sha esiste, si aggiorna, altrimenti si crea
+*/
+async function putFileOnGitHub(path, contentStr, message, token, sha=null){
+    const url = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`;
+    const body = {
+        message,
+        content: btoa(unescape(encodeURIComponent(contentStr))),
+        branch
+    };
+    if (sha) body.sha = sha;
+    const res = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            Authorization: 'token ' + token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    });
+    if (!res.ok) {
+        const err = await res.json().catch(()=>({message:'unknown'}));
+        throw new Error('GitHub API error: ' + (err.message || res.status));
+    }
+    return res.json();
+}
+
+/* inizializza */
+loadAll();
+
+</script>
+</body>
+</html>
