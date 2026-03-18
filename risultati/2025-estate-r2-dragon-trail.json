@@ -1,0 +1,99 @@
+{
+  "circuito": "Dragon Trail",
+  "data": "2025-06-29",
+  "garaNum": "1",
+  "garaTot": "5",
+  "champIdx": "0",
+  "prevRace": "",
+  "nextRace": "",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "carmine",
+      "tempo": "28'09''578",
+      "bestLap": "1'59''283",
+      "fl": true,
+      "pole": true,
+      "punti": 25,
+      "extra": "1+1",
+      "totale": 27,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Pyer",
+      "tempo": "a 26\"584",
+      "bestLap": "2'00''483",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Claudio",
+      "tempo": "a 1'00\"468",
+      "bestLap": "2'01''744",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Luca",
+      "tempo": "",
+      "bestLap": "2'06''419",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Fabio",
+      "tempo": "",
+      "bestLap": "2'10''642",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "carmine",
+      "pts": 27,
+      "pos": 1
+    },
+    {
+      "nome": "Pyer",
+      "pts": 18,
+      "pos": 2
+    },
+    {
+      "nome": "Claudio",
+      "pts": 15,
+      "pos": 3
+    },
+    {
+      "nome": "Luca",
+      "pts": 12,
+      "pos": 4
+    },
+    {
+      "nome": "Fabio",
+      "pts": 10,
+      "pos": 5
+    }
+  ],
+  "bestOf": 4
+}
