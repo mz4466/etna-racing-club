@@ -130,16 +130,16 @@ var pilotTrophies = {};
 async function loadAll() {
   grid.innerHTML = '<div style="color:var(--muted)">Caricamento...</div>';
   try {
-    // 1. Load calendario.json to get champ names, years, trophy filenames
-    var calRes = await fetch(BASE_API + '/contents/calendario.json?ref=' + BRANCH);
-    var calMeta = await calRes.json();
-    var calendario = JSON.parse(decodeURIComponent(escape(atob(calMeta.content.replace(/\s/g,'')))));
+    // 1. Load calendario.json — direct relative fetch (no API rate limit)
+    var calRes = await fetch('calendario.json?_=' + Date.now());
+    if(!calRes.ok) throw new Error('calendario.json non trovato');
+    var calendario = await calRes.json();
 
     // 2. Load risultati/ folder listing
     pilotTrophies = {};
     try {
       var rRes = await fetch(BASE_API + '/contents/risultati?ref=' + BRANCH);
-      if (rRes.ok) {
+      if (rRes.ok && rRes.status !== 403) {
         var rFiles = await rRes.json();
         var jsonFiles = rFiles.filter(function(f) { return f.name.endsWith('.json'); });
 
@@ -149,7 +149,8 @@ async function loadAll() {
             var r = await fetch(f.url);
             if (!r.ok) return null;
             var meta = await r.json();
-            return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
+            if(!meta || !meta.content) return null;
+        return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
           } catch(e) { return null; }
         }));
 
@@ -193,6 +194,7 @@ async function loadAll() {
         var r = await fetch(f.url);
         if (!r.ok) return null;
         var meta = await r.json();
+        if(!meta || !meta.content) return null;
         return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
       } catch(e) { return null; }
     }));
