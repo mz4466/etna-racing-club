@@ -120,19 +120,7 @@
     <div class="standings-card">
       <h2 class="standings-title">🏆 Classifica</h2>
       
-      <div class="standings-item">
-      <span class="standings-position pos-1">1°</span>
-      <span class="standings-driver">Fabio</span>
-      <span class="standings-points">25</span>
-    </div><div class="standings-item">
-      <span class="standings-position pos-2">2°</span>
-      <span class="standings-driver">Luca</span>
-      <span class="standings-points">19</span>
-    </div><div class="standings-item">
-      <span class="standings-position pos-3">3°</span>
-      <span class="standings-driver">antonio</span>
-      <span class="standings-points">15</span>
-    </div>
+      <div id="champStandings"><div style="font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:#c9b8a3;text-align:center;padding:16px;">Caricamento...</div></div>
       <div class="race-info">
         <strong>Gara 1 di 2</strong>
         <div class="race-nav"><span class="race-nav-btn disabled">← Precedente</span><span class="race-nav-btn disabled">Successiva →</span></div>
@@ -141,5 +129,37 @@
   </div>
 </main>
 <footer>© 2026 Etna Racing Club • Sicilia, Italia</footer>
+<div id="raceData" hidden>${_raceDataJSON}</div>
+<script>
+(function(){
+  var d=JSON.parse(document.getElementById('raceData').textContent);
+  var API='https://api.github.com/repos/mz4466/etna-racing-club/contents/risultati?ref=main';
+  var sc={};
+  d.rows.forEach(function(r){if(!r.nome)return;if(!sc[r.nome])sc[r.nome]=[];sc[r.nome].push(r.totale);});
+  fetch(API).then(function(res){return res.ok?res.json():[];}).then(function(files){
+    return Promise.all((files||[]).filter(function(f){return f.name.endsWith('.json');}).map(function(f){
+      return fetch(f.url).then(function(r){return r.ok?r.json():null;}).then(function(m){
+        if(!m||!m.content)return;
+        var rd=JSON.parse(decodeURIComponent(escape(atob(m.content.replace(/s/g,'')))));
+        if(String(rd.champIdx)!==d.champIdx)return;
+        if(parseInt(rd.garaNum)===d.garaNum)return;
+        (rd.rows||[]).forEach(function(r){if(!r.nome)return;if(!sc[r.nome])sc[r.nome]=[];sc[r.nome].push(r.totale||0);});
+      }).catch(function(){});
+    }));
+  }).catch(function(){}).then(function(){
+    var isLast=d.garaNum>=d.garaTot;
+    var st=Object.entries(sc).map(function(e){
+      var scores=e[1];
+      if(isLast&&d.bestOf&&d.bestOf<d.garaTot){scores=scores.slice().sort(function(a,b){return b-a;}).slice(0,d.bestOf);}
+      return{nome:e[0],pts:scores.reduce(function(s,v){return s+v;},0)};
+    }).sort(function(a,b){return b.pts-a.pts;});
+    var cl=['#FFD700','#C0C0C0','#CD7F32'];
+    document.getElementById('champStandings').innerHTML=st.map(function(s,i){
+      return '<div class="standings-item"><span class="standings-position" style="color:'+(cl[i]||'#F7E7CE')+'">'+(i+1)+'°</span><span class="standings-driver">'+s.nome+'</span><span class="standings-points">'+s.pts+'</span></div>';
+    }).join('')||'<div style="color:#c9b8a3;text-align:center;font-size:13px;">Nessun dato</div>';
+  });
+go();
+})();
+</script>
 </body>
 </html>
