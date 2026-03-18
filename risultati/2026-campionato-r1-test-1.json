@@ -9,7 +9,7 @@
   "rows": [
     {
       "pos": 1,
-      "nome": "ada",
+      "nome": "Fabio",
       "tempo": "12",
       "bestLap": "",
       "fl": false,
@@ -21,7 +21,7 @@
     },
     {
       "pos": 2,
-      "nome": "sa",
+      "nome": "Luca",
       "tempo": "1",
       "bestLap": "",
       "fl": false,
@@ -33,7 +33,7 @@
     },
     {
       "pos": 3,
-      "nome": "s",
+      "nome": "antonio",
       "tempo": "3''636",
       "bestLap": "",
       "fl": false,
@@ -46,17 +46,17 @@
   ],
   "standings": [
     {
-      "nome": "ada",
+      "nome": "Fabio",
       "pts": 25,
       "pos": 1
     },
     {
-      "nome": "sa",
+      "nome": "Luca",
       "pts": 19,
       "pos": 2
     },
     {
-      "nome": "s",
+      "nome": "antonio",
       "pts": 15,
       "pos": 3
     }
