@@ -3,440 +3,656 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Piloti — Etna Racing Club</title>
+<title>ERC Admin — Gestisci Piloti</title>
 <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@300;400;600&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:#07070f; --bg-card:#0e0e1c; --bg-card2:#0b0b18;
+    --bg:#07070f; --bg-card:#0e0e1c; --bg-input:#13131f;
     --border:#1e1e30; --border-hi:#2a2a42;
-    --gold:#c9a227; --gold-hi:#e8c547; --gold-dim:rgba(201,162,39,0.10); --gold-glow:rgba(201,162,39,0.25);
-    --orange:#ff5014; --text:#e8e0d0; --text-dim:#5a5470; --text-mid:#8a8098;
+    --gold:#c9a227; --gold-hi:#e8c547; --gold-dim:rgba(201,162,39,0.10); --gold-glow:rgba(201,162,39,0.22);
+    --red:#c0392b; --green:#27ae60; --blue:#4fc3f7; --orange:#ff5014;
+    --text:#e8e0d0; --text-dim:#4a4460; --text-mid:#8a8098;
   }
-
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh;display:flex;flex-direction:column;}
 
-  body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:'Barlow Condensed',sans-serif;
-    min-height:100vh;
-  }
+  /* TOPBAR */
+  .topbar{background:linear-gradient(90deg,#0a0a18,#0e0c1a);border-bottom:1px solid var(--border-hi);padding:0 32px;height:62px;display:flex;align-items:center;gap:14px;flex-shrink:0;box-shadow:0 2px 20px rgba(0,0,0,.5);position:sticky;top:0;z-index:100;}
+  .topbar-logo img{width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 0 6px var(--gold-glow));}
+  .topbar-title{font-family:'Russo One',sans-serif;font-size:15px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;}
+  .topbar-divider{width:1px;height:24px;background:var(--border-hi);}
+  .topbar-section{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:4px;color:var(--text-dim);text-transform:uppercase;}
+  .topbar-spacer{flex:1;}
+  .github-status{display:flex;align-items:center;gap:8px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--text-dim);}
+  .status-dot{width:7px;height:7px;border-radius:50%;background:var(--text-dim);transition:background .3s;}
+  .status-dot.ok{background:var(--green);box-shadow:0 0 6px var(--green);}
+  .status-dot.err{background:var(--red);}
+  .btn-back{background:none;border:1px solid var(--border-hi);border-radius:6px;color:var(--text-mid);font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;cursor:pointer;text-decoration:none;transition:border-color .2s,color .2s;}
+  .btn-back:hover{border-color:var(--gold);color:var(--gold);}
 
-  /* ── HERO ── */
-  .hero{
-    position:relative;
-    background:linear-gradient(180deg,#0a0a1e 0%,#07070f 100%);
-    border-bottom:1px solid var(--border-hi);
-    padding:52px 24px 44px;
-    text-align:center;
-    overflow:hidden;
-  }
+  /* LAYOUT */
+  .page-body{display:grid;grid-template-columns:260px 1fr;flex:1;min-height:0;}
 
-  .hero::before{
-    content:'';
-    position:absolute;
-    inset:0;
-    background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(201,162,39,0.08) 0%,transparent 70%);
-    pointer-events:none;
-  }
+  /* SIDEBAR */
+  .sidebar{background:#0a0a16;border-right:1px solid var(--border);padding:24px 18px;display:flex;flex-direction:column;gap:20px;overflow-y:auto;}
+  .sidebar-block{display:flex;flex-direction:column;gap:8px;}
+  .sidebar-label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;padding-bottom:6px;border-bottom:1px solid var(--border);}
+  .pat-wrap{position:relative;}
+  .pat-wrap input{width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:7px;padding:9px 34px 9px 11px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+  .pat-wrap input:focus{border-color:var(--gold);}
+  .pat-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:13px;}
+  .repo-note{font-size:11px;color:var(--text-dim);line-height:1.6;}
+  .repo-note span{color:var(--blue);}
+  .btn-verify{width:100%;background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold-hi);font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;padding:8px;border-radius:7px;cursor:pointer;transition:background .2s;}
+  .btn-verify:hover{background:var(--gold);color:#000;}
+  .btn{font-family:'Teko',sans-serif;font-size:15px;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;border-radius:7px;cursor:pointer;border:1px solid;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+  .btn-add{background:var(--gold);border-color:var(--gold-hi);color:#000;font-weight:700;width:100%;justify-content:center;}
+  .btn-add:hover{background:var(--gold-hi);}
+  .btn-outline{background:transparent;border-color:var(--border-hi);color:var(--text-mid);}
+  .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+  .sidebar-stat{display:flex;justify-content:space-between;align-items:center;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--text-mid);}
+  .sidebar-stat span{color:var(--gold);font-size:20px;font-weight:600;}
 
-  /* ember particles */
-  .ember{position:absolute;border-radius:50%;pointer-events:none;animation:rise linear infinite;}
-  @keyframes rise{
-    0%  {transform:translateY(0) scale(1);opacity:.7;}
-    100%{transform:translateY(-120px) scale(0);opacity:0;}
-  }
+  /* MAIN */
+  .main{padding:32px 36px;overflow-y:auto;display:flex;flex-direction:column;gap:24px;}
+  .page-title{font-family:'Russo One',sans-serif;font-size:22px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;}
+  .page-sub{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;margin-top:3px;}
 
-  .hero-logo{width:56px;height:56px;object-fit:contain;filter:drop-shadow(0 0 14px var(--gold-glow));margin-bottom:18px;}
-  .hero-eyebrow{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;}
-  .hero-title{font-family:'Russo One',sans-serif;font-size:clamp(28px,5vw,52px);color:var(--text);letter-spacing:4px;text-transform:uppercase;line-height:1;}
-  .hero-title span{color:var(--gold);}
-  .hero-sub{font-family:'Teko',sans-serif;font-size:16px;letter-spacing:4px;color:var(--text-dim);text-transform:uppercase;margin-top:10px;}
+  /* SEARCH BAR */
+  .search-bar{display:flex;gap:10px;align-items:center;}
+  .search-bar input{flex:1;background:var(--bg-card);border:1px solid var(--border-hi);border-radius:8px;padding:10px 14px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;outline:none;transition:border-color .2s;}
+  .search-bar input:focus{border-color:var(--gold);}
 
-  .hero-stats{
-    display:flex;
-    gap:32px;
-    justify-content:center;
-    margin-top:28px;
-    flex-wrap:wrap;
-  }
-  .hero-stat{text-align:center;}
-  .hero-stat-num{font-family:'Russo One',sans-serif;font-size:32px;color:var(--gold);line-height:1;}
-  .hero-stat-lbl{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;}
+  /* PILOTS GRID */
+  .pilots-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:14px;}
 
-  /* ── NAV ── */
-  .nav-strip{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:12px 32px;
-    border-bottom:1px solid var(--border);
-    background:#080812;
-    position:sticky;
-    top:0;
-    z-index:50;
-    gap:16px;
-    flex-wrap:wrap;
-  }
-
-  .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
-  .nav-logo img{width:28px;height:28px;object-fit:contain;}
-  .nav-logo span{font-family:'Russo One',sans-serif;font-size:13px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;}
-
-  .nav-links{display:flex;gap:6px;}
-  .nav-link{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;text-decoration:none;padding:5px 12px;border-radius:5px;transition:color .2s,background .2s;}
-  .nav-link:hover,.nav-link.active{color:var(--gold);background:var(--gold-dim);}
-
-  .search-wrap{flex:1;max-width:280px;}
-  .search-wrap input{width:100%;background:var(--bg-card);border:1px solid var(--border-hi);border-radius:7px;padding:7px 12px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
-  .search-wrap input:focus{border-color:var(--gold);}
-
-  /* ── MAIN ── */
-  .container{max-width:1200px;margin:0 auto;padding:40px 24px 60px;}
-
-  .section-header{
-    display:flex;
-    align-items:baseline;
-    gap:12px;
-    margin-bottom:28px;
-  }
-  .section-title{font-family:'Russo One',sans-serif;font-size:18px;color:var(--text);letter-spacing:3px;text-transform:uppercase;}
-  .section-count{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:var(--text-dim);}
-
-  /* ── GRID ── */
-  .pilots-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(480px,1fr));
-    gap:16px;
-  }
-
-  /* ── CARD ── */
   .pilot-card{
-    background:var(--bg-card);
-    border:1px solid var(--border-hi);
-    border-radius:14px;
-    overflow:hidden;
-    display:grid;
-    grid-template-columns:160px 1fr;
-    transition:border-color .3s,box-shadow .3s,transform .3s;
-    animation:fadeUp .5s cubic-bezier(.22,1,.36,1) both;
-    min-height:200px;
+    background:var(--bg-card);border:1px solid var(--border-hi);border-radius:12px;overflow:hidden;
+    display:grid;grid-template-columns:140px 1fr;
+    transition:border-color .25s,box-shadow .25s,transform .25s;
+    animation:fadeUp .35s cubic-bezier(.22,1,.36,1) both;
+    min-height:175px;
   }
+  .pilot-card:hover{border-color:var(--gold);box-shadow:0 8px 32px rgba(201,162,39,.12);transform:translateY(-2px);}
 
-  @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
-  .pilot-card:hover{
-    border-color:var(--gold);
-    box-shadow:0 8px 32px rgba(201,162,39,.14),0 0 0 1px rgba(201,162,39,.06);
-    transform:translateY(-3px);
-  }
+  .pilot-photo-wrap{position:relative;overflow:hidden;background:linear-gradient(135deg,#0d0d1e,#1a1a2e);}
+  .pilot-photo-wrap img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .4s;display:block;}
+  .pilot-card:hover .pilot-photo-wrap img{transform:scale(1.05);}
+  .pilot-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:46px;color:var(--border-hi);}
+  .pilot-photo-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,transparent 70%,var(--bg-card) 100%);pointer-events:none;}
 
-  /* ── LEFT: PHOTO ── */
-  .card-photo{
-    position:relative;
-    overflow:hidden;
-    background:linear-gradient(160deg,#0d0d20 0%,#1a1a30 100%);
-  }
+  .pilot-card-body{padding:14px 14px 0;display:flex;flex-direction:column;min-width:0;}
+  .pilot-name{font-family:'Russo One',sans-serif;font-size:15px;color:var(--text);letter-spacing:1px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .pilot-psn{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-top:2px;margin-bottom:8px;}
+  .pilot-meta{display:flex;flex-direction:column;gap:2px;flex:1;}
+  .pilot-meta-row{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--text-mid);display:flex;gap:6px;align-items:baseline;padding-bottom:2px;border-bottom:1px solid rgba(255,255,255,.025);}
+  .pilot-meta-row:last-child{border-bottom:none;}
+  .pilot-meta-row .lbl{color:var(--text-dim);font-size:10px;letter-spacing:2px;text-transform:uppercase;min-width:46px;}
+  .pilot-badges{margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;padding-bottom:8px;}
+  .pilot-badge{background:var(--gold-dim);border:1px solid rgba(201,162,39,.2);border-radius:20px;padding:2px 9px;font-family:'Teko',sans-serif;font-size:11px;letter-spacing:1px;color:var(--gold);text-transform:uppercase;}
+  .pilot-card-footer{padding:8px 14px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;grid-column:2;}
+  .btn-sm{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:6px;cursor:pointer;border:1px solid;transition:all .2s;}
+  .btn-edit{background:transparent;border-color:var(--border-hi);color:var(--text-mid);}
+  .btn-edit:hover{border-color:var(--gold);color:var(--gold);}
+  .btn-del{background:transparent;border-color:transparent;color:var(--text-dim);}
+  .btn-del:hover{border-color:var(--red);color:var(--red);background:rgba(192,57,43,.08);}
 
-  .card-photo img{
-    width:100%;height:100%;
-    object-fit:cover;object-position:top center;
-    transition:transform .5s cubic-bezier(.22,1,.36,1);
-    display:block;
-  }
+  /* EMPTY / LOADING */
+  .empty-state{text-align:center;padding:56px 20px;color:var(--text-dim);}
+  .empty-state .ei{font-size:44px;margin-bottom:14px;}
+  .empty-state p{font-family:'Teko',sans-serif;font-size:16px;letter-spacing:3px;text-transform:uppercase;}
+  .loading-msg{color:var(--text-dim);font-family:'Teko',sans-serif;font-size:15px;letter-spacing:3px;text-transform:uppercase;padding:40px;text-align:center;}
 
-  .pilot-card:hover .card-photo img{transform:scale(1.05);}
+  /* MODAL */
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:center;justify-content:center;padding:20px;}
+  .modal-bg.open{display:flex;}
+  .modal-box{background:var(--bg-card);border:1px solid var(--gold);border-radius:14px;width:100%;max-width:680px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;}
+  .modal-head{display:flex;align-items:center;padding:16px 22px;border-bottom:1px solid var(--border);gap:12px;}
+  .modal-head-title{font-family:'Russo One',sans-serif;font-size:15px;color:var(--gold);letter-spacing:2px;flex:1;text-transform:uppercase;}
+  .modal-close{background:none;border:1px solid var(--border-hi);color:var(--text-dim);cursor:pointer;border-radius:5px;padding:4px 11px;font-size:17px;transition:border-color .2s,color .2s;}
+  .modal-close:hover{border-color:var(--red);color:var(--red);}
+  .modal-body{flex:1;overflow-y:auto;padding:22px;}
+  .modal-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;}
 
-  .card-photo-placeholder{
-    width:100%;height:100%;
-    display:flex;align-items:center;justify-content:center;
-    font-size:52px;color:var(--border-hi);
-  }
+  /* FORM */
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .form-grid.full{grid-template-columns:1fr;}
+  .field{display:flex;flex-direction:column;gap:5px;}
+  .field label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;}
+  .field input,.field textarea,.field select{background:var(--bg-input);border:1px solid var(--border);border-radius:7px;padding:9px 12px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s;width:100%;}
+  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-dim);}
+  .field textarea{resize:vertical;min-height:72px;}
+  .form-section{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;padding:14px 0 6px;border-bottom:1px solid var(--border);margin-bottom:4px;grid-column:1/-1;}
 
-  /* subtle right-edge fade into card body */
-  .card-photo::after{
-    content:'';
-    position:absolute;inset:0;
-    background:linear-gradient(to right,transparent 70%,var(--bg-card) 100%);
-    pointer-events:none;
-  }
+  .upload-btn{display:inline-flex;align-items:center;gap:6px;background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold-hi);font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:7px 14px;border-radius:7px;cursor:pointer;transition:background .2s;}
+  .upload-btn:hover{background:var(--gold);color:#000;}
 
-  /* ── RIGHT: CONTENT ── */
-  .card-body{
-    padding:18px 18px 14px;
-    display:flex;
-    flex-direction:column;
-    gap:0;
-    min-width:0;
-  }
+  .photo-preview{width:100%;height:120px;object-fit:cover;border-radius:8px;border:1px solid var(--border);margin-top:6px;display:none;background:var(--bg-input);}
 
-  .card-name{
-    font-family:'Russo One',sans-serif;
-    font-size:19px;color:var(--text);
-    letter-spacing:2px;text-transform:uppercase;
-    line-height:1.1;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  }
+  .btn-github{background:linear-gradient(135deg,#196327,#238636);border-color:#2ea043;color:#fff;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;padding:9px 22px;border-radius:7px;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:6px;}
+  .btn-github:hover{background:linear-gradient(135deg,#238636,#2ea043);}
+  .btn-cancel{background:transparent;border:1px solid var(--border-hi);color:var(--text-mid);font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;padding:9px 22px;border-radius:7px;cursor:pointer;transition:border-color .2s,color .2s;}
+  .btn-cancel:hover{border-color:var(--red);color:var(--red);}
 
-  .card-psn{
-    font-family:'Teko',sans-serif;font-size:13px;
-    letter-spacing:2px;color:var(--gold);
-    text-transform:uppercase;margin-top:3px;margin-bottom:10px;
-  }
+  /* TOAST */
+  #toast{position:fixed;bottom:28px;right:28px;background:var(--bg-card);border:1px solid var(--gold);border-radius:8px;padding:12px 20px;font-family:'Teko',sans-serif;font-size:15px;letter-spacing:1px;color:var(--text);z-index:999;opacity:0;transform:translateY(12px);transition:opacity .3s,transform .3s;pointer-events:none;}
+  #toast.show{opacity:1;transform:translateY(0);}
+  #toast.ok{border-color:var(--green);color:var(--green);}
+  #toast.err{border-color:var(--red);color:var(--red);}
 
-  .card-meta{display:flex;flex-direction:column;gap:3px;flex:1;}
-  .meta-row{
-    display:flex;align-items:baseline;gap:6px;
-    font-size:13px;color:var(--text-mid);
-    padding-bottom:3px;
-    border-bottom:1px solid rgba(255,255,255,.025);
-  }
-  .meta-row:last-child{border-bottom:none;}
-  .meta-icon{font-size:13px;flex-shrink:0;width:18px;text-align:center;}
-  .meta-label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;min-width:46px;}
-  .meta-value{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-
-  .card-bio{
-    margin-top:8px;
-    font-size:12px;color:var(--text-dim);
-    line-height:1.5;font-style:italic;
-    border-top:1px solid var(--border);
-    padding-top:8px;
-  }
-
-  .card-badges{
-    margin-top:10px;
-    display:flex;flex-wrap:wrap;gap:4px;
-  }
-
-  .badge{
-    background:var(--gold-dim);
-    border:1px solid rgba(201,162,39,.2);
-    border-radius:20px;
-    padding:2px 9px;
-    font-family:'Teko',sans-serif;
-    font-size:11px;letter-spacing:1px;
-    color:var(--gold);text-transform:uppercase;
-  }
-
-  .tracks-pair{
-    display:flex;flex-wrap:wrap;gap:4px;
-    margin-top:6px;
-  }
-  .track-chip{
-    display:inline-flex;align-items:center;gap:4px;
-    background:rgba(255,255,255,.02);
-    border:1px solid var(--border);
-    border-radius:6px;padding:3px 8px;
-    font-size:11px;color:var(--text-mid);
-    white-space:nowrap;
-  }
-  .track-chip.love{border-color:rgba(255,100,100,.18);color:#e88;}
-  .track-chip.hate{border-color:rgba(100,100,255,.15);color:#aaf;}
-
-  /* ── EMPTY ── */
-  .empty{text-align:center;padding:80px 20px;color:var(--text-dim);}
-  .empty .ei{font-size:52px;margin-bottom:16px;}
-  .empty p{font-family:'Teko',sans-serif;font-size:18px;letter-spacing:4px;text-transform:uppercase;}
-
-  /* ── FOOTER ── */
-  .footer{
-    border-top:1px solid var(--border);
-    padding:28px 24px;
-    text-align:center;
-    font-family:'Teko',sans-serif;
-    font-size:13px;letter-spacing:2px;color:var(--text-dim);
-    text-transform:uppercase;
-  }
-  .footer a{color:var(--gold);text-decoration:none;}
-  .footer a:hover{color:var(--gold-hi);}
-
-  @media(max-width:640px){
-    .pilots-grid{grid-template-columns:1fr;}
-    .pilot-card{grid-template-columns:120px 1fr;}
-    .nav-strip{padding:10px 16px;}
-    .search-wrap{max-width:100%;width:100%;}
-  }
+  ::-webkit-scrollbar{width:5px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--border-hi);border-radius:3px;}
+  ::-webkit-scrollbar-thumb:hover{background:var(--gold);}
 </style>
 </head>
 <body>
 
-<!-- STICKY NAV -->
-<nav class="nav-strip">
-  <a class="nav-logo" href="index.html">
-    <img src="etna-logo.jpg" alt="ERC">
-    <span>Etna Racing Club</span>
-  </a>
-  <div class="nav-links">
-    <a class="nav-link" href="index.html">Home</a>
-    <a class="nav-link" href="calendario.html">Calendario</a>
-    <a class="nav-link active" href="piloti.html">Piloti</a>
+<header class="topbar">
+  <div class="topbar-logo"><img src="etna-logo.jpg" alt="ERC"></div>
+  <div class="topbar-title">Etna Racing Club</div>
+  <div class="topbar-divider"></div>
+  <div class="topbar-section">Gestisci Piloti</div>
+  <div class="topbar-spacer"></div>
+  <div class="github-status">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusText">Non connesso</span>
   </div>
-  <div class="search-wrap">
-    <input type="search" id="searchInput" placeholder="Cerca pilota..." oninput="filterPilots()">
-  </div>
-</nav>
+  <a href="admin.html" class="btn-back">← Admin</a>
+</header>
 
-<!-- HERO -->
-<section class="hero" id="hero">
-  <img class="hero-logo" src="etna-logo.jpg" alt="Etna Racing Club">
-  <div class="hero-eyebrow">Etna Racing Club</div>
-  <h1 class="hero-title">I Nostri <span>Piloti</span></h1>
-  <div class="hero-sub">Il roster ufficiale del club</div>
-  <div class="hero-stats">
-    <div class="hero-stat">
-      <div class="hero-stat-num" id="statCount">—</div>
-      <div class="hero-stat-lbl">Piloti Attivi</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-num" id="statNazioni">—</div>
-      <div class="hero-stat-lbl">Nazioni</div>
-    </div>
-  </div>
-</section>
+<div class="page-body">
 
-<!-- MAIN -->
-<div class="container">
-  <div class="section-header">
-    <div class="section-title">Roster</div>
-    <div class="section-count" id="countLabel"></div>
-  </div>
-  <div class="pilots-grid" id="pilotsGrid">
-    <div class="empty"><div class="ei">⏳</div><p>Caricamento roster...</p></div>
+  <aside class="sidebar">
+    <div class="sidebar-block">
+      <div class="sidebar-label">GitHub</div>
+      <div class="pat-wrap">
+        <input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+        <button class="pat-toggle" onclick="togglePAT()">👁</button>
+      </div>
+      <button class="btn-verify" onclick="verifyAndLoad()">Connetti e Carica</button>
+      <div class="repo-note">Repository: <span>mz4466/etna-racing-club</span><br>Branch: <span>main</span></div>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-label">Piloti</div>
+      <div class="sidebar-stat">Totale <span id="statTotal">—</span></div>
+      <button class="btn btn-add" onclick="openModal()">＋ Aggiungi Pilota</button>
+      <button class="btn btn-outline" onclick="reload()" style="width:100%;justify-content:center;">↺ Ricarica</button>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-label">Pagina Pubblica</div>
+      <div class="repo-note" style="line-height:1.8;">
+        La pagina <span>piloti.html</span> si aggiorna automaticamente leggendo i dati da GitHub.<br><br>
+        I dati sono salvati in <span>piloti_schede/</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div>
+      <div class="page-title">🏎️ Gestisci Piloti</div>
+      <div class="page-sub">Aggiungi, modifica e rimuovi i piloti del club</div>
+    </div>
+
+    <div class="search-bar">
+      <input type="search" id="searchInput" placeholder="Cerca per nome, PSN, auto..." oninput="filterPilots()">
+    </div>
+
+    <div id="pilotsGrid" class="pilots-grid">
+      <div class="loading-msg">Connetti GitHub per caricare i piloti</div>
+    </div>
+  </main>
+</div>
+
+<!-- ADD / EDIT MODAL -->
+<div class="modal-bg" id="modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-title" id="modalTitle">Aggiungi Pilota</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-section">Dati Principali</div>
+        <div class="field">
+          <label>Nome Completo *</label>
+          <input type="text" id="fNome" placeholder='es. Giovanni "Mbare" Russo'>
+        </div>
+        <div class="field">
+          <label>PSN ID *</label>
+          <input type="text" id="fPsn" placeholder="es. SicilianRacer_GT">
+        </div>
+        <div class="field">
+          <label>Nazione</label>
+          <input type="text" id="fNazione" placeholder="es. Italia 🇮🇹">
+        </div>
+        <div class="field">
+          <label>Auto Preferita</label>
+          <input type="text" id="fAuto" placeholder="es. Ferrari 296 GT3 Gr.3">
+        </div>
+
+        <div class="form-section">Profilo di Guida</div>
+        <div class="field">
+          <label>Stile di Guida</label>
+          <input type="text" id="fStile" placeholder="es. Aggressivo, Consistente...">
+        </div>
+        <div class="field">
+          <label>Pista Preferita ❤️</label>
+          <input type="text" id="fPistaAma" placeholder="es. Nürburgring GP">
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Pista Odiata 💀</label>
+          <input type="text" id="fPistaOdia" placeholder="es. Sarthe">
+        </div>
+
+        <div class="form-section">Extra</div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Bio / Descrizione</label>
+          <textarea id="fBio" placeholder="Breve descrizione del pilota, storia, curiosità..."></textarea>
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Badges (separati da virgola)</label>
+          <input type="text" id="fBadges" placeholder="es. Rain Master, Fair Play, Pole Position King">
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Foto Profilo</label>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <label class="upload-btn" for="fFotoFile">📁 Carica Immagine</label>
+            <input type="file" id="fFotoFile" accept="image/*" style="display:none" onchange="handlePhotoUpload(this)">
+            <span id="fotoStatus" style="font-family:'Teko',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:1px;"></span>
+          </div>
+          <img id="photoPreview" class="photo-preview" alt="Anteprima foto">
+          <input type="hidden" id="fFoto">
+        </div>
+
+        <div class="form-section">File</div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Slug (nome file) *</label>
+          <input type="text" id="fSlug" placeholder="es. giovanni-russo" oninput="sanitizeSlug()">
+          <div style="font-size:11px;color:var(--text-dim);margin-top:3px;">Sarà salvato come <span id="slugPreview" style="color:var(--blue);">piloti_schede/—.json</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal()">Annulla</button>
+      <button class="btn-github" onclick="savePilot()">⬆ Salva su GitHub</button>
+    </div>
   </div>
 </div>
 
-<footer class="footer">
-  © 2026 Etna Racing Club &nbsp;·&nbsp; <a href="index.html">Home</a> &nbsp;·&nbsp; <a href="calendario.html">Calendario</a>
-</footer>
+<div id="toast"></div>
 
 <script>
-const REPO   = 'mz4466';
-const RNAME  = 'etna-racing-club';
+const REPO   = 'mz4466/etna-racing-club';
+const BRANCH = 'main';
 const FOLDER = 'piloti_schede';
 
-let allPilots = [];
+let allPilots  = [];  // [{slug, data}, ...]
+let editingSlug = null;
 
-async function loadPilots(){
+function getToken(){ return document.getElementById('patInput').value.trim(); }
+function togglePAT(){ const i=document.getElementById('patInput'); i.type=i.type==='password'?'text':'password'; }
+
+// ── CONNECT ──
+async function verifyAndLoad(){
+  const token = getToken();
+  if(!token){ toast('Inserisci un token PAT','err'); return; }
   try {
-    // List folder via GitHub API (no auth needed for public repo)
-    const r = await fetch(`https://api.github.com/repos/${REPO}/${RNAME}/contents/${FOLDER}?ref=main`);
-    if(!r.ok) throw new Error();
+    // Verify by fetching piloti_schede folder directly (avoids CORS issue with /repos endpoint)
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${FOLDER}?ref=${BRANCH}`,{
+      headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+    });
+    if(r.status===401||r.status===403) throw new Error('Token non valido');
+    document.getElementById('statusDot').className='status-dot ok';
+    document.getElementById('statusText').textContent='Connesso';
+    toast('✓ Connesso','ok');
+    await loadPilots();
+  } catch(e) {
+    document.getElementById('statusDot').className='status-dot err';
+    document.getElementById('statusText').textContent='Errore';
+    toast(e.message||'Token non valido','err');
+  }
+}
+
+async function reload(){ if(!getToken()){ toast('Connetti prima','err'); return; } await loadPilots(); }
+
+// ── LOAD PILOTS ──
+async function loadPilots(){
+  const token = getToken();
+  toast('Caricamento piloti…','');
+  document.getElementById('pilotsGrid').innerHTML='<div class="loading-msg">Caricamento...</div>';
+
+  try {
+    // List files in piloti_schede/
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${FOLDER}?ref=${BRANCH}`,{
+      headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+    });
+
+    if(!r.ok){
+      // folder doesn't exist yet
+      allPilots=[];
+      renderGrid();
+      toast('Cartella piloti_schede non trovata — verrà creata al primo salvataggio','');
+      return;
+    }
+
     const files = await r.json();
-    const jsonFiles = files.filter(f=>f.name.endsWith('.json') && f.name !== 'index.json');
+    const jsonFiles = files.filter(f=>f.name.endsWith('.json') && f.name!=='index.json');
 
-    if(!jsonFiles.length){ renderGrid([]); return; }
+    if(!jsonFiles.length){ allPilots=[]; renderGrid(); toast('Nessun pilota trovato',''); return; }
 
-    const pilots = await Promise.all(jsonFiles.map(async f=>{
-      try {
-        // Use GitHub API contents endpoint (works on both public and private repos)
-        // f.download_url may be blocked; use f.url (API) or decode content directly
-        const jr = await fetch(f.url);
-        if(!jr.ok) return null;
-        const fd = await jr.json();
-        // GitHub API returns base64-encoded content
-        if(fd.content) {
-          return JSON.parse(decodeURIComponent(escape(atob(fd.content.replace(/\s/g,'')))));
-        }
-        return null;
-      } catch { return null; }
+    const results = await Promise.all(jsonFiles.map(async f=>{
+      const fr = await fetch(f.url, {
+        headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+      });
+      if(!fr.ok) return null;
+      const meta = await fr.json();
+      const data = JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
+      return { slug: f.name.replace('.json',''), data };
     }));
 
-    allPilots = pilots.filter(p => p && (p.nome || p.psn));
-    updateStats();
-    renderGrid(allPilots);
-  } catch {
-    document.getElementById('pilotsGrid').innerHTML=`<div class="empty"><div class="ei">📭</div><p>Roster non disponibile</p></div>`;
+    allPilots = results.filter(Boolean);
+    renderGrid();
+    document.getElementById('statTotal').textContent = allPilots.length;
+    toast(`✓ ${allPilots.length} piloti caricati`,'ok');
+  } catch(e){
+    toast('Errore: '+e.message,'err');
+    allPilots=[];
+    renderGrid();
   }
 }
 
-function updateStats(){
-  document.getElementById('statCount').textContent = allPilots.length;
-  const nazioni = new Set(allPilots.map(p=>p.nazione).filter(Boolean));
-  document.getElementById('statNazioni').textContent = nazioni.size || '—';
-  document.getElementById('countLabel').textContent = `${allPilots.length} piloti registrati`;
-}
-
-function renderGrid(pilots){
+// ── RENDER ──
+function renderGrid(list){
+  const pilots = list || allPilots;
   const grid = document.getElementById('pilotsGrid');
+  document.getElementById('statTotal').textContent = allPilots.length || '—';
+
   if(!pilots.length){
-    grid.innerHTML=`<div class="empty"><div class="ei">🏎️</div><p>Nessun pilota registrato</p></div>`;
+    grid.innerHTML=`<div class="empty-state"><div class="ei">🏎️</div><p>Nessun pilota registrato</p></div>`;
     return;
   }
+
   grid.innerHTML='';
-  pilots.forEach((p,i)=>{
+  pilots.forEach(({slug,data},i)=>{
     const card = document.createElement('div');
     card.className='pilot-card';
-    card.style.animationDelay=`${i*0.07}s`;
+    card.style.animationDelay=`${i*0.06}s`;
 
-    // Support both base64 (p.foto from new admin) and filename (p.photo from old format)
-    var photoSrc = p.foto || (p.photo ? 'piloti_schede/' + p.photo : null);
-    const photoHTML = photoSrc
-      ? `<img src="${esc(photoSrc)}" alt="${esc(p.nome)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+    const photoHTML = data.foto
+      ? `<img src="${esc(data.foto)}" alt="${esc(data.nome)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
       : '';
-    const placeholderStyle = photoSrc ? 'display:none':'';
+    const placeholderStyle = data.foto ? 'display:none' : '';
 
-    const badgesHTML = (p.badges||[]).map(b=>`<span class="badge">${esc(b)}</span>`).join('');
+    const badgesHTML = (data.badges||[]).map(b=>`<span class="pilot-badge">${esc(b)}</span>`).join('');
 
     card.innerHTML=`
-      <div class="card-photo">
+      <div class="pilot-photo-wrap">
         ${photoHTML}
-        <div class="card-photo-placeholder" style="${placeholderStyle}">🪖</div>
+        <div class="pilot-photo-placeholder" style="${placeholderStyle}">🪖</div>
       </div>
-
-      <div class="card-body">
-        <div class="card-name">${esc(p.nome||'—')}</div>
-        <div class="card-psn">🎮 ${esc(p.psn||p.gt7Name||'—')}</div>
-        <div class="card-meta">
-          ${(p.nazione||p.country)?`<div class="meta-row"><span class="meta-icon">🌍</span><span class="meta-label">Nazione</span><span class="meta-value">${esc(p.nazione||p.country)}</span></div>`:''}
-          ${(p.auto||p.car)?`<div class="meta-row"><span class="meta-icon">🚗</span><span class="meta-label">Auto</span><span class="meta-value">${esc(p.auto||p.car)}</span></div>`:''}
-          ${p.stile?`<div class="meta-row"><span class="meta-icon">🎯</span><span class="meta-label">Stile</span><span class="meta-value">${esc(p.stile)}</span></div>`:''}
+      <div class="pilot-card-body">
+        <div class="pilot-name">${esc(data.nome||'—')}</div>
+        <div class="pilot-psn">🎮 ${esc(data.psn||'—')}</div>
+        <div class="pilot-meta">
+          ${data.nazione?`<div class="pilot-meta-row"><span class="lbl">Nazione</span>${esc(data.nazione)}</div>`:''}
+          ${data.auto?`<div class="pilot-meta-row"><span class="lbl">Auto</span>${esc(data.auto)}</div>`:''}
+          ${data.stile?`<div class="pilot-meta-row"><span class="lbl">Stile</span>${esc(data.stile)}</div>`:''}
+          ${data.pistaAma?`<div class="pilot-meta-row"><span class="lbl">❤️</span>${esc(data.pistaAma)}</div>`:''}
+          ${data.pistaOdia?`<div class="pilot-meta-row"><span class="lbl">💀</span>${esc(data.pistaOdia)}</div>`:''}
         </div>
-        ${(p.pistaAma||p.pistaOdia)?`
-        <div class="tracks-pair">
-          ${p.pistaAma?`<div class="track-chip love">❤️ ${esc(p.pistaAma)}</div>`:''}
-          ${p.pistaOdia?`<div class="track-chip hate">💀 ${esc(p.pistaOdia)}</div>`:''}
-        </div>`:''}
-        ${badgesHTML?`<div class="card-badges">${badgesHTML}</div>`:''}
-        ${p.bio?`<div class="card-bio">"${esc(p.bio)}"</div>`:''}
+        ${badgesHTML?`<div class="pilot-badges">${badgesHTML}</div>`:''}
+        ${data.bio?`<div style="margin-top:6px;font-size:12px;color:var(--text-dim);line-height:1.5;font-style:italic;padding-bottom:8px;">"${esc(data.bio)}"</div>`:''}
       </div>
-    `;
+      <div class="pilot-card-footer">
+        <button class="btn-sm btn-edit" onclick="editPilot('${slug}')">✏️ Modifica</button>
+        <button class="btn-sm btn-del" onclick="deletePilot('${slug}','${esc(data.nome||slug)}')">✕</button>
+      </div>`;
     grid.appendChild(card);
   });
-
-  // spawn embers
-  spawnEmbers();
 }
 
 function filterPilots(){
   const q = document.getElementById('searchInput').value.toLowerCase();
-  if(!q){ renderGrid(allPilots); return; }
-  renderGrid(allPilots.filter(p=>[p.nome,p.psn,p.auto,p.nazione,p.stile].some(v=>v&&v.toLowerCase().includes(q))));
+  if(!q){ renderGrid(); return; }
+  const filtered = allPilots.filter(({slug,data})=>{
+    return [data.nome,data.psn,data.auto,data.nazione,data.stile,slug].some(v=>v&&v.toLowerCase().includes(q));
+  });
+  renderGrid(filtered);
 }
 
-function spawnEmbers(){
-  const hero = document.getElementById('hero');
-  hero.querySelectorAll('.ember').forEach(e=>e.remove());
-  for(let i=0;i<12;i++){
-    const e=document.createElement('div');
-    e.className='ember';
-    const size=Math.random()*3+1;
-    e.style.cssText=`
-      width:${size}px;height:${size}px;
-      background:${Math.random()>.5?'var(--gold)':'var(--orange)'};
-      left:${Math.random()*100}%;
-      bottom:${Math.random()*30}%;
-      animation-duration:${2+Math.random()*3}s;
-      animation-delay:${Math.random()*4}s;
-      opacity:${.3+Math.random()*.5};
-    `;
-    hero.appendChild(e);
+// ── MODAL ──
+function openModal(slug){
+  editingSlug = slug || null;
+  clearForm();
+
+  if(slug){
+    const p = allPilots.find(p=>p.slug===slug);
+    if(!p) return;
+    const d = p.data;
+    document.getElementById('modalTitle').textContent = 'Modifica Pilota';
+    document.getElementById('fNome').value    = d.nome    || '';
+    document.getElementById('fPsn').value     = d.psn     || '';
+    document.getElementById('fNazione').value = d.nazione || '';
+    document.getElementById('fAuto').value    = d.auto    || '';
+    document.getElementById('fStile').value   = d.stile   || '';
+    document.getElementById('fPistaAma').value = d.pistaAma || '';
+    document.getElementById('fPistaOdia').value= d.pistaOdia|| '';
+    document.getElementById('fBio').value     = d.bio     || '';
+    document.getElementById('fBadges').value  = (d.badges||[]).join(', ');
+    document.getElementById('fFoto').value    = d.foto    || '';
+    document.getElementById('fSlug').value    = slug;
+    document.getElementById('fSlug').readOnly = true;
+    if(d.foto){
+      const prev = document.getElementById('photoPreview');
+      prev.src = d.foto; prev.style.display='block';
+      document.getElementById('fotoStatus').textContent = '✓ Foto presente';
+      document.getElementById('fotoStatus').style.color = 'var(--green)';
+    }
+    updateSlugPreview();
+  } else {
+    document.getElementById('modalTitle').textContent = 'Aggiungi Pilota';
+    document.getElementById('fSlug').readOnly = false;
+  }
+
+  document.getElementById('modal').classList.add('open');
+}
+
+function editPilot(slug){ openModal(slug); }
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  editingSlug=null;
+}
+
+function clearForm(){
+  ['fNome','fPsn','fNazione','fAuto','fStile','fPistaAma','fPistaOdia','fBio','fBadges','fFoto','fSlug'].forEach(id=>{
+    document.getElementById(id).value='';
+  });
+  document.getElementById('fFotoFile').value = '';
+  document.getElementById('fotoStatus').textContent = '';
+  document.getElementById('fotoStatus').style.color = '';
+  document.getElementById('photoPreview').style.display='none';
+  document.getElementById('photoPreview').src='';
+  updateSlugPreview();
+}
+
+async function handlePhotoUpload(input){
+  const file = input.files[0];
+  if(!file) return;
+  const status = document.getElementById('fotoStatus');
+  const preview = document.getElementById('photoPreview');
+  status.textContent = 'Elaborazione...';
+
+  try {
+    const base64 = await compressImage(file, 500 * 1024); // 500KB max
+    document.getElementById('fFoto').value = base64;
+    preview.src = base64;
+    preview.style.display = 'block';
+    const kb = Math.round(base64.length * 0.75 / 1024);
+    status.textContent = `✓ ${file.name} (${kb} KB)`;
+    status.style.color = 'var(--green)';
+  } catch(e) {
+    status.textContent = 'Errore: ' + e.message;
+    status.style.color = 'var(--red)';
   }
 }
 
-function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function compressImage(file, maxBytes){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = e => { img.src = e.target.result; };
+    reader.onerror = () => reject(new Error('Lettura file fallita'));
+    reader.readAsDataURL(file);
 
-loadPilots();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let quality = 0.92;
+      let w = img.naturalWidth;
+      let h = img.naturalHeight;
+
+      // Scale down if very large
+      const MAX_DIM = 1200;
+      if(w > MAX_DIM || h > MAX_DIM){
+        const ratio = Math.min(MAX_DIM/w, MAX_DIM/h);
+        w = Math.round(w * ratio);
+        h = Math.round(h * ratio);
+      }
+
+      canvas.width  = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+
+      // Iteratively reduce quality until under maxBytes
+      const tryEncode = (q) => {
+        const data = canvas.toDataURL('image/jpeg', q);
+        // base64 → actual bytes ≈ length * 0.75
+        const approxBytes = data.length * 0.75;
+        if(approxBytes <= maxBytes || q <= 0.1){
+          resolve(data);
+        } else {
+          tryEncode(Math.max(q - 0.08, 0.1));
+        }
+      };
+      tryEncode(quality);
+    };
+    img.onerror = () => reject(new Error('Immagine non valida'));
+  });
+}
+
+function sanitizeSlug(){
+  const el = document.getElementById('fSlug');
+  el.value = el.value.toLowerCase().replace(/[^a-z0-9\-]/g,'-').replace(/-+/g,'-');
+  updateSlugPreview();
+}
+
+function updateSlugPreview(){
+  const s = document.getElementById('fSlug').value.trim() || '—';
+  document.getElementById('slugPreview').textContent = `piloti_schede/${s}.json`;
+}
+
+// ── SAVE ──
+async function savePilot(){
+  const token = getToken();
+  if(!token){ toast('Token mancante','err'); return; }
+
+  const nome = document.getElementById('fNome').value.trim();
+  const slug = document.getElementById('fSlug').value.trim();
+  if(!nome||!slug){ toast('Nome e Slug sono obbligatori','err'); return; }
+
+  const payload = {
+    nome,
+    psn:       document.getElementById('fPsn').value.trim(),
+    nazione:   document.getElementById('fNazione').value.trim(),
+    auto:      document.getElementById('fAuto').value.trim(),
+    stile:     document.getElementById('fStile').value.trim(),
+    pistaAma:  document.getElementById('fPistaAma').value.trim(),
+    pistaOdia: document.getElementById('fPistaOdia').value.trim(),
+    bio:       document.getElementById('fBio').value.trim(),
+    badges:    document.getElementById('fBadges').value.split(',').map(s=>s.trim()).filter(Boolean),
+    foto:      document.getElementById('fFoto').value.trim(),
+  };
+
+  toast('Salvataggio…','');
+
+  try {
+    await putFile(`${FOLDER}/${slug}.json`, JSON.stringify(payload,null,2), `${editingSlug?'Update':'Add'} pilot: ${slug}`, token);
+    toast(`✓ ${nome} salvato!`,'ok');
+    closeModal();
+    await loadPilots();
+  } catch(e){
+    toast('Errore: '+e.message,'err');
+  }
+}
+
+// ── DELETE ──
+async function deletePilot(slug, nome){
+  if(!confirm(`Rimuovere ${nome} dal roster? Questa azione è irreversibile.`)) return;
+  const token = getToken();
+  if(!token){ toast('Token mancante','err'); return; }
+  toast('Eliminazione…','');
+  try {
+    const path = `${FOLDER}/${slug}.json`;
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`,{
+      headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+    });
+    if(!r.ok) throw new Error('File non trovato');
+    const d = await r.json();
+    const del = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`,{
+      method:'DELETE',
+      headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify({message:`Remove pilot: ${slug}`,sha:d.sha,branch:BRANCH})
+    });
+    if(!del.ok) throw new Error('Eliminazione fallita');
+    toast(`✓ ${nome} rimosso`,'ok');
+    await loadPilots();
+  } catch(e){
+    toast('Errore: '+e.message,'err');
+  }
+}
+
+// ── GITHUB HELPER ──
+async function putFile(path, content, message, token){
+  let sha=null;
+  const check = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`,{
+    headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+  });
+  if(check.ok){ const d=await check.json(); sha=d.sha; }
+
+  const body={message,content:btoa(unescape(encodeURIComponent(content))),branch:BRANCH};
+  if(sha) body.sha=sha;
+
+  const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`,{
+    method:'PUT',
+    headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  });
+  if(!r.ok){ const e=await r.json(); throw new Error(e.message||r.status); }
+  return r.json();
+}
+
+function esc(s){ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function toast(msg,type){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='show'+(type?' '+type:'');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.className='',3200);
+}
+
+// auto-fill slug from name
+document.getElementById('fNome').addEventListener('input',()=>{
+  if(editingSlug) return;
+  const nome = document.getElementById('fNome').value.trim();
+  const slug = nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  document.getElementById('fSlug').value=slug;
+  updateSlugPreview();
+});
 </script>
 </body>
 </html>
