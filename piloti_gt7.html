@@ -51,6 +51,7 @@
         }
         .trophies-row { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; }
         .trophy-won {
+            position:relative;
             display:flex; flex-direction:column; align-items:center; gap:4px;
             background: var(--gold-dim);
             border:1px solid rgba(201,162,39,0.25);
@@ -71,6 +72,19 @@
         .trophy-won-year {
             font-size:9px; color:rgba(201,162,39,0.6);
             font-family:'Teko',sans-serif; letter-spacing:1px;
+        }
+        .trophy-count-badge {
+            position:absolute;
+            top:-8px; right:-8px;
+            background:var(--gold);
+            color:#000;
+            font-family:'Russo One',sans-serif;
+            font-size:11px;
+            width:22px; height:22px;
+            border-radius:50%;
+            display:flex; align-items:center; justify-content:center;
+            border:2px solid #07070a;
+            box-shadow:0 2px 8px rgba(201,162,39,0.5);
         }
 
         footer { max-width:1200px; margin:40px auto; color:rgba(201,184,163,0.7); font-size:14px; text-align:center; padding-bottom:40px; }
@@ -239,17 +253,33 @@ function renderPilot(p) {
 
   var trophiesHTML = '';
   if (won.length) {
+    // Group by trophy filename — multiple wins of same trophy show a count badge
+    var grouped = {};
+    won.forEach(function(t) {
+      var key = t.trophy;
+      if (!grouped[key]) grouped[key] = { trophy: t.trophy, champName: t.champName, wins: [] };
+      grouped[key].wins.push({ champName: t.champName, year: t.year });
+    });
+
+    var trophyCards = Object.values(grouped).map(function(g) {
+      var count = g.wins.length;
+      var badgeHTML = count > 1
+        ? '<div class="trophy-count-badge">x' + count + '</div>'
+        : '';
+      // Show all years if multiple wins, else single year
+      var yearLabel = g.wins.map(function(w){ return w.year; }).join(', ');
+      return '<div class="trophy-won">'
+        + badgeHTML
+        + '<img src="trophy_png/' + esc(g.trophy) + '" alt="' + esc(g.champName) + '">'
+        + '<div class="trophy-won-name">' + esc(g.champName) + '</div>'
+        + '<div class="trophy-won-year">' + esc(yearLabel) + '</div>'
+        + '</div>';
+    }).join('');
+
     trophiesHTML = '<div class="trophies-section">'
       + '<div class="trophies-label">🏆 Campionati Vinti</div>'
-      + '<div class="trophies-row">'
-      + won.map(function(t) {
-          return '<div class="trophy-won">'
-            + '<img src="trophy_png/' + esc(t.trophy) + '" alt="' + esc(t.champName) + '">'
-            + '<div class="trophy-won-name">' + esc(t.champName) + '</div>'
-            + '<div class="trophy-won-year">' + esc(t.year) + '</div>'
-            + '</div>';
-        }).join('')
-      + '</div></div>';
+      + '<div class="trophies-row">' + trophyCards + '</div>'
+      + '</div>';
   }
 
   var photoSrc = foto || 'https://via.placeholder.com/280x350?text=Pilota';
