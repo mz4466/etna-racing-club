@@ -233,8 +233,8 @@ const API    = `https://api.github.com/repos/${OWNER}/${REPO}`;
 
 async function loadArchive(){
   try {
-    // 1. Load calendario.json
-    const calRes = await fetch(`${BASE}/calendario.json?_=${Date.now()}`);
+    // 1. Load calendario.json (direct relative fetch — both files in repo root)
+    const calRes = await fetch(`calendario.json?_=${Date.now()}`);
     if(!calRes.ok) throw new Error('calendario.json non trovato');
     const campionati = await calRes.json();
     if(!campionati.length){ showEmpty(); return; }
