@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Piloti GT7 - Etna Racing Club</title>
+
+    <!-- Font e stile coerenti con index -->
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300,400,500,600,700&family=Russo+One&family=Roboto:wght@300,400,700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg:#07070a; --card:#121318; --accent:#ff5014; --accent2:#ff8c42; --muted:#c9b8a3; --cream:#fff5e6;
+        }
+        body { margin:0; font-family:'Roboto',sans-serif; background: linear-gradient(180deg,#020203 0%, #0b0b0d 60%); color:var(--cream); min-height:100vh; }
+        header { padding:28px; display:flex; align-items:center; justify-content:space-between; gap:20px; max-width:1400px; margin:0 auto; }
+        header .brand { display:flex; gap:18px; align-items:center; }
+        header .brand img { width:64px; height:auto; border-radius:8px; box-shadow:0 6px 18px rgba(255,80,20,0.2); }
+        header h1 { font-family:'Russo One',sans-serif; font-size:28px; margin:0; letter-spacing:2px; color:var(--accent2); }
+        .container { max-width:1200px; margin:20px auto; padding:20px; }
+
+        .controls { display:flex; gap:12px; align-items:center; margin-bottom:20px; }
+        .btn {
+            background: linear-gradient(90deg,var(--accent),var(--accent2));
+            color:#fff; border:none; padding:12px 18px; border-radius:12px; cursor:pointer;
+            font-family:'Russo One',sans-serif; letter-spacing:1px;
+            box-shadow:0 10px 30px rgba(255,80,20,0.25);
+        }
+        .btn.alt { background: transparent; border:2px solid rgba(201,184,163,0.12); color:var(--muted); }
+
+        /* Grid cards */
+        .grid { display:flex; flex-direction:column; gap:18px; }
+        .pilot-card {
+            background: linear-gradient(180deg, rgba(18,19,24,0.9), rgba(8,8,10,0.9));
+            border:2px solid rgba(255,80,20,0.06);
+            padding:14px; border-radius:14px; box-shadow:0 8px 30px rgba(0,0,0,0.6);
+            display:flex; gap:20px; align-items:flex-start;
+        }
+        .pilot-photo { width:280px; min-width:280px; height:350px; object-fit:cover; border-radius:10px; display:block; }
+        .pilot-content { flex:1; display:flex; flex-direction:column; }
+        .pilot-name { font-family:'Teko',sans-serif; font-size:24px; margin:10px 0 2px; color:var(--accent2); }
+        .psn { color:var(--muted); font-size:0.85rem; margin-bottom:10px; }
+        .info { color:var(--cream); font-size:0.9rem; line-height:1.7; margin-bottom:8px; }
+        .catchphrase { color:var(--accent2); font-style:italic; font-size:0.85rem; margin-top:8px; }
+        .badges { margin-top:6px; display:flex; gap:8px; flex-wrap:wrap; }
+        .badge { background: rgba(255,140,66,0.12); padding:6px 10px; border-radius:999px; color:var(--muted); font-size:0.8rem; }
+
+        footer { max-width:1200px; margin:40px auto; color:rgba(201,184,163,0.7); font-size:14px; text-align:center; padding-bottom:40px; }
+        @media (max-width:768px){ 
+            header h1{font-size:20px} 
+            header{flex-direction:column;text-align:center} 
+            .pilot-card { flex-direction:column; }
+            .pilot-photo { width:100%; min-width:100%; height:300px; }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="brand">
+        <a href="index.html"><img src="etna-logo.jpg" alt="logo"></a>
+        <div>
+            <h1>Etna Racing Club</h1>
+            <div style="font-size:12px;color:rgba(201,184,163,0.7)">Piloti GT7</div>
+        </div>
+    </div>
+
+    <div>
+        <button id="reload" class="btn alt">↻ Ricarica</button>
+    </div>
+</header>
+
+<main class="container">
+    <div class="controls">
+        <input id="search" type="search" placeholder="Cerca pilota, PSN, auto..." style="flex:1;padding:12px;border-radius:10px;border:1px solid rgba(201,184,163,0.06);background:#0b0b0d;color:var(--cream)">
+    </div>
+
+    <div id="grid" class="grid">
+        <!-- card renderate via JS -->
+    </div>
+</main>
+
+<footer>
+    <div>© 2025 Etna Racing Club • Piloti GT7</div>
+</footer>
+
+<script>
+/*
+  Logica:
+  - Caricamento: piloti_schede/index.json (array di filenames) -> fetch ogni file JSON -> render card
+*/
+
+const grid = document.getElementById('grid');
+const reloadBtn = document.getElementById('reload');
+const searchInput = document.getElementById('search');
+
+reloadBtn.onclick = () => loadAll();
+
+searchInput.oninput = () => {
+    const q = searchInput.value.trim().toLowerCase();
+    document.querySelectorAll('.pilot-card').forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(q) ? '' : 'none';
+    });
+};
+
+async function loadAll(){
+    grid.innerHTML = '<div style="color:var(--muted)">Caricamento...</div>';
+    try {
+        // index.json memorizza array di file, es: ["giovanni-mz4466.json", "alex.json"]
+        const idxRes = await fetch('piloti_schede/index.json');
+        if (!idxRes.ok) throw new Error('index.json non trovato');
+        const files = await idxRes.json();
+
+        const pilots = await Promise.all(files.map(async f => {
+            const r = await fetch('piloti_schede/' + f);
+            if (!r.ok) return null;
+            return await r.json();
+        }));
+
+        grid.innerHTML = '';
+        pilots.filter(Boolean).forEach(p => renderPilot(p));
+        if (pilots.filter(Boolean).length === 0) grid.innerHTML = '<div style="color:var(--muted)">Nessuna scheda trovata</div>';
+    } catch (err) {
+        console.error(err);
+        grid.innerHTML = '<div style="color:var(--muted)">Impossibile caricare le schede. Controlla che la cartella piloti_schede e index.json esistano.</div>';
+    }
+}
+
+function renderPilot(p){
+    const el = document.createElement('div');
+    el.className = 'pilot-card';
+    
+    // Build location string
+    let locationStr = '';
+    if (p.region && p.location) {
+        locationStr = `🌍 ${escapeHtml(p.region)} • 📍 ${escapeHtml(p.location)}`;
+    } else if (p.region) {
+        locationStr = `🌍 ${escapeHtml(p.region)}`;
+    } else if (p.country) {
+        locationStr = `🌍 ${escapeHtml(p.country)}`;
+    }
+    
+    el.innerHTML = `
+        <img class="pilot-photo" src="${p.photo || 'https://via.placeholder.com/600x400?text=Pilota'}" alt="${escapeHtml(p.name)}">
+        <div class="pilot-content">
+            <div class="pilot-name">${escapeHtml(p.name)}</div>
+            <div class="psn">GT7: ${escapeHtml(p.gt7Name || p.psn || '-')} • PSN: ${escapeHtml(p.psn || '-')}</div>
+            <div class="info">
+                ${locationStr ? locationStr + '<br>' : ''}
+                🚗 ${escapeHtml(p.car || '')}<br>
+                📊 DR: ${escapeHtml(p.dr || '-')} • SR: ${escapeHtml(p.sr || '-')}<br>
+                💪 ${escapeHtml(p.strengths || '')}<br>
+                ❤️ ${escapeHtml(p.favTrack || '')} • 💀 ${escapeHtml(p.hatedTrack || '')}
+            </div>
+            ${p.catchphrase ? `<div class="catchphrase">💬 "${escapeHtml(p.catchphrase)}"</div>` : ''}
+            <div class="badges">${(p.badges||[]).map(b => `<span class="badge">${escapeHtml(b)}</span>`).join('')}</div>
+        </div>
+    `;
+    grid.appendChild(el);
+}
+
+function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c])); }
+
+/* inizializza */
+loadAll();
+
+</script>
+</body>
+</html>
