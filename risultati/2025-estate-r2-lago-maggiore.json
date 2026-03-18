@@ -9,9 +9,9 @@
   "rows": [
     {
       "pos": 1,
-      "nome": "Pyer",
-      "tempo": "27'16''266",
-      "bestLap": "1'43''018",
+      "nome": "carmine",
+      "tempo": "28'09''578",
+      "bestLap": "1'59''283",
       "fl": true,
       "pole": true,
       "punti": 25,
@@ -21,9 +21,9 @@
     },
     {
       "pos": 2,
-      "nome": "Claudio",
-      "tempo": "a 17\"438",
-      "bestLap": "1'45''376",
+      "nome": "Pyer",
+      "tempo": "a 26\"584",
+      "bestLap": "2'00''483",
       "fl": false,
       "pole": false,
       "punti": 18,
@@ -33,32 +33,66 @@
     },
     {
       "pos": 3,
-      "nome": "Luca",
-      "tempo": "a 1 Giro",
-      "bestLap": "1'50''720",
+      "nome": "Claudio",
+      "tempo": "a 1'00\"468",
+      "bestLap": "2'01''744",
       "fl": false,
       "pole": false,
       "punti": 15,
       "extra": "-",
       "totale": 15,
       "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Luca",
+      "tempo": "",
+      "bestLap": "2'06''419",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Fabio",
+      "tempo": "",
+      "bestLap": "2'10''642",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
     }
   ],
   "standings": [
     {
-      "nome": "Pyer",
+      "nome": "carmine",
       "pts": 27,
       "pos": 1
     },
     {
-      "nome": "Claudio",
+      "nome": "Pyer",
       "pts": 18,
       "pos": 2
     },
     {
-      "nome": "Luca",
+      "nome": "Claudio",
       "pts": 15,
       "pos": 3
+    },
+    {
+      "nome": "Luca",
+      "pts": 12,
+      "pos": 4
+    },
+    {
+      "nome": "Fabio",
+      "pts": 10,
+      "pos": 5
     }
   ],
   "bestOf": 4
