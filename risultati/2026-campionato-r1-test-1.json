@@ -47,18 +47,23 @@
   "standings": [
     {
       "nome": "Fabio",
-      "pts": 25,
+      "pts": 50,
       "pos": 1
     },
     {
       "nome": "Luca",
-      "pts": 19,
+      "pts": 37,
       "pos": 2
     },
     {
       "nome": "antonio",
       "pts": 15,
       "pos": 3
+    },
+    {
+      "nome": "Claudio",
+      "pts": 15,
+      "pos": 4
     }
   ],
   "bestOf": null
