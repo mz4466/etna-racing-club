@@ -51,7 +51,6 @@
         }
         .trophies-row { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; }
         .trophy-won {
-            position:relative;
             display:flex; flex-direction:column; align-items:center; gap:4px;
             background: var(--gold-dim);
             border:1px solid rgba(201,162,39,0.25);
@@ -73,19 +72,7 @@
             font-size:9px; color:rgba(201,162,39,0.6);
             font-family:'Teko',sans-serif; letter-spacing:1px;
         }
-        .trophy-count-badge {
-            position:absolute;
-            top:-8px; right:-8px;
-            background:var(--gold);
-            color:#000;
-            font-family:'Russo One',sans-serif;
-            font-size:11px;
-            width:22px; height:22px;
-            border-radius:50%;
-            display:flex; align-items:center; justify-content:center;
-            border:2px solid #07070a;
-            box-shadow:0 2px 8px rgba(201,162,39,0.5);
-        }
+
 
         footer { max-width:1200px; margin:40px auto; color:rgba(201,184,163,0.7); font-size:14px; text-align:center; padding-bottom:40px; }
         @media (max-width:768px){
@@ -262,14 +249,9 @@ function renderPilot(p) {
     });
 
     var trophyCards = Object.values(grouped).map(function(g) {
-      var count = g.wins.length;
-      var badgeHTML = count > 1
-        ? '<div class="trophy-count-badge">x' + count + '</div>'
-        : '';
       // Show all years if multiple wins, else single year
       var yearLabel = g.wins.map(function(w){ return w.year; }).join(', ');
       return '<div class="trophy-won">'
-        + badgeHTML
         + '<img src="trophy_png/' + esc(g.trophy) + '" alt="' + esc(g.champName) + '">'
         + '<div class="trophy-won-name">' + esc(g.champName) + '</div>'
         + '<div class="trophy-won-year">' + esc(yearLabel) + '</div>'
