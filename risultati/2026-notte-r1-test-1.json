@@ -1,0 +1,65 @@
+{
+  "circuito": "test 1",
+  "data": "",
+  "garaNum": "1",
+  "garaTot": "3",
+  "champIdx": "3",
+  "prevRace": "",
+  "nextRace": "",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Pyer",
+      "tempo": "42",
+      "bestLap": "424",
+      "fl": true,
+      "pole": false,
+      "punti": 25,
+      "extra": "1",
+      "totale": 26,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Claudio",
+      "tempo": "312'43''422",
+      "bestLap": "32",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Fabio",
+      "tempo": "3''636",
+      "bestLap": "424",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Pyer",
+      "pts": 26,
+      "pos": 1
+    },
+    {
+      "nome": "Claudio",
+      "pts": 18,
+      "pos": 2
+    },
+    {
+      "nome": "Fabio",
+      "pts": 15,
+      "pos": 3
+    }
+  ],
+  "bestOf": null
+}
