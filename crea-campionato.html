@@ -1425,7 +1425,7 @@ async function publish() {
   if (!ok) return;
 
   // 2. Update calendario.json
-  await updateCalendario(token, fname);
+  await updateCalendario(token, fname, champPath);
 }
 
 async function pushFile(token, fname, content, message) {
@@ -1465,7 +1465,7 @@ async function pushFile(token, fname, content, message) {
   }
 }
 
-async function updateCalendario(token, fname) {
+async function updateCalendario(token, fname, champPath) {
   const name  = document.getElementById('champName').value.trim() || 'Campionato';
   const year  = document.getElementById('champYear').value || '2026';
   const cat   = document.getElementById('champCat').value;
