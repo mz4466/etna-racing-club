@@ -3,9 +3,9 @@
   "data": "2025-06-29",
   "garaNum": "1",
   "garaTot": "5",
-  "champIdx": "",
+  "champIdx": "0",
   "prevRace": "",
-  "nextRace": "",
+  "nextRace": "2025-estate-r2-lago-maggiore.html",
   "rows": [
     {
       "pos": 1,
@@ -61,5 +61,5 @@
       "pos": 3
     }
   ],
-  "bestOf": null
+  "bestOf": 4
 }
