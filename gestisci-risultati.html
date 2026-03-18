@@ -964,40 +964,45 @@ function buildHTML(){
   </div>
 </main>
 <footer>© 2026 Etna Racing Club • Sicilia, Italia</footer>
-<div id="raceData" hidden>\${_raceDataJSON}</div>
-\x3cscript\x3e
-(function(){
-  var d=JSON.parse(document.getElementById('raceData').textContent);
-  var API='https://api.github.com/repos/mz4466/etna-racing-club/contents/risultati?ref=main';
-  var sc={};
-  d.rows.forEach(function(r){if(!r.nome)return;if(!sc[r.nome])sc[r.nome]=[];sc[r.nome].push(r.totale);});
-  fetch(API).then(function(res){return res.ok?res.json():[];}).then(function(files){
-    return Promise.all((files||[]).filter(function(f){return f.name.endsWith('.json');}).map(function(f){
-      return fetch(f.url).then(function(r){return r.ok?r.json():null;}).then(function(m){
-        if(!m||!m.content)return;
-        var rd=JSON.parse(decodeURIComponent(escape(atob(m.content.replace(/\s/g,'')))));
-        if(String(rd.champIdx)!==d.champIdx)return;
-        if(parseInt(rd.garaNum)===d.garaNum)return;
-        (rd.rows||[]).forEach(function(r){if(!r.nome)return;if(!sc[r.nome])sc[r.nome]=[];sc[r.nome].push(r.totale||0);});
-      }).catch(function(){});
-    }));
-  }).catch(function(){}).then(function(){
-    var isLast=d.garaNum>=d.garaTot;
-    var st=Object.entries(sc).map(function(e){
-      var scores=e[1];
-      if(isLast&&d.bestOf&&d.bestOf<d.garaTot){scores=scores.slice().sort(function(a,b){return b-a;}).slice(0,d.bestOf);}
-      return{nome:e[0],pts:scores.reduce(function(s,v){return s+v;},0)};
-    }).sort(function(a,b){return b.pts-a.pts;});
-    var cl=['#FFD700','#C0C0C0','#CD7F32'];
-    document.getElementById('champStandings').innerHTML=st.map(function(s,i){
-      return '<div class="standings-item"><span class="standings-position" style="color:'+(cl[i]||'#F7E7CE')+'">'+(i+1)+'°</span><span class="standings-driver">'+s.nome+'</span><span class="standings-points">'+s.pts+'</span></div>';
-    }).join('')||'<div style="color:#c9b8a3;text-align:center;font-size:13px;">Nessun dato</div>';
-  });
-go();
-})();
-\x3c/script\x3e
-</body>
+<div id="champStandings"><div style="font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:#c9b8a3;text-align:center;padding:16px;">Caricamento...</div></div></body>
 </html>`;
+  var _si = String(champIdx);
+  var _rn = parseInt(garaNum||1);
+  var _rt = parseInt(garaTot||1);
+  var _bo = (champ && champ.bestOf) ? parseInt(champ.bestOf) : 0;
+  var _rd = JSON.stringify(rows.map(function(r){return{nome:r.nome,totale:r.totale};}));
+  return '<sc'+'ript>'
+    + '(function(){'
+    + 'var sc={};'
+    + 'var rows='+_rd+';'
+    + 'rows.forEach(function(r){if(r.nome){if(!sc[r.nome])sc[r.nome]=[];sc[r.nome].push(r.totale);}});'
+    + 'var API="https://api.github.com/repos/mz4466/etna-racing-club/contents/risultati?ref=main";'
+    + 'fetch(API).then(function(res){return res.ok?res.json():[];}).catch(function(){return[];}).then(function(files){'
+    + 'return Promise.all((files||[]).filter(function(f){return f.name.endsWith(".json");}).map(function(f){'
+    + 'return fetch(f.url).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}).then(function(m){'
+    + 'if(!m||!m.content)return;'
+    + 'var d=JSON.parse(decodeURIComponent(escape(atob(m.content.replace(/\\s/g,"")))));'
+    + 'if(String(d.champIdx)!=="'+_si+'")return;'
+    + 'if(parseInt(d.garaNum)==='+_rn+')return;'
+    + '(d.rows||[]).forEach(function(r){if(r.nome){if(!sc[r.nome])sc[r.nome]=[];sc[r.nome].push(r.totale||0);}});'
+    + '});'
+    + '}));'
+    + '}).then(function(){'
+    + 'var isLast='+_rn+'>='+_rt+';'
+    + 'var bo='+_bo+';var rt='+_rt+';'
+    + 'var st=Object.entries(sc).map(function(e){'
+    + 'var nm=e[0];var ss=e[1];'
+    + 'if(isLast&&bo>0&&bo<rt){ss=ss.slice().sort(function(a,b){return b-a;}).slice(0,bo);}'
+    + 'return{nome:nm,pts:ss.reduce(function(s,v){return s+v;},0)};'
+    + '}).sort(function(a,b){return b.pts-a.pts;});'
+    + 'var cl=["#FFD700","#C0C0C0","#CD7F32"];'
+    + 'var el=document.getElementById("champStandings");if(!el)return;'
+    + 'el.innerHTML=st.map(function(s,i){'
+    + 'return "<div class=\"standings-item\"><span class=\"standings-position\" style=\"color:"+(cl[i]||"#F7E7CE")+"\">"+(i+1)+"\xb0</span><span class=\"standings-driver\">"+s.nome+"</span><span class=\"standings-points\">"+s.pts+"</span></div>";'
+    + '}).join("")||"<div style=\"color:#c9b8a3;text-align:center;font-size:13px;\">Nessun dato</div>";'
+    + '});'
+    + '})();'
+    + '<\/sc'+'ript>';
 }
 
 function closePreview(){ document.getElementById('previewModal').classList.remove('open'); }
