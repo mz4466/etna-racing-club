@@ -3,7 +3,7 @@
   "data": "2025-06-29",
   "garaNum": "1",
   "garaTot": "5",
-  "champIdx": "0",
+  "champIdx": "",
   "prevRace": "",
   "nextRace": "",
   "rows": [
@@ -61,5 +61,5 @@
       "pos": 3
     }
   ],
-  "bestOf": 4
+  "bestOf": null
 }
