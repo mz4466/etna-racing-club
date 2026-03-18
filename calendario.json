@@ -1,1 +1,68 @@
-[]
+[
+  {
+    "name": "Sole & Sorpassi",
+    "year": "2025",
+    "cat": "Campionato",
+    "slug": "Estate",
+    "trophy": "GR3_Championship_Winner.png",
+    "cars": "Gr.3",
+    "desc": "1mo campionato",
+    "status": "prossimo",
+    "file": "campionati/sole--sorpassi-2025-campionato-estate.html",
+    "totalRounds": 5,
+    "completedRounds": 0,
+    "bestOf": 4,
+    "rounds": [
+      {
+        "circuit": "Dragon Trail",
+        "date": "2025-06-29",
+        "laps": "17",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x3",
+        "fuel": "x4",
+        "types": "",
+        "notes": ""
+      },
+      {
+        "circuit": "Lago Maggiore",
+        "date": "2025-07-13",
+        "laps": "17",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x3",
+        "fuel": "x4",
+        "types": "",
+        "notes": ""
+      },
+      {
+        "circuit": "Daytona - Ovale",
+        "date": "2025-07-27",
+        "laps": "17",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x3",
+        "fuel": "x4",
+        "types": "",
+        "notes": ""
+      },
+      {
+        "circuit": "Le Mans",
+        "date": "2025-08-31",
+        "laps": "17",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x3",
+        "fuel": "x4",
+        "types": "",
+        "notes": ""
+      },
+      {
+        "circuit": "Alsace",
+        "date": "2025-09-14",
+        "laps": "17",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x3",
+        "fuel": "x4",
+        "types": "",
+        "notes": ""
+      }
+    ]
+  }
+]
