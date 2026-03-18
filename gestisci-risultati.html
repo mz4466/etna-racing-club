@@ -515,11 +515,12 @@ async function loadPilots(){
     const files = await r.json();
     const jsons = files.filter(f=>f.name.endsWith('.json'));
     const pilots = await Promise.all(jsons.map(async f=>{
-      const jr = await fetch(f.download_url);
+      const jr = await fetch(f.url, {headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
       if(!jr.ok) return null;
-      return jr.json();
+      const meta = await jr.json();
+      return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
     }));
-    pilotNames = pilots.filter(Boolean).map(p=>p.nome||p.psn||'').filter(Boolean);
+    pilotNames = pilots.filter(Boolean).map(p=>p.nome||p.name||p.psn||'').filter(Boolean);
   } catch {}
 }
 
