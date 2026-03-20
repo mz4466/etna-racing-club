@@ -138,6 +138,14 @@
       <td>8</td>
       <td>-</td>
       <td><strong>8</strong></td>
+    </tr><tr class="">
+      <td class="">7°</td>
+      <td class="pilot-name"></td>
+      <td></td>
+      <td class=""></td>
+      <td>0</td>
+      <td>-</td>
+      <td><strong>0</strong></td>
     </tr></tbody>
       </table>
     </div>
@@ -146,32 +154,32 @@
       <div style="font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:#c9a227;background:rgba(201,162,39,0.08);border:1px solid rgba(201,162,39,0.2);border-radius:5px;padding:5px 10px;margin-bottom:12px;">⚡ Migliori 4 risultati su 5</div>
       <div id="champStandings"><div class="standings-item">
       <span class="standings-position pos-1">1°</span>
-      <span class="standings-driver">carmine</span>
-      <span class="standings-points">26</span>
+      <span class="standings-driver">antonio</span>
+      <span class="standings-points">80</span>
     </div><div class="standings-item">
       <span class="standings-position pos-2">2°</span>
       <span class="standings-driver">Claudio</span>
-      <span class="standings-points">18</span>
+      <span class="standings-points">77</span>
     </div><div class="standings-item">
       <span class="standings-position pos-3">3°</span>
-      <span class="standings-driver">Fabio</span>
-      <span class="standings-points">16</span>
+      <span class="standings-driver">carmine</span>
+      <span class="standings-points">71</span>
     </div><div class="standings-item">
       <span class="standings-position ">4°</span>
-      <span class="standings-driver">Luca</span>
-      <span class="standings-points">12</span>
+      <span class="standings-driver">Fabio</span>
+      <span class="standings-points">60</span>
     </div><div class="standings-item">
       <span class="standings-position ">5°</span>
-      <span class="standings-driver">Pyer</span>
-      <span class="standings-points">10</span>
+      <span class="standings-driver">Luca</span>
+      <span class="standings-points">27</span>
     </div><div class="standings-item">
       <span class="standings-position ">6°</span>
-      <span class="standings-driver">antonio</span>
-      <span class="standings-points">8</span>
+      <span class="standings-driver">Pyer</span>
+      <span class="standings-points">25</span>
     </div></div>
       <div class="race-info">
         <strong>Gara 5 di 5</strong>
-        <div class="race-nav"><span class="race-nav-btn disabled">← Precedente</span><span class="race-nav-btn disabled">Successiva →</span></div>
+        <div class="race-nav"><a href="2026-campionato-r4-d.html" class="race-nav-btn">← Precedente</a><span class="race-nav-btn disabled">Successiva →</span></div>
       </div>
     </div>
   </div>
@@ -184,7 +192,7 @@
   var _rn=5;
   var _rt=5;
   var _bo=4;
-  var rows=[{"nome":"carmine","totale":26},{"nome":"Claudio","totale":18},{"nome":"Fabio","totale":16},{"nome":"Luca","totale":12},{"nome":"Pyer","totale":10},{"nome":"antonio","totale":8}];
+  var rows=[{"nome":"carmine","totale":26},{"nome":"Claudio","totale":18},{"nome":"Fabio","totale":16},{"nome":"Luca","totale":12},{"nome":"Pyer","totale":10},{"nome":"antonio","totale":8},{"nome":"","totale":0}];
   rows.forEach(function(r){if(r.nome){if(!sc[r.nome])sc[r.nome]=[];sc[r.nome].push(r.totale);}});
   var API="https://api.github.com/repos/mz4466/etna-racing-club/contents/risultati?ref=main";
   fetch(API).then(function(res){return res.ok?res.json():[];}).catch(function(){return[];}).then(function(files){
