@@ -1072,17 +1072,25 @@ async function linkResultToChampionship(resultFile){
     const d=await r.json();
     let html=decodeURIComponent(escape(atob(d.content.replace(/\s/g,''))));
     const roundNum=parseInt(document.getElementById('roundSelect').value||document.getElementById('garaNum').value)||1;
-    // Replace "In arrivo" button or placeholder for this round's results link
-    // Look for round card with matching round number and update href
-    const oldPattern=new RegExp(`(<div class="round-card">[\\s\\S]*?R${roundNum}[\\s\\S]*?)<span class="results-btn upcoming">In arrivo</span>`);
-    if(oldPattern.test(html)){
-      html=html.replace(oldPattern,`$1<a href="${resultFile}" class="results-btn">📋 Risultati</a>`);
-    } else {
-      // Try updating existing link
-      const linkPattern=new RegExp(`(R${roundNum}[\\s\\S]{0,200}results-btn[^>]*href=")[^"]*"`);
-      if(linkPattern.test(html)){
-        html=html.replace(linkPattern,`$1${resultFile}"`);
-      }
+    // Find the round card for this round number, then replace only its button
+    // Split on round-card boundaries so we don't bleed into adjacent cards
+    const cardStart = html.indexOf(`<div class="round-num">R${roundNum}</div>`);
+    if(cardStart !== -1){
+      // Find the start of this card (search backwards for <div class="round-card">)
+      const cardOpen = html.lastIndexOf('<div class="round-card">', cardStart);
+      // Find the end of this card (next <div class="round-card"> or </div></div> closing wrap)
+      const nextCard = html.indexOf('<div class="round-card">', cardStart + 1);
+      const cardEnd = nextCard !== -1 ? nextCard : html.length;
+      const before = html.slice(0, cardOpen < 0 ? cardStart : cardOpen);
+      let card = html.slice(cardOpen < 0 ? cardStart : cardOpen, cardEnd);
+      const after = html.slice(cardEnd);
+      // Replace any results button (span upcoming or existing anchor) within this card
+      card = card
+        .replace(/<span class="results-btn upcoming">In arrivo<\/span>/,
+                 `<a href="${resultFile}" class="results-btn">📋 Risultati</a>`)
+        .replace(/<a href="[^"]*" class="results-btn[^"]*">[^<]*<\/a>/,
+                 `<a href="${resultFile}" class="results-btn">📋 Risultati</a>`);
+      html = before + card + after;
     }
     await putFile(champ.file, html, `Link results R${roundNum} in ${champ.file}`, d.sha);
   } catch(e){ console.warn('Could not auto-link to championship:',e.message); }
