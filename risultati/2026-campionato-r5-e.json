@@ -4,7 +4,7 @@
   "garaNum": "5",
   "garaTot": "5",
   "champIdx": "0",
-  "prevRace": "",
+  "prevRace": "2026-campionato-r4-d.html",
   "nextRace": "",
   "rows": [
     {
@@ -78,37 +78,49 @@
       "extra": "-",
       "totale": 8,
       "stato": "ok"
+    },
+    {
+      "pos": 7,
+      "nome": "",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "ok"
     }
   ],
   "standings": [
     {
-      "nome": "carmine",
-      "pts": 26,
+      "nome": "Claudio",
+      "pts": 77,
       "pos": 1
     },
     {
-      "nome": "Claudio",
-      "pts": 18,
+      "nome": "antonio",
+      "pts": 72,
       "pos": 2
     },
     {
-      "nome": "Fabio",
-      "pts": 16,
+      "nome": "carmine",
+      "pts": 71,
       "pos": 3
     },
     {
-      "nome": "Luca",
-      "pts": 12,
+      "nome": "Fabio",
+      "pts": 60,
       "pos": 4
     },
     {
-      "nome": "Pyer",
-      "pts": 10,
+      "nome": "Luca",
+      "pts": 27,
       "pos": 5
     },
     {
-      "nome": "antonio",
-      "pts": 8,
+      "nome": "Pyer",
+      "pts": 25,
       "pos": 6
     }
   ],
