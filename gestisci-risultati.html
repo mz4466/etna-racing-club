@@ -803,7 +803,7 @@ function buildHTML(){
   const prevRace  = document.getElementById('prevRace').value.trim();
   const nextRace  = document.getElementById('nextRace').value.trim();
   const champName = champ ? `${champ.name} ${champ.year}` : 'Etna Racing Club';
-  const champFile = champ ? champ.file : 'index.html';
+  const champFile = champ ? '../' + champ.file : '../index.html';
   const dateFmt   = data ? new Date(data).toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'}) : '';
 
   const rows = collectRows();
@@ -979,7 +979,7 @@ ${'<scr'+'ipt>'}
       return fetch(f.url).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}).then(function(m){
         if(!m||!m.content)return;
         try{
-          var d=JSON.parse(decodeURIComponent(escape(atob(m.content.replace(/\s/g,"")))));
+          var d=JSON.parse(decodeURIComponent(escape(atob(m.content.replace(/\\s/g,"")))));
           if(String(d.champIdx)!==_si)return;
           if(parseInt(d.garaNum)===_rn)return;
           (d.rows||[]).forEach(function(r){if(r.nome){if(!sc[r.nome])sc[r.nome]=[];sc[r.nome].push(r.totale||0);}});
