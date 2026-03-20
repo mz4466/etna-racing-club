@@ -4,7 +4,7 @@
   "garaNum": "4",
   "garaTot": "5",
   "champIdx": "0",
-  "prevRace": "",
+  "prevRace": "2026-campionato-r3-c.html",
   "nextRace": "",
   "rows": [
     {
@@ -46,19 +46,34 @@
   ],
   "standings": [
     {
-      "nome": "carmine",
-      "pts": 26,
+      "nome": "antonio",
+      "pts": 80,
       "pos": 1
     },
     {
-      "nome": "Fabio",
-      "pts": 18,
+      "nome": "Claudio",
+      "pts": 77,
       "pos": 2
     },
     {
-      "nome": "antonio",
-      "pts": 16,
+      "nome": "carmine",
+      "pts": 71,
       "pos": 3
+    },
+    {
+      "nome": "Fabio",
+      "pts": 60,
+      "pos": 4
+    },
+    {
+      "nome": "Luca",
+      "pts": 27,
+      "pos": 5
+    },
+    {
+      "nome": "Pyer",
+      "pts": 25,
+      "pos": 6
     }
   ],
   "bestOf": 4
