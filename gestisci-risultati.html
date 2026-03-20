@@ -308,20 +308,6 @@
       <button class="add-pilot-btn" onclick="addRow()">＋ Aggiungi Pilota</button>
     </div>
 
-    <!-- STEP 3: PREV/NEXT NAV -->
-    <div class="card">
-      <div class="card-title">🔗 Navigazione Gare</div>
-      <div class="form-grid col2">
-        <div class="field">
-          <label>← Gara Precedente (file)</label>
-          <input type="text" id="prevRace" placeholder="es. 2025-c2-mount-panorama.html">
-        </div>
-        <div class="field">
-          <label>Gara Successiva → (file)</label>
-          <input type="text" id="nextRace" placeholder="es. 2025-c2-spa.html">
-        </div>
-      </div>
-    </div>
 
     <!-- ACTION ROW -->
     <div style="display:flex;gap:12px;flex-wrap:wrap;">
@@ -800,8 +786,6 @@ function buildHTML(){
   const data      = document.getElementById('dataInput').value;
   const garaNum   = document.getElementById('garaNum').value||'1';
   const garaTot   = document.getElementById('garaTot').value||'?';
-  const prevRace  = document.getElementById('prevRace').value.trim();
-  const nextRace  = document.getElementById('nextRace').value.trim();
   const champName = champ ? `${champ.name} ${champ.year}` : 'Etna Racing Club';
   const champFile = champ ? '../' + champ.file : '../index.html';
   const dateFmt   = data ? new Date(data).toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'}) : '';
@@ -849,13 +833,6 @@ function buildHTML(){
       <span class="standings-points">${s.pts}</span>
     </div>`;
   }).join('');
-
-  const prevBtn = prevRace
-    ? `<a href="${prevRace}" class="race-nav-btn">← Precedente</a>`
-    : `<span class="race-nav-btn disabled">← Precedente</span>`;
-  const nextBtn = nextRace
-    ? `<a href="${nextRace}" class="race-nav-btn">Successiva →</a>`
-    : `<span class="race-nav-btn disabled">Successiva →</span>`;
 
   return `<!DOCTYPE html>
 <html lang="it">
@@ -958,7 +935,6 @@ function buildHTML(){
       <div id="champStandings">${standingsHTML||'<div style="font-family:\'Teko\',sans-serif;font-size:14px;letter-spacing:2px;color:#c9b8a3;text-align:center;padding:16px;">Nessun dato</div>'}</div>
       <div class="race-info">
         <strong>Gara ${garaNum} di ${garaTot}</strong>
-        <div class="race-nav">${prevBtn}${nextBtn}</div>
       </div>
     </div>
   </div>
@@ -1041,8 +1017,6 @@ async function publish(){
       garaNum:  document.getElementById('garaNum').value,
       garaTot:  document.getElementById('garaTot').value,
       champIdx,
-      prevRace: document.getElementById('prevRace').value.trim(),
-      nextRace: document.getElementById('nextRace').value.trim(),
       rows:     collectRows(),
       standings:collectStandings(isLastRound), // apply drop rule only on final round
       bestOf:   (champ ? champ.bestOf||null : null),
@@ -1235,9 +1209,6 @@ function resetResultsForm(){
   const gnEl=document.getElementById('garaNum'); gnEl.value=''; gnEl.style.borderColor='var(--red)';
   document.getElementById('outputFilenameInput').value = '';
   document.getElementById('outputFilename').textContent = '—';
-  // Nav
-  document.getElementById('prevRace').value = '';
-  document.getElementById('nextRace').value = '';
   // Results table
   document.getElementById('resultsBody').innerHTML = '';
   rowCounter = 0;
@@ -1284,8 +1255,6 @@ async function tryLoadExistingResults(){
     // garaNum must NOT be restored from JSON — it is set by the round selector
     // and the saved JSON may have a stale/wrong value
     if(data.garaTot)  document.getElementById('garaTot').value = data.garaTot;
-    if(data.prevRace) document.getElementById('prevRace').value = data.prevRace;
-    if(data.nextRace) document.getElementById('nextRace').value = data.nextRace;
     if(data.outputFilename) {
       document.getElementById('outputFilenameInput').value = data.outputFilename;
       document.getElementById('outputFilename').textContent = data.outputFilename;
