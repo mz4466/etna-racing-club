@@ -1,0 +1,65 @@
+{
+  "circuito": "b",
+  "data": "",
+  "garaNum": "1",
+  "garaTot": "4",
+  "champIdx": "0",
+  "prevRace": "",
+  "nextRace": "",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "antonio",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "carmine",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": true,
+      "punti": 18,
+      "extra": "1",
+      "totale": 19,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Pyer",
+      "tempo": "",
+      "bestLap": "",
+      "fl": true,
+      "pole": false,
+      "punti": 15,
+      "extra": "1",
+      "totale": 16,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "antonio",
+      "pts": 25,
+      "pos": 1
+    },
+    {
+      "nome": "carmine",
+      "pts": 19,
+      "pos": 2
+    },
+    {
+      "nome": "Pyer",
+      "pts": 16,
+      "pos": 3
+    }
+  ],
+  "bestOf": 4
+}
