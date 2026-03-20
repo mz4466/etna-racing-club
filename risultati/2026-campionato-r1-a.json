@@ -5,7 +5,7 @@
   "garaTot": "5",
   "champIdx": "0",
   "prevRace": "",
-  "nextRace": "",
+  "nextRace": "2026-campionato-r2-b.html",
   "rows": [
     {
       "pos": 1,
@@ -47,18 +47,33 @@
   "standings": [
     {
       "nome": "antonio",
-      "pts": 26,
+      "pts": 80,
       "pos": 1
     },
     {
-      "nome": "carmine",
-      "pts": 19,
+      "nome": "Claudio",
+      "pts": 77,
       "pos": 2
     },
     {
-      "nome": "Claudio",
-      "pts": 15,
+      "nome": "carmine",
+      "pts": 71,
       "pos": 3
+    },
+    {
+      "nome": "Fabio",
+      "pts": 60,
+      "pos": 4
+    },
+    {
+      "nome": "Luca",
+      "pts": 27,
+      "pos": 5
+    },
+    {
+      "nome": "Pyer",
+      "pts": 25,
+      "pos": 6
     }
   ],
   "bestOf": 4
