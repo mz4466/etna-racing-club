@@ -1,7 +1,7 @@
 {
   "circuito": "d",
   "data": "",
-  "garaNum": "1",
+  "garaNum": "4",
   "garaTot": "4",
   "champIdx": "0",
   "prevRace": "",
@@ -47,22 +47,22 @@
   "standings": [
     {
       "nome": "carmine",
-      "pts": 89,
+      "pts": 81,
       "pos": 1
     },
     {
-      "nome": "Pyer",
-      "pts": 46,
+      "nome": "antonio",
+      "pts": 67,
       "pos": 2
     },
     {
-      "nome": "antonio",
-      "pts": 40,
+      "nome": "Luca",
+      "pts": 31,
       "pos": 3
     },
     {
-      "nome": "Luca",
-      "pts": 38,
+      "nome": "Pyer",
+      "pts": 31,
       "pos": 4
     },
     {
@@ -72,7 +72,7 @@
     },
     {
       "nome": "Claudio",
-      "pts": 0,
+      "pts": 15,
       "pos": 6
     }
   ],
