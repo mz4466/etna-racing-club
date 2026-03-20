@@ -1272,7 +1272,8 @@ async function tryLoadExistingResults(){
     // Populate race info fields
     if(data.circuito) document.getElementById('circuitoInput').value = data.circuito;
     if(data.data)     document.getElementById('dataInput').value = data.data;
-    if(data.garaNum)  document.getElementById('garaNum').value = data.garaNum;
+    // garaNum must NOT be restored from JSON — it is set by the round selector
+    // and the saved JSON may have a stale/wrong value
     if(data.garaTot)  document.getElementById('garaTot').value = data.garaTot;
     if(data.prevRace) document.getElementById('prevRace').value = data.prevRace;
     if(data.nextRace) document.getElementById('nextRace').value = data.nextRace;
