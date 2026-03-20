@@ -95,25 +95,25 @@
       <td class="pilot-name-top">Pyer</td>
       <td>12</td>
       <td class="">424</td>
-      <td>0</td>
+      <td>25</td>
       <td>-</td>
-      <td><strong>0</strong></td>
+      <td><strong>25</strong></td>
     </tr><tr class="">
       <td class="pos-2">2°</td>
       <td class="pilot-name-top">antonio</td>
       <td>1</td>
       <td class="">32</td>
-      <td>0</td>
+      <td>18</td>
       <td>-</td>
-      <td><strong>0</strong></td>
+      <td><strong>18</strong></td>
     </tr><tr class="">
       <td class="pos-3">3°</td>
       <td class="pilot-name-top">carmine</td>
       <td>3&#39;&#39;636</td>
       <td class="">424</td>
-      <td>0</td>
+      <td>15</td>
       <td>-</td>
-      <td><strong>0</strong></td>
+      <td><strong>15</strong></td>
     </tr></tbody>
       </table>
     </div>
@@ -123,23 +123,23 @@
       <div id="champStandings"><div class="standings-item">
       <span class="standings-position pos-1">1°</span>
       <span class="standings-driver">Pyer</span>
-      <span class="standings-points">52</span>
+      <span class="standings-points">77</span>
     </div><div class="standings-item">
       <span class="standings-position pos-2">2°</span>
       <span class="standings-driver">Claudio</span>
       <span class="standings-points">36</span>
     </div><div class="standings-item">
       <span class="standings-position pos-3">3°</span>
-      <span class="standings-driver">Fabio</span>
-      <span class="standings-points">15</span>
+      <span class="standings-driver">carmine</span>
+      <span class="standings-points">30</span>
     </div><div class="standings-item">
       <span class="standings-position ">4°</span>
-      <span class="standings-driver">carmine</span>
-      <span class="standings-points">15</span>
+      <span class="standings-driver">antonio</span>
+      <span class="standings-points">18</span>
     </div><div class="standings-item">
       <span class="standings-position ">5°</span>
-      <span class="standings-driver">antonio</span>
-      <span class="standings-points">0</span>
+      <span class="standings-driver">Fabio</span>
+      <span class="standings-points">15</span>
     </div></div>
       <div class="race-info">
         <strong>Gara 3 di 3</strong>
@@ -156,7 +156,7 @@
   var _rn=3;
   var _rt=3;
   var _bo=0;
-  var rows=[{"nome":"Pyer","totale":0},{"nome":"antonio","totale":0},{"nome":"carmine","totale":0}];
+  var rows=[{"nome":"Pyer","totale":25},{"nome":"antonio","totale":18},{"nome":"carmine","totale":15}];
   rows.forEach(function(r){if(r.nome){if(!sc[r.nome])sc[r.nome]=[];sc[r.nome].push(r.totale);}});
   var API="https://api.github.com/repos/mz4466/etna-racing-club/contents/risultati?ref=main";
   fetch(API).then(function(res){return res.ok?res.json():[];}).catch(function(){return[];}).then(function(files){
