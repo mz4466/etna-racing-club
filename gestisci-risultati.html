@@ -262,7 +262,7 @@
         <div class="field">
           <label>Gara # di #</label>
           <div style="display:flex;gap:8px;">
-            <input type="number" id="garaNum" min="1" value="1" style="width:60px;" oninput="updateOutputFilename()">
+            <input type="number" id="garaNum" min="1" value="" placeholder="?" style="width:60px;border-color:var(--red);" oninput="onGaraNumInput(this)">
             <span style="align-self:center;color:var(--text-dim);font-family:'Teko',sans-serif;font-size:16px;">di</span>
             <input type="number" id="garaTot" min="1" value="5" style="width:60px;">
           </div>
@@ -1023,6 +1023,7 @@ async function publish(){
   if(!token){ toast('Token mancante','err'); return; }
   const fname=document.getElementById('outputFilenameInput').value.trim();
   if(!fname){ toast('Imposta il nome del file output','err'); return; }
+  if(!validateGaraNum()) return;
 
   toast('Pubblicazione…','');
   try {
@@ -1231,7 +1232,7 @@ function resetResultsForm(){
   document.getElementById('circuitoInput').value = '';
   document.getElementById('dataInput').value = '';
   document.getElementById('giريInput').value = '17';
-  document.getElementById('garaNum').value = '1';
+  const gnEl=document.getElementById('garaNum'); gnEl.value=''; gnEl.style.borderColor='var(--red)';
   document.getElementById('outputFilenameInput').value = '';
   document.getElementById('outputFilename').textContent = '—';
   // Nav
@@ -1303,6 +1304,23 @@ async function tryLoadExistingResults(){
   } catch(e){
     console.warn('tryLoadExistingResults:', e.message);
   }
+}
+
+// ── GARA NUM VALIDATION ──
+function onGaraNumInput(el){
+  updateOutputFilename();
+  el.style.borderColor = el.value ? 'var(--border)' : 'var(--red)';
+}
+
+function validateGaraNum(){
+  const el = document.getElementById('garaNum');
+  if(!el.value || parseInt(el.value) < 1){
+    el.style.borderColor = 'var(--red)';
+    el.focus();
+    toast('Inserisci il numero della gara (Gara # di #)', 'err');
+    return false;
+  }
+  return true;
 }
 
 // start with 3 empty rows
