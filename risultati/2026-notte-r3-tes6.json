@@ -14,9 +14,9 @@
       "bestLap": "424",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 25,
       "extra": "-",
-      "totale": 0,
+      "totale": 25,
       "stato": "ok"
     },
     {
@@ -26,9 +26,9 @@
       "bestLap": "32",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 18,
       "extra": "-",
-      "totale": 0,
+      "totale": 18,
       "stato": "ok"
     },
     {
@@ -38,16 +38,16 @@
       "bestLap": "424",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 15,
       "extra": "-",
-      "totale": 0,
+      "totale": 15,
       "stato": "ok"
     }
   ],
   "standings": [
     {
       "nome": "Pyer",
-      "pts": 52,
+      "pts": 77,
       "pos": 1
     },
     {
@@ -56,18 +56,18 @@
       "pos": 2
     },
     {
-      "nome": "Fabio",
-      "pts": 15,
+      "nome": "carmine",
+      "pts": 30,
       "pos": 3
     },
     {
-      "nome": "carmine",
-      "pts": 15,
+      "nome": "antonio",
+      "pts": 18,
       "pos": 4
     },
     {
-      "nome": "antonio",
-      "pts": 0,
+      "nome": "Fabio",
+      "pts": 15,
       "pos": 5
     }
   ],
