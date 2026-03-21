@@ -53,28 +53,50 @@
       "extra": "1",
       "totale": 13,
       "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Fabio",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
     }
   ],
   "standings": [
     {
       "nome": "carmine",
-      "pts": 26,
+      "pts": 52,
       "pos": 1
     },
     {
       "nome": "antonio",
-      "pts": 18,
+      "pts": 37,
       "pos": 2
+    },
+    {
+      "nome": "Fabio",
+      "pts": 25,
+      "pos": 3
     },
     {
       "nome": "Claudio",
       "pts": 15,
-      "pos": 3
+      "pos": 4
     },
     {
       "nome": "Luca",
       "pts": 13,
-      "pos": 4
+      "pos": 5
+    },
+    {
+      "nome": "Pyer",
+      "pts": 12,
+      "pos": 6
     }
   ],
   "bestOf": 4
