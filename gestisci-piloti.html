@@ -583,6 +583,7 @@ async function savePilot(){
 
   try {
     await putFile(`${FOLDER}/${slug}.json`, JSON.stringify(payload,null,2), `${editingSlug?'Update':'Add'} pilot: ${slug}`, token);
+    await updatePilotIndex(token);
     toast(`✓ ${nome} salvato!`,'ok');
     closeModal();
     await loadPilots();
@@ -610,11 +611,29 @@ async function deletePilot(slug, nome){
       body:JSON.stringify({message:`Remove pilot: ${slug}`,sha:d.sha,branch:BRANCH})
     });
     if(!del.ok) throw new Error('Eliminazione fallita');
+    await updatePilotIndex(token);
     toast(`✓ ${nome} rimosso`,'ok');
     await loadPilots();
   } catch(e){
     toast('Errore: '+e.message,'err');
   }
+}
+
+// ── UPDATE PILOT INDEX ──
+async function updatePilotIndex(token){
+  try {
+    // List current files in piloti_schede via API
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${FOLDER}?ref=${BRANCH}`,{
+      headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+    });
+    if(!r.ok) return;
+    const files = await r.json();
+    const names = files
+      .filter(f => f.name.endsWith('.json') && f.name !== 'index.json')
+      .map(f => f.name)
+      .sort();
+    await putFile(`${FOLDER}/index.json`, JSON.stringify(names, null, 0), 'Update pilot index', token);
+  } catch(e){ console.warn('updatePilotIndex:', e.message); }
 }
 
 // ── GITHUB HELPER ──
