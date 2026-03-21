@@ -748,7 +748,10 @@ function collectRows(){
 
 function collectStandings(applyBestOf=false){
   const champIdx = document.getElementById('champSelect').value;
-  const currentRound = parseInt(document.getElementById('garaNum').value)||0;
+  // Use roundSelect as primary source — it's always set correctly when a round is selected
+  // Fall back to garaNum input (which may be empty if user hasn't filled it yet)
+  const currentRound = parseInt(document.getElementById('roundSelect').value) ||
+                       parseInt(document.getElementById('garaNum').value) || 0;
 
   // Start with accumulated points from previous races
   const pilotScores = {};  // nome -> [pts per round]
