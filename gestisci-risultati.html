@@ -426,28 +426,33 @@ function populateChampSelect(){
   sel.innerHTML = '<option value="">— Seleziona campionato —</option>';
   calendarioData.forEach((c,i)=>{
     const opt = document.createElement('option');
-    opt.value = i;
+    // Use stable id if present, fall back to array index for old entries
+    opt.value = c.id || String(i);
     opt.textContent = `${c.name} ${c.year} (${c.cat})`;
     sel.appendChild(opt);
   });
 }
 
+function getChampBySelectValue(val){
+  if(val === '') return null;
+  // Try id match first (new system), fall back to array index (old system)
+  return calendarioData.find(c => c.id === val) || calendarioData[parseInt(val)] || null;
+}
+
 function onChampChange(){
-  const idx = document.getElementById('champSelect').value;
+  const val = document.getElementById('champSelect').value;
   const rSel = document.getElementById('roundSelect');
   rSel.innerHTML='<option value="">— Seleziona round —</option>';
-  // Reset everything when championship changes
   resetResultsForm();
-  if(idx==='') return;
-  const champ = calendarioData[idx];
+  if(val==='') return;
+  const champ = getChampBySelectValue(val);
+  if(!champ) return;
   document.getElementById('champSelect').dataset.bestOf = champ.bestOf||'';
   document.getElementById('champSelect').dataset.totalRounds = champ.totalRounds||'';
   document.getElementById('champSelect').dataset.file = champ.file;
-  // Load previous results for standings accumulation
-  if(token) loadPreviousResults(idx);
+  if(token) loadPreviousResults(val);
   const total = champ.totalRounds||0;
   const rounds = champ.rounds||[];
-
   for(var i=1;i<=total;i++){
     const opt=document.createElement('option');
     opt.value=i;
@@ -470,7 +475,7 @@ function onRoundChange(){
   // Auto-fill from calendario.json rounds array
   const champIdx = document.getElementById('champSelect').value;
   if(champIdx !== ''){
-    const champ = calendarioData[champIdx];
+    const champ = getChampBySelectValue(champIdx);
     const rd = champ && champ.rounds ? champ.rounds[parseInt(round)-1] : null;
     if(rd){
       if(rd.circuit) document.getElementById('circuitoInput').value = rd.circuit;
@@ -489,7 +494,7 @@ function updateOutputFilename(){
   const round = document.getElementById('roundSelect').value || document.getElementById('garaNum').value;
   const circ  = document.getElementById('circuitoInput').value.trim();
   if(!champIdx||!circ) return;
-  const champ = calendarioData[champIdx];
+  const champ = getChampBySelectValue(champIdx);
   const year  = champ.year||'2025';
   const slug  = `${year}-${(champ.slug||champ.name).toLowerCase().replace(/[^a-z0-9]+/g,'-')}-r${round}-${circ.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.html`;
   document.getElementById('outputFilenameInput').value = slug;
@@ -514,18 +519,20 @@ async function loadPilots(){
 }
 
 // ── LOAD PREVIOUS RESULTS ──
-async function loadPreviousResults(champIdx){
-  previousResults[champIdx] = {};
+async function loadPreviousResults(champVal){
+  previousResults[champVal] = {};
   try {
     const r = await fetch('https://api.github.com/repos/' + REPO + '/contents/risultati?ref=' + BRANCH, {
       headers:{Authorization:'token ' + token, Accept:'application/vnd.github.v3+json'}
     });
     if(!r.ok) return;
     const files = await r.json();
-    const champ = calendarioData[champIdx];
+    const champ = getChampBySelectValue(champVal);
     if(!champ) return;
 
-    // Match files belonging to this championship by champIdx stored in JSON
+    // Find the array index for backwards compatibility with old result files
+    const legacyIdx = String(calendarioData.findIndex(c => (c.id || '') === champVal || c === champ));
+
     const jsonFiles = files.filter(function(f){ return f.name.endsWith('.json'); });
     const results = await Promise.all(jsonFiles.map(async function(f){
       try {
@@ -537,13 +544,15 @@ async function loadPreviousResults(champIdx){
     }));
 
     results.filter(Boolean).forEach(function(race){
-      // Only include races belonging to this championship
-      if(String(race.champIdx) !== String(champIdx)) return;
+      // Match by champId (new) OR champIdx (old — array position fallback)
+      const matchesId  = race.champId  && race.champId  === champVal;
+      const matchesIdx = race.champIdx !== undefined && String(race.champIdx) === legacyIdx;
+      if(!matchesId && !matchesIdx) return;
       var rows = race.rows || [];
       rows.forEach(function(row){
         if(!row.nome) return;
-        if(!previousResults[champIdx][row.nome]) previousResults[champIdx][row.nome] = [];
-        previousResults[champIdx][row.nome].push({ pts: row.totale||0, round: parseInt(race.garaNum)||0 });
+        if(!previousResults[champVal][row.nome]) previousResults[champVal][row.nome] = [];
+        previousResults[champVal][row.nome].push({ pts: row.totale||0, round: parseInt(race.garaNum)||0 });
       });
     });
   } catch(e){ console.warn('loadPreviousResults:', e.message); }
@@ -781,7 +790,7 @@ function collectStandings(applyBestOf=false){
 // ── BUILD HTML ──
 function buildHTML(){
   const champIdx  = document.getElementById('champSelect').value;
-  const champ     = champIdx!=='' ? calendarioData[champIdx] : null;
+  const champ     = champIdx!=='' ? getChampBySelectValue(champIdx) : null;
   const circuito  = document.getElementById('circuitoInput').value.trim()||'Gara';
   const data      = document.getElementById('dataInput').value;
   const garaNum   = document.getElementById('garaNum').value||'1';
@@ -793,7 +802,8 @@ function buildHTML(){
   const rows = collectRows();
   const standings = collectStandings();
   const _raceDataJSON = JSON.stringify({
-    champIdx: String(champIdx),
+    champId: String(champIdx),
+    champIdx: String(champIdx), // kept for backwards compat with old pages
     garaNum: parseInt(garaNum||1),
     garaTot: parseInt(garaTot||1),
     bestOf: (champ && champ.bestOf) ? parseInt(champ.bestOf) : null,
@@ -943,7 +953,7 @@ function buildHTML(){
 ${'<scr'+'ipt>'}
 (function(){
   var sc={};
-  var _si="${String(champIdx)}";
+  var _si="${String(champIdx)}"; // stable champId (or legacy index)
   var _rn=${parseInt(garaNum||1)};
   var _rt=${parseInt(garaTot||1)};
   var _bo=${(champ && champ.bestOf) ? parseInt(champ.bestOf) : 0};
@@ -956,7 +966,9 @@ ${'<scr'+'ipt>'}
         if(!m||!m.content)return;
         try{
           var d=JSON.parse(decodeURIComponent(escape(atob(m.content.replace(/\\s/g,"")))));
-          if(String(d.champIdx)!==_si)return;
+          // Match by champId (new) OR champIdx (old — for backwards compatibility)
+          var matches=(d.champId&&d.champId===_si)||(d.champIdx!==undefined&&String(d.champIdx)===_si);
+          if(!matches)return;
           if(parseInt(d.garaNum)===_rn)return;
           (d.rows||[]).forEach(function(r){if(r.nome){if(!sc[r.nome])sc[r.nome]=[];sc[r.nome].push(r.totale||0);}});
         }catch(e){}
@@ -1009,14 +1021,15 @@ async function publish(){
     // 2. save JSON data
     const jsonFname = fname.replace('.html','.json');
     const champIdx = document.getElementById('champSelect').value;
-    const champ    = champIdx!=='' ? calendarioData[champIdx] : null;
+    const champ    = champIdx!=='' ? getChampBySelectValue(champIdx) : null;
     const isLastRound = champ && parseInt(document.getElementById('garaNum').value) >= (champ.totalRounds||0);
     const jsonData = {
       circuito: document.getElementById('circuitoInput').value.trim(),
       data:     document.getElementById('dataInput').value,
       garaNum:  document.getElementById('garaNum').value,
       garaTot:  document.getElementById('garaTot').value,
-      champIdx,
+      champId: champIdx,
+      champIdx: champIdx, // kept for backwards compat
       rows:     collectRows(),
       standings:collectStandings(isLastRound), // apply drop rule only on final round
       bestOf:   (champ ? champ.bestOf||null : null),
@@ -1035,7 +1048,7 @@ async function publish(){
 async function linkResultToChampionship(resultFile){
   const champIdx = document.getElementById('champSelect').value;
   if(champIdx==='') return;
-  const champ = calendarioData[champIdx];
+  const champ = getChampBySelectValue(champIdx);
   if(!champ || !champ.file) return;
 
   try {

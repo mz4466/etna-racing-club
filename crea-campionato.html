@@ -1465,6 +1465,12 @@ async function pushFile(token, fname, content, message) {
   }
 }
 
+function generateChampId(slug, year) {
+  // e.g. "estate-2025" — stable forever, based on slug+year
+  const s = (slug || 'champ').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return s + '-' + String(year || new Date().getFullYear());
+}
+
 async function updateCalendario(token, fname, champPath) {
   const name  = document.getElementById('champName').value.trim() || 'Campionato';
   const year  = document.getElementById('champYear').value || '2026';
@@ -1501,6 +1507,7 @@ async function updateCalendario(token, fname, champPath) {
   });
 
   const newEntry = {
+    id: null, // will be set below — stable unique ID, never changes after creation
     name, year, cat,
     slug: slug || cat,
     trophy: document.getElementById('champTrophy').value || null,
@@ -1529,11 +1536,14 @@ async function updateCalendario(token, fname, champPath) {
     // Add or update entry
     const idx = existing.findIndex(e => e.file === fname);
     if (idx >= 0) {
-      // preserve status & completedRounds if already exists
+      // preserve status, completedRounds AND the stable id
       newEntry.status = existing[idx].status || 'prossimo';
       newEntry.completedRounds = existing[idx].completedRounds || 0;
+      newEntry.id = existing[idx].id || generateChampId(slug || cat, year);
       existing[idx] = newEntry;
     } else {
+      // brand new — generate a stable id
+      newEntry.id = generateChampId(slug || cat, year);
       existing.push(newEntry);
     }
 
