@@ -1,0 +1,69 @@
+[
+  {
+    "id": "estate-2026",
+    "name": "Spreo",
+    "year": "2026",
+    "cat": "Campionato",
+    "slug": "estate",
+    "trophy": "Abarth_Scorpion_Challenge.png",
+    "cars": "gr32",
+    "desc": "dwnqpfnq",
+    "status": "prossimo",
+    "file": "campionati/spreo-2026-campionato-estate.html",
+    "totalRounds": 5,
+    "completedRounds": 0,
+    "bestOf": 4,
+    "rounds": [
+      {
+        "circuit": "a",
+        "date": "",
+        "laps": "17",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x3",
+        "fuel": "x4",
+        "types": "",
+        "notes": ""
+      },
+      {
+        "circuit": "b",
+        "date": "",
+        "laps": "17",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x3",
+        "fuel": "x4",
+        "types": "",
+        "notes": ""
+      },
+      {
+        "circuit": "c",
+        "date": "",
+        "laps": "17",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x3",
+        "fuel": "x4",
+        "types": "",
+        "notes": ""
+      },
+      {
+        "circuit": "d",
+        "date": "",
+        "laps": "17",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x3",
+        "fuel": "x4",
+        "types": "",
+        "notes": ""
+      },
+      {
+        "circuit": "e",
+        "date": "",
+        "laps": "17",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x3",
+        "fuel": "x4",
+        "types": "",
+        "notes": ""
+      }
+    ]
+  }
+]
