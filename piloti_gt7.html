@@ -110,6 +110,7 @@
 
 <script>
 const BASE_API = 'https://api.github.com/repos/mz4466/etna-racing-club';
+const BASE_RAW = 'https://raw.githubusercontent.com/mz4466/etna-racing-club/main';
 const BRANCH   = 'main';
 
 const grid        = document.getElementById('grid');
@@ -130,10 +131,12 @@ var pilotTrophies = {};
 async function loadAll() {
   grid.innerHTML = '<div style="color:var(--muted)">Caricamento...</div>';
   try {
-    // 1. Load calendario.json — direct relative fetch (no API rate limit)
-    var calRes = await fetch('calendario.json?_=' + Date.now());
-    if(!calRes.ok) throw new Error('calendario.json non trovato');
-    var calendario = await calRes.json();
+    // 1. Load calendario.json — via raw URL (non-fatal if missing)
+    var calendario = [];
+    try {
+      var calRes = await fetch(BASE_RAW + '/calendario.json?_=' + Date.now());
+      if(calRes.ok) calendario = await calRes.json();
+    } catch(e) { console.warn('calendario.json non disponibile:', e.message); }
 
     // 2. Load risultati/ folder listing
     pilotTrophies = {};
