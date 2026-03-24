@@ -785,8 +785,8 @@ function collectStandings(applyBestOf=false){
 
   const pilots = Object.entries(pilotScores).map(function([nome, scores]){
     var usedScores = scores;
-    if(canDrop && scores.length > bestOf){
-      // Sort desc, keep best N
+    if(canDrop && scores.length >= totalRounds){
+      // Only drop if pilot completed ALL rounds
       usedScores = scores.slice().sort(function(a,b){return b-a;}).slice(0, bestOf);
     }
     return { nome: nome, pts: usedScores.reduce(function(s,v){return s+v;},0) };
@@ -1012,8 +1012,8 @@ ${'<scr'+'ipt>'}
       var nm=e[0];
       var entries=e[1].slice().sort(function(a,b){return a.rn-b.rn;});
       var dropped=[];
-      if(canDrop&&entries.length>_bo){
-        // Only drop if pilot has MORE results than the bestOf limit
+      if(canDrop&&entries.length>=_rt){
+        // Only drop if pilot has completed ALL races
         var toDrop=entries.length-_bo;
         var byVal=entries.slice().sort(function(a,b){return a.pts-b.pts;});
         dropped=byVal.slice(0,toDrop);
