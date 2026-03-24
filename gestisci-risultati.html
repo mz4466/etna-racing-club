@@ -777,15 +777,16 @@ function collectStandings(applyBestOf=false){
     pilotScores[r.nome].push(r.totale);
   });
 
-  // Apply bestOf drop rule if requested
+  // Apply bestOf per pilot whenever they have more results than the limit
+  // This is correct at any point in the season — not just the final round
   const bestOf = parseInt(document.getElementById('champSelect').dataset.bestOf)||0;
   const totalRounds = parseInt(document.getElementById('champSelect').dataset.totalRounds)||0;
-  const shouldDrop = applyBestOf && bestOf > 0 && totalRounds > 0 && bestOf < totalRounds;
+  const canDrop = bestOf > 0 && totalRounds > 0 && bestOf < totalRounds;
 
   const pilots = Object.entries(pilotScores).map(function([nome, scores]){
     var usedScores = scores;
-    if(shouldDrop){
-      // Sort desc, take best N
+    if(canDrop && scores.length > bestOf){
+      // Sort desc, keep best N
       usedScores = scores.slice().sort(function(a,b){return b-a;}).slice(0, bestOf);
     }
     return { nome: nome, pts: usedScores.reduce(function(s,v){return s+v;},0) };
@@ -992,7 +993,9 @@ ${'<scr'+'ipt>'}
     var bo=_bo;var rt=_rt;
     var st=Object.entries(sc).map(function(e){
       var nm=e[0];var ss=e[1];
-      if(isLast&&bo>0&&bo<rt){ss=ss.slice().sort(function(a,b){return b-a;}).slice(0,bo);}
+      // Apply bestOf whenever this pilot has more results than the limit
+      // (not just on the final race — so all pages stay consistent)
+      if(bo>0&&bo<rt&&ss.length>bo){ss=ss.slice().sort(function(a,b){return b-a;}).slice(0,bo);}
       return{nome:nm,pts:ss.reduce(function(s,v){return s+v;},0)};
     }).sort(function(a,b){return b.pts-a.pts;});
     var cl=["#FFD700","#C0C0C0","#CD7F32"];
