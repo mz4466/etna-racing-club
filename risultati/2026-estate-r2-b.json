@@ -69,33 +69,33 @@
   ],
   "standings": [
     {
-      "nome": "carmine",
-      "pts": 52,
+      "nome": "Fabio",
+      "pts": 93,
       "pos": 1
     },
     {
-      "nome": "antonio",
-      "pts": 37,
+      "nome": "Claudio",
+      "pts": 58,
       "pos": 2
     },
     {
-      "nome": "Fabio",
-      "pts": 25,
+      "nome": "carmine",
+      "pts": 52,
       "pos": 3
     },
     {
-      "nome": "Claudio",
-      "pts": 15,
+      "nome": "antonio",
+      "pts": 52,
       "pos": 4
     },
     {
-      "nome": "Luca",
-      "pts": 13,
+      "nome": "Pyer",
+      "pts": 47,
       "pos": 5
     },
     {
-      "nome": "Pyer",
-      "pts": 12,
+      "nome": "Luca",
+      "pts": 28,
       "pos": 6
     }
   ],
