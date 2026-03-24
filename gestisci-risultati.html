@@ -718,12 +718,16 @@ function updateStandings(){
     ? `<div style="font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:var(--gold);background:rgba(201,162,39,0.07);border:1px solid rgba(201,162,39,0.2);border-radius:5px;padding:5px 8px;margin-bottom:8px;">⚡ Regola scarto: migliori ${bestOf}/${totalRounds} — si applica a fine campionato</div>`
     : '';
 
-  container.innerHTML = noticeHTML + standings.map((s,i)=>`
-    <div class="standing-row">
-      <div class="standing-pos ${i<3?`pos-${i+1}`:''}">${i+1}°</div>
+  let sPos=1;
+  container.innerHTML = noticeHTML + standings.map((s,i)=>{
+    if(i>0&&standings[i].pts<standings[i-1].pts) sPos=i+1;
+    const posClass = sPos<=3?`pos-${sPos}`:'';
+    return `<div class="standing-row">
+      <div class="standing-pos ${posClass}">${sPos}°</div>
       <div class="standing-name">${esc(s.nome)}</div>
       <div class="standing-pts">${s.pts}</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 // ── COLLECT DATA ──
@@ -787,7 +791,12 @@ function collectStandings(applyBestOf=false){
     return { nome: nome, pts: usedScores.reduce(function(s,v){return s+v;},0) };
   });
 
-  return pilots.sort(function(a,b){return b.pts-a.pts;}).map(function(p,i){ return {nome:p.nome, pts:p.pts, pos:i+1}; });
+  const sorted = pilots.sort(function(a,b){return b.pts-a.pts;});
+  let tiePos = 1;
+  return sorted.map(function(p,i){
+    if(i>0&&sorted[i].pts<sorted[i-1].pts) tiePos=i+1;
+    return {nome:p.nome, pts:p.pts, pos:tiePos};
+  });
 }
 
 // ── BUILD HTML ──
@@ -972,7 +981,8 @@ ${'<scr'+'ipt>'}
           // Match by champId (new) OR champIdx (old — for backwards compatibility)
           var matches=(d.champId&&d.champId===_si)||(d.champIdx!==undefined&&String(d.champIdx)===_si);
           if(!matches)return;
-          if(parseInt(d.garaNum)===_rn)return;
+          if(parseInt(d.garaNum)===_rn)return;  // skip current race (using live data)
+          if(parseInt(d.garaNum)>_rn)return;     // skip future races
           (d.rows||[]).forEach(function(r){if(r.nome){if(!sc[r.nome])sc[r.nome]=[];sc[r.nome].push(r.totale||0);}});
         }catch(e){}
       });
@@ -987,8 +997,12 @@ ${'<scr'+'ipt>'}
     }).sort(function(a,b){return b.pts-a.pts;});
     var cl=["#FFD700","#C0C0C0","#CD7F32"];
     var el=document.getElementById("champStandings");if(!el)return;
+    // Tie-aware position: tied pilots share the same position, next skips
+    var pos=1;
     el.innerHTML=st.map(function(s,i){
-      return "<div class=\\"standings-item\\"><span class=\\"standings-position\\" style=\\"color:"+(cl[i]||"#F7E7CE")+"\\">"+(i+1)+"°</span><span class=\\"standings-driver\\">"+s.nome+"</span><span class=\\"standings-points\\">"+s.pts+"</span></div>";
+      if(i>0&&st[i].pts<st[i-1].pts){pos=i+1;}
+      var col=pos===1?cl[0]:pos===2?cl[1]:pos===3?cl[2]:"#F7E7CE";
+      return "<div class=\\"standings-item\\"><span class=\\"standings-position\\" style=\\"color:"+col+"\\">"+pos+"°</span><span class=\\"standings-driver\\">"+s.nome+"</span><span class=\\"standings-points\\">"+s.pts+"</span></div>";
     }).join("")||"<div style=\\"color:#c9b8a3;text-align:center;font-size:13px;\\">Nessun dato</div>";
   });
 })();
