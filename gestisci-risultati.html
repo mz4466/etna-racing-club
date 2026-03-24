@@ -965,51 +965,93 @@ function buildHTML(){
 <footer>© 2026 Etna Racing Club • Sicilia, Italia</footer>
 ${'<scr'+'ipt>'}
 (function(){
+  // sc: pilotName -> [{pts, rn}]
   var sc={};
-  var _si="${String(champIdx)}"; // stable champId (or legacy index)
+  var racesFound={};
+  var _si="${String(champIdx)}";
   var _rn=${parseInt(garaNum||1)};
   var _rt=${parseInt(garaTot||1)};
   var _bo=${(champ && champ.bestOf) ? parseInt(champ.bestOf) : 0};
+
+  function addResult(nome,pts,rn){
+    if(!nome)return;
+    if(!sc[nome])sc[nome]=[];
+    if(!sc[nome].find(function(e){return e.rn===rn;}))
+      sc[nome].push({pts:pts,rn:rn});
+    racesFound[rn]=true;
+  }
+
+  // Seed with current race baked-in data
   var rows=${JSON.stringify(rows.map(function(r){return{nome:r.nome,totale:r.totale};}))};
-  rows.forEach(function(r){if(r.nome){if(!sc[r.nome])sc[r.nome]=[];sc[r.nome].push(r.totale);}});
+  rows.forEach(function(r){addResult(r.nome,r.totale,_rn);});
+
   var API="https://api.github.com/repos/mz4466/etna-racing-club/contents/risultati?ref=main";
-  fetch(API).then(function(res){return res.ok?res.json():[];}).catch(function(){return[];}).then(function(files){
+  fetch(API).then(function(res){return res.ok?res.json():[];}).catch(function(){return[];})
+  .then(function(files){
     return Promise.all((files||[]).filter(function(f){return f.name.endsWith(".json");}).map(function(f){
-      return fetch(f.url).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}).then(function(m){
+      return fetch(f.url).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
+      .then(function(m){
         if(!m||!m.content)return;
         try{
           var d=JSON.parse(decodeURIComponent(escape(atob(m.content.replace(/\\s/g,"")))));
-          // Match by champId (new) OR champIdx (old — for backwards compatibility)
           var matches=(d.champId&&d.champId===_si)||(d.champIdx!==undefined&&String(d.champIdx)===_si);
           if(!matches)return;
-          if(parseInt(d.garaNum)===_rn)return;  // skip current race (using live data)
-          if(parseInt(d.garaNum)>_rn)return;     // skip future races
-          (d.rows||[]).forEach(function(r){if(r.nome){if(!sc[r.nome])sc[r.nome]=[];sc[r.nome].push(r.totale||0);}});
+          var raceN=parseInt(d.garaNum)||0;
+          if(raceN===_rn)return; // skip current race — already seeded
+          (d.rows||[]).forEach(function(r){addResult(r.nome,r.totale||0,raceN);});
         }catch(e){}
       });
     }));
   }).catch(function(){}).then(function(){
-    var isLast=_rn>=_rt;
-    var bo=_bo;var rt=_rt;
+    // Only apply bestOf when ALL races are published
+    var allDone=Object.keys(racesFound).length>=_rt;
+    var canDrop=allDone&&_bo>0&&_bo<_rt;
+
     var st=Object.entries(sc).map(function(e){
-      var nm=e[0];var ss=e[1];
-      // Apply bestOf whenever this pilot has more results than the limit
-      // (not just on the final race — so all pages stay consistent)
-      if(bo>0&&bo<rt&&ss.length>bo){ss=ss.slice().sort(function(a,b){return b-a;}).slice(0,bo);}
-      return{nome:nm,pts:ss.reduce(function(s,v){return s+v;},0)};
-    }).sort(function(a,b){return b.pts-a.pts;});
+      var nm=e[0];
+      var entries=e[1].slice().sort(function(a,b){return a.rn-b.rn;});
+      var dropped=[];
+      if(canDrop){
+        var toDrop=_rt-_bo;
+        // Sort by pts asc, mark lowest toDrop as dropped
+        var byVal=entries.slice().sort(function(a,b){return a.pts-b.pts;});
+        dropped=byVal.slice(0,toDrop);
+      }
+      var total=entries.reduce(function(s,e){
+        return s+(dropped.indexOf(e)>=0?0:e.pts);
+      },0);
+      return{nome:nm,entries:entries,dropped:dropped,total:total};
+    }).sort(function(a,b){return b.total-a.total;});
+
     var cl=["#FFD700","#C0C0C0","#CD7F32"];
     var el=document.getElementById("champStandings");if(!el)return;
-    // Tie-aware position: tied pilots share the same position, next skips
+
     var pos=1;
     el.innerHTML=st.map(function(s,i){
-      if(i>0&&st[i].pts<st[i-1].pts){pos=i+1;}
+      if(i>0&&s.total<st[i-1].total){pos=i+1;}
       var col=pos===1?cl[0]:pos===2?cl[1]:pos===3?cl[2]:"#F7E7CE";
-      return "<div class=\\"standings-item\\"><span class=\\"standings-position\\" style=\\"color:"+col+"\\">"+pos+"°</span><span class=\\"standings-driver\\">"+s.nome+"</span><span class=\\"standings-points\\">"+s.pts+"</span></div>";
+      var breakdown="";
+      if(s.entries.length>1||canDrop){
+        var parts=s.entries.map(function(e){
+          return s.dropped.indexOf(e)>=0
+            ?"<span style=\\"text-decoration:line-through;color:#e74c3c;opacity:0.75\\">"+e.pts+"</span>"
+            :"<span>"+e.pts+"</span>";
+        });
+        breakdown=" <span style=\\"font-family:'Teko',sans-serif;font-size:12px;color:#666;margin:0 3px;\\">"
+          +parts.join("<span style=\\"color:#444;margin:0 1px;\\">+</span>")
+          +"</span>";
+      }
+      return "<div class=\\"standings-item\\">"
+        +"<span class=\\"standings-position\\" style=\\"color:"+col+"\\">"+pos+"°</span>"
+        +"<span class=\\"standings-driver\\">"+s.nome+"</span>"
+        +breakdown
+        +"<span class=\\"standings-points\\">"+s.total+"</span>"
+        +"</div>";
     }).join("")||"<div style=\\"color:#c9b8a3;text-align:center;font-size:13px;\\">Nessun dato</div>";
   });
 })();
 ${'</'+'script>'}
+
 </body>
 </html>`;}
 
