@@ -13,9 +13,9 @@
       "bestLap": "",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 25,
       "extra": "-",
-      "totale": 0,
+      "totale": 25,
       "stato": "ok"
     },
     {
@@ -25,9 +25,9 @@
       "bestLap": "",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 18,
       "extra": "-",
-      "totale": 0,
+      "totale": 18,
       "stato": "ok"
     },
     {
@@ -37,9 +37,9 @@
       "bestLap": "",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 15,
       "extra": "-",
-      "totale": 0,
+      "totale": 15,
       "stato": "ok"
     },
     {
@@ -49,32 +49,32 @@
       "bestLap": "",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 12,
       "extra": "-",
-      "totale": 0,
+      "totale": 12,
       "stato": "ok"
     }
   ],
   "standings": [
     {
       "nome": "Pyer",
-      "pts": 0,
+      "pts": 25,
       "pos": 1
     },
     {
       "nome": "Luca",
-      "pts": 0,
-      "pos": 1
+      "pts": 18,
+      "pos": 2
     },
     {
       "nome": "carmine",
-      "pts": 0,
-      "pos": 1
+      "pts": 15,
+      "pos": 3
     },
     {
       "nome": "antonio",
-      "pts": 0,
-      "pos": 1
+      "pts": 12,
+      "pos": 4
     }
   ],
   "bestOf": 4
