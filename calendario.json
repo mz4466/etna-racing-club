@@ -1,0 +1,69 @@
+[
+  {
+    "id": "estate-2026",
+    "name": "Io speriamo che me la cavo",
+    "year": "2026",
+    "cat": "Campionato",
+    "slug": "Estate",
+    "trophy": "Crono_Scalata_Pikes_Peak.png",
+    "cars": "GR3",
+    "desc": "fantocci",
+    "status": "prossimo",
+    "file": "campionati/io-speriamo-che-me-la-cavo-2026-campionato-estate.html",
+    "totalRounds": 5,
+    "completedRounds": 0,
+    "bestOf": 3,
+    "rounds": [
+      {
+        "circuit": "a",
+        "date": "",
+        "laps": "17",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x3",
+        "fuel": "x4",
+        "types": "",
+        "notes": ""
+      },
+      {
+        "circuit": "b",
+        "date": "",
+        "laps": "17",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x3",
+        "fuel": "x4",
+        "types": "",
+        "notes": ""
+      },
+      {
+        "circuit": "c",
+        "date": "",
+        "laps": "17",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x3",
+        "fuel": "x4",
+        "types": "",
+        "notes": ""
+      },
+      {
+        "circuit": "d",
+        "date": "",
+        "laps": "17",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x3",
+        "fuel": "x4",
+        "types": "",
+        "notes": ""
+      },
+      {
+        "circuit": "e",
+        "date": "",
+        "laps": "17",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x3",
+        "fuel": "x4",
+        "types": "",
+        "notes": ""
+      }
+    ]
+  }
+]
