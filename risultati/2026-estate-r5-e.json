@@ -53,6 +53,18 @@
       "extra": "-",
       "totale": 12,
       "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "antonio",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
     }
   ],
   "standings": [
@@ -70,6 +82,11 @@
       "nome": "Giovanni",
       "pts": 12,
       "pos": 3
+    },
+    {
+      "nome": "antonio",
+      "pts": 10,
+      "pos": 4
     }
   ],
   "bestOf": 4
