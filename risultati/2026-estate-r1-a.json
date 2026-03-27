@@ -1,0 +1,81 @@
+{
+  "circuito": "a",
+  "data": "",
+  "garaNum": "1",
+  "garaTot": "5",
+  "champId": "estate-2026",
+  "champIdx": "estate-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Fabio",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Claudio",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "antonio",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "carmine",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Fabio",
+      "pts": 25,
+      "pos": 1
+    },
+    {
+      "nome": "Claudio",
+      "pts": 18,
+      "pos": 2
+    },
+    {
+      "nome": "antonio",
+      "pts": 15,
+      "pos": 3
+    },
+    {
+      "nome": "carmine",
+      "pts": 12,
+      "pos": 4
+    }
+  ],
+  "bestOf": 4
+}
