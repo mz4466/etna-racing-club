@@ -321,9 +321,78 @@ const FOLDER = 'piloti_schede';
 let allPilots  = [];  // [{slug, data}, ...]
 let editingSlug = null;
 let calendarioData = [];   // championships from calendario.json
-let gt7Cars = [];          // full car list from ddm999
 let selectedCarsMap = {};  // champId -> [carName, ...]
-let gt7CarsLoaded = false;
+let gt7CarsLoaded = true; // pre-populated; set to true so search works immediately
+
+// Pre-populated car list (augmented from ddm999 if available)
+let gt7Cars = [
+  // Gr.1
+  {id:'',group:'Gr.1',manufacturer:'Nissan',model:'R92CP',displayName:'Nissan R92CP'},
+  {id:'',group:'Gr.1',manufacturer:'Mazda',model:'787B',displayName:'Mazda 787B'},
+  {id:'',group:'Gr.1',manufacturer:'Toyota',model:'GT-One (TS020)',displayName:'Toyota GT-One (TS020)'},
+  {id:'',group:'Gr.1',manufacturer:'Porsche',model:'962 C',displayName:'Porsche 962 C'},
+  {id:'',group:'Gr.1',manufacturer:'Peugeot',model:'905',displayName:'Peugeot 905'},
+  // Gr.2
+  {id:'',group:'Gr.2',manufacturer:'BMW',model:'M3 GT',displayName:'BMW M3 GT'},
+  {id:'',group:'Gr.2',manufacturer:'Alfa Romeo',model:'155 2.5 V6 TI',displayName:'Alfa Romeo 155 2.5 V6 TI'},
+  // Gr.3
+  {id:'',group:'Gr.3',manufacturer:'Ferrari',model:'296 GT3',displayName:'Ferrari 296 GT3'},
+  {id:'',group:'Gr.3',manufacturer:'Ferrari',model:'458 Italia GT3',displayName:'Ferrari 458 Italia GT3'},
+  {id:'',group:'Gr.3',manufacturer:'Porsche',model:'911 RSR (991)',displayName:'Porsche 911 RSR (991)'},
+  {id:'',group:'Gr.3',manufacturer:'Porsche',model:'911 GT3 R (991)',displayName:'Porsche 911 GT3 R (991)'},
+  {id:'',group:'Gr.3',manufacturer:'McLaren',model:'650S GT3',displayName:'McLaren 650S GT3'},
+  {id:'',group:'Gr.3',manufacturer:'McLaren',model:'720S GT3',displayName:'McLaren 720S GT3'},
+  {id:'',group:'Gr.3',manufacturer:'Mercedes-Benz',model:'AMG GT3',displayName:'Mercedes-Benz AMG GT3'},
+  {id:'',group:'Gr.3',manufacturer:'Lamborghini',model:'Huracán GT3',displayName:'Lamborghini Huracán GT3'},
+  {id:'',group:'Gr.3',manufacturer:'BMW',model:'M4 GT3',displayName:'BMW M4 GT3'},
+  {id:'',group:'Gr.3',manufacturer:'BMW',model:'M6 GT3',displayName:'BMW M6 GT3'},
+  {id:'',group:'Gr.3',manufacturer:'Aston Martin',model:'V12 Vantage GT3',displayName:'Aston Martin V12 Vantage GT3'},
+  {id:'',group:'Gr.3',manufacturer:'Nissan',model:'GT-R NISMO GT3',displayName:'Nissan GT-R NISMO GT3'},
+  {id:'',group:'Gr.3',manufacturer:'Toyota',model:'GR Supra GT4',displayName:'Toyota GR Supra GT4'},
+  {id:'',group:'Gr.3',manufacturer:'Honda',model:'NSX GT3',displayName:'Honda NSX GT3'},
+  {id:'',group:'Gr.3',manufacturer:'Jaguar',model:'F-Type GT4',displayName:'Jaguar F-Type GT4'},
+  {id:'',group:'Gr.3',manufacturer:'Subaru',model:'WRX Gr.3',displayName:'Subaru WRX Gr.3'},
+  {id:'',group:'Gr.3',manufacturer:'Renault',model:'Sport R.S. 01 GT3',displayName:'Renault Sport R.S. 01 GT3'},
+  {id:'',group:'Gr.3',manufacturer:'Audi',model:'R8 LMS',displayName:'Audi R8 LMS'},
+  {id:'',group:'Gr.3',manufacturer:'Dodge',model:'Viper SRT GT3-R',displayName:'Dodge Viper SRT GT3-R'},
+  {id:'',group:'Gr.3',manufacturer:'Chevrolet',model:'Corvette C7 Gr.3',displayName:'Chevrolet Corvette C7 Gr.3'},
+  {id:'',group:'Gr.3',manufacturer:'Ford',model:'GT LM Spec II Test Car',displayName:'Ford GT LM Spec II Test Car'},
+  {id:'',group:'Gr.3',manufacturer:'Peugeot',model:'RCZ Gr.3',displayName:'Peugeot RCZ Gr.3'},
+  {id:'',group:'Gr.3',manufacturer:'Mitsubishi',model:'Lancer Evolution Final Edition Gr.3',displayName:'Mitsubishi Lancer Evolution Final Edition Gr.3'},
+  {id:'',group:'Gr.3',manufacturer:'Alfa Romeo',model:'4C Gr.3',displayName:'Alfa Romeo 4C Gr.3'},
+  {id:'',group:'Gr.3',manufacturer:'LEXUS',model:'RC F GT3',displayName:'LEXUS RC F GT3'},
+  {id:'',group:'Gr.3',manufacturer:'Mazda',model:'Atenza Gr.3',displayName:'Mazda Atenza Gr.3'},
+  // Gr.4
+  {id:'',group:'Gr.4',manufacturer:'Ferrari',model:'458 Italia Gr.4',displayName:'Ferrari 458 Italia Gr.4'},
+  {id:'',group:'Gr.4',manufacturer:'Porsche',model:'Cayman GT4',displayName:'Porsche Cayman GT4'},
+  {id:'',group:'Gr.4',manufacturer:'Lamborghini',model:'Huracán Gr.4',displayName:'Lamborghini Huracán Gr.4'},
+  {id:'',group:'Gr.4',manufacturer:'McLaren',model:'MP4-12C Gr.4',displayName:'McLaren MP4-12C Gr.4'},
+  {id:'',group:'Gr.4',manufacturer:'BMW',model:'M4 Gr.4',displayName:'BMW M4 Gr.4'},
+  {id:'',group:'Gr.4',manufacturer:'Nissan',model:'GT-R Gr.4',displayName:'Nissan GT-R Gr.4'},
+  {id:'',group:'Gr.4',manufacturer:'Toyota',model:'GR86 Gr.4',displayName:'Toyota GR86 Gr.4'},
+  {id:'',group:'Gr.4',manufacturer:'Subaru',model:'WRX Gr.4',displayName:'Subaru WRX Gr.4'},
+  {id:'',group:'Gr.4',manufacturer:'Honda',model:'NSX Gr.4',displayName:'Honda NSX Gr.4'},
+  {id:'',group:'Gr.4',manufacturer:'Renault',model:'Sport R.S. 01 Gr.4',displayName:'Renault Sport R.S. 01 Gr.4'},
+  {id:'',group:'Gr.4',manufacturer:'Ford',model:'Mustang Gr.4',displayName:'Ford Mustang Gr.4'},
+  {id:'',group:'Gr.4',manufacturer:'Chevrolet',model:'Camaro SS Gr.4',displayName:'Chevrolet Camaro SS Gr.4'},
+  {id:'',group:'Gr.4',manufacturer:'Aston Martin',model:'V8 Vantage Gr.4',displayName:'Aston Martin V8 Vantage Gr.4'},
+  {id:'',group:'Gr.4',manufacturer:'Alfa Romeo',model:'4C Gr.4',displayName:'Alfa Romeo 4C Gr.4'},
+  {id:'',group:'Gr.4',manufacturer:'Mitsubishi',model:'Lancer Evolution Final Edition Gr.4',displayName:'Mitsubishi Lancer Evolution Final Edition Gr.4'},
+  {id:'',group:'Gr.4',manufacturer:'Peugeot',model:'RCZ Gr.4',displayName:'Peugeot RCZ Gr.4'},
+  {id:'',group:'Gr.4',manufacturer:'LEXUS',model:'RC F Gr.4',displayName:'LEXUS RC F Gr.4'},
+  {id:'',group:'Gr.4',manufacturer:'Mazda',model:'Atenza Gr.4',displayName:'Mazda Atenza Gr.4'},
+  // N/Road Cars (common ones)
+  {id:'',group:'N',manufacturer:'Ferrari',model:'F40',displayName:'Ferrari F40'},
+  {id:'',group:'N',manufacturer:'Ferrari',model:'LaFerrari',displayName:'Ferrari LaFerrari'},
+  {id:'',group:'N',manufacturer:'Lamborghini',model:'Aventador LP750-4 SV',displayName:'Lamborghini Aventador LP750-4 SV'},
+  {id:'',group:'N',manufacturer:'Porsche',model:'911 GT3 RS (991)',displayName:'Porsche 911 GT3 RS (991)'},
+  {id:'',group:'N',manufacturer:'McLaren',model:'P1',displayName:'McLaren P1'},
+  {id:'',group:'N',manufacturer:'Bugatti',model:'Chiron',displayName:'Bugatti Chiron'},
+  {id:'',group:'N',manufacturer:'Nissan',model:'GT-R NISMO (R35)',displayName:'Nissan GT-R NISMO (R35)'},
+  {id:'',group:'N',manufacturer:'Toyota',model:'GR Yaris',displayName:'Toyota GR Yaris'},
+  {id:'',group:'N',manufacturer:'Honda',model:'NSX Type R',displayName:'Honda NSX Type R'},
+  {id:'',group:'N',manufacturer:'BMW',model:'M3 Competition',displayName:'BMW M3 Competition'},
+];
 
 function getToken(){ return document.getElementById('patInput').value.trim(); }
 function togglePAT(){ const i=document.getElementById('patInput'); i.type=i.type==='password'?'text':'password'; }
@@ -373,7 +442,9 @@ async function loadCalendario(){
 
 // ── LOAD GT7 CARS ──
 async function loadGT7Cars(){
-  if(gt7CarsLoaded) return;
+  // Already have pre-populated list; try to augment with full list from ddm999
+  var alreadyAugmented = gt7Cars.length > 100;
+  if(alreadyAugmented) return;
   try {
     // Try data.json first (has full car list with IDs)
     var r = await fetch('https://ddm999.github.io/gt7info/data.json');
