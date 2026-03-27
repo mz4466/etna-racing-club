@@ -464,18 +464,37 @@ async function loadGT7Cars(){
     var text = await r.text();
     var lines = text.trim().split('\n');
 
-    // Also fetch car groups
+    // Hardcoded makers map (derived from ddm999 _data/db/makers.csv)
     var groupsMap = {};
-    try {
-      var gr = await fetch('https://ddm999.github.io/gt7info/data/db/car_categories.csv');
-      if(gr.ok){
-        var gtext = await gr.text();
-        gtext.trim().split('\n').forEach(function(line){
-          var p = line.split(',');
-          if(p.length >= 2 && !isNaN(parseInt(p[0]))) groupsMap[p[0].trim()] = p[1].trim();
-        });
-      }
-    } catch(e){ /* groups optional */ }
+    makersMap = {
+      '3':'Alfa Romeo','4':'Aston Martin','5':'Audi','6':'BMW','7':'Chevrolet',
+      '9':'Citroën','10':'Daihatsu','11':'Dodge','12':'Fiat','13':'Ford',
+      '15':'Honda','17':'Jaguar','18':'Lancia','21':'Mazda','22':'Mercedes-Benz',
+      '23':'Mercury','25':'Mitsubishi','26':'Nissan','28':'Nissan','30':'Pagani',
+      '32':'Peugeot','34':'Renault','36':'Shelby','38':'Subaru','39':'Suzuki',
+      '40':'Toyota','43':'Toyota','44':'TVR','46':'Volkswagen','47':'Volvo',
+      '50':'Lexus','51':'MINI','55':'Plymouth','59':'Amuse','65':'DeLorean',
+      '86':'Alpine A110','87':'RE Amemiya','93':'Chaparral','110':'Ferrari',
+      '112':'Lamborghini','116':'Maserati','117':'McLaren','119':'Tesla',
+      '121':'KTM','125':'Abarth','153':'Mercedes-AMG','112':'Lamborghini',
+      '2':'Acura','8':'Bugatti','14':'Genesis','16':'Hyundai','19':'Jeep',
+      '20':'Lincoln','24':'McLaren F1','27':'Oldsmobile','29':'Pontiac',
+      '31':'Plymouth','33':'Porsche','35':'Saleen','37':'Shelby','41':'Trans Am',
+      '42':'TVR','45':'Vector','48':'Volkswagen','49':'Willy','52':'Lotus',
+      '53':'Alfa Romeo','54':'Abarth','56':'Chaparral','57':'Devin','58':'Dodge',
+      '60':'Duesenberg','61':'Eagle','62':'Edsel','63':'Facel Vega','64':'Ferrari',
+      '66':'De Tomaso','67':'Fiat','68':'Ford','69':'Genesis','70':'GMC',
+      '71':'Honda','72':'Hudson','73':'Hummer','74':'Infiniti','75':'Isuzu',
+      '76':'Jaguar','77':'Jensen','78':'Lamborghini','79':'Lancia','80':'Land Rover',
+      '81':'Mazda','82':'McLaren','83':'Mercedes-Benz','84':'Mercury','85':'MG',
+      '88':'Porsche','89':'Renault','90':'RUF','91':'Saab','92':'Subaru',
+      '94':'Triumph','95':'Volkswagen','96':'Volvo','97':'Yugo','98':'Alfa Romeo',
+      '99':'Austin-Healey','100':'Chaparral','101':'Cobra','102':'Corvette',
+      '103':'De Tomaso','104':'Dodge','105':'Ferrari','106':'Fiat','107':'Ford',
+      '108':'Honda','109':'Hudson','111':'Jaguar','113':'Lancia','114':'Lotus',
+      '115':'Mazda','118':'MG','120':'Porsche','122':'Renault','123':'Subaru',
+      '124':'Toyota','126':'Triumph','127':'Volkswagen','128':'Volvo'
+    };
 
     var newCars = [];
     lines.forEach(function(line){
@@ -924,7 +943,7 @@ function renderChampAssignments(){
       return '<span class="car-pill">'
         + imgHtml
         + '<span class="car-pill-name">'+esc(carName)+'</span>'
-        + '<button class="car-pill-del" onclick="removeCarFromPilot(\''+cid+'\',\''+esc(carName).replace(/'/g,"\'")+'\')">✕</button>'
+        + '<button class="car-pill-del" data-cid="'+esc(cid)+'" data-car="'+esc(carName).replace(/"/g,'&quot;')+'" onclick="handlePillRemove(this)">✕</button>'
         + '</span>';
     }).join('');
 
@@ -994,7 +1013,8 @@ function filterCars(champId, query){
     var imgHtml = c.id
       ? '<img src="'+carImageUrl(c.id)+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'" alt="" style="width:52px;height:32px;object-fit:cover;border-radius:4px;flex-shrink:0"><div style="display:none;width:52px;height:32px;background:'+col+';border-radius:4px;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;text-align:center;padding:2px;flex-shrink:0;">'+esc(c.manufacturer.slice(0,8))+'</div>'
       : '<div style="width:52px;height:32px;background:'+col+';border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;text-align:center;padding:2px;flex-shrink:0;">'+esc(c.manufacturer.slice(0,8))+'</div>';
-    return '<div class="car-option" onmousedown="addCarToPilot(\''+champId+'\',\''+c.displayName.replace(/'/g,"\'").replace(/"/g,'&quot;')+'\')">'
+    var escapedName = c.displayName.replace(/"/g,'&quot;');
+    return '<div class="car-option" data-cid="'+champId+'" data-car="'+escapedName+'" onmousedown="handleCarAdd(this)">'
       + imgHtml
       + '<div>'
       +   '<div class="car-option-name">'+esc(c.manufacturer)+' '+esc(c.model)+'</div>'
@@ -1014,6 +1034,18 @@ function addCarToPilot(champId, carName){
   if(input) input.value = '';
   closeDropdown(champId);
   renderChampAssignments();
+}
+
+function handlePillRemove(btn){
+  var cid = btn.getAttribute('data-cid');
+  var car = btn.getAttribute('data-car');
+  removeCarFromPilot(cid, car);
+}
+
+function handleCarAdd(el){
+  var cid = el.getAttribute('data-cid');
+  var car = el.getAttribute('data-car');
+  addCarToPilot(cid, car);
 }
 
 function removeCarFromPilot(champId, carName){
