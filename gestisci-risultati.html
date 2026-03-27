@@ -1159,7 +1159,7 @@ async function updateRisultatiIndex(token){
       .filter(function(f){ return f.name.endsWith('.json'); })
       .map(function(f){ return f.name; })
       .sort();
-    await putFile('risultati/index.json', JSON.stringify(names), 'Update risultati index', token);
+    await putFile('risultati/index.json', JSON.stringify(names), 'Update risultati index');
   } catch(e){ console.warn('updateRisultatiIndex:', e.message); }
 }
 
