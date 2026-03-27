@@ -68,6 +68,12 @@
             color:var(--gold); text-transform:uppercase;
             text-align:center; line-height:1.2;
         }
+        .pilot-campionati { margin-top:10px; display:flex; flex-direction:column; gap:6px; }
+        .campionato-row { display:flex; flex-direction:column; gap:4px; }
+        .campionato-row-label { font-family:'Teko',sans-serif; font-size:11px; letter-spacing:2px; color:#c9a227; text-transform:uppercase; }
+        .campionato-cars { display:flex; flex-wrap:wrap; gap:6px; }
+        .campionato-car-pill { display:inline-flex; align-items:center; gap:5px; background:rgba(201,162,39,0.08); border:1px solid rgba(201,162,39,0.2); border-radius:6px; padding:3px 8px; font-size:12px; color:#c9b8a3; }
+        .campionato-car-pill img { width:40px; height:24px; object-fit:cover; border-radius:3px; }
         .trophy-won-year {
             font-size:9px; color:rgba(201,162,39,0.6);
             font-family:'Teko',sans-serif; letter-spacing:1px;
@@ -207,7 +213,7 @@ async function loadAll() {
 
     grid.innerHTML = '';
     var valid = pilots.filter(function(p) { return p && (p.nome || p.name || p.psn); });
-    valid.forEach(function(p) { renderPilot(p); });
+    valid.forEach(function(p) { renderPilot(p, calendario); });
     if (!valid.length) grid.innerHTML = '<div style="color:var(--muted)">Nessuna scheda trovata</div>';
 
   } catch(err) {
@@ -216,7 +222,8 @@ async function loadAll() {
   }
 }
 
-function renderPilot(p) {
+function renderPilot(p, calendario) {
+  calendario = calendario || [];
   var el = document.createElement('div');
   el.className = 'pilot-card';
 
@@ -274,6 +281,32 @@ function renderPilot(p) {
 
   var photoSrc = foto || 'https://via.placeholder.com/280x350?text=Pilota';
 
+  // Build campionati cars display (active championships only)
+  var campionatiHTML = '';
+  if(p.campionati && calendario && calendario.length) {
+    var activeChamps = calendario.filter(function(c){
+      return c.status === 'in corso' || c.status === 'prossimo';
+    });
+    var rows = [];
+    activeChamps.forEach(function(champ){
+      var cid = champ.id || '';
+      if(!cid) return;
+      var entry = p.campionati[cid];
+      if(!entry || !entry.cars || !entry.cars.length) return;
+      var carsHtml = entry.cars.map(function(carName){
+        // Try to find car ID from a cached lookup (we don't have it here, so just show name)
+        return '<span class="campionato-car-pill">' + esc(carName) + '</span>';
+      }).join('');
+      rows.push('<div class="campionato-row">'
+        + '<div class="campionato-row-label">🏁 ' + esc(champ.name) + ' ' + esc(champ.year||'') + '</div>'
+        + '<div class="campionato-cars">' + carsHtml + '</div>'
+        + '</div>');
+    });
+    if(rows.length) {
+      campionatiHTML = '<div class="pilot-campionati">' + rows.join('') + '</div>';
+    }
+  }
+
   el.innerHTML = ''
     + '<img class="pilot-photo" src="' + esc(photoSrc) + '" alt="' + esc(nome) + '" onerror="this.src=\'https://via.placeholder.com/280x350?text=Pilota\'">'
     + '<div class="pilot-content">'
@@ -289,6 +322,7 @@ function renderPilot(p) {
     +   (p.catchphrase ? '<div class="catchphrase">💬 "' + esc(p.catchphrase) + '"</div>' : '')
     +   '<div class="badges">' + (p.badges||[]).map(function(b){ return '<span class="badge">' + esc(b) + '</span>'; }).join('') + '</div>'
     +   trophiesHTML
+    +   campionatiHTML
     + '</div>';
 
   grid.appendChild(el);
