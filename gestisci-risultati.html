@@ -1049,16 +1049,21 @@ ${'<scr'+'ipt>'}
       var col=pos===1?cl[0]:pos===2?cl[1]:pos===3?cl[2]:"#F7E7CE";
       var breakdown="";
       if(s.entries.length>1||canDrop){
-        var parts=s.entries.map(function(e){
-          return s.dropped.indexOf(e)>=0
-            ?"<span style='text-decoration:line-through;color:#e74c3c;opacity:0.8'>"+e.pts+"</span>"
-            :"<span>"+e.pts+"</span>";
-        });
-        breakdown=" <span style='font-size:11px;color:#777;margin:0 2px'>"
-          +parts.join("<span style='color:#555;margin:0 1px'>+</span>")
-          +"</span>";
+        // Build two rows: race labels (R1, R2...) on top, scores below
+        var labelRow=s.entries.map(function(e){
+          var isDrop=s.dropped.indexOf(e)>=0;
+          return "<span style='display:inline-block;text-align:center;min-width:22px;color:"+(isDrop?"#e74c3c":"#555")+";font-size:9px;line-height:1.2'>R"+e.rn+"</span>";
+        }).join("<span style='display:inline-block;min-width:10px'></span>");
+        var scoreRow=s.entries.map(function(e,idx){
+          var isDrop=s.dropped.indexOf(e)>=0;
+          var sep=idx>0?"<span style='display:inline-block;min-width:10px;text-align:center;color:#555;font-size:11px'>+</span>":"";
+          return sep+(isDrop
+            ?"<span style='display:inline-block;min-width:22px;text-align:center;text-decoration:line-through;color:#e74c3c;opacity:0.8;font-size:11px'>"+e.pts+"</span>"
+            :"<span style='display:inline-block;min-width:22px;text-align:center;color:#777;font-size:11px'>"+e.pts+"</span>");
+        }).join("");
+        breakdown="<div style='display:flex;flex-direction:column;align-items:flex-start;margin:0 6px;line-height:1'>"          +"<div style='display:flex;align-items:center'>"+labelRow+"</div>"          +"<div style='display:flex;align-items:center'>"+scoreRow+"</div>"          +"</div>";
       }
-      return "<div class='standings-item'>"
+      return "<div class='standings-item' style='flex-wrap:wrap;align-items:center'>"
         +"<span class='standings-position' style='color:"+col+"'>"+pos+"&deg;</span>"
         +"<span class='standings-driver'>"+s.nome+"</span>"
         +breakdown
