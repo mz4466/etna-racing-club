@@ -965,12 +965,13 @@ function buildHTML(){
 <footer>© 2026 Etna Racing Club • Sicilia, Italia</footer>
 ${'<scr'+'ipt>'}
 (function(){
-  var sc={};      // pilotName -> [{pts,rn}] — only races <= current page
-  var allRaces={}; // ALL race numbers found for this champ (including future)
+  var sc={};
+  var allRaces={};
   var _si="${String(champIdx)}";
   var _rn=${parseInt(garaNum||1)};
   var _rt=${parseInt(garaTot||1)};
   var _bo=${(champ && champ.bestOf) ? parseInt(champ.bestOf) : 0};
+  var RAW="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/risultati/";
 
   function addToStandings(nome,pts,rn){
     if(!nome)return;
@@ -979,32 +980,30 @@ ${'<scr'+'ipt>'}
       sc[nome].push({pts:pts,rn:rn});
   }
 
-  // Seed with current race (baked in at publish time)
+  // Seed with current race baked-in data
   var rows=${JSON.stringify(rows.map(function(r){return{nome:r.nome,totale:r.totale};}))};
   rows.forEach(function(r){addToStandings(r.nome,r.totale,_rn);});
   allRaces[_rn]=true;
 
-  var API="https://api.github.com/repos/mz4466/etna-racing-club/contents/risultati?ref=main";
-  fetch(API).then(function(res){return res.ok?res.json():[];}).catch(function(){return[];})
-  .then(function(files){
-    return Promise.all((files||[]).filter(function(f){return f.name.endsWith(".json");}).map(function(f){
-      return fetch(f.url).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
-      .then(function(m){
-        if(!m||!m.content)return;
+  // Fetch risultati/index.json via raw — 0 API calls
+  fetch(RAW+"index.json?_="+Date.now()).then(function(r){return r.ok?r.json():[];}).catch(function(){return[];})
+  .then(function(names){
+    return Promise.all((names||[]).filter(function(n){return n.endsWith(".json");}).map(function(n){
+      return fetch(RAW+n).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
+      .then(function(d){
+        if(!d)return;
         try{
-          var d=JSON.parse(decodeURIComponent(escape(atob(m.content.replace(/\s/g,"")))));
           var matches=(d.champId&&d.champId===_si)||(d.champIdx!==undefined&&String(d.champIdx)===_si);
           if(!matches)return;
           var raceN=parseInt(d.garaNum)||0;
-          allRaces[raceN]=true; // always track — used to know if all races done
-          if(raceN===_rn)return; // skip current — already seeded above
-          if(raceN>_rn)return;   // skip future — not on this page yet
+          allRaces[raceN]=true;
+          if(raceN===_rn)return;
+          if(raceN>_rn)return;
           (d.rows||[]).forEach(function(r){addToStandings(r.nome,r.totale||0,raceN);});
         }catch(e){}
       });
     }));
   }).catch(function(){}).then(function(){
-    // bestOf drop rule ONLY when every race is published
     var allDone=Object.keys(allRaces).length>=_rt;
     var canDrop=allDone&&_bo>0&&_bo<_rt;
 
@@ -1013,7 +1012,6 @@ ${'<scr'+'ipt>'}
       var entries=e[1].slice().sort(function(a,b){return a.rn-b.rn;});
       var dropped=[];
       if(canDrop&&entries.length>_bo){
-        // Drop whenever pilot has more results than the bestOf limit
         var toDrop=entries.length-_bo;
         var byVal=entries.slice().sort(function(a,b){return a.pts-b.pts;});
         dropped=byVal.slice(0,toDrop);
@@ -1024,33 +1022,32 @@ ${'<scr'+'ipt>'}
 
     var cl=["#FFD700","#C0C0C0","#CD7F32"];
     var el=document.getElementById("champStandings");if(!el)return;
-
     var pos=1;
     el.innerHTML=st.map(function(s,i){
       if(i>0&&s.total<st[i-1].total){pos=i+1;}
       var col=pos===1?cl[0]:pos===2?cl[1]:pos===3?cl[2]:"#F7E7CE";
-      // Show breakdown whenever pilot has >1 result OR bestOf is active
       var breakdown="";
       if(s.entries.length>1||canDrop){
         var parts=s.entries.map(function(e){
           return s.dropped.indexOf(e)>=0
-            ?"<span style=\\"text-decoration:line-through;color:#e74c3c;opacity:0.8\\">"+e.pts+"</span>"
+            ?"<span style=\"text-decoration:line-through;color:#e74c3c;opacity:0.8\">"+e.pts+"</span>"
             :"<span>"+e.pts+"</span>";
         });
-        breakdown=" <span style=\\"font-size:11px;color:#777;margin:0 2px;\\">"
-          +parts.join("<span style=\\"color:#555;margin:0 1px;\\">+</span>")
+        breakdown=" <span style=\"font-size:11px;color:#777;margin:0 2px;\">"
+          +parts.join("<span style=\"color:#555;margin:0 1px;\">+</span>")
           +"</span>";
       }
-      return "<div class=\\"standings-item\\">"
-        +"<span class=\\"standings-position\\" style=\\"color:"+col+"\\">"+pos+"°</span>"
-        +"<span class=\\"standings-driver\\">"+s.nome+"</span>"
+      return "<div class=\"standings-item\">"
+        +"<span class=\"standings-position\" style=\"color:"+col+"\">"+pos+"°</span>"
+        +"<span class=\"standings-driver\">"+s.nome+"</span>"
         +breakdown
-        +"<span class=\\"standings-points\\">"+s.total+"</span>"
+        +"<span class=\"standings-points\">"+s.total+"</span>"
         +"</div>";
-    }).join("")||"<div style=\\"color:#c9b8a3;text-align:center;font-size:13px;\\">Nessun dato</div>";
+    }).join("")||"<div style=\"color:#c9b8a3;text-align:center;font-size:13px;\">Nessun dato</div>";
   });
 })();
 ${'</'+'script>'}
+
 
 </body>
 </html>`;}
@@ -1101,6 +1098,9 @@ async function publish(){
     // 3. update championship HTML to link this result file
     await linkResultToChampionship('../risultati/' + fname);
 
+    // 4. update risultati/index.json for public pages
+    await updateRisultatiIndex(token);
+
     toast(`✓ Pubblicato: ${fname}`,'ok');
   } catch(e){
     toast('Errore: '+e.message,'err');
@@ -1144,6 +1144,23 @@ async function linkResultToChampionship(resultFile){
     }
     await putFile(champ.file, html, `Link results R${roundNum} in ${champ.file}`, d.sha);
   } catch(e){ console.warn('Could not auto-link to championship:',e.message); }
+}
+
+async function updateRisultatiIndex(token){
+  // Maintains risultati/index.json — a list of all result JSON filenames
+  // Used by public pages to fetch via raw.githubusercontent.com (no API rate limit)
+  try {
+    const r = await fetch('https://api.github.com/repos/' + REPO + '/contents/risultati?ref=' + BRANCH, {
+      headers:{Authorization:'token ' + token, Accept:'application/vnd.github.v3+json'}
+    });
+    if(!r.ok) return;
+    const files = await r.json();
+    const names = files
+      .filter(function(f){ return f.name.endsWith('.json'); })
+      .map(function(f){ return f.name; })
+      .sort();
+    await putFile('risultati/index.json', JSON.stringify(names), 'Update risultati index', token);
+  } catch(e){ console.warn('updateRisultatiIndex:', e.message); }
 }
 
 async function putFile(path, content, message, sha=null){

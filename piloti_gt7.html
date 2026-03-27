@@ -138,22 +138,20 @@ async function loadAll() {
       if(calRes.ok) calendario = await calRes.json();
     } catch(e) { console.warn('calendario.json non disponibile:', e.message); }
 
-    // 2. Load risultati/ folder listing
+    // 2. Load risultati via index.json + raw — 0 API calls
     pilotTrophies = {};
     try {
-      var rRes = await fetch(BASE_API + '/contents/risultati?ref=' + BRANCH);
-      if (rRes.ok && rRes.status !== 403) {
-        var rFiles = await rRes.json();
-        var jsonFiles = rFiles.filter(function(f) { return f.name.endsWith('.json'); });
+      var rIndexRes = await fetch(BASE_RAW + '/risultati/index.json?_=' + Date.now());
+      if (rIndexRes.ok) {
+        var rNames = await rIndexRes.json();
+        var jsonFiles = (rNames||[]).filter(function(n){ return n.endsWith('.json'); });
 
-        // Load each result file
-        var results = await Promise.all(jsonFiles.map(async function(f) {
+        // Load each result file via raw — no API calls
+        var results = await Promise.all(jsonFiles.map(async function(name) {
           try {
-            var r = await fetch(f.url);
+            var r = await fetch(BASE_RAW + '/risultati/' + name);
             if (!r.ok) return null;
-            var meta = await r.json();
-            if(!meta || !meta.content) return null;
-        return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
+            return await r.json();
           } catch(e) { return null; }
         }));
 
@@ -184,21 +182,17 @@ async function loadAll() {
       }
     } catch(e) { console.warn('Could not load trophies:', e.message); }
 
-    // 3. Load pilots via GitHub API (no index.json needed)
-    var folderRes = await fetch(BASE_API + '/contents/piloti_schede?ref=' + BRANCH);
-    if (!folderRes.ok) throw new Error('Cartella piloti_schede non trovata');
-    var folderFiles = await folderRes.json();
-    var jsonFiles = folderFiles.filter(function(f) {
-      return f.name.endsWith('.json') && f.name !== 'index.json';
-    });
+    // 3. Load pilots via index.json + raw — 0 API calls
+    var indexRes = await fetch(BASE_RAW + '/piloti_schede/index.json?_=' + Date.now());
+    if (!indexRes.ok) throw new Error('Cartella piloti_schede non trovata');
+    var pilotNames = await indexRes.json();
+    var jsonFiles = (pilotNames||[]).filter(function(n){ return n.endsWith('.json'); });
 
-    var pilots = await Promise.all(jsonFiles.map(async function(f) {
+    var pilots = await Promise.all(jsonFiles.map(async function(name) {
       try {
-        var r = await fetch(f.url);
+        var r = await fetch(BASE_RAW + '/piloti_schede/' + name);
         if (!r.ok) return null;
-        var meta = await r.json();
-        if(!meta || !meta.content) return null;
-        return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
+        return await r.json();
       } catch(e) { return null; }
     }));
 

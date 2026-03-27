@@ -234,18 +234,18 @@ const API    = `https://api.github.com/repos/${OWNER}/${REPO}`;
 async function loadArchive(){
   try {
     // 1. Load calendario.json (direct relative fetch — both files in repo root)
-    const calRes = await fetch(`calendario.json?_=${Date.now()}`);
+    const calRes = await fetch(`${BASE}/calendario.json?_=${Date.now()}`);
     if(!calRes.ok) throw new Error('calendario.json non trovato');
     const campionati = await calRes.json();
     if(!campionati.length){ showEmpty(); return; }
 
-    // 2. Load list of result JSON files from risultati/ folder
+    // 2. Load list of result JSON files via index.json — 0 API calls
     let resultFiles = [];
     try {
-      const rfRes = await fetch(`${API}/contents/risultati?ref=${BRANCH}`);
+      const rfRes = await fetch(`${BASE}/risultati/index.json?_=${Date.now()}`);
       if(rfRes.ok){
         const rf = await rfRes.json();
-        resultFiles = rf.filter(f=>f.name.endsWith('.json')).map(f=>f.name);
+        resultFiles = (rf||[]).filter(f=>f.endsWith('.json'));
       }
     } catch {}
 
