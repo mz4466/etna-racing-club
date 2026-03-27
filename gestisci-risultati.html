@@ -992,21 +992,17 @@ ${'<scr'+'ipt>'}
     (d.rows||[]).forEach(function(r){addToStandings(r.nome,r.totale||0,raceN);});
   }
 
-  // Seed current race from baked-in data
   var rows=${JSON.stringify(rows.map(function(r){return{nome:r.nome,totale:r.totale};}))};
   rows.forEach(function(r){addToStandings(r.nome,r.totale,_rn);});
   allRaces[_rn]=true;
 
-  // Try RAW index.json first (fast, no rate limit)
-  // Fall back to GitHub API if RAW is blocked (e.g. corporate firewall)
   function loadViaRaw(){
     return fetch(RAW+"index.json?_="+Date.now())
-      .then(function(r){
-        if(!r.ok)throw new Error('raw blocked');
-        return r.json();
-      })
+      .then(function(r){if(!r.ok)throw new Error("blocked");return r.json();})
       .then(function(names){
-        return Promise.all((names||[]).filter(function(n){return n.endsWith(".json");}).map(function(n){
+        // exclude index.json itself
+        var jsonFiles=(names||[]).filter(function(n){return n.endsWith(".json")&&n!=="index.json";});
+        return Promise.all(jsonFiles.map(function(n){
           return fetch(RAW+n).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
             .then(function(d){try{processRace(d);}catch(e){}});
         }));
@@ -1017,7 +1013,7 @@ ${'<scr'+'ipt>'}
     return fetch(API+"?ref=main")
       .then(function(r){return r.ok?r.json():[];}).catch(function(){return[];})
       .then(function(files){
-        return Promise.all((files||[]).filter(function(f){return f.name.endsWith(".json");}).map(function(f){
+        return Promise.all((files||[]).filter(function(f){return f.name.endsWith(".json")&&f.name!=="index.json";}).map(function(f){
           return fetch(f.url).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
             .then(function(m){
               if(!m||!m.content)return;
@@ -1055,23 +1051,24 @@ ${'<scr'+'ipt>'}
       if(s.entries.length>1||canDrop){
         var parts=s.entries.map(function(e){
           return s.dropped.indexOf(e)>=0
-            ?"<span style=\"text-decoration:line-through;color:#e74c3c;opacity:0.8\">"+e.pts+"</span>"
+            ?"<span style='text-decoration:line-through;color:#e74c3c;opacity:0.8'>"+e.pts+"</span>"
             :"<span>"+e.pts+"</span>";
         });
-        breakdown=" <span style=\"font-size:11px;color:#777;margin:0 2px;\">"
-          +parts.join("<span style=\"color:#555;margin:0 1px;\">+</span>")
+        breakdown=" <span style='font-size:11px;color:#777;margin:0 2px'>"
+          +parts.join("<span style='color:#555;margin:0 1px'>+</span>")
           +"</span>";
       }
-      return "<div class=\"standings-item\">"
-        +"<span class=\"standings-position\" style=\"color:"+col+"\">"+pos+"°</span>"
-        +"<span class=\"standings-driver\">"+s.nome+"</span>"
+      return "<div class='standings-item'>"
+        +"<span class='standings-position' style='color:"+col+"'>"+pos+"&deg;</span>"
+        +"<span class='standings-driver'>"+s.nome+"</span>"
         +breakdown
-        +"<span class=\"standings-points\">"+s.total+"</span>"
+        +"<span class='standings-points'>"+s.total+"</span>"
         +"</div>";
-    }).join("")||"<div style=\"color:#c9b8a3;text-align:center;font-size:13px;\">Nessun dato</div>";
+    }).join("")||"<div style='color:#c9b8a3;text-align:center;font-size:13px'>Nessun dato</div>";
   });
 })();
 ${'</'+'script>'}
+
 
 
 
