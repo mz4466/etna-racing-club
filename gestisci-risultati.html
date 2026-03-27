@@ -109,13 +109,6 @@
   .add-pilot-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;background:transparent;border:2px dashed var(--border-hi);border-radius:8px;color:var(--text-dim);font-family:'Teko',sans-serif;font-size:15px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-top:10px;transition:border-color .2s,color .2s,background .2s;}
   .add-pilot-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);}
 
-  /* STANDINGS PREVIEW */
-  .standings-list{display:flex;flex-direction:column;gap:6px;margin-top:4px;}
-  .standing-row{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg-input);border:1px solid var(--border);border-radius:7px;font-family:'Barlow Condensed',sans-serif;}
-  .standing-pos{font-family:'Russo One',sans-serif;font-size:15px;min-width:28px;}
-  .standing-name{flex:1;font-size:15px;color:var(--text);}
-  .standing-pts{font-family:'Russo One',sans-serif;font-size:16px;color:var(--gold);}
-
   /* PILOT AUTOCOMPLETE */
   .autocomplete-wrap{position:relative;}
   .autocomplete-dropdown{position:absolute;top:100%;left:0;right:0;background:var(--bg-card);border:1px solid var(--gold);border-radius:6px;z-index:50;max-height:180px;overflow-y:auto;display:none;box-shadow:0 8px 24px rgba(0,0,0,.6);}
@@ -200,7 +193,7 @@
 
     <div class="sidebar-block">
       <div class="sidebar-label">Azioni</div>
-      <button class="btn btn-preview" id="btnPreview" onclick="openPreview()" disabled>👁 Anteprima</button>
+
       <button class="btn btn-github" id="btnPublish" onclick="publish()" disabled style="margin-top:6px;">⬆ Pubblica su GitHub</button>
       <button class="btn btn-outline" id="btnDownload" onclick="downloadHTML()" disabled style="margin-top:6px;">⬇ Scarica HTML</button>
     </div>
@@ -211,12 +204,7 @@
       <div id="existingResultsBadge" style="display:none;margin-top:6px;padding:6px 10px;background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.3);border-radius:6px;font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:var(--green);">✏️ MODIFICA RISULTATI ESISTENTI</div>
     </div>
 
-    <div class="sidebar-block">
-      <div class="sidebar-label">Classifica Preview</div>
-      <div class="standings-list" id="standingsSidebar">
-        <div style="font-family:'Teko',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:1px;">Compila i risultati per vedere la classifica</div>
-      </div>
-    </div>
+
   </aside>
 
   <!-- MAIN -->
@@ -311,7 +299,7 @@
 
     <!-- ACTION ROW -->
     <div style="display:flex;gap:12px;flex-wrap:wrap;">
-      <button class="btn btn-preview" onclick="openPreview()" id="btnPreview2" disabled style="width:auto;">👁 Anteprima</button>
+
       <button class="btn btn-gold" onclick="publish()" id="btnPublish2" disabled style="width:auto;">⬆ Pubblica su GitHub</button>
       <button class="btn btn-outline" onclick="downloadHTML()" id="btnDownload2" disabled style="width:auto;">⬇ Scarica HTML</button>
     </div>
@@ -319,16 +307,6 @@
   </main>
 </div>
 
-<!-- PREVIEW MODAL -->
-<div class="modal-bg" id="previewModal">
-  <div class="modal-box">
-    <div class="modal-head">
-      <div class="modal-head-title" id="modalTitle">ANTEPRIMA</div>
-      <button class="modal-close" onclick="closePreview()">✕</button>
-    </div>
-    <div class="modal-body"><iframe id="previewFrame"></iframe></div>
-  </div>
-</div>
 
 <!-- AUTOCOMPLETE DROPDOWN (shared) -->
 <div class="autocomplete-dropdown" id="acDropdown"></div>
@@ -392,7 +370,7 @@ async function verifyAndLoad(){
 }
 
 function enableActions(){
-  ['btnPreview','btnPublish','btnDownload','btnPreview2','btnPublish2','btnDownload2'].forEach(id=>{
+  ['btnPublish','btnDownload','btnPublish2','btnDownload2'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.disabled=false;
   });
 }
@@ -579,12 +557,12 @@ function addRow(data={}){
         <button class="btn-pick-pilot" onclick="openPilotPicker(${id})" title="Scegli dalla rosa" type="button">▼</button>
       </div>
     </td>
-    <td><input type="text" placeholder="26'42''124" value="${esc(data.tempo||'')}" id="tempo-${id}" oninput="formatTime(this);updateStandings()" inputmode="numeric" maxlength="12"></td>
-    <td><input type="text" placeholder="1'52''144" value="${esc(data.bestLap||'')}" id="bestlap-${id}" oninput="formatTime(this);updateStandings()" inputmode="numeric" maxlength="10"></td>
-    <td style="text-align:center;"><input type="checkbox" class="fl-check" id="fl-${id}" ${data.fl?'checked':''} onchange="autoFillPoints();updateStandings()"></td>
-    <td style="text-align:center;"><input type="checkbox" class="fl-check" id="pole-${id}" ${data.pole?'checked':''} onchange="autoFillPoints();updateStandings()"></td>
-    <td><input type="number" min="0" value="${data.punti!==undefined?data.punti:''}" id="punti-${id}" oninput="calcTotal(${id});updateStandings()" style="text-align:center;"></td>
-    <td><input type="text" value="${esc(data.extra||'')}" id="extra-${id}" placeholder="-" oninput="calcTotal(${id});updateStandings()" style="text-align:center;"></td>
+    <td><input type="text" placeholder="26'42''124" value="${esc(data.tempo||'')}" id="tempo-${id}" oninput="formatTime(this);" inputmode="numeric" maxlength="12"></td>
+    <td><input type="text" placeholder="1'52''144" value="${esc(data.bestLap||'')}" id="bestlap-${id}" oninput="formatTime(this);" inputmode="numeric" maxlength="10"></td>
+    <td style="text-align:center;"><input type="checkbox" class="fl-check" id="fl-${id}" ${data.fl?'checked':''} onchange="autoFillPoints();"></td>
+    <td style="text-align:center;"><input type="checkbox" class="fl-check" id="pole-${id}" ${data.pole?'checked':''} onchange="autoFillPoints();"></td>
+    <td><input type="number" min="0" value="${data.punti!==undefined?data.punti:''}" id="punti-${id}" oninput="calcTotal(${id});" style="text-align:center;"></td>
+    <td><input type="text" value="${esc(data.extra||'')}" id="extra-${id}" placeholder="-" oninput="calcTotal(${id});" style="text-align:center;"></td>
     <td><input type="number" min="0" value="${data.totale!==undefined?data.totale:''}" id="totale-${id}" style="text-align:center;background:rgba(201,162,39,.06);border-color:rgba(201,162,39,.3);" readonly></td>
     <td>
       <select id="stato-${id}" class="status-normal" onchange="onStatoChange(${id})">
@@ -598,7 +576,7 @@ function addRow(data={}){
   document.getElementById('resultsBody').appendChild(tr);
   updateRowCount();
   if(data.punti!==undefined) calcTotal(id);
-  updateStandings();
+  
 }
 
 function onStatoChange(id){
@@ -608,7 +586,7 @@ function onStatoChange(id){
     document.getElementById(`punti-${id}`).value=0;
     document.getElementById(`extra-${id}`).value='-';
     document.getElementById(`totale-${id}`).value=0;
-    updateStandings();
+    
   }
 }
 
@@ -625,7 +603,7 @@ function calcTotal(id){
 
 function removeRow(id){
   const el = document.getElementById(`row-${id}`);
-  if(el){ el.style.opacity='0'; el.style.transform='translateX(20px)'; el.style.transition='.2s'; setTimeout(()=>{el.remove();renumberRows();updateStandings();},220); }
+  if(el){ el.style.opacity='0'; el.style.transform='translateX(20px)'; el.style.transition='.2s'; setTimeout(()=>{el.remove();renumberRows();},220); }
 }
 
 function renumberRows(){
@@ -663,12 +641,12 @@ function autoFillPoints(){
     document.getElementById(`extra-${id}`).value=extras.length?extras.join('+'):'-';
     calcTotal(id);
   });
-  updateStandings();
+  
 }
 
 // ── PILOT AUTOCOMPLETE ──
 function onNomeInput(id, input){
-  updateStandings();
+  
   const q = input.value.trim().toLowerCase();
   const dropdown = document.getElementById('acDropdown');
   if(!q||!pilotNames.length){ dropdown.classList.remove('open'); return; }
@@ -690,7 +668,7 @@ function onNomeInput(id, input){
     item.onmousedown=()=>{
       document.getElementById(`nome-${id}`).value=name;
       dropdown.classList.remove('open');
-      updateStandings();
+      
     };
     dropdown.appendChild(item);
   });
@@ -702,33 +680,7 @@ document.addEventListener('click',e=>{
   if(!e.target.closest('.autocomplete-wrap')) document.getElementById('acDropdown').classList.remove('open');
 });
 
-// ── STANDINGS ──
-function updateStandings(){
-  const standings = collectStandings(false); // live: no drop rule mid-champ
-  const container = document.getElementById('standingsSidebar');
-  if(!standings.length){
-    container.innerHTML='<div style="font-family:\'Teko\',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:1px;">Aggiungi piloti per vedere la classifica</div>';
-    return;
-  }
 
-  // Show bestOf notice if set
-  const bestOf = parseInt(document.getElementById('champSelect').dataset.bestOf)||0;
-  const totalRounds = parseInt(document.getElementById('champSelect').dataset.totalRounds)||0;
-  const noticeHTML = bestOf && bestOf < totalRounds
-    ? `<div style="font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:var(--gold);background:rgba(201,162,39,0.07);border:1px solid rgba(201,162,39,0.2);border-radius:5px;padding:5px 8px;margin-bottom:8px;">⚡ Regola scarto: migliori ${bestOf}/${totalRounds} — si applica a fine campionato</div>`
-    : '';
-
-  let sPos=1;
-  container.innerHTML = noticeHTML + standings.map((s,i)=>{
-    if(i>0&&standings[i].pts<standings[i-1].pts) sPos=i+1;
-    const posClass = sPos<=3?`pos-${sPos}`:'';
-    return `<div class="standing-row">
-      <div class="standing-pos ${posClass}">${sPos}°</div>
-      <div class="standing-name">${esc(s.nome)}</div>
-      <div class="standing-pts">${s.pts}</div>
-    </div>`;
-  }).join('');
-}
 
 // ── COLLECT DATA ──
 function collectRows(){
@@ -1080,7 +1032,6 @@ ${'</'+'script>'}
 </body>
 </html>`;}
 
-function closePreview(){ document.getElementById('previewModal').classList.remove('open'); }
 
 // ── DOWNLOAD ──
 function downloadHTML(){
@@ -1325,7 +1276,7 @@ function selectPilotFromPicker(name){
     var input = document.getElementById('nome-' + _pickerTargetId);
     if(input){
       input.value = name;
-      updateStandings();
+      
     }
   }
   closePilotPicker();
@@ -1399,7 +1350,7 @@ function resetResultsForm(){
   addRow(); addRow(); addRow();
   // Badge
   document.getElementById('existingResultsBadge').style.display = 'none';
-  updateStandings();
+  
 }
 
 // ── LOAD EXISTING RESULTS ──
