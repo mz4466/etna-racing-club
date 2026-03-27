@@ -161,14 +161,23 @@ async function loadAll() {
           var garaTot = parseInt(race.garaTot) || 0;
           if (garaNum !== garaTot || garaTot === 0) return;
 
-          // Find champion (pos 1 in final standings)
+          // Find champion from standings (pos:1) or fall back to first row
           var standings = race.standings || [];
           var champion = standings.find(function(s) { return s.pos === 1; });
-          if (!champion) return;
+          if (!champion && race.rows && race.rows.length) {
+            champion = { nome: race.rows[0].nome };
+          }
+          if (!champion || !champion.nome) return;
 
-          // Get championship info from calendario
-          var champIdx = parseInt(race.champIdx);
-          var champ = calendario[champIdx] || null;
+          // Get championship info from calendario — try champId first, fall back to array index
+          var champ = null;
+          if (race.champId) {
+            champ = calendario.find(function(c) { return c.id === race.champId; }) || null;
+          }
+          if (!champ && race.champIdx !== undefined) {
+            var idx = parseInt(race.champIdx);
+            if (!isNaN(idx)) champ = calendario[idx] || null;
+          }
           if (!champ || !champ.trophy) return;
 
           var key = champion.nome.toLowerCase().trim();
