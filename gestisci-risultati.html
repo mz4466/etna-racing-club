@@ -1087,6 +1087,70 @@ function downloadHTML(){
   a.click();
 }
 
+
+// ── COLLECT FINAL STANDINGS (for saving in last race JSON) ──
+// Fetches ALL race JSONs for this championship and computes true cumulative standings
+async function collectFinalStandings(champVal, champ){
+  const sc = {}; // pilotName -> [pts]
+  const currentRows = collectRows();
+  const currentRound = parseInt(document.getElementById('roundSelect').value) || parseInt(document.getElementById('garaNum').value) || 0;
+
+  // Add current race live data
+  currentRows.forEach(function(r){
+    if(!r.nome) return;
+    if(!sc[r.nome]) sc[r.nome] = [];
+    sc[r.nome].push(r.totale);
+  });
+
+  try {
+    const r = await fetch('https://api.github.com/repos/' + REPO + '/contents/risultati?ref=' + BRANCH, {
+      headers:{Authorization:'token ' + token, Accept:'application/vnd.github.v3+json'}
+    });
+    if(r.ok){
+      const files = await r.json();
+      const legacyIdx = String(calendarioData.findIndex(function(c){ return (c.id||'')===champVal || c===champ; }));
+      const jsonFiles = files.filter(function(f){ return f.name.endsWith('.json'); });
+      const results = await Promise.all(jsonFiles.map(async function(f){
+        try {
+          const jr = await fetch(f.url, {headers:{Authorization:'token ' + token, Accept:'application/vnd.github.v3+json'}});
+          if(!jr.ok) return null;
+          const meta = await jr.json();
+          return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
+        } catch(e){ return null; }
+      }));
+      results.filter(Boolean).forEach(function(race){
+        const matchesId  = race.champId  && race.champId  === champVal;
+        const matchesIdx = race.champIdx !== undefined && String(race.champIdx) === legacyIdx;
+        if(!matchesId && !matchesIdx) return;
+        if(parseInt(race.garaNum) === currentRound) return; // skip current — using live data
+        (race.rows||[]).forEach(function(row){
+          if(!row.nome) return;
+          if(!sc[row.nome]) sc[row.nome] = [];
+          sc[row.nome].push(row.totale||0);
+        });
+      });
+    }
+  } catch(e){ console.warn('collectFinalStandings:', e.message); }
+
+  const bestOf = champ && champ.bestOf ? parseInt(champ.bestOf) : 0;
+  const totalRounds = champ && champ.totalRounds ? parseInt(champ.totalRounds) : 0;
+  const canDrop = bestOf > 0 && totalRounds > 0 && bestOf < totalRounds;
+
+  const pilots = Object.entries(sc).map(function([nome, scores]){
+    var used = scores;
+    if(canDrop && scores.length > bestOf){
+      used = scores.slice().sort(function(a,b){return b-a;}).slice(0, bestOf);
+    }
+    return { nome: nome, pts: used.reduce(function(s,v){return s+v;},0) };
+  }).sort(function(a,b){return b.pts-a.pts;});
+
+  let tiePos = 1;
+  return pilots.map(function(p,i){
+    if(i>0 && pilots[i].pts < pilots[i-1].pts) tiePos = i+1;
+    return { nome: p.nome, pts: p.pts, pos: tiePos };
+  });
+}
+
 // ── PUBLISH ──
 async function publish(){
   token=getToken();
@@ -1113,7 +1177,7 @@ async function publish(){
       champId: champIdx,
       champIdx: champIdx, // kept for backwards compat
       rows:     collectRows(),
-      standings:collectStandings(isLastRound), // apply drop rule only on final round
+      standings: isLastRound ? await collectFinalStandings(champIdx, champ) : collectStandings(false),
       bestOf:   (champ ? champ.bestOf||null : null),
     };
     await putFile(`risultati/${jsonFname}`, JSON.stringify(jsonData,null,2), `Add race data: ${jsonFname}`);
