@@ -972,6 +972,7 @@ ${'<scr'+'ipt>'}
   var _rt=${parseInt(garaTot||1)};
   var _bo=${(champ && champ.bestOf) ? parseInt(champ.bestOf) : 0};
   var RAW="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/risultati/";
+  var API="https://api.github.com/repos/mz4466/etna-racing-club/contents/risultati";
 
   function addToStandings(nome,pts,rn){
     if(!nome)return;
@@ -980,30 +981,54 @@ ${'<scr'+'ipt>'}
       sc[nome].push({pts:pts,rn:rn});
   }
 
-  // Seed with current race baked-in data
+  function processRace(d){
+    if(!d)return;
+    var matches=(d.champId&&d.champId===_si)||(d.champIdx!==undefined&&String(d.champIdx)===_si);
+    if(!matches)return;
+    var raceN=parseInt(d.garaNum)||0;
+    allRaces[raceN]=true;
+    if(raceN===_rn)return;
+    if(raceN>_rn)return;
+    (d.rows||[]).forEach(function(r){addToStandings(r.nome,r.totale||0,raceN);});
+  }
+
+  // Seed current race from baked-in data
   var rows=${JSON.stringify(rows.map(function(r){return{nome:r.nome,totale:r.totale};}))};
   rows.forEach(function(r){addToStandings(r.nome,r.totale,_rn);});
   allRaces[_rn]=true;
 
-  // Fetch risultati/index.json via raw — 0 API calls
-  fetch(RAW+"index.json?_="+Date.now()).then(function(r){return r.ok?r.json():[];}).catch(function(){return[];})
-  .then(function(names){
-    return Promise.all((names||[]).filter(function(n){return n.endsWith(".json");}).map(function(n){
-      return fetch(RAW+n).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
-      .then(function(d){
-        if(!d)return;
-        try{
-          var matches=(d.champId&&d.champId===_si)||(d.champIdx!==undefined&&String(d.champIdx)===_si);
-          if(!matches)return;
-          var raceN=parseInt(d.garaNum)||0;
-          allRaces[raceN]=true;
-          if(raceN===_rn)return;
-          if(raceN>_rn)return;
-          (d.rows||[]).forEach(function(r){addToStandings(r.nome,r.totale||0,raceN);});
-        }catch(e){}
+  // Try RAW index.json first (fast, no rate limit)
+  // Fall back to GitHub API if RAW is blocked (e.g. corporate firewall)
+  function loadViaRaw(){
+    return fetch(RAW+"index.json?_="+Date.now())
+      .then(function(r){
+        if(!r.ok)throw new Error('raw blocked');
+        return r.json();
+      })
+      .then(function(names){
+        return Promise.all((names||[]).filter(function(n){return n.endsWith(".json");}).map(function(n){
+          return fetch(RAW+n).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
+            .then(function(d){try{processRace(d);}catch(e){}});
+        }));
       });
-    }));
-  }).catch(function(){}).then(function(){
+  }
+
+  function loadViaApi(){
+    return fetch(API+"?ref=main")
+      .then(function(r){return r.ok?r.json():[];}).catch(function(){return[];})
+      .then(function(files){
+        return Promise.all((files||[]).filter(function(f){return f.name.endsWith(".json");}).map(function(f){
+          return fetch(f.url).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
+            .then(function(m){
+              if(!m||!m.content)return;
+              try{processRace(JSON.parse(decodeURIComponent(escape(atob(m.content.replace(/\s/g,""))))));}catch(e){}
+            });
+        }));
+      });
+  }
+
+  loadViaRaw().catch(function(){return loadViaApi();})
+  .catch(function(){}).then(function(){
     var allDone=Object.keys(allRaces).length>=_rt;
     var canDrop=allDone&&_bo>0&&_bo<_rt;
 
@@ -1047,6 +1072,7 @@ ${'<scr'+'ipt>'}
   });
 })();
 ${'</'+'script>'}
+
 
 
 </body>
