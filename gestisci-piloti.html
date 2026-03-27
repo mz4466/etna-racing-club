@@ -442,98 +442,80 @@ async function loadCalendario(){
 
 // ── LOAD GT7 CARS ──
 async function loadGT7Cars(){
-  // Already have pre-populated list — skip external fetch entirely
-  if(gt7Cars.length > 0) return;
+  if(gt7Cars.length > 100) return; // already have full list
+
   try {
-    // Try data.json first (has full car list with IDs)
-    var r = await fetch('https://ddm999.github.io/gt7info/data.json');
-    if(!r.ok) throw new Error('data.json fetch failed');
-    var json = await r.json();
-    gt7Cars = [];
-    // data.json structure: { "cars": [ {id, Manufacturer, ModelName, Group, ...} ] }
-    var carList = json.cars || json.carlist || [];
-    // Sometimes it's nested differently - search for array with car-like objects
-    if(!carList.length) {
-      Object.keys(json).forEach(function(k){
-        if(Array.isArray(json[k]) && json[k].length > 10 && json[k][0] && (json[k][0].Manufacturer || json[k][0].manufacturer || json[k][0].name)) {
-          carList = json[k];
-        }
-      });
-    }
-    carList.forEach(function(c){
-      var id = String(c.id || c.ID || '');
-      var mfr = c.Manufacturer || c.manufacturer || c.make || '';
-      var model = c.ModelName || c.model || c.name || '';
-      var group = c.Group || c.group || c.category || '';
-      if(!id || !mfr) return;
-      gt7Cars.push({
+    // Fetch makers first (ID -> name mapping)
+    var makersMap = {};
+    try {
+      var mr = await fetch('https://ddm999.github.io/gt7info/data/db/makers.csv');
+      if(mr.ok){
+        var mtext = await mr.text();
+        mtext.trim().split('\n').forEach(function(line){
+          var p = line.split(',');
+          if(p.length >= 2 && !isNaN(parseInt(p[0]))) makersMap[p[0].trim()] = p.slice(1).join(',').trim();
+        });
+      }
+    } catch(e){ console.warn('makers.csv failed:', e.message); }
+
+    // Fetch full car list
+    var r = await fetch('https://ddm999.github.io/gt7info/data/db/cars.csv');
+    if(!r.ok) throw new Error('cars.csv failed');
+    var text = await r.text();
+    var lines = text.trim().split('\n');
+
+    // Also fetch car groups
+    var groupsMap = {};
+    try {
+      var gr = await fetch('https://ddm999.github.io/gt7info/data/db/car_categories.csv');
+      if(gr.ok){
+        var gtext = await gr.text();
+        gtext.trim().split('\n').forEach(function(line){
+          var p = line.split(',');
+          if(p.length >= 2 && !isNaN(parseInt(p[0]))) groupsMap[p[0].trim()] = p[1].trim();
+        });
+      }
+    } catch(e){ /* groups optional */ }
+
+    var newCars = [];
+    lines.forEach(function(line){
+      var parts = line.split(',');
+      if(parts.length < 3) return;
+      var id = parts[0].trim();
+      if(!id || isNaN(parseInt(id))) return; // skip header
+      var shortName = parts.slice(1, parts.length-1).join(',').trim();
+      var makerId = parts[parts.length-1].trim();
+      var mfr = makersMap[makerId] || '';
+      var group = groupsMap[id] || '';
+      // displayName: if manufacturer is in shortName already, just use shortName
+      var displayName = (mfr && shortName.toLowerCase().indexOf(mfr.toLowerCase()) === -1)
+        ? mfr + ' ' + shortName
+        : shortName;
+      newCars.push({
         id: id,
         group: group,
         manufacturer: mfr,
-        model: model,
-        displayName: mfr + ' ' + model
+        model: shortName,
+        displayName: displayName.trim()
       });
     });
 
-    // If data.json didn't work, try CSV
-    if(!gt7Cars.length) {
-      throw new Error('No cars in data.json, trying CSV');
-    }
-
-    gt7Cars.sort(function(a,b){ return a.displayName.localeCompare(b.displayName); });
-    gt7CarsLoaded = true;
-    if(document.getElementById('modal').classList.contains('open')){
-      renderChampAssignments();
+    if(newCars.length > 10){
+      gt7Cars = newCars;
+      gt7Cars.sort(function(a,b){ return a.displayName.localeCompare(b.displayName); });
+      console.log('GT7 cars loaded from CSV:', gt7Cars.length);
+      if(document.getElementById('modal').classList.contains('open')){
+        renderChampAssignments();
+      }
     }
   } catch(e){
-    console.warn('loadGT7Cars data.json failed:', e.message, '— trying CSV');
-    try {
-      var r2 = await fetch('https://ddm999.github.io/gt7info/data/db/cars.csv');
-      if(!r2.ok) throw new Error('CSV also failed');
-      var text = await r2.text();
-      gt7Cars = [];
-      text.trim().split('\n').forEach(function(line){
-        var parts = line.split(',');
-        if(parts.length < 4) return;
-        var id = parts[0].trim();
-        var group = parts[1].trim();
-        var mfr = parts[2].trim();
-        var model = parts.slice(3).join(',').trim();
-        if(!id || isNaN(parseInt(id))) return;
-        gt7Cars.push({id:id, group:group, manufacturer:mfr, model:model, displayName:mfr+' '+model});
-      });
-      gt7Cars.sort(function(a,b){ return a.displayName.localeCompare(b.displayName); });
-      gt7CarsLoaded = true;
-      if(document.getElementById('modal').classList.contains('open')){
-        renderChampAssignments();
-      }
-    } catch(e2){
-      console.warn('loadGT7Cars CSV also failed:', e2.message);
-      // Last resort: use a minimal hardcoded list of common GT3 cars
-      gt7Cars = [
-        {id:'0',group:'Gr.3',manufacturer:'Ferrari',model:'296 GT3',displayName:'Ferrari 296 GT3'},
-        {id:'1',group:'Gr.3',manufacturer:'Porsche',model:'911 RSR (991)',displayName:'Porsche 911 RSR (991)'},
-        {id:'2',group:'Gr.3',manufacturer:'McLaren',model:'650S GT3',displayName:'McLaren 650S GT3'},
-        {id:'3',group:'Gr.3',manufacturer:'Mercedes-Benz',model:'AMG GT3',displayName:'Mercedes-Benz AMG GT3'},
-        {id:'4',group:'Gr.3',manufacturer:'Lamborghini',model:'Huracán GT3',displayName:'Lamborghini Huracán GT3'},
-        {id:'5',group:'Gr.3',manufacturer:'BMW',model:'M4 GT3',displayName:'BMW M4 GT3'},
-        {id:'6',group:'Gr.3',manufacturer:'Aston Martin',model:'Vantage GT3',displayName:'Aston Martin Vantage GT3'},
-        {id:'7',group:'Gr.3',manufacturer:'Nissan',model:'GT-R NISMO GT3',displayName:'Nissan GT-R NISMO GT3'},
-        {id:'8',group:'Gr.3',manufacturer:'Toyota',model:'GR Supra GT4',displayName:'Toyota GR Supra GT4'},
-        {id:'9',group:'Gr.3',manufacturer:'Honda',model:'NSX GT3',displayName:'Honda NSX GT3'},
-        {id:'10',group:'Gr.4',manufacturer:'Ferrari',model:'458 Italia Gr.4',displayName:'Ferrari 458 Italia Gr.4'},
-        {id:'11',group:'Gr.4',manufacturer:'Porsche',model:'Cayman GT4',displayName:'Porsche Cayman GT4'},
-        {id:'12',group:'Gr.4',manufacturer:'Lamborghini',model:'Huracán Gr.4',displayName:'Lamborghini Huracán Gr.4'},
-      ];
-      gt7CarsLoaded = true;
-      if(document.getElementById('modal').classList.contains('open')){
-        renderChampAssignments();
-      }
-    }
+    console.warn('loadGT7Cars failed, keeping pre-populated list:', e.message);
   }
 }
 
 function carImageUrl(carId){
+  if(!carId) return '';
+  // Official GT7 companion CDN - documented in ddm999/gt7info images.txt
   return 'https://www.gran-turismo.com/common/dist/gt7/companion/images/db/car/'+carId+'/'+carId+'_s.webp';
 }
 
@@ -1053,6 +1035,9 @@ function toast(msg,type){
   t.textContent=msg; t.className='show'+(type?' '+type:'');
   clearTimeout(t._t); t._t=setTimeout(()=>t.className='',3200);
 }
+
+// Start loading GT7 cars in background immediately
+loadGT7Cars();
 
 // auto-fill slug from name
 document.getElementById('fNome').addEventListener('input',()=>{
