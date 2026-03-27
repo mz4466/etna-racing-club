@@ -1,336 +1,973 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Piloti GT7 - Etna Racing Club</title>
-    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300,400,500,600,700&family=Russo+One&family=Roboto:wght@300,400,700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg:#07070a; --card:#121318; --accent:#ff5014; --accent2:#ff8c42; --muted:#c9b8a3; --cream:#fff5e6;
-            --gold:#c9a227; --gold-dim:rgba(201,162,39,0.12);
-        }
-        body { margin:0; font-family:'Roboto',sans-serif; background: linear-gradient(180deg,#020203 0%, #0b0b0d 60%); color:var(--cream); min-height:100vh; }
-        header { padding:28px; display:flex; align-items:center; justify-content:space-between; gap:20px; max-width:1400px; margin:0 auto; }
-        header .brand { display:flex; gap:18px; align-items:center; }
-        header .brand img { width:64px; height:auto; border-radius:8px; box-shadow:0 6px 18px rgba(255,80,20,0.2); }
-        header h1 { font-family:'Russo One',sans-serif; font-size:28px; margin:0; letter-spacing:2px; color:var(--accent2); }
-        .container { max-width:1200px; margin:20px auto; padding:20px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERC Admin — Gestisci Piloti</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@300;400;600&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#07070f; --bg-card:#0e0e1c; --bg-input:#13131f;
+    --border:#1e1e30; --border-hi:#2a2a42;
+    --gold:#c9a227; --gold-hi:#e8c547; --gold-dim:rgba(201,162,39,0.10); --gold-glow:rgba(201,162,39,0.22);
+    --red:#c0392b; --green:#27ae60; --blue:#4fc3f7; --orange:#ff5014;
+    --text:#e8e0d0; --text-dim:#4a4460; --text-mid:#8a8098;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh;display:flex;flex-direction:column;}
 
-        .controls { display:flex; gap:12px; align-items:center; margin-bottom:20px; }
-        .btn { background: linear-gradient(90deg,var(--accent),var(--accent2)); color:#fff; border:none; padding:12px 18px; border-radius:12px; cursor:pointer; font-family:'Russo One',sans-serif; letter-spacing:1px; box-shadow:0 10px 30px rgba(255,80,20,0.25); }
-        .btn.alt { background: transparent; border:2px solid rgba(201,184,163,0.12); color:var(--muted); }
+  /* TOPBAR */
+  .topbar{background:linear-gradient(90deg,#0a0a18,#0e0c1a);border-bottom:1px solid var(--border-hi);padding:0 32px;height:62px;display:flex;align-items:center;gap:14px;flex-shrink:0;box-shadow:0 2px 20px rgba(0,0,0,.5);position:sticky;top:0;z-index:100;}
+  .topbar-logo img{width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 0 6px var(--gold-glow));}
+  .topbar-title{font-family:'Russo One',sans-serif;font-size:15px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;}
+  .topbar-divider{width:1px;height:24px;background:var(--border-hi);}
+  .topbar-section{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:4px;color:var(--text-dim);text-transform:uppercase;}
+  .topbar-spacer{flex:1;}
+  .github-status{display:flex;align-items:center;gap:8px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--text-dim);}
+  .status-dot{width:7px;height:7px;border-radius:50%;background:var(--text-dim);transition:background .3s;}
+  .status-dot.ok{background:var(--green);box-shadow:0 0 6px var(--green);}
+  .status-dot.err{background:var(--red);}
+  .btn-back{background:none;border:1px solid var(--border-hi);border-radius:6px;color:var(--text-mid);font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;cursor:pointer;text-decoration:none;transition:border-color .2s,color .2s;}
+  .btn-back:hover{border-color:var(--gold);color:var(--gold);}
 
-        .grid { display:flex; flex-direction:column; gap:18px; }
-        .pilot-card {
-            background: linear-gradient(180deg, rgba(18,19,24,0.9), rgba(8,8,10,0.9));
-            border:2px solid rgba(255,80,20,0.06);
-            padding:14px; border-radius:14px; box-shadow:0 8px 30px rgba(0,0,0,0.6);
-            display:flex; gap:20px; align-items:flex-start;
-        }
-        .pilot-photo { width:280px; min-width:280px; height:350px; object-fit:cover; border-radius:10px; display:block; }
-        .pilot-content { flex:1; display:flex; flex-direction:column; }
-        .pilot-name { font-family:'Teko',sans-serif; font-size:24px; margin:10px 0 2px; color:var(--accent2); }
-        .psn { color:var(--muted); font-size:0.85rem; margin-bottom:10px; }
-        .info { color:var(--cream); font-size:0.9rem; line-height:1.7; margin-bottom:8px; }
-        .catchphrase { color:var(--accent2); font-style:italic; font-size:0.85rem; margin-top:8px; }
-        .badges { margin-top:6px; display:flex; gap:8px; flex-wrap:wrap; }
-        .badge { background: rgba(255,140,66,0.12); padding:6px 10px; border-radius:999px; color:var(--muted); font-size:0.8rem; }
+  /* LAYOUT */
+  .page-body{display:grid;grid-template-columns:260px 1fr;flex:1;min-height:0;}
 
-        /* ── TROPHIES ── */
-        .trophies-section {
-            margin-top:14px;
-            padding-top:12px;
-            border-top:1px solid rgba(201,162,39,0.15);
-        }
-        .trophies-label {
-            font-family:'Teko',sans-serif;
-            font-size:11px; letter-spacing:3px;
-            color:var(--gold); text-transform:uppercase;
-            margin-bottom:8px;
-        }
-        .trophies-row { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; }
-        .trophy-won {
-            display:flex; flex-direction:column; align-items:center; gap:4px;
-            background: var(--gold-dim);
-            border:1px solid rgba(201,162,39,0.25);
-            border-radius:10px;
-            padding:8px 10px;
-            min-width:80px; max-width:100px;
-        }
-        .trophy-won img {
-            width:60px; height:70px;
-            object-fit:contain;
-        }
-        .trophy-won-name {
-            font-family:'Teko',sans-serif;
-            font-size:10px; letter-spacing:1px;
-            color:var(--gold); text-transform:uppercase;
-            text-align:center; line-height:1.2;
-        }
-        .pilot-campionati { margin-top:10px; display:flex; flex-direction:column; gap:6px; }
-        .campionato-row { display:flex; flex-direction:column; gap:4px; }
-        .campionato-row-label { font-family:'Teko',sans-serif; font-size:11px; letter-spacing:2px; color:#c9a227; text-transform:uppercase; }
-        .campionato-cars { display:flex; flex-wrap:wrap; gap:6px; }
-        .campionato-car-pill { display:inline-flex; align-items:center; gap:5px; background:rgba(201,162,39,0.08); border:1px solid rgba(201,162,39,0.2); border-radius:6px; padding:3px 8px; font-size:12px; color:#c9b8a3; }
-        .campionato-car-pill img { width:40px; height:24px; object-fit:cover; border-radius:3px; }
-        .trophy-won-year {
-            font-size:9px; color:rgba(201,162,39,0.6);
-            font-family:'Teko',sans-serif; letter-spacing:1px;
-        }
+  /* SIDEBAR */
+  .sidebar{background:#0a0a16;border-right:1px solid var(--border);padding:24px 18px;display:flex;flex-direction:column;gap:20px;overflow-y:auto;}
+  .sidebar-block{display:flex;flex-direction:column;gap:8px;}
+  .sidebar-label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;padding-bottom:6px;border-bottom:1px solid var(--border);}
+  .pat-wrap{position:relative;}
+  .pat-wrap input{width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:7px;padding:9px 34px 9px 11px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+  .pat-wrap input:focus{border-color:var(--gold);}
+  .pat-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:13px;}
+  .repo-note{font-size:11px;color:var(--text-dim);line-height:1.6;}
+  .repo-note span{color:var(--blue);}
+  .btn-verify{width:100%;background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold-hi);font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;padding:8px;border-radius:7px;cursor:pointer;transition:background .2s;}
+  .btn-verify:hover{background:var(--gold);color:#000;}
+  .btn{font-family:'Teko',sans-serif;font-size:15px;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;border-radius:7px;cursor:pointer;border:1px solid;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+  .btn-add{background:var(--gold);border-color:var(--gold-hi);color:#000;font-weight:700;width:100%;justify-content:center;}
+  .btn-add:hover{background:var(--gold-hi);}
+  .btn-outline{background:transparent;border-color:var(--border-hi);color:var(--text-mid);}
+  .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+  .sidebar-stat{display:flex;justify-content:space-between;align-items:center;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--text-mid);}
+  .sidebar-stat span{color:var(--gold);font-size:20px;font-weight:600;}
+
+  /* MAIN */
+  .main{padding:32px 36px;overflow-y:auto;display:flex;flex-direction:column;gap:24px;}
+  .page-title{font-family:'Russo One',sans-serif;font-size:22px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;}
+  .page-sub{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;margin-top:3px;}
+
+  /* SEARCH BAR */
+  .search-bar{display:flex;gap:10px;align-items:center;}
+  .search-bar input{flex:1;background:var(--bg-card);border:1px solid var(--border-hi);border-radius:8px;padding:10px 14px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;outline:none;transition:border-color .2s;}
+  .search-bar input:focus{border-color:var(--gold);}
+
+  /* PILOTS GRID */
+  .pilots-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:14px;}
+
+  .pilot-card{
+    background:var(--bg-card);border:1px solid var(--border-hi);border-radius:12px;overflow:hidden;
+    display:grid;grid-template-columns:140px 1fr;
+    transition:border-color .25s,box-shadow .25s,transform .25s;
+    animation:fadeUp .35s cubic-bezier(.22,1,.36,1) both;
+    min-height:175px;
+  }
+  .pilot-card:hover{border-color:var(--gold);box-shadow:0 8px 32px rgba(201,162,39,.12);transform:translateY(-2px);}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+  .pilot-photo-wrap{position:relative;overflow:hidden;background:linear-gradient(135deg,#0d0d1e,#1a1a2e);}
+  .pilot-photo-wrap img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .4s;display:block;}
+  .pilot-card:hover .pilot-photo-wrap img{transform:scale(1.05);}
+  .pilot-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:46px;color:var(--border-hi);}
+  .pilot-photo-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,transparent 70%,var(--bg-card) 100%);pointer-events:none;}
+
+  .pilot-card-body{padding:14px 14px 0;display:flex;flex-direction:column;min-width:0;}
+  .pilot-name{font-family:'Russo One',sans-serif;font-size:15px;color:var(--text);letter-spacing:1px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .pilot-psn{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-top:2px;margin-bottom:8px;}
+  .pilot-meta{display:flex;flex-direction:column;gap:2px;flex:1;}
+  .pilot-meta-row{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--text-mid);display:flex;gap:6px;align-items:baseline;padding-bottom:2px;border-bottom:1px solid rgba(255,255,255,.025);}
+  .pilot-meta-row:last-child{border-bottom:none;}
+  .pilot-meta-row .lbl{color:var(--text-dim);font-size:10px;letter-spacing:2px;text-transform:uppercase;min-width:46px;}
+  .pilot-badges{margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;padding-bottom:8px;}
+  .pilot-badge{background:var(--gold-dim);border:1px solid rgba(201,162,39,.2);border-radius:20px;padding:2px 9px;font-family:'Teko',sans-serif;font-size:11px;letter-spacing:1px;color:var(--gold);text-transform:uppercase;}
+  .pilot-card-footer{padding:8px 14px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;grid-column:2;}
+  .btn-sm{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:6px;cursor:pointer;border:1px solid;transition:all .2s;}
+  .btn-edit{background:transparent;border-color:var(--border-hi);color:var(--text-mid);}
+  .btn-edit:hover{border-color:var(--gold);color:var(--gold);}
+  .btn-del{background:transparent;border-color:transparent;color:var(--text-dim);}
+  .btn-del:hover{border-color:var(--red);color:var(--red);background:rgba(192,57,43,.08);}
+
+  /* EMPTY / LOADING */
+  .empty-state{text-align:center;padding:56px 20px;color:var(--text-dim);}
+  .empty-state .ei{font-size:44px;margin-bottom:14px;}
+  .empty-state p{font-family:'Teko',sans-serif;font-size:16px;letter-spacing:3px;text-transform:uppercase;}
+  .loading-msg{color:var(--text-dim);font-family:'Teko',sans-serif;font-size:15px;letter-spacing:3px;text-transform:uppercase;padding:40px;text-align:center;}
+
+  /* MODAL */
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:center;justify-content:center;padding:20px;}
+  .modal-bg.open{display:flex;}
+  .modal-box{background:var(--bg-card);border:1px solid var(--gold);border-radius:14px;width:100%;max-width:680px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;}
+  .modal-head{display:flex;align-items:center;padding:16px 22px;border-bottom:1px solid var(--border);gap:12px;}
+  .modal-head-title{font-family:'Russo One',sans-serif;font-size:15px;color:var(--gold);letter-spacing:2px;flex:1;text-transform:uppercase;}
+  .modal-close{background:none;border:1px solid var(--border-hi);color:var(--text-dim);cursor:pointer;border-radius:5px;padding:4px 11px;font-size:17px;transition:border-color .2s,color .2s;}
+  .modal-close:hover{border-color:var(--red);color:var(--red);}
+  .modal-body{flex:1;overflow-y:auto;padding:22px;}
+  .modal-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;}
+
+  /* FORM */
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .form-grid.full{grid-template-columns:1fr;}
+  .field{display:flex;flex-direction:column;gap:5px;}
+  .field label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--text);text-transform:uppercase;}
+  .field input,.field textarea,.field select{background:var(--bg-input);border:1px solid var(--border);border-radius:7px;padding:9px 12px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s;width:100%;}
+  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-dim);}
+  .field textarea{resize:vertical;min-height:72px;}
+  .form-section{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;padding:14px 0 6px;border-bottom:1px solid var(--border);margin-bottom:4px;grid-column:1/-1;}
+
+  .upload-btn{display:inline-flex;align-items:center;gap:6px;background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold-hi);font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:7px 14px;border-radius:7px;cursor:pointer;transition:background .2s;}
+  .upload-btn:hover{background:var(--gold);color:#000;}
+
+  .photo-preview{width:100%;height:120px;object-fit:cover;border-radius:8px;border:1px solid var(--border);margin-top:6px;display:none;background:var(--bg-input);}
+
+  .btn-github{background:linear-gradient(135deg,#196327,#238636);border-color:#2ea043;color:#fff;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;padding:9px 22px;border-radius:7px;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:6px;}
+  .btn-github:hover{background:linear-gradient(135deg,#238636,#2ea043);}
+  .btn-cancel{background:transparent;border:1px solid var(--border-hi);color:var(--text-mid);font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;padding:9px 22px;border-radius:7px;cursor:pointer;transition:border-color .2s,color .2s;}
+  .btn-cancel:hover{border-color:var(--red);color:var(--red);}
+
+  /* TOAST */
+  #toast{position:fixed;bottom:28px;right:28px;background:var(--bg-card);border:1px solid var(--gold);border-radius:8px;padding:12px 20px;font-family:'Teko',sans-serif;font-size:15px;letter-spacing:1px;color:var(--text);z-index:999;opacity:0;transform:translateY(12px);transition:opacity .3s,transform .3s;pointer-events:none;}
+  #toast.show{opacity:1;transform:translateY(0);}
+  #toast.ok{border-color:var(--green);color:var(--green);}
+  #toast.err{border-color:var(--red);color:var(--red);}
 
 
-        footer { max-width:1200px; margin:40px auto; color:rgba(201,184,163,0.7); font-size:14px; text-align:center; padding-bottom:40px; }
-        @media (max-width:768px){
-            header h1{font-size:20px}
-            header{flex-direction:column;text-align:center}
-            .pilot-card { flex-direction:column; }
-            .pilot-photo { width:100%; min-width:100%; height:300px; }
-        }
-    </style>
+  /* CAR PICKER */
+  .champ-assign-block{border:1px solid var(--border-hi);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;}
+  .champ-assign-title{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
+  .car-pills{display:flex;flex-wrap:wrap;gap:6px;min-height:0;}
+  .car-pill{display:inline-flex;align-items:center;gap:6px;background:var(--gold-dim);border:1px solid rgba(201,162,39,.3);border-radius:20px;padding:4px 10px;font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:var(--gold);max-width:220px;}
+  .car-pill img{width:36px;height:22px;object-fit:cover;border-radius:3px;flex-shrink:0;background:var(--bg-input);}
+  .car-pill-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .car-pill-del{background:none;border:none;color:rgba(201,162,39,.6);cursor:pointer;font-size:14px;line-height:1;padding:0;flex-shrink:0;}
+  .car-pill-del:hover{color:var(--red);}
+  .car-search-wrap{position:relative;}
+  .car-search-wrap input{width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:7px;padding:8px 12px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+  .car-search-wrap input:focus{border-color:var(--gold);}
+  .car-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--bg-card);border:1px solid var(--border-hi);border-radius:8px;max-height:200px;overflow-y:auto;z-index:300;display:none;box-shadow:0 8px 24px rgba(0,0,0,.6);}
+  .car-dropdown.open{display:block;}
+  .car-option{display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer;transition:background .15s;}
+  .car-option:hover{background:var(--gold-dim);}
+  .car-option img{width:52px;height:32px;object-fit:cover;border-radius:4px;background:var(--bg-input);flex-shrink:0;}
+  .car-option-name{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--text);}
+  .car-option-group{font-family:'Teko',sans-serif;font-size:11px;color:var(--text-dim);letter-spacing:1px;}
+  .car-loading{padding:12px;text-align:center;font-family:'Teko',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:2px;}
+
+  ::-webkit-scrollbar{width:5px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--border-hi);border-radius:3px;}
+  ::-webkit-scrollbar-thumb:hover{background:var(--gold);}
+</style>
 </head>
 <body>
-<header>
-    <div class="brand">
-        <a href="index.html"><img src="etna-logo.jpg" alt="logo"></a>
-        <div>
-            <h1>Etna Racing Club</h1>
-            <div style="font-size:12px;color:rgba(201,184,163,0.7)">Piloti GT7</div>
-        </div>
-    </div>
-    <div>
-        <button id="reload" class="btn alt">↻ Ricarica</button>
-    </div>
+
+<header class="topbar">
+  <div class="topbar-logo"><img src="etna-logo.jpg" alt="ERC"></div>
+  <div class="topbar-title">Etna Racing Club</div>
+  <div class="topbar-divider"></div>
+  <div class="topbar-section">Gestisci Piloti</div>
+  <div class="topbar-spacer"></div>
+  <div class="github-status">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusText">Non connesso</span>
+  </div>
+  <a href="admin.html" class="btn-back">← Admin</a>
 </header>
 
-<main class="container">
-    <div class="controls">
-        <input id="search" type="search" placeholder="Cerca pilota, PSN, auto..." style="flex:1;padding:12px;border-radius:10px;border:1px solid rgba(201,184,163,0.06);background:#0b0b0d;color:var(--cream)">
-    </div>
-    <div id="grid" class="grid"></div>
-</main>
+<div class="page-body">
 
-<footer>
-    <div>© 2026 Etna Racing Club • Piloti GT7</div>
-</footer>
+  <aside class="sidebar">
+    <div class="sidebar-block">
+      <div class="sidebar-label">GitHub</div>
+      <div class="pat-wrap">
+        <input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+        <button class="pat-toggle" onclick="togglePAT()">👁</button>
+      </div>
+      <button class="btn-verify" onclick="verifyAndLoad()">Connetti e Carica</button>
+      <div class="repo-note">Repository: <span>mz4466/etna-racing-club</span><br>Branch: <span>main</span></div>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-label">Piloti</div>
+      <div class="sidebar-stat">Totale <span id="statTotal">—</span></div>
+      <button class="btn btn-add" onclick="openModal()">＋ Aggiungi Pilota</button>
+      <button class="btn btn-outline" onclick="reload()" style="width:100%;justify-content:center;">↺ Ricarica</button>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-label">Pagina Pubblica</div>
+      <div class="repo-note" style="line-height:1.8;">
+        La pagina <span>piloti.html</span> si aggiorna automaticamente leggendo i dati da GitHub.<br><br>
+        I dati sono salvati in <span>piloti_schede/</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div>
+      <div class="page-title">🏎️ Gestisci Piloti</div>
+      <div class="page-sub">Aggiungi, modifica e rimuovi i piloti del club</div>
+    </div>
+
+    <div class="search-bar">
+      <input type="search" id="searchInput" placeholder="Cerca per nome, PSN, auto..." oninput="filterPilots()">
+    </div>
+
+    <div id="pilotsGrid" class="pilots-grid">
+      <div class="loading-msg">Connetti GitHub per caricare i piloti</div>
+    </div>
+  </main>
+</div>
+
+<!-- ADD / EDIT MODAL -->
+<div class="modal-bg" id="modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-title" id="modalTitle">Aggiungi Pilota</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-section">Dati Principali</div>
+        <div class="field">
+          <label>Nome Completo *</label>
+          <input type="text" id="fNome" placeholder='es. Giovanni "Mbare" Russo'>
+        </div>
+        <div class="field">
+          <label>PSN ID *</label>
+          <input type="text" id="fPsn" placeholder="es. SicilianRacer_GT">
+        </div>
+        <div class="field">
+          <label>Nazione</label>
+          <input type="text" id="fNazione" placeholder="es. Italia 🇮🇹">
+        </div>
+        <div class="field">
+          <label>Auto Preferita</label>
+          <input type="text" id="fAuto" placeholder="es. Ferrari 296 GT3 Gr.3">
+        </div>
+
+        <div class="form-section">Profilo di Guida</div>
+        <div class="field">
+          <label>Stile di Guida</label>
+          <input type="text" id="fStile" placeholder="es. Aggressivo, Consistente...">
+        </div>
+        <div class="field">
+          <label>Pista Preferita ❤️</label>
+          <input type="text" id="fPistaAma" placeholder="es. Nürburgring GP">
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Pista Odiata 💀</label>
+          <input type="text" id="fPistaOdia" placeholder="es. Sarthe">
+        </div>
+
+        <div class="form-section">Extra</div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Bio / Descrizione</label>
+          <textarea id="fBio" placeholder="Breve descrizione del pilota, storia, curiosità..."></textarea>
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Badges (separati da virgola)</label>
+          <input type="text" id="fBadges" placeholder="es. Rain Master, Fair Play, Pole Position King">
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Foto Profilo</label>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <label class="upload-btn" for="fFotoFile">📁 Carica Immagine</label>
+            <input type="file" id="fFotoFile" accept="image/*" style="display:none" onchange="handlePhotoUpload(this)">
+            <span id="fotoStatus" style="font-family:'Teko',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:1px;"></span>
+          </div>
+          <img id="photoPreview" class="photo-preview" alt="Anteprima foto">
+          <input type="hidden" id="fFoto">
+        </div>
+
+        <div class="form-section">File</div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Slug (nome file) *</label>
+          <input type="text" id="fSlug" placeholder="es. giovanni-russo" oninput="sanitizeSlug()">
+          <div style="font-size:11px;color:var(--text-dim);margin-top:3px;">Sarà salvato come <span id="slugPreview" style="color:var(--blue);">piloti_schede/—.json</span></div>
+        </div>
+
+        <div class="form-section" style="grid-column:1/-1">Assegnazioni Campionato</div>
+        <div style="grid-column:1/-1" id="champAssignSection">
+          <div style="font-family:'Teko',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:1px;">Connetti e carica per vedere i campionati attivi</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal()">Annulla</button>
+      <button class="btn-github" onclick="savePilot()">⬆ Salva su GitHub</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
 
 <script>
-const BASE_API = 'https://api.github.com/repos/mz4466/etna-racing-club';
-const BASE_RAW = 'https://raw.githubusercontent.com/mz4466/etna-racing-club/main';
-const BRANCH   = 'main';
+const REPO   = 'mz4466/etna-racing-club';
+const BRANCH = 'main';
+const FOLDER = 'piloti_schede';
 
-const grid        = document.getElementById('grid');
-const reloadBtn   = document.getElementById('reload');
-const searchInput = document.getElementById('search');
+let allPilots  = [];  // [{slug, data}, ...]
+let editingSlug = null;
+let calendarioData = [];   // championships from calendario.json
+let gt7Cars = [];          // full car list from ddm999
+let selectedCarsMap = {};  // champId -> [carName, ...]
+let gt7CarsLoaded = false;
 
-reloadBtn.onclick = () => loadAll();
-searchInput.oninput = function() {
-  var q = searchInput.value.trim().toLowerCase();
-  document.querySelectorAll('.pilot-card').forEach(function(card) {
-    card.style.display = card.innerText.toLowerCase().includes(q) ? '' : 'none';
-  });
-};
+function getToken(){ return document.getElementById('patInput').value.trim(); }
+function togglePAT(){ const i=document.getElementById('patInput'); i.type=i.type==='password'?'text':'password'; }
 
-// Map: pilotName (lowercase) → array of { champName, year, trophy }
-var pilotTrophies = {};
-
-async function loadAll() {
-  grid.innerHTML = '<div style="color:var(--muted)">Caricamento...</div>';
+// ── CONNECT ──
+async function verifyAndLoad(){
+  const token = getToken();
+  if(!token){ toast('Inserisci un token PAT','err'); return; }
   try {
-    // 1. Load calendario.json — via raw URL (non-fatal if missing)
-    var calendario = [];
-    try {
-      var calRes = await fetch(BASE_RAW + '/calendario.json?_=' + Date.now());
-      if(calRes.ok) calendario = await calRes.json();
-    } catch(e) { console.warn('calendario.json non disponibile:', e.message); }
-
-    // 2. Load risultati via index.json + raw — 0 API calls
-    pilotTrophies = {};
-    try {
-      var rIndexRes = await fetch(BASE_RAW + '/risultati/index.json?_=' + Date.now());
-      if (rIndexRes.ok) {
-        var rNames = await rIndexRes.json();
-        var jsonFiles = (rNames||[]).filter(function(n){ return n.endsWith('.json'); });
-
-        // Load each result file via raw — no API calls
-        var results = await Promise.all(jsonFiles.map(async function(name) {
-          try {
-            var r = await fetch(BASE_RAW + '/risultati/' + name);
-            if (!r.ok) return null;
-            return await r.json();
-          } catch(e) { return null; }
-        }));
-
-        results.filter(Boolean).forEach(function(race) {
-          // Only look at FINAL race of each championship (garaNum === garaTot)
-          var garaNum = parseInt(race.garaNum) || 0;
-          var garaTot = parseInt(race.garaTot) || 0;
-          if (garaNum !== garaTot || garaTot === 0) return;
-
-          // Find champion from standings (pos:1) or fall back to first row
-          var standings = race.standings || [];
-          var champion = standings.find(function(s) { return s.pos === 1; });
-          if (!champion && race.rows && race.rows.length) {
-            champion = { nome: race.rows[0].nome };
-          }
-          if (!champion || !champion.nome) return;
-
-          // Get championship info from calendario — try champId first, fall back to array index
-          var champ = null;
-          if (race.champId) {
-            champ = calendario.find(function(c) { return c.id === race.champId; }) || null;
-          }
-          if (!champ && race.champIdx !== undefined) {
-            var idx = parseInt(race.champIdx);
-            if (!isNaN(idx)) champ = calendario[idx] || null;
-          }
-          if (!champ || !champ.trophy) return;
-
-          var key = champion.nome.toLowerCase().trim();
-          if (!pilotTrophies[key]) pilotTrophies[key] = [];
-          pilotTrophies[key].push({
-            champName: champ.name,
-            year: champ.year,
-            trophy: champ.trophy
-          });
-        });
-      }
-    } catch(e) { console.warn('Could not load trophies:', e.message); }
-
-    // 3. Load pilots via index.json + raw — 0 API calls
-    var indexRes = await fetch(BASE_RAW + '/piloti_schede/index.json?_=' + Date.now());
-    if (!indexRes.ok) throw new Error('Cartella piloti_schede non trovata');
-    var pilotNames = await indexRes.json();
-    var jsonFiles = (pilotNames||[]).filter(function(n){ return n.endsWith('.json'); });
-
-    var pilots = await Promise.all(jsonFiles.map(async function(name) {
-      try {
-        var r = await fetch(BASE_RAW + '/piloti_schede/' + name);
-        if (!r.ok) return null;
-        return await r.json();
-      } catch(e) { return null; }
-    }));
-
-    grid.innerHTML = '';
-    var valid = pilots.filter(function(p) { return p && (p.nome || p.name || p.psn); });
-    valid.forEach(function(p) { renderPilot(p, calendario); });
-    if (!valid.length) grid.innerHTML = '<div style="color:var(--muted)">Nessuna scheda trovata</div>';
-
-  } catch(err) {
-    console.error(err);
-    grid.innerHTML = '<div style="color:var(--muted)">Impossibile caricare le schede.</div>';
+    // Verify by fetching piloti_schede folder directly (avoids CORS issue with /repos endpoint)
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${FOLDER}?ref=${BRANCH}`,{
+      headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+    });
+    if(r.status===401||r.status===403) throw new Error('Token non valido');
+    document.getElementById('statusDot').className='status-dot ok';
+    document.getElementById('statusText').textContent='Connesso';
+    toast('✓ Connesso','ok');
+    await loadCalendario();
+    loadGT7Cars(); // async, loads in background
+    await loadPilots();
+    // Re-render assignments if modal is already open
+    if(document.getElementById('modal').classList.contains('open')){
+      renderChampAssignments();
+    }
+  } catch(e) {
+    document.getElementById('statusDot').className='status-dot err';
+    document.getElementById('statusText').textContent='Errore';
+    toast(e.message||'Token non valido','err');
   }
 }
 
-function renderPilot(p, calendario) {
-  calendario = calendario || [];
-  var el = document.createElement('div');
-  el.className = 'pilot-card';
+async function reload(){ if(!getToken()){ toast('Connetti prima','err'); return; } await loadPilots(); }
 
-  // Support both old format (name/photo/country/car/gt7Name) and new admin format (nome/foto/nazione/auto/psn)
-  var nome     = p.nome   || p.name  || '—';
-  var psn      = p.psn    || p.gt7Name || '—';
-  var nazione  = p.nazione || p.country || p.region || '';
-  var auto     = p.auto   || p.car   || '';
-  var stile    = p.stile  || p.strengths || '';
-  var pistaAma = p.pistaAma || p.favTrack || '';
-  var pistaOdia= p.pistaOdia|| p.hatedTrack || '';
-  var foto     = p.foto   || p.photo || null;  // old format: photo is filename in root; new format: foto is base64
-  var locationStr = nazione ? '🌍 ' + esc(nazione) : '';
-  if (p.location) locationStr += ' • 📍 ' + esc(p.location);
 
-  // Find trophies for this pilot
-  // Match by nome, psn, gt7Name (any of them)
-  var names = [p.nome, p.name, p.psn, p.gt7Name].filter(Boolean).map(function(n) { return n.toLowerCase().trim(); });
-  var won = [];
-  names.forEach(function(n) {
-    if (pilotTrophies[n]) {
-      pilotTrophies[n].forEach(function(t) {
-        // avoid duplicates
-        var exists = won.find(function(w) { return w.champName === t.champName && w.year === t.year; });
-        if (!exists) won.push(t);
+// ── LOAD CALENDARIO ──
+async function loadCalendario(){
+  const token = getToken();
+  try {
+    const r = await fetch('https://api.github.com/repos/'+REPO+'/contents/calendario.json?ref='+BRANCH,{
+      headers:{Authorization:'token '+token,Accept:'application/vnd.github.v3+json'}
+    });
+    if(!r.ok) return;
+    const meta = await r.json();
+    calendarioData = JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
+  } catch(e){ console.warn('loadCalendario:', e.message); }
+}
+
+// ── LOAD GT7 CARS ──
+async function loadGT7Cars(){
+  if(gt7CarsLoaded) return;
+  try {
+    // Try data.json first (has full car list with IDs)
+    var r = await fetch('https://ddm999.github.io/gt7info/data.json');
+    if(!r.ok) throw new Error('data.json fetch failed');
+    var json = await r.json();
+    gt7Cars = [];
+    // data.json structure: { "cars": [ {id, Manufacturer, ModelName, Group, ...} ] }
+    var carList = json.cars || json.carlist || [];
+    // Sometimes it's nested differently - search for array with car-like objects
+    if(!carList.length) {
+      Object.keys(json).forEach(function(k){
+        if(Array.isArray(json[k]) && json[k].length > 10 && json[k][0] && (json[k][0].Manufacturer || json[k][0].manufacturer || json[k][0].name)) {
+          carList = json[k];
+        }
       });
     }
-  });
-
-  var trophiesHTML = '';
-  if (won.length) {
-    // Group by trophy filename — multiple wins of same trophy show a count badge
-    var grouped = {};
-    won.forEach(function(t) {
-      var key = t.trophy;
-      if (!grouped[key]) grouped[key] = { trophy: t.trophy, champName: t.champName, wins: [] };
-      grouped[key].wins.push({ champName: t.champName, year: t.year });
+    carList.forEach(function(c){
+      var id = String(c.id || c.ID || '');
+      var mfr = c.Manufacturer || c.manufacturer || c.make || '';
+      var model = c.ModelName || c.model || c.name || '';
+      var group = c.Group || c.group || c.category || '';
+      if(!id || !mfr) return;
+      gt7Cars.push({
+        id: id,
+        group: group,
+        manufacturer: mfr,
+        model: model,
+        displayName: mfr + ' ' + model
+      });
     });
 
-    var trophyCards = Object.values(grouped).map(function(g) {
-      // Show all years if multiple wins, else single year
-      var yearLabel = g.wins.map(function(w){ return w.year; }).join(', ');
-      return '<div class="trophy-won">'
-        + '<img src="trophy_png/' + esc(g.trophy) + '" alt="' + esc(g.champName) + '">'
-        + '<div class="trophy-won-name">' + esc(g.champName) + '</div>'
-        + '<div class="trophy-won-year">' + esc(yearLabel) + '</div>'
-        + '</div>';
-    }).join('');
+    // If data.json didn't work, try CSV
+    if(!gt7Cars.length) {
+      throw new Error('No cars in data.json, trying CSV');
+    }
 
-    trophiesHTML = '<div class="trophies-section">'
-      + '<div class="trophies-label">🏆 Campionati Vinti</div>'
-      + '<div class="trophies-row">' + trophyCards + '</div>'
-      + '</div>';
-  }
-
-  var photoSrc = foto || 'https://via.placeholder.com/280x350?text=Pilota';
-
-  // Build campionati cars display (active championships only)
-  var campionatiHTML = '';
-  if(p.campionati && calendario && calendario.length) {
-    var activeChamps = calendario.filter(function(c){
-      return c.status === 'in corso' || c.status === 'prossimo';
-    });
-    var rows = [];
-    activeChamps.forEach(function(champ){
-      var cid = champ.id || '';
-      if(!cid) return;
-      var entry = p.campionati[cid];
-      if(!entry || !entry.cars || !entry.cars.length) return;
-      var carsHtml = entry.cars.map(function(carName){
-        // Try to find car ID from a cached lookup (we don't have it here, so just show name)
-        return '<span class="campionato-car-pill">' + esc(carName) + '</span>';
-      }).join('');
-      rows.push('<div class="campionato-row">'
-        + '<div class="campionato-row-label">🏁 ' + esc(champ.name) + ' ' + esc(champ.year||'') + '</div>'
-        + '<div class="campionato-cars">' + carsHtml + '</div>'
-        + '</div>');
-    });
-    if(rows.length) {
-      campionatiHTML = '<div class="pilot-campionati">' + rows.join('') + '</div>';
+    gt7Cars.sort(function(a,b){ return a.displayName.localeCompare(b.displayName); });
+    gt7CarsLoaded = true;
+    if(document.getElementById('modal').classList.contains('open')){
+      renderChampAssignments();
+    }
+  } catch(e){
+    console.warn('loadGT7Cars data.json failed:', e.message, '— trying CSV');
+    try {
+      var r2 = await fetch('https://ddm999.github.io/gt7info/data/db/cars.csv');
+      if(!r2.ok) throw new Error('CSV also failed');
+      var text = await r2.text();
+      gt7Cars = [];
+      text.trim().split('\n').forEach(function(line){
+        var parts = line.split(',');
+        if(parts.length < 4) return;
+        var id = parts[0].trim();
+        var group = parts[1].trim();
+        var mfr = parts[2].trim();
+        var model = parts.slice(3).join(',').trim();
+        if(!id || isNaN(parseInt(id))) return;
+        gt7Cars.push({id:id, group:group, manufacturer:mfr, model:model, displayName:mfr+' '+model});
+      });
+      gt7Cars.sort(function(a,b){ return a.displayName.localeCompare(b.displayName); });
+      gt7CarsLoaded = true;
+      if(document.getElementById('modal').classList.contains('open')){
+        renderChampAssignments();
+      }
+    } catch(e2){
+      console.warn('loadGT7Cars CSV also failed:', e2.message);
+      // Last resort: use a minimal hardcoded list of common GT3 cars
+      gt7Cars = [
+        {id:'0',group:'Gr.3',manufacturer:'Ferrari',model:'296 GT3',displayName:'Ferrari 296 GT3'},
+        {id:'1',group:'Gr.3',manufacturer:'Porsche',model:'911 RSR (991)',displayName:'Porsche 911 RSR (991)'},
+        {id:'2',group:'Gr.3',manufacturer:'McLaren',model:'650S GT3',displayName:'McLaren 650S GT3'},
+        {id:'3',group:'Gr.3',manufacturer:'Mercedes-Benz',model:'AMG GT3',displayName:'Mercedes-Benz AMG GT3'},
+        {id:'4',group:'Gr.3',manufacturer:'Lamborghini',model:'Huracán GT3',displayName:'Lamborghini Huracán GT3'},
+        {id:'5',group:'Gr.3',manufacturer:'BMW',model:'M4 GT3',displayName:'BMW M4 GT3'},
+        {id:'6',group:'Gr.3',manufacturer:'Aston Martin',model:'Vantage GT3',displayName:'Aston Martin Vantage GT3'},
+        {id:'7',group:'Gr.3',manufacturer:'Nissan',model:'GT-R NISMO GT3',displayName:'Nissan GT-R NISMO GT3'},
+        {id:'8',group:'Gr.3',manufacturer:'Toyota',model:'GR Supra GT4',displayName:'Toyota GR Supra GT4'},
+        {id:'9',group:'Gr.3',manufacturer:'Honda',model:'NSX GT3',displayName:'Honda NSX GT3'},
+        {id:'10',group:'Gr.4',manufacturer:'Ferrari',model:'458 Italia Gr.4',displayName:'Ferrari 458 Italia Gr.4'},
+        {id:'11',group:'Gr.4',manufacturer:'Porsche',model:'Cayman GT4',displayName:'Porsche Cayman GT4'},
+        {id:'12',group:'Gr.4',manufacturer:'Lamborghini',model:'Huracán Gr.4',displayName:'Lamborghini Huracán Gr.4'},
+      ];
+      gt7CarsLoaded = true;
+      if(document.getElementById('modal').classList.contains('open')){
+        renderChampAssignments();
+      }
     }
   }
-
-  el.innerHTML = ''
-    + '<img class="pilot-photo" src="' + esc(photoSrc) + '" alt="' + esc(nome) + '" onerror="this.src=\'https://via.placeholder.com/280x350?text=Pilota\'">'
-    + '<div class="pilot-content">'
-    +   '<div class="pilot-name">' + esc(nome) + '</div>'
-    +   '<div class="psn">🎮 ' + esc(psn) + '</div>'
-    +   '<div class="info">'
-    +     (locationStr ? locationStr + '<br>' : '')
-    +     (auto ? '🚗 ' + esc(auto) + '<br>' : '')
-    +     (p.dr || p.sr ? '📊 DR: ' + esc(p.dr||'-') + ' • SR: ' + esc(p.sr||'-') + '<br>' : '')
-    +     (stile ? '💪 ' + esc(stile) + '<br>' : '')
-    +     (pistaAma ? '❤️ ' + esc(pistaAma) + (pistaOdia ? ' • 💀 ' + esc(pistaOdia) : '') : '')
-    +   '</div>'
-    +   (p.catchphrase ? '<div class="catchphrase">💬 "' + esc(p.catchphrase) + '"</div>' : '')
-    +   '<div class="badges">' + (p.badges||[]).map(function(b){ return '<span class="badge">' + esc(b) + '</span>'; }).join('') + '</div>'
-    +   trophiesHTML
-    +   campionatiHTML
-    + '</div>';
-
-  grid.appendChild(el);
 }
 
-function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function carImageUrl(carId){
+  return 'https://www.gran-turismo.com/common/dist/gt7/companion/images/db/car/'+carId+'/'+carId+'_s.webp';
+}
 
-loadAll();
+// ── LOAD PILOTS ──
+async function loadPilots(){
+  const token = getToken();
+  toast('Caricamento piloti…','');
+  document.getElementById('pilotsGrid').innerHTML='<div class="loading-msg">Caricamento...</div>';
+
+  try {
+    // List files in piloti_schede/
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${FOLDER}?ref=${BRANCH}`,{
+      headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+    });
+
+    if(!r.ok){
+      // folder doesn't exist yet
+      allPilots=[];
+      renderGrid();
+      toast('Cartella piloti_schede non trovata — verrà creata al primo salvataggio','');
+      return;
+    }
+
+    const files = await r.json();
+    const jsonFiles = files.filter(f=>f.name.endsWith('.json') && f.name!=='index.json');
+
+    if(!jsonFiles.length){ allPilots=[]; renderGrid(); toast('Nessun pilota trovato',''); return; }
+
+    const results = await Promise.all(jsonFiles.map(async f=>{
+      const fr = await fetch(f.url, {
+        headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+      });
+      if(!fr.ok) return null;
+      const meta = await fr.json();
+      const data = JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
+      return { slug: f.name.replace('.json',''), data };
+    }));
+
+    allPilots = results.filter(Boolean);
+    renderGrid();
+    document.getElementById('statTotal').textContent = allPilots.length;
+    toast(`✓ ${allPilots.length} piloti caricati`,'ok');
+  } catch(e){
+    toast('Errore: '+e.message,'err');
+    allPilots=[];
+    renderGrid();
+  }
+}
+
+// ── RENDER ──
+function renderGrid(list){
+  const pilots = list || allPilots;
+  const grid = document.getElementById('pilotsGrid');
+  document.getElementById('statTotal').textContent = allPilots.length || '—';
+
+  if(!pilots.length){
+    grid.innerHTML=`<div class="empty-state"><div class="ei">🏎️</div><p>Nessun pilota registrato</p></div>`;
+    return;
+  }
+
+  grid.innerHTML='';
+  pilots.forEach(({slug,data},i)=>{
+    const card = document.createElement('div');
+    card.className='pilot-card';
+    card.style.animationDelay=`${i*0.06}s`;
+
+    const photoHTML = data.foto
+      ? `<img src="${esc(data.foto)}" alt="${esc(data.nome)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+      : '';
+    const placeholderStyle = data.foto ? 'display:none' : '';
+
+    const badgesHTML = (data.badges||[]).map(b=>`<span class="pilot-badge">${esc(b)}</span>`).join('');
+
+    card.innerHTML=`
+      <div class="pilot-photo-wrap">
+        ${photoHTML}
+        <div class="pilot-photo-placeholder" style="${placeholderStyle}">🪖</div>
+      </div>
+      <div class="pilot-card-body">
+        <div class="pilot-name">${esc(data.nome||'—')}</div>
+        <div class="pilot-psn">🎮 ${esc(data.psn||'—')}</div>
+        <div class="pilot-meta">
+          ${data.nazione?`<div class="pilot-meta-row"><span class="lbl">Nazione</span>${esc(data.nazione)}</div>`:''}
+          ${data.auto?`<div class="pilot-meta-row"><span class="lbl">Auto</span>${esc(data.auto)}</div>`:''}
+          ${data.stile?`<div class="pilot-meta-row"><span class="lbl">Stile</span>${esc(data.stile)}</div>`:''}
+          ${data.pistaAma?`<div class="pilot-meta-row"><span class="lbl">❤️</span>${esc(data.pistaAma)}</div>`:''}
+          ${data.pistaOdia?`<div class="pilot-meta-row"><span class="lbl">💀</span>${esc(data.pistaOdia)}</div>`:''}
+        </div>
+        ${badgesHTML?`<div class="pilot-badges">${badgesHTML}</div>`:''}
+        ${data.bio?`<div style="margin-top:6px;font-size:12px;color:var(--text-dim);line-height:1.5;font-style:italic;padding-bottom:8px;">"${esc(data.bio)}"</div>`:''}
+      </div>
+      <div class="pilot-card-footer">
+        <button class="btn-sm btn-edit" onclick="editPilot('${slug}')">✏️ Modifica</button>
+        <button class="btn-sm btn-del" onclick="deletePilot('${slug}','${esc(data.nome||slug)}')">✕</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function filterPilots(){
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  if(!q){ renderGrid(); return; }
+  const filtered = allPilots.filter(({slug,data})=>{
+    return [data.nome,data.psn,data.auto,data.nazione,data.stile,slug].some(v=>v&&v.toLowerCase().includes(q));
+  });
+  renderGrid(filtered);
+}
+
+// ── MODAL ──
+function openModal(slug){
+  editingSlug = slug || null;
+  clearForm();
+
+  if(slug){
+    const p = allPilots.find(p=>p.slug===slug);
+    if(!p) return;
+    const d = p.data;
+    document.getElementById('modalTitle').textContent = 'Modifica Pilota';
+    document.getElementById('fNome').value    = d.nome    || '';
+    document.getElementById('fPsn').value     = d.psn     || '';
+    document.getElementById('fNazione').value = d.nazione || '';
+    document.getElementById('fAuto').value    = d.auto    || '';
+    document.getElementById('fStile').value   = d.stile   || '';
+    document.getElementById('fPistaAma').value = d.pistaAma || '';
+    document.getElementById('fPistaOdia').value= d.pistaOdia|| '';
+    document.getElementById('fBio').value     = d.bio     || '';
+    document.getElementById('fBadges').value  = (d.badges||[]).join(', ');
+    document.getElementById('fFoto').value    = d.foto    || '';
+    document.getElementById('fSlug').value    = slug;
+    document.getElementById('fSlug').readOnly = true;
+    if(d.foto){
+      const prev = document.getElementById('photoPreview');
+      prev.src = d.foto; prev.style.display='block';
+      document.getElementById('fotoStatus').textContent = '✓ Foto presente';
+      document.getElementById('fotoStatus').style.color = 'var(--green)';
+    }
+    updateSlugPreview();
+    // Load existing car assignments
+    selectedCarsMap = {};
+    var existing = d.campionati || {};
+    Object.keys(existing).forEach(function(cid){
+      selectedCarsMap[cid] = (existing[cid].cars || []).slice();
+    });
+  } else {
+    document.getElementById('modalTitle').textContent = 'Aggiungi Pilota';
+    document.getElementById('fSlug').readOnly = false;
+    selectedCarsMap = {};
+  }
+
+  renderChampAssignments();
+  document.getElementById('modal').classList.add('open');
+  if(!gt7CarsLoaded) loadGT7Cars();
+}
+
+function editPilot(slug){ openModal(slug); }
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  editingSlug=null;
+}
+
+function clearForm(){
+  ['fNome','fPsn','fNazione','fAuto','fStile','fPistaAma','fPistaOdia','fBio','fBadges','fFoto','fSlug'].forEach(id=>{
+    document.getElementById(id).value='';
+  });
+  document.getElementById('fFotoFile').value = '';
+  document.getElementById('fotoStatus').textContent = '';
+  document.getElementById('fotoStatus').style.color = '';
+  document.getElementById('photoPreview').style.display='none';
+  document.getElementById('photoPreview').src='';
+  updateSlugPreview();
+}
+
+async function handlePhotoUpload(input){
+  const file = input.files[0];
+  if(!file) return;
+  const status = document.getElementById('fotoStatus');
+  const preview = document.getElementById('photoPreview');
+  status.textContent = 'Elaborazione...';
+
+  try {
+    const base64 = await compressImage(file, 500 * 1024); // 500KB max
+    document.getElementById('fFoto').value = base64;
+    preview.src = base64;
+    preview.style.display = 'block';
+    const kb = Math.round(base64.length * 0.75 / 1024);
+    status.textContent = `✓ ${file.name} (${kb} KB)`;
+    status.style.color = 'var(--green)';
+  } catch(e) {
+    status.textContent = 'Errore: ' + e.message;
+    status.style.color = 'var(--red)';
+  }
+}
+
+function compressImage(file, maxBytes){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = e => { img.src = e.target.result; };
+    reader.onerror = () => reject(new Error('Lettura file fallita'));
+    reader.readAsDataURL(file);
+
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let quality = 0.92;
+      let w = img.naturalWidth;
+      let h = img.naturalHeight;
+
+      // Scale down if very large
+      const MAX_DIM = 1200;
+      if(w > MAX_DIM || h > MAX_DIM){
+        const ratio = Math.min(MAX_DIM/w, MAX_DIM/h);
+        w = Math.round(w * ratio);
+        h = Math.round(h * ratio);
+      }
+
+      canvas.width  = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+
+      // Iteratively reduce quality until under maxBytes
+      const tryEncode = (q) => {
+        const data = canvas.toDataURL('image/jpeg', q);
+        // base64 → actual bytes ≈ length * 0.75
+        const approxBytes = data.length * 0.75;
+        if(approxBytes <= maxBytes || q <= 0.1){
+          resolve(data);
+        } else {
+          tryEncode(Math.max(q - 0.08, 0.1));
+        }
+      };
+      tryEncode(quality);
+    };
+    img.onerror = () => reject(new Error('Immagine non valida'));
+  });
+}
+
+function sanitizeSlug(){
+  const el = document.getElementById('fSlug');
+  el.value = el.value.toLowerCase().replace(/[^a-z0-9\-]/g,'-').replace(/-+/g,'-');
+  updateSlugPreview();
+}
+
+function updateSlugPreview(){
+  const s = document.getElementById('fSlug').value.trim() || '—';
+  document.getElementById('slugPreview').textContent = `piloti_schede/${s}.json`;
+}
+
+// ── SAVE ──
+async function savePilot(){
+  const token = getToken();
+  if(!token){ toast('Token mancante','err'); return; }
+
+  const nome = document.getElementById('fNome').value.trim();
+  const slug = document.getElementById('fSlug').value.trim();
+  if(!nome||!slug){ toast('Nome e Slug sono obbligatori','err'); return; }
+
+  // Build campionati map (only include non-empty)
+  var campionatiPayload = {};
+  Object.keys(selectedCarsMap).forEach(function(cid){
+    if(selectedCarsMap[cid] && selectedCarsMap[cid].length > 0){
+      campionatiPayload[cid] = { cars: selectedCarsMap[cid] };
+    }
+  });
+
+  const payload = {
+    nome,
+    psn:       document.getElementById('fPsn').value.trim(),
+    nazione:   document.getElementById('fNazione').value.trim(),
+    auto:      document.getElementById('fAuto').value.trim(),
+    stile:     document.getElementById('fStile').value.trim(),
+    pistaAma:  document.getElementById('fPistaAma').value.trim(),
+    pistaOdia: document.getElementById('fPistaOdia').value.trim(),
+    bio:       document.getElementById('fBio').value.trim(),
+    badges:    document.getElementById('fBadges').value.split(',').map(s=>s.trim()).filter(Boolean),
+    foto:      document.getElementById('fFoto').value.trim(),
+    campionati: campionatiPayload,
+  };
+
+  toast('Salvataggio…','');
+
+  try {
+    await putFile(`${FOLDER}/${slug}.json`, JSON.stringify(payload,null,2), `${editingSlug?'Update':'Add'} pilot: ${slug}`, token);
+    await updatePilotIndex(token);
+    toast(`✓ ${nome} salvato!`,'ok');
+    closeModal();
+    await loadPilots();
+  } catch(e){
+    toast('Errore: '+e.message,'err');
+  }
+}
+
+// ── DELETE ──
+async function deletePilot(slug, nome){
+  if(!confirm(`Rimuovere ${nome} dal roster? Questa azione è irreversibile.`)) return;
+  const token = getToken();
+  if(!token){ toast('Token mancante','err'); return; }
+  toast('Eliminazione…','');
+  try {
+    const path = `${FOLDER}/${slug}.json`;
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`,{
+      headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+    });
+    if(!r.ok) throw new Error('File non trovato');
+    const d = await r.json();
+    const del = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`,{
+      method:'DELETE',
+      headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify({message:`Remove pilot: ${slug}`,sha:d.sha,branch:BRANCH})
+    });
+    if(!del.ok) throw new Error('Eliminazione fallita');
+    await updatePilotIndex(token);
+    toast(`✓ ${nome} rimosso`,'ok');
+    await loadPilots();
+  } catch(e){
+    toast('Errore: '+e.message,'err');
+  }
+}
+
+// ── UPDATE PILOT INDEX ──
+async function updatePilotIndex(token){
+  try {
+    // List current files in piloti_schede via API
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${FOLDER}?ref=${BRANCH}`,{
+      headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+    });
+    if(!r.ok) return;
+    const files = await r.json();
+    const names = files
+      .filter(f => f.name.endsWith('.json') && f.name !== 'index.json')
+      .map(f => f.name)
+      .sort();
+    await putFile(`${FOLDER}/index.json`, JSON.stringify(names, null, 0), 'Update pilot index', token);
+  } catch(e){ console.warn('updatePilotIndex:', e.message); }
+}
+
+// ── GITHUB HELPER ──
+async function putFile(path, content, message, token){
+  let sha=null;
+  const check = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`,{
+    headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+  });
+  if(check.ok){ const d=await check.json(); sha=d.sha; }
+
+  const body={message,content:btoa(unescape(encodeURIComponent(content))),branch:BRANCH};
+  if(sha) body.sha=sha;
+
+  const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`,{
+    method:'PUT',
+    headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  });
+  if(!r.ok){ const e=await r.json(); throw new Error(e.message||r.status); }
+  return r.json();
+}
+
+
+// ── CAR ASSIGNMENT FUNCTIONS ──
+
+function renderChampAssignments(){
+  var section = document.getElementById('champAssignSection');
+  if(!section) return;
+
+  // Filter active championships — show all if none match status filter
+  var active = calendarioData.filter(function(c){
+    var s = (c.status||'').toLowerCase().trim();
+    return s === 'in corso' || s === 'prossimo' || s === 'attivo' || s === 'ongoing';
+  });
+  // Fallback: show all championships if none are marked active
+  if(!active.length && calendarioData.length) active = calendarioData.slice();
+
+  if(!active.length){
+    var token = getToken();
+    if(token && calendarioData.length === 0){
+      // Try loading calendario now
+      section.innerHTML = '<div style="font-family:\'Teko\',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:1px;">Caricamento campionati...</div>';
+      loadCalendario().then(function(){ renderChampAssignments(); });
+      return;
+    }
+    section.innerHTML = '<div style="font-family:\'Teko\',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:1px;">Nessun campionato trovato</div>';
+    return;
+  }
+
+  var html = '';
+  active.forEach(function(champ){
+    var cid = champ.id || '';
+    if(!cid) return;
+    if(!selectedCarsMap[cid]) selectedCarsMap[cid] = [];
+
+    var pillsHtml = selectedCarsMap[cid].map(function(carName){
+      var car = gt7Cars.find(function(c){ return c.displayName === carName; }) || null;
+      var imgHtml = car
+        ? '<img src="'+carImageUrl(car.id)+'" onerror="this.style.display=\'none\'" alt="">'
+        : '';
+      return '<span class="car-pill">'
+        + imgHtml
+        + '<span class="car-pill-name">'+esc(carName)+'</span>'
+        + '<button class="car-pill-del" onclick="removeCarFromPilot(\''+cid+'\',\''+esc(carName).replace(/'/g,"\'")+'\')">✕</button>'
+        + '</span>';
+    }).join('');
+
+    html += '<div class="champ-assign-block" style="margin-bottom:10px;">'
+      + '<div class="champ-assign-title">'+esc(champ.name)+' '+esc(champ.year||'')+'</div>'
+      + '<div class="car-pills" id="pills-'+cid+'">'+pillsHtml+'</div>'
+      + '<div class="car-search-wrap">'
+      +   '<input type="text" placeholder="'+(gt7CarsLoaded ? 'Cerca auto GT7...' : 'Caricamento auto...')+'" id="search-'+cid+'"'
+      +     ' oninput="filterCars(\''+cid+'\',this.value)"'
+      +     ' onfocus="filterCars(\''+cid+'\',this.value)"'
+      +     ' onblur="setTimeout(function(){closeDropdown(\''+cid+'\')},200)">'
+      +   '<div class="car-dropdown" id="dropdown-'+cid+'"></div>'
+      + '</div>'
+      + '</div>';
+  });
+
+  section.innerHTML = html;
+}
+
+function filterCars(champId, query){
+  var dropdown = document.getElementById('dropdown-'+champId);
+  if(!dropdown) return;
+
+  if(!gt7CarsLoaded){
+    dropdown.innerHTML = '<div class="car-loading">⏳ Caricamento auto GT7...</div>';
+    dropdown.classList.add('open');
+    loadGT7Cars();
+    return;
+  }
+
+  if(!gt7Cars.length){
+    dropdown.innerHTML = '<div class="car-loading">⚠️ Lista auto non disponibile — scrivi il nome manualmente</div>';
+    dropdown.classList.add('open');
+    return;
+  }
+
+  var q = query.toLowerCase().trim();
+  var already = selectedCarsMap[champId] || [];
+
+  // With empty query show first 20 alphabetically
+  var matches = gt7Cars.filter(function(c){
+    if(already.indexOf(c.displayName) >= 0) return false;
+    if(!q) return true;
+    return c.displayName.toLowerCase().indexOf(q) >= 0
+      || c.group.toLowerCase().indexOf(q) >= 0
+      || c.manufacturer.toLowerCase().indexOf(q) >= 0;
+  }).slice(0, 30);
+
+  if(!matches.length){
+    dropdown.innerHTML = '<div class="car-loading">Nessun risultato per "'+esc(query)+'"</div>';
+    dropdown.classList.add('open');
+    return;
+  }
+
+  dropdown.innerHTML = matches.map(function(c){
+    return '<div class="car-option" onmousedown="addCarToPilot(\''+champId+'\',\''+c.displayName.replace(/'/g,"\'").replace(/"/g,'&quot;')+'\')">'
+      + '<img src="'+carImageUrl(c.id)+'" onerror="this.style.display=\'none\'" alt="">'
+      + '<div>'
+      +   '<div class="car-option-name">'+esc(c.manufacturer)+' '+esc(c.model)+'</div>'
+      +   '<div class="car-option-group">'+esc(c.group)+'</div>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+  dropdown.classList.add('open');
+}
+
+function addCarToPilot(champId, carName){
+  if(!selectedCarsMap[champId]) selectedCarsMap[champId] = [];
+  if(selectedCarsMap[champId].indexOf(carName) >= 0) return;
+  selectedCarsMap[champId].push(carName);
+  // Clear search
+  var input = document.getElementById('search-'+champId);
+  if(input) input.value = '';
+  closeDropdown(champId);
+  renderChampAssignments();
+}
+
+function removeCarFromPilot(champId, carName){
+  if(!selectedCarsMap[champId]) return;
+  var idx = selectedCarsMap[champId].indexOf(carName);
+  if(idx >= 0) selectedCarsMap[champId].splice(idx, 1);
+  renderChampAssignments();
+}
+
+function closeDropdown(champId){
+  var dropdown = document.getElementById('dropdown-'+champId);
+  if(dropdown) dropdown.classList.remove('open');
+}
+
+function esc(s){ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function toast(msg,type){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='show'+(type?' '+type:'');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.className='',3200);
+}
+
+// auto-fill slug from name
+document.getElementById('fNome').addEventListener('input',()=>{
+  if(editingSlug) return;
+  const nome = document.getElementById('fNome').value.trim();
+  const slug = nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  document.getElementById('fSlug').value=slug;
+  updateSlugPreview();
+});
 </script>
 </body>
 </html>
