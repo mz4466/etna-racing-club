@@ -1,0 +1,87 @@
+{
+  "id": "generale",
+  "name": "Generale",
+  "desc": "Regolamento ufficiale dell'Etna Racing Club",
+  "note": "Non sarà mai obbligatoria la partecipazione alle gare, ma lo staff spera tu ci sia!",
+  "sections": [
+    {
+      "icon": "🏁",
+      "title": "Regolamento Sportivo",
+      "blocks": [
+        {
+          "type": "rules",
+          "subtitle": "📋 Penalità e Infrazioni",
+          "items": [
+            "**Reprimenda:** Verrà assegnata ai piloti rei di aver commesso infrazioni lievi (cioè quando non porteranno danni alle macchine altrui)",
+            "È severamente vietato cambiare [[2 volte corsia in rettilineo]] per difendere la posizione; chi commetterà tale ostruzione riceverà una Reprimenda",
+            "Se nel corso di una Stagione un Pilota riceverà [[3 Reprimende]], il Pilota in questione verrà retrocesso in ultima posizione nella griglia per la gara successiva",
+            "Se la terza Reprimenda verrà assegnata nell'ultima gara della Stagione, il Pilota in questione verrà penalizzato di [[10 secondi]] nella gara stessa",
+            "Se durante una gara ci sarà un contatto che porterà danni evidenti ad un Pilota, chi lo ha causato verrà punito con [[10 secondi di penalità]] nella gara stessa",
+            "Nel caso in cui il gioco vada immediatamente ad assegnare una penalità a chi commette un incidente, è **fortemente consigliato restituire la posizione**, in quel caso gli verrà assegnata una penalità inferiore",
+            "Se durante lo stesso Campionato un Pilota subirà più di una penalità, i secondi della medesima [[aumenteranno]]"
+          ]
+        },
+        {
+          "type": "license",
+          "subtitle": "🏆 Super Patente",
+          "startPts": 10,
+          "deductions": [
+            {"label": "Reprimenda", "pts": -2},
+            {"label": "Penalità", "pts": -4}
+          ],
+          "items": [
+            "Nella Stagione successiva i punti verranno restituiti totalmente",
+            "Se durante una Stagione un Pilota dovesse perdere tutti i punti della Super Patente, subirà una penalità di [[30 secondi]] nella gara in questione"
+          ]
+        },
+        {
+          "type": "format",
+          "subtitle": "⏱️ Formato Gara",
+          "steps": [
+            {"label": "Apertura Lobby", "value": "Tra le 09:45 e le 10:00"},
+            {"label": "Prove Libere", "value": "circa 30 minuti"},
+            {"label": "Qualifiche", "value": "15 minuti (se non specificato differentemente)"},
+            {"label": "Gara", "value": "terminerà intorno alle 11:30"}
+          ],
+          "items": [
+            "In Qualsiasi Gara della Stagione sarà sempre presente almeno **un Pit Stop Obbligatorio** (tranne nelle gare con pioggia)"
+          ]
+        },
+        {
+          "type": "points",
+          "subtitle": "🏆 Sistema di Punteggio",
+          "values": [25, 18, 15, 12, 10, 8, 6, 5, 4, 3, 2.5, 2, 1.5, 1, 0.5, 0]
+        },
+        {
+          "type": "rules",
+          "subtitle": "ℹ️ Indicazioni Varie",
+          "items": [
+            "Non sarà mai possibile [[spostare o alternare]] Gare di Campionato, né tantomeno cambiare orari",
+            "Il **rispetto reciproco** sia in pista che fuori sarà sempre alla base di ogni gara",
+            "Viene richiesto di seguire le bandiere di gara il più velocemente possibile",
+            "Sarà sempre richiesta la presenza nei party durante tutte le Gare (ma se si vuole si può silenziare il microfono, stare nel party serve più che altro agli Organizzatori per esporre comunicazioni della Gara)",
+            "Dopo ogni gara chiunque avrà la possibilità di fare dei reclami agli Organizzatori, non sarà invece permesso discutere di eventuali incidenti né durante la Gara né dopo la Gara",
+            "I partecipanti che non completeranno **almeno metà della gara** non riceveranno nessun punto, chi invece completerà almeno metà gara riceverà **punti dimezzati**",
+            "Durante le sessioni di Qualifica e Gara è richiesto il **maggior silenzio possibile** per evitare di disturbare gli altri piloti"
+          ]
+        }
+      ]
+    },
+    {
+      "icon": "⚙️",
+      "title": "Regolamento Tecnico",
+      "blocks": [
+        {
+          "type": "rules",
+          "items": [
+            "Ogni tipo di competizione si basa su regolamenti diversi che vanno ad influire il tipo di Gara, la differenza principale è sull'applicazione o no del **BdP (Bilanciamento delle Prestazioni)**, quando viene applicato le auto avranno dei limiti di Peso, Potenza e PP, in caso contrario il pilota sarà libero di sviluppare la propria vettura come meglio crede",
+            "Ogni Gara si differenzia dalle altre per **consumo carburante e usura gomme**, raccomandiamo di prestare attenzione a questi valori",
+            "I Campionati sono organizzati per correre con **auto sempre diverse**",
+            "Ogni Campionato verrà organizzato cercando di restare sempre il più fedeli possibili alla realtà (quindi i **danni alle auto, scie, aderenza fuori pista, bandiere e collisioni** varie saranno sempre attivi)",
+            "Quando sarà possibile sviluppare le auto sarà sempre [[vietato montare pezzi del catalogo \"Supremo\"]]"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestisci Regolamenti — ERC Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#07070f; --card:#0e0e1c; --input:#13131f;
+      --border:rgba(201,184,163,0.1); --border-hi:rgba(201,184,163,0.2);
+      --gold:#c9a227; --gold-hi:#e8c547; --gold-dim:rgba(201,162,39,0.10);
+      --red:#ff5014; --orange:#ff8c42; --cream:#fff5e6; --muted:#c9b8a3;
+      --green:#27ae60; --del:#c0392b; --text:#fff5e6;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Barlow Condensed',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+    /* ─ TOPBAR ─ */
+    .topbar{background:#050510;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:100}
+    .topbar-brand{display:flex;align-items:center;gap:10px;font-family:'Teko',sans-serif;font-size:18px;letter-spacing:2px;color:var(--gold-hi)}
+    .topbar-brand img{width:30px;height:30px;object-fit:contain}
+    .topbar-right{display:flex;align-items:center;gap:10px}
+    /* ─ SIDEBAR ─ */
+    .layout{display:grid;grid-template-columns:260px 1fr;height:calc(100vh - 53px)}
+    .sidebar{background:#0a0a16;border-right:1px solid var(--border);padding:20px 16px;display:flex;flex-direction:column;gap:14px;overflow-y:auto}
+    .sidebar-title{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:4px}
+    /* auth */
+    .auth-section{background:var(--card);border:1px solid var(--border-hi);border-radius:10px;padding:14px}
+    .auth-section label{font-size:12px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:6px}
+    .auth-section input{width:100%;background:var(--input);border:1px solid var(--border-hi);border-radius:7px;padding:8px 10px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;outline:none}
+    .auth-section input:focus{border-color:var(--gold)}
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:none;cursor:pointer;font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;transition:all .15s}
+    .btn-gold{background:var(--gold);color:#000}
+    .btn-gold:hover{background:var(--gold-hi)}
+    .btn-outline{background:transparent;border:1px solid var(--border-hi);color:var(--muted)}
+    .btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+    .btn-red{background:var(--del);color:#fff}
+    .btn-red:hover{background:#e74c3c}
+    .btn-green{background:var(--green);color:#fff}
+    .btn-green:hover{background:#2ecc71}
+    /* reg list */
+    .reg-item{background:var(--card);border:1px solid var(--border-hi);border-radius:8px;padding:10px 12px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;transition:border-color .15s}
+    .reg-item:hover{border-color:var(--gold)}
+    .reg-item.active{border-color:var(--gold);background:var(--gold-dim)}
+    .reg-item-name{font-family:'Teko',sans-serif;font-size:15px;letter-spacing:1px;color:var(--cream)}
+    .reg-item-del{background:none;border:none;color:rgba(192,57,43,.6);cursor:pointer;font-size:16px;padding:0;line-height:1}
+    .reg-item-del:hover{color:var(--del)}
+    /* ─ MAIN ─ */
+    .main{padding:28px 32px;overflow-y:auto;display:flex;flex-direction:column;gap:22px}
+    .panel{background:var(--card);border:1px solid var(--border-hi);border-radius:12px;padding:22px}
+    .panel-title{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:10px}
+    /* form fields */
+    .field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+    .field label{font-size:12px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+    .field input,.field textarea,.field select{background:var(--input);border:1px solid var(--border-hi);border-radius:7px;padding:8px 11px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;outline:none;width:100%;resize:vertical}
+    .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold)}
+    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    /* sections editor */
+    .section-card{background:#0a0a16;border:1px solid var(--border-hi);border-radius:10px;padding:16px;margin-bottom:12px}
+    .section-header-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+    .section-header-row .icon-input{width:56px;text-align:center;font-size:18px}
+    .section-header-row .title-input{flex:1}
+    .blocks-container{display:flex;flex-direction:column;gap:10px;padding-left:12px;border-left:2px solid var(--border)}
+    .block-card{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:8px;padding:12px}
+    .block-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+    .block-type-pill{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:2px;padding:2px 8px;border-radius:4px;text-transform:uppercase}
+    .pill-rules{background:rgba(255,80,20,.12);color:var(--orange)}
+    .pill-license{background:rgba(201,162,39,.12);color:var(--gold)}
+    .pill-format{background:rgba(39,174,96,.12);color:#2ecc71}
+    .pill-points{background:rgba(52,152,219,.12);color:#3498db}
+    .rules-list{display:flex;flex-direction:column;gap:6px}
+    .rule-row{display:flex;gap:6px;align-items:flex-start}
+    .rule-row textarea{flex:1;min-height:44px}
+    .rule-del{background:none;border:none;color:rgba(192,57,43,.5);cursor:pointer;font-size:18px;padding:2px;line-height:1;flex-shrink:0;margin-top:4px}
+    .rule-del:hover{color:var(--del)}
+    .add-rule-btn{width:100%;padding:6px;border:1px dashed var(--border-hi);border-radius:6px;background:none;color:var(--muted);cursor:pointer;font-family:'Teko',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-top:6px}
+    .add-rule-btn:hover{border-color:var(--gold);color:var(--gold)}
+    .block-actions{display:flex;gap:6px;margin-left:auto}
+    /* points editor */
+    .pts-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+    .pts-cell{display:flex;flex-direction:column;align-items:center;gap:3px}
+    .pts-cell label{font-size:10px;color:var(--muted)}
+    .pts-cell input{width:100%;text-align:center;background:var(--input);border:1px solid var(--border);border-radius:5px;color:var(--text);padding:4px;font-size:12px;outline:none}
+    /* format editor */
+    .format-row{display:grid;grid-template-columns:1fr 1.5fr auto;gap:6px;align-items:center;margin-bottom:6px}
+    /* license editor */
+    .lic-row{display:grid;grid-template-columns:1fr auto auto;gap:6px;align-items:center;margin-bottom:6px}
+    /* toast */
+    #toast{position:fixed;bottom:24px;right:24px;background:var(--card);border:1px solid var(--gold);border-radius:8px;padding:10px 18px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--text);z-index:999;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;pointer-events:none}
+    #toast.show{opacity:1;transform:translateY(0)}
+    #toast.ok{border-color:var(--green);color:#2ecc71}
+    #toast.err{border-color:var(--del);color:#e74c3c}
+    /* empty/loading states */
+    .empty-state{text-align:center;padding:40px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
+    .conn-hint{text-align:center;padding:60px 20px;display:flex;flex-direction:column;align-items:center;gap:10px}
+    .conn-hint-icon{font-size:40px}
+    .conn-hint-text{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+    @media(max-width:768px){.layout{grid-template-columns:1fr;height:auto}.sidebar{height:auto}.field-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <img src="etna-logo.jpg" alt="ERC" onerror="this.style.display='none'">
+    <span>Gestisci Regolamenti</span>
+  </div>
+  <div class="topbar-right">
+    <a href="regolamento_etna_racing_club.html" class="btn btn-outline" target="_blank">👁 Visualizza</a>
+    <a href="index.html" class="btn btn-outline">← Home</a>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div>
+      <div class="sidebar-title">GitHub</div>
+      <div class="auth-section">
+        <label>PAT Token</label>
+        <input type="password" id="patInput" placeholder="ghp_xxxx" autocomplete="off">
+        <div style="margin-top:8px;display:flex;gap:6px">
+          <button class="btn btn-gold" style="flex:1" onclick="connect()">Connetti</button>
+          <button class="btn btn-outline" onclick="reload()">↺</button>
+        </div>
+        <div id="connStatus" style="font-size:12px;margin-top:8px;color:var(--muted)">Non connesso</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sidebar-title">Regolamenti</div>
+      <div id="regList">
+        <div class="conn-hint">
+          <div class="conn-hint-icon">🔐</div>
+          <div class="conn-hint-text">Connetti GitHub</div>
+        </div>
+      </div>
+      <button class="btn btn-outline" id="addRegBtn" style="width:100%;justify-content:center;margin-top:8px;display:none" onclick="newRegolamento()">＋ Nuovo Regolamento</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main" id="mainArea">
+    <div class="conn-hint">
+      <div class="conn-hint-icon">📋</div>
+      <div class="conn-hint-text">Seleziona o crea un regolamento</div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const OWNER = 'mz4466', REPO = 'etna-racing-club', BRANCH = 'main';
+const API = 'https://api.github.com/repos/'+OWNER+'/'+REPO;
+const FOLDER = 'regolamenti';
+
+var token = '';
+var allRegs = []; // index items
+var editingId = null; // current reg id being edited
+var editingData = null; // current reg data object
+
+// ─── AUTH ───
+function getToken(){ return document.getElementById('patInput').value.trim(); }
+
+async function connect(){
+  token = getToken();
+  if(!token){ toast('Inserisci il PAT Token','err'); return; }
+  try {
+    var r = await ghGet('contents/'+FOLDER);
+    document.getElementById('connStatus').textContent = '✓ Connesso';
+    document.getElementById('connStatus').style.color = 'var(--green)';
+    document.getElementById('addRegBtn').style.display = '';
+    await loadIndex();
+  } catch(e) {
+    document.getElementById('connStatus').textContent = 'Errore: ' + e.message;
+    document.getElementById('connStatus').style.color = 'var(--del)';
+  }
+}
+
+async function reload(){ token = getToken(); await loadIndex(); }
+
+// ─── GITHUB API ───
+async function ghGet(path){
+  var r = await fetch(API+'/contents/'+path+'?ref='+BRANCH, { headers: { Authorization:'token '+token, Accept:'application/vnd.github.v3+json' }});
+  if(!r.ok) throw new Error((await r.json()).message||r.status);
+  return await r.json();
+}
+
+async function ghPut(path, content, message){
+  var existing; var sha = null;
+  try { existing = await ghGet(path); sha = existing.sha; } catch(e){}
+  var body = { message, content: btoa(unescape(encodeURIComponent(content))), branch: BRANCH };
+  if(sha) body.sha = sha;
+  var r = await fetch(API+'/contents/'+path, { method:'PUT', headers:{ Authorization:'token '+token, Accept:'application/vnd.github.v3+json', 'Content-Type':'application/json' }, body: JSON.stringify(body)});
+  if(!r.ok) throw new Error((await r.json()).message||r.status);
+}
+
+async function ghDelete(path, message){
+  var existing = await ghGet(path);
+  var r = await fetch(API+'/contents/'+path, { method:'DELETE', headers:{ Authorization:'token '+token, Accept:'application/vnd.github.v3+json', 'Content-Type':'application/json' }, body: JSON.stringify({ message, sha: existing.sha, branch: BRANCH })});
+  if(!r.ok) throw new Error((await r.json()).message||r.status);
+}
+
+async function ghReadJson(path){
+  var meta = await ghGet(path);
+  return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
+}
+
+// ─── INDEX ───
+async function loadIndex(){
+  try {
+    allRegs = await ghReadJson(FOLDER+'/index.json');
+  } catch(e) {
+    allRegs = [];
+  }
+  renderList();
+}
+
+function renderList(){
+  var list = document.getElementById('regList');
+  if(!allRegs.length){ list.innerHTML = '<div class="empty-state">Nessun regolamento</div>'; return; }
+  list.innerHTML = allRegs.sort(function(a,b){ return (a.order||99)-(b.order||99); }).map(function(item){
+    return '<div class="reg-item'+(editingId===item.id?' active':'')+'" onclick="loadReg(\''+item.id+'\')">'
+      + '<span class="reg-item-name">'+(item.icon||'📋')+' '+esc(item.name)+'</span>'
+      + '<button class="reg-item-del" onclick="event.stopPropagation();deleteReg(\''+item.id+'\')" title="Elimina">✕</button>'
+      + '</div>';
+  }).join('');
+}
+
+// ─── LOAD/EDIT ───
+async function loadReg(id){
+  editingId = id;
+  renderList();
+  var main = document.getElementById('mainArea');
+  main.innerHTML = '<div class="empty-state">Caricamento...</div>';
+  try {
+    editingData = await ghReadJson(FOLDER+'/'+id+'.json');
+    renderEditor();
+  } catch(e) {
+    main.innerHTML = '<div class="empty-state">Errore: '+esc(e.message)+'</div>';
+  }
+}
+
+function newRegolamento(){
+  editingId = null;
+  editingData = {
+    id: '', name: '', desc: '', note: '',
+    sections: [{ icon:'🏁', title:'Nuova Sezione', blocks:[{ type:'rules', subtitle:'', items:[''] }] }]
+  };
+  renderEditor();
+}
+
+// ─── EDITOR ───
+function renderEditor(){
+  var data = editingData;
+  var isNew = !editingId;
+  var main = document.getElementById('mainArea');
+
+  var html = '<div class="panel">'
+    + '<div class="panel-title">'+(isNew?'Nuovo Regolamento':esc(data.name))+' — Dettagli</div>'
+    + '<div class="field-row">'
+    + '  <div class="field"><label>ID (slug)</label><input id="eId" value="'+esc(data.id)+'" placeholder="es. generale, f1" '+(editingId?'readonly':'')+' oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9-]/g,\'\')"></div>'
+    + '  <div class="field"><label>Nome Visualizzato</label><input id="eName" value="'+esc(data.name)+'" placeholder="es. Generale"></div>'
+    + '</div>'
+    + '<div class="field"><label>Descrizione (card)</label><input id="eDesc" value="'+esc(data.desc||'')+'" placeholder="Breve descrizione visibile nella card..."></div>'
+    + '<div class="field"><label>Nota Importante (banner giallo)</label><input id="eNote" value="'+esc(data.note||'')+'" placeholder="Lascia vuoto per nascondere il banner"></div>'
+    + '<div class="field"><label>Icona (emoji)</label><input id="eIcon" value="'+esc(data.icon||'📋')+'" style="width:70px;text-align:center;font-size:18px"></div>'
+    + '</div>';
+
+  html += '<div class="panel">'
+    + '<div class="panel-title">Sezioni</div>'
+    + '<div id="sectionsContainer">';
+
+  (data.sections||[]).forEach(function(sec, si){
+    html += renderSectionCard(sec, si);
+  });
+
+  html += '</div>'
+    + '<button class="btn btn-outline" style="margin-top:10px" onclick="addSection()">＋ Aggiungi Sezione</button>'
+    + '</div>';
+
+  html += '<div style="display:flex;gap:10px;justify-content:flex-end">'
+    + '<button class="btn btn-outline" onclick="cancelEdit()">Annulla</button>'
+    + '<button class="btn btn-green" onclick="saveReg()">↑ Salva su GitHub</button>'
+    + '</div>';
+
+  main.innerHTML = html;
+}
+
+function renderSectionCard(sec, si){
+  var html = '<div class="section-card" id="sec-'+si+'">'
+    + '<div class="section-header-row">'
+    + '  <input class="field input icon-input" value="'+esc(sec.icon||'🏁')+'" oninput="updateSec('+si+',\'icon\',this.value)" title="Icona sezione">'
+    + '  <input class="field input title-input" style="background:var(--input);border:1px solid var(--border-hi);border-radius:7px;padding:7px 10px;color:var(--text);font-size:14px;outline:none" value="'+esc(sec.title||'')+'" placeholder="Titolo Sezione" oninput="updateSec('+si+',\'title\',this.value)">'
+    + '  <button class="btn btn-outline" style="padding:6px 10px;font-size:11px" onclick="moveSec('+si+',-1)" title="Su">↑</button>'
+    + '  <button class="btn btn-outline" style="padding:6px 10px;font-size:11px" onclick="moveSec('+si+',1)" title="Giù">↓</button>'
+    + '  <button class="btn btn-red" style="padding:6px 10px;font-size:11px" onclick="delSec('+si+')" title="Elimina sezione">✕</button>'
+    + '</div>'
+    + '<div class="blocks-container" id="blocks-'+si+'">';
+
+  (sec.blocks||[]).forEach(function(block, bi){
+    html += renderBlockCard(block, si, bi);
+  });
+
+  html += '</div>'
+    + '<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">'
+    + '  <button class="add-rule-btn" style="width:auto;padding:4px 12px" onclick="addBlock('+si+',\'rules\')">＋ Regole</button>'
+    + '  <button class="add-rule-btn" style="width:auto;padding:4px 12px" onclick="addBlock('+si+',\'license\')">＋ Super Patente</button>'
+    + '  <button class="add-rule-btn" style="width:auto;padding:4px 12px" onclick="addBlock('+si+',\'format\')">＋ Formato Gara</button>'
+    + '  <button class="add-rule-btn" style="width:auto;padding:4px 12px" onclick="addBlock('+si+',\'points\')">＋ Punti</button>'
+    + '</div>'
+    + '</div>';
+  return html;
+}
+
+function renderBlockCard(block, si, bi){
+  var typeLabels = {rules:'pill-rules',license:'pill-license',format:'pill-format',points:'pill-points'};
+  var typeNames  = {rules:'Regole',license:'Super Patente',format:'Formato Gara',points:'Punti'};
+  var html = '<div class="block-card" id="block-'+si+'-'+bi+'">'
+    + '<div class="block-header">'
+    + '  <span class="block-type-pill '+typeLabels[block.type]+'">'+typeNames[block.type]+'</span>'
+    + '  <div class="block-actions">'
+    + '    <button class="btn btn-outline" style="padding:3px 8px;font-size:10px" onclick="moveBlock('+si+','+bi+',-1)">↑</button>'
+    + '    <button class="btn btn-outline" style="padding:3px 8px;font-size:10px" onclick="moveBlock('+si+','+bi+',1)">↓</button>'
+    + '    <button class="btn btn-red" style="padding:3px 8px;font-size:10px" onclick="delBlock('+si+','+bi+')">✕</button>'
+    + '  </div>'
+    + '</div>';
+
+  // subtitle (for rules+format)
+  if(block.type !== 'points'){
+    html += '<div class="field" style="margin-bottom:10px"><label>Sottotitolo (lascia vuoto per nasconderlo)</label>'
+      + '<input value="'+esc(block.subtitle||'')+'" placeholder="es. 📋 Penalità e Infrazioni" oninput="updateBlock('+si+','+bi+',\'subtitle\',this.value)"></div>';
+  }
+
+  if(block.type === 'rules'){
+    html += '<div class="rules-list" id="rules-'+si+'-'+bi+'">';
+    (block.items||[]).forEach(function(rule, ri){
+      html += '<div class="rule-row">'
+        + '<textarea oninput="updateRule('+si+','+bi+','+ri+',this.value)">'+esc(rule)+'</textarea>'
+        + '<button class="rule-del" onclick="delRule('+si+','+bi+','+ri+')" title="Rimuovi">✕</button>'
+        + '</div>';
+    });
+    html += '</div>'
+      + '<button class="add-rule-btn" onclick="addRule('+si+','+bi+')">＋ Aggiungi Regola</button>'
+      + '<div style="font-size:11px;color:var(--muted);margin-top:6px">💡 **grassetto** · [[avviso rosso]]</div>';
+  }
+  else if(block.type === 'license'){
+    html += '<div class="field"><label>Punti Iniziali</label><input type="number" value="'+(block.startPts||10)+'" style="width:80px" oninput="updateBlock('+si+','+bi+',\'startPts\',+this.value)"></div>';
+    html += '<div style="font-size:12px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Deduzioni</div>';
+    (block.deductions||[]).forEach(function(d, di){
+      html += '<div class="lic-row">'
+        + '<input value="'+esc(d.label)+'" placeholder="Etichetta" oninput="updateLicRow('+si+','+bi+','+di+',\'label\',this.value)">'
+        + '<input type="number" value="'+d.pts+'" style="width:70px" oninput="updateLicRow('+si+','+bi+','+di+',\'pts\',+this.value)">'
+        + '<button class="rule-del" onclick="delLicRow('+si+','+bi+','+di+')">✕</button>'
+        + '</div>';
+    });
+    html += '<button class="add-rule-btn" onclick="addLicRow('+si+','+bi+')">＋ Deduzioni</button>';
+    html += '<div class="field" style="margin-top:10px"><label>Regole aggiuntive (una per riga)</label>';
+    html += '<div class="rules-list" id="rules-'+si+'-'+bi+'">';
+    (block.items||[]).forEach(function(rule, ri){
+      html += '<div class="rule-row"><textarea oninput="updateRule('+si+','+bi+','+ri+',this.value)">'+esc(rule)+'</textarea>'
+        + '<button class="rule-del" onclick="delRule('+si+','+bi+','+ri+')">✕</button></div>';
+    });
+    html += '</div><button class="add-rule-btn" onclick="addRule('+si+','+bi+')">＋ Aggiungi Regola</button></div>';
+  }
+  else if(block.type === 'format'){
+    html += '<div style="font-size:12px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Step (Etichetta / Valore)</div>';
+    (block.steps||[]).forEach(function(s, ti){
+      html += '<div class="format-row">'
+        + '<input value="'+esc(s.label)+'" placeholder="es. Prove Libere" oninput="updateStep('+si+','+bi+','+ti+',\'label\',this.value)">'
+        + '<input value="'+esc(s.value)+'" placeholder="es. 30 minuti" oninput="updateStep('+si+','+bi+','+ti+',\'value\',this.value)">'
+        + '<button class="rule-del" onclick="delStep('+si+','+bi+','+ti+')">✕</button>'
+        + '</div>';
+    });
+    html += '<button class="add-rule-btn" onclick="addStep('+si+','+bi+')">＋ Aggiungi Step</button>';
+    html += '<div class="field" style="margin-top:10px"><label>Regole aggiuntive</label>';
+    html += '<div class="rules-list">';
+    (block.items||[]).forEach(function(rule, ri){
+      html += '<div class="rule-row"><textarea oninput="updateRule('+si+','+bi+','+ri+',this.value)">'+esc(rule)+'</textarea>'
+        + '<button class="rule-del" onclick="delRule('+si+','+bi+','+ri+')">✕</button></div>';
+    });
+    html += '</div><button class="add-rule-btn" onclick="addRule('+si+','+bi+')">＋ Aggiungi Regola</button></div>';
+  }
+  else if(block.type === 'points'){
+    html += '<div style="font-size:12px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">Punti per posizione (1° → ultimo)</div>';
+    html += '<div class="pts-grid">';
+    var vals = block.values || Array(16).fill(0);
+    vals.forEach(function(v, i){
+      html += '<div class="pts-cell"><label>'+(i+1)+'°</label>'
+        + '<input type="number" value="'+v+'" step="0.5" oninput="updatePtsVal('+si+','+bi+','+i+',+this.value)"></div>';
+    });
+    html += '</div>';
+    html += '<button class="add-rule-btn" style="margin-top:6px" onclick="addPtsRow('+si+','+bi+')">＋ Aggiungi Posizione</button>';
+  }
+
+  html += '</div>';
+  return html;
+}
+
+// ─── DATA MUTATIONS ───
+function updateSec(si, key, val){ editingData.sections[si][key] = val; }
+function updateBlock(si, bi, key, val){ editingData.sections[si].blocks[bi][key] = val; }
+function updateRule(si, bi, ri, val){ ensureItems(si,bi); editingData.sections[si].blocks[bi].items[ri] = val; }
+function updateLicRow(si, bi, di, key, val){ editingData.sections[si].blocks[bi].deductions[di][key] = val; }
+function updateStep(si, bi, ti, key, val){ editingData.sections[si].blocks[bi].steps[ti][key] = val; }
+function updatePtsVal(si, bi, i, val){ editingData.sections[si].blocks[bi].values[i] = val; }
+
+function ensureItems(si,bi){ if(!editingData.sections[si].blocks[bi].items) editingData.sections[si].blocks[bi].items = []; }
+
+function addSection(){
+  editingData.sections.push({ icon:'📋', title:'Nuova Sezione', blocks:[{ type:'rules', subtitle:'', items:[''] }] });
+  renderEditor();
+}
+function delSec(si){ if(!confirm('Eliminare questa sezione?')) return; editingData.sections.splice(si,1); renderEditor(); }
+function moveSec(si,dir){
+  var ni = si+dir;
+  if(ni<0||ni>=editingData.sections.length) return;
+  var tmp=editingData.sections[si]; editingData.sections[si]=editingData.sections[ni]; editingData.sections[ni]=tmp;
+  renderEditor();
+}
+
+function addBlock(si, type){
+  var defaults = {
+    rules:  {type:'rules', subtitle:'', items:['']},
+    license:{type:'license', subtitle:'', startPts:10, deductions:[{label:'Reprimenda',pts:-2},{label:'Penalità',pts:-4}], items:[]},
+    format: {type:'format', subtitle:'', steps:[{label:'',value:''}], items:[]},
+    points: {type:'points', subtitle:'🏆 Sistema di Punteggio', values:[25,18,15,12,10,8,6,5,4,3,2.5,2,1.5,1,0.5,0]}
+  };
+  editingData.sections[si].blocks.push(defaults[type]||{type:'rules',items:['']});
+  renderEditor();
+}
+function delBlock(si,bi){ editingData.sections[si].blocks.splice(bi,1); renderEditor(); }
+function moveBlock(si,bi,dir){
+  var ni=bi+dir;
+  if(ni<0||ni>=editingData.sections[si].blocks.length) return;
+  var tmp=editingData.sections[si].blocks[bi]; editingData.sections[si].blocks[bi]=editingData.sections[si].blocks[ni]; editingData.sections[si].blocks[ni]=tmp;
+  renderEditor();
+}
+
+function addRule(si,bi){ ensureItems(si,bi); editingData.sections[si].blocks[bi].items.push(''); renderEditor(); }
+function delRule(si,bi,ri){ editingData.sections[si].blocks[bi].items.splice(ri,1); renderEditor(); }
+
+function addLicRow(si,bi){ if(!editingData.sections[si].blocks[bi].deductions) editingData.sections[si].blocks[bi].deductions=[]; editingData.sections[si].blocks[bi].deductions.push({label:'',pts:0}); renderEditor(); }
+function delLicRow(si,bi,di){ editingData.sections[si].blocks[bi].deductions.splice(di,1); renderEditor(); }
+
+function addStep(si,bi){ if(!editingData.sections[si].blocks[bi].steps) editingData.sections[si].blocks[bi].steps=[]; editingData.sections[si].blocks[bi].steps.push({label:'',value:''}); renderEditor(); }
+function delStep(si,bi,ti){ editingData.sections[si].blocks[bi].steps.splice(ti,1); renderEditor(); }
+
+function addPtsRow(si,bi){ if(!editingData.sections[si].blocks[bi].values) editingData.sections[si].blocks[bi].values=[]; editingData.sections[si].blocks[bi].values.push(0); renderEditor(); }
+
+// ─── SAVE ───
+async function saveReg(){
+  var id = editingId || document.getElementById('eId').value.trim();
+  if(!id){ toast('Inserisci un ID','err'); return; }
+  // collect top-level fields
+  editingData.id   = id;
+  editingData.name = document.getElementById('eName').value.trim();
+  editingData.desc = document.getElementById('eDesc').value.trim();
+  editingData.note = document.getElementById('eNote').value.trim();
+  editingData.icon = document.getElementById('eIcon').value.trim();
+
+  if(!editingData.name){ toast('Inserisci un nome','err'); return; }
+
+  try {
+    // save the reg JSON
+    await ghPut(FOLDER+'/'+id+'.json', JSON.stringify(editingData, null, 2), (editingId?'Update':'Add')+' regolamento: '+id);
+
+    // update index
+    var existing = allRegs.find(function(r){ return r.id===id; });
+    if(!existing){
+      allRegs.push({ id, name:editingData.name, desc:editingData.desc, icon:editingData.icon||'📋', order: allRegs.length+1 });
+    } else {
+      existing.name = editingData.name; existing.desc = editingData.desc; existing.icon = editingData.icon||'📋';
+    }
+    await ghPut(FOLDER+'/index.json', JSON.stringify(allRegs, null, 2), 'Update regolamenti index');
+
+    editingId = id;
+    renderList();
+    toast('Salvato ✓','ok');
+  } catch(e){
+    toast('Errore: '+e.message,'err');
+  }
+}
+
+// ─── DELETE ───
+async function deleteReg(id){
+  if(!confirm('Eliminare il regolamento "'+id+'"? L\'operazione non è reversibile.')) return;
+  try {
+    await ghDelete(FOLDER+'/'+id+'.json', 'Delete regolamento: '+id);
+    allRegs = allRegs.filter(function(r){ return r.id!==id; });
+    await ghPut(FOLDER+'/index.json', JSON.stringify(allRegs, null, 2), 'Update regolamenti index');
+    if(editingId===id){ editingId=null; editingData=null; document.getElementById('mainArea').innerHTML='<div class="conn-hint"><div class="conn-hint-icon">📋</div><div class="conn-hint-text">Seleziona un regolamento</div></div>'; }
+    renderList();
+    toast('Eliminato','ok');
+  } catch(e){ toast('Errore: '+e.message,'err'); }
+}
+
+function cancelEdit(){ editingId=null; editingData=null; document.getElementById('mainArea').innerHTML='<div class="conn-hint"><div class="conn-hint-icon">📋</div><div class="conn-hint-text">Seleziona un regolamento</div></div>'; }
+
+// ─── TOAST ───
+function toast(msg, type){
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'show '+(type||'');
+  setTimeout(function(){ t.className = ''; }, 3000);
+}
+
+function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+</script>
+</body>
+</html>

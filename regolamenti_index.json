@@ -1,0 +1,9 @@
+[
+  {
+    "id": "generale",
+    "name": "Generale",
+    "desc": "Regolamento ufficiale del club — comportamento in pista, penalità, punti e tecnica",
+    "icon": "🏁",
+    "order": 1
+  }
+]
