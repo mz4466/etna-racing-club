@@ -332,7 +332,8 @@ function renderPilot(p, calendario) {
   var campionatiHTML = '';
   if(p.campionati && calendario && calendario.length) {
     var activeChamps = calendario.filter(function(c){
-      return c.status === 'in corso' || c.status === 'prossimo';
+      var s = (c.status||'').toLowerCase().replace(/-/g,' ').trim();
+      return s === 'in corso' || s === 'prossimo' || s === 'attivo' || s === 'ongoing';
     });
     var rows = [];
     activeChamps.forEach(function(champ){
