@@ -124,6 +124,53 @@ const reloadBtn   = document.getElementById('reload');
 const searchInput = document.getElementById('search');
 
 reloadBtn.onclick = () => loadAll();
+
+// GT7 car list — loaded once, used to resolve car names to thumbnail IDs
+var gt7Cars = [];
+var carNameToId = {};   // displayName (lowercase) → numeric id
+
+async function loadGT7Cars() {
+  try {
+    var makersMap = {
+      '3':'Alfa Romeo','4':'Aston Martin','5':'Audi','6':'BMW','7':'Chevrolet',
+      '9':'Citroën','10':'Daihatsu','11':'Dodge','12':'Fiat','13':'Ford',
+      '15':'Honda','17':'Jaguar','18':'Lancia','21':'Mazda','22':'Mercedes-Benz',
+      '23':'Mercury','25':'Mitsubishi','26':'Nissan','28':'Nissan','30':'Pagani',
+      '32':'Peugeot','34':'Renault','36':'Shelby','38':'Subaru','39':'Suzuki',
+      '40':'Toyota','43':'Toyota','50':'Lexus','51':'MINI','59':'Amuse',
+      '65':'DeLorean','86':'Alpine A110','87':'RE Amemiya','93':'Chaparral',
+      '110':'Ferrari','112':'Lamborghini','116':'Maserati','117':'McLaren',
+      '119':'Tesla','121':'KTM','125':'Abarth','153':'Mercedes-AMG',
+      '2':'Acura','8':'Bugatti','14':'Genesis','16':'Hyundai','33':'Porsche',
+      '52':'Lotus','66':'De Tomaso','90':'RUF','101':'Cobra','102':'Corvette'
+    };
+    var r = await fetch('https://ddm999.github.io/gt7info/data/db/cars.csv');
+    if (!r.ok) return;
+    var lines = (await r.text()).trim().split('\n');
+    var tmp = {};
+    lines.forEach(function(line){
+      var parts = line.split(',');
+      if (parts.length < 3) return;
+      var id = parts[0].trim();
+      if (!id || isNaN(parseInt(id))) return;
+      var shortName = parts.slice(1, parts.length - 1).join(',').trim();
+      var mfr = makersMap[parts[parts.length - 1].trim()] || '';
+      var displayName = (mfr && shortName.toLowerCase().indexOf(mfr.toLowerCase()) === -1)
+        ? mfr + ' ' + shortName : shortName;
+      displayName = displayName.trim();
+      tmp[displayName.toLowerCase()] = id;
+    });
+    if (Object.keys(tmp).length > 10) {
+      carNameToId = tmp;
+      console.log('GT7 cars loaded:', Object.keys(carNameToId).length);
+    }
+  } catch(e) { console.warn('loadGT7Cars failed:', e.message); }
+}
+
+function carImageUrl(carId) {
+  if (!carId) return '';
+  return 'https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car' + carId + '.png';
+}
 searchInput.oninput = function() {
   var q = searchInput.value.trim().toLowerCase();
   document.querySelectorAll('.pilot-card').forEach(function(card) {
@@ -294,8 +341,11 @@ function renderPilot(p, calendario) {
       var entry = p.campionati[cid];
       if(!entry || !entry.cars || !entry.cars.length) return;
       var carsHtml = entry.cars.map(function(carName){
-        // Try to find car ID from a cached lookup (we don't have it here, so just show name)
-        return '<span class="campionato-car-pill">' + esc(carName) + '</span>';
+        var carId = carNameToId[carName.toLowerCase()] || carNameToId[carName.trim().toLowerCase()] || '';
+        var imgHtml = carId
+          ? '<img src="' + carImageUrl(carId) + '" alt="" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'">'
+          : '';
+        return '<span class="campionato-car-pill">' + imgHtml + esc(carName) + '</span>';
       }).join('');
       rows.push('<div class="campionato-row">'
         + '<div class="campionato-row-label">🏁 ' + esc(champ.name) + ' ' + esc(champ.year||'') + '</div>'
@@ -330,6 +380,7 @@ function renderPilot(p, calendario) {
 
 function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 
+loadGT7Cars();
 loadAll();
 </script>
 </body>
