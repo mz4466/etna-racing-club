@@ -78,6 +78,26 @@
             font-size:9px; color:rgba(201,162,39,0.6);
             font-family:'Teko',sans-serif; letter-spacing:1px;
         }
+        .trophy-won-count {
+            position:absolute; top:2px; right:2px;
+            background:#c9a227; color:#000; font-family:'Teko',sans-serif;
+            font-size:10px; font-weight:700; border-radius:999px;
+            padding:0 5px; line-height:16px; letter-spacing:0.5px;
+        }
+        .trophy-won-img-wrap { position:relative; display:inline-block; }
+        .trophy-won-wins { display:flex; flex-direction:column; gap:1px; margin-top:2px; }
+        .trophy-won-win-row { font-family:'Teko',sans-serif; font-size:10px; letter-spacing:0.5px; color:rgba(201,162,39,0.75); text-align:center; line-height:1.3; }
+        /* ── MEDALS ── */
+        .medals-section { margin-top:10px; padding-top:10px; border-top:1px solid rgba(201,162,39,0.1); }
+        .medals-label { font-family:'Teko',sans-serif; font-size:11px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; margin-bottom:8px; }
+        .medals-row { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; }
+        .medal-card { display:flex; flex-direction:column; align-items:center; gap:3px; border-radius:10px; padding:8px 10px; min-width:72px; max-width:96px; }
+        .medal-card.silver { background:rgba(180,180,200,0.08); border:1px solid rgba(192,192,192,0.22); }
+        .medal-card.bronze { background:rgba(160,100,50,0.08); border:1px solid rgba(205,127,50,0.22); }
+        .medal-card-wins { display:flex; flex-direction:column; gap:1px; }
+        .medal-card-win-row { font-family:'Teko',sans-serif; font-size:10px; letter-spacing:0.5px; text-align:center; line-height:1.3; }
+        .medal-card.silver .medal-card-win-row { color:rgba(192,192,192,0.8); }
+        .medal-card.bronze .medal-card-win-row { color:rgba(205,127,50,0.8); }
 
 
         footer { max-width:1200px; margin:40px auto; color:rgba(201,184,163,0.7); font-size:14px; text-align:center; padding-bottom:40px; }
@@ -180,6 +200,9 @@ searchInput.oninput = function() {
 
 // Map: pilotName (lowercase) → array of { champName, year, trophy }
 var pilotTrophies = {};
+        pilotMedals = {};
+// Map: pilotName (lowercase) → array of { champName, year, pos (2 or 3) }
+var pilotMedals = {};
 
 async function loadAll() {
   grid.innerHTML = '<div style="color:var(--muted)">Caricamento...</div>';
@@ -214,15 +237,9 @@ async function loadAll() {
           var garaTot = parseInt(race.garaTot) || 0;
           if (garaNum !== garaTot || garaTot === 0) return;
 
-          // Find champion from standings (pos:1) or fall back to first row
           var standings = race.standings || [];
-          var champion = standings.find(function(s) { return s.pos === 1; });
-          if (!champion && race.rows && race.rows.length) {
-            champion = { nome: race.rows[0].nome };
-          }
-          if (!champion || !champion.nome) return;
 
-          // Get championship info from calendario — try champId first, fall back to array index
+          // Get championship info from calendario
           var champ = null;
           if (race.champId) {
             champ = calendario.find(function(c) { return c.id === race.champId; }) || null;
@@ -231,14 +248,40 @@ async function loadAll() {
             var idx = parseInt(race.champIdx);
             if (!isNaN(idx)) champ = calendario[idx] || null;
           }
-          if (!champ || !champ.trophy) return;
+          if (!champ) return;
 
-          var key = champion.nome.toLowerCase().trim();
-          if (!pilotTrophies[key]) pilotTrophies[key] = [];
-          pilotTrophies[key].push({
-            champName: champ.name,
-            year: champ.year,
-            trophy: champ.trophy
+          // ── 1ST PLACE: Trophy ──
+          if (champ.trophy) {
+            var champion = standings.find(function(s) { return s.pos === 1; });
+            if (!champion && race.rows && race.rows.length) {
+              champion = { nome: race.rows[0].nome };
+            }
+            if (champion && champion.nome) {
+              var key = champion.nome.toLowerCase().trim();
+              if (!pilotTrophies[key]) pilotTrophies[key] = [];
+              pilotTrophies[key].push({
+                champName: champ.name,
+                year: champ.year,
+                trophy: champ.trophy
+              });
+            }
+          }
+
+          // ── 2ND & 3RD PLACE: Medals ──
+          [2, 3].forEach(function(pos) {
+            var finisher = standings.find(function(s) { return s.pos === pos; });
+            // fallback to rows if standings missing
+            if (!finisher && race.rows && race.rows.length >= pos) {
+              finisher = { nome: race.rows[pos - 1].nome };
+            }
+            if (!finisher || !finisher.nome) return;
+            var mKey = finisher.nome.toLowerCase().trim();
+            if (!pilotMedals[mKey]) pilotMedals[mKey] = [];
+            pilotMedals[mKey].push({
+              champName: champ.name,
+              year: champ.year,
+              pos: pos
+            });
           });
         });
       }
@@ -302,27 +345,86 @@ function renderPilot(p, calendario) {
 
   var trophiesHTML = '';
   if (won.length) {
-    // Group by trophy filename — multiple wins of same trophy show a count badge
+    // Group by trophy filename — multiple wins of same trophy image stacked under one card
     var grouped = {};
     won.forEach(function(t) {
       var key = t.trophy;
-      if (!grouped[key]) grouped[key] = { trophy: t.trophy, champName: t.champName, wins: [] };
+      if (!grouped[key]) grouped[key] = { trophy: t.trophy, wins: [] };
       grouped[key].wins.push({ champName: t.champName, year: t.year });
     });
 
     var trophyCards = Object.values(grouped).map(function(g) {
-      // Show all years if multiple wins, else single year
-      var yearLabel = g.wins.map(function(w){ return w.year; }).join(', ');
+      var countBadge = g.wins.length > 1
+        ? '<span class="trophy-won-count">x' + g.wins.length + '</span>'
+        : '';
+      var winsList = g.wins.map(function(w) {
+        return '<div class="trophy-won-win-row">' + esc(w.year) + ' ' + esc(w.champName) + '</div>';
+      }).join('');
       return '<div class="trophy-won">'
-        + '<img src="trophy_png/' + esc(g.trophy) + '" alt="' + esc(g.champName) + '">'
-        + '<div class="trophy-won-name">' + esc(g.champName) + '</div>'
-        + '<div class="trophy-won-year">' + esc(yearLabel) + '</div>'
+        + '<div class="trophy-won-img-wrap">'
+        +   '<img src="trophy_png/' + esc(g.trophy) + '" alt="trophy" style="width:60px;height:70px;object-fit:contain;">'
+        +   countBadge
+        + '</div>'
+        + '<div class="trophy-won-wins">' + winsList + '</div>'
         + '</div>';
     }).join('');
 
     trophiesHTML = '<div class="trophies-section">'
       + '<div class="trophies-label">🏆 Campionati Vinti</div>'
       + '<div class="trophies-row">' + trophyCards + '</div>'
+      + '</div>';
+  }
+
+  // ── Medals (2nd & 3rd place) ──
+  var medalsHTML = '';
+  var pilotMedalWins = [];
+  names.forEach(function(n) {
+    if (pilotMedals[n]) {
+      pilotMedals[n].forEach(function(m) {
+        var exists = pilotMedalWins.find(function(e) { return e.champName === m.champName && e.year === m.year && e.pos === m.pos; });
+        if (!exists) pilotMedalWins.push(m);
+      });
+    }
+  });
+
+  if (pilotMedalWins.length) {
+    // Group by position (2 = silver, 3 = bronze)
+    var silverWins = pilotMedalWins.filter(function(m) { return m.pos === 2; });
+    var bronzeWins = pilotMedalWins.filter(function(m) { return m.pos === 3; });
+
+    function svgMedal(pos) {
+      var fill   = pos === 2 ? '#b8b8cc' : '#cd7f32';
+      var stroke = pos === 2 ? '#888898' : '#a05a20';
+      var ribbon1= pos === 2 ? '#9090a8' : '#a05a20';
+      var ribbon2= pos === 2 ? '#707088' : '#8b4513';
+      var label  = pos === 2 ? '2' : '3';
+      return '<svg width="48" height="62" viewBox="0 0 48 62" xmlns="http://www.w3.org/2000/svg">'
+        + '<rect x="17" y="0" width="5" height="22" rx="2" fill="' + ribbon1 + '"/>'
+        + '<rect x="23" y="0" width="5" height="22" rx="2" fill="' + stroke + '"/>'
+        + '<circle cx="24" cy="43" r="18" fill="' + fill + '" stroke="' + stroke + '" stroke-width="2"/>'
+        + '<circle cx="24" cy="43" r="13" fill="none" stroke="' + stroke + '" stroke-width="1" opacity="0.4"/>'
+        + '<text x="24" y="50" text-anchor="middle" font-size="16" font-weight="bold" font-family="Arial,sans-serif" fill="white" opacity="0.9">' + label + '</text>'
+        + '</svg>';
+    }
+
+    function medalCards(wins, pos) {
+      if (!wins.length) return '';
+      var cls    = pos === 2 ? 'silver' : 'bronze';
+      var count  = wins.length > 1 ? '<div style="font-family:Teko,sans-serif;font-size:11px;letter-spacing:1px;color:' + (pos===2?'#b8b8cc':'#cd7f32') + '">x' + wins.length + '</div>' : '';
+      var list   = wins.map(function(w) {
+        return '<div class="medal-card-win-row">' + esc(w.year) + ' ' + esc(w.champName) + '</div>';
+      }).join('');
+      return '<div class="medal-card ' + cls + '">'
+        + svgMedal(pos)
+        + count
+        + '<div class="medal-card-wins">' + list + '</div>'
+        + '</div>';
+    }
+
+    var medalCards_html = medalCards(silverWins, 2) + medalCards(bronzeWins, 3);
+    medalsHTML = '<div class="medals-section">'
+      + '<div class="medals-label">🎖️ Podi Campionato</div>'
+      + '<div class="medals-row">' + medalCards_html + '</div>'
       + '</div>';
   }
 
@@ -373,6 +475,7 @@ function renderPilot(p, calendario) {
     +   (p.catchphrase ? '<div class="catchphrase">💬 "' + esc(p.catchphrase) + '"</div>' : '')
     +   '<div class="badges">' + (p.badges||[]).map(function(b){ return '<span class="badge">' + esc(b) + '</span>'; }).join('') + '</div>'
     +   trophiesHTML
+    +   medalsHTML
     +   campionatiHTML
     + '</div>';
 
