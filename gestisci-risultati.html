@@ -334,6 +334,8 @@ let token = '';
 let calendarioData  = [];  // from calendario.json
 let champHtmlMap    = {};  // slug -> html string of championship file
 let pilotNames      = [];  // from piloti_schede/
+let pilotCarsMap    = {};  // nome -> { champId: { cars: [...] } }
+let carNameToId     = {};  // gt7 displayName (lowercase) -> numeric id
 let previousResults = {};  // champIdx -> { pilotName -> [pts per round] }
 let rowCounter      = 0;
 let currentAcInput  = null;
@@ -493,6 +495,11 @@ async function loadPilots(){
       return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
     }));
     pilotNames = pilots.filter(Boolean).map(p=>p.nome||p.name||p.psn||'').filter(Boolean);
+    pilots.filter(Boolean).forEach(function(p){
+      var nome = p.nome||p.name||p.psn||'';
+      if(nome && p.campionati) pilotCarsMap[nome] = p.campionati;
+    });
+    loadGT7Cars();
   } catch {}
 }
 
@@ -536,6 +543,69 @@ async function loadPreviousResults(champVal){
   } catch(e){ console.warn('loadPreviousResults:', e.message); }
 }
 
+// ── GT7 CARS ──
+async function loadGT7Cars(){
+  try {
+    var makersMap = {
+      '3':'Alfa Romeo','4':'Aston Martin','5':'Audi','6':'BMW','7':'Chevrolet',
+      '9':'Citroën','10':'Daihatsu','11':'Dodge','12':'Fiat','13':'Ford',
+      '15':'Honda','17':'Jaguar','18':'Lancia','21':'Mazda','22':'Mercedes-Benz',
+      '25':'Mitsubishi','26':'Nissan','30':'Pagani','32':'Peugeot','34':'Renault',
+      '38':'Subaru','40':'Toyota','50':'Lexus','51':'MINI','59':'Amuse',
+      '65':'DeLorean','86':'Alpine A110','87':'RE Amemiya','93':'Chaparral',
+      '110':'Ferrari','112':'Lamborghini','116':'Maserati','117':'McLaren',
+      '119':'Tesla','121':'KTM','125':'Abarth','153':'Mercedes-AMG',
+      '2':'Acura','8':'Bugatti','14':'Genesis','16':'Hyundai','33':'Porsche',
+      '52':'Lotus','66':'De Tomaso','90':'RUF','101':'Cobra','102':'Corvette'
+    };
+    var r = await fetch('https://ddm999.github.io/gt7info/data/db/cars.csv');
+    if(!r.ok) return;
+    var lines = (await r.text()).trim().split('\n');
+    var tmp = {};
+    lines.forEach(function(line){
+      var parts = line.split(',');
+      if(parts.length < 3) return;
+      var id = parts[0].trim();
+      if(!id || isNaN(parseInt(id))) return;
+      var shortName = parts.slice(1, parts.length-1).join(',').trim();
+      var mfr = makersMap[parts[parts.length-1].trim()] || '';
+      var displayName = (mfr && shortName.toLowerCase().indexOf(mfr.toLowerCase()) === -1)
+        ? mfr + ' ' + shortName : shortName;
+      tmp[displayName.trim().toLowerCase()] = id;
+    });
+    if(Object.keys(tmp).length > 10) carNameToId = tmp;
+  } catch(e){ console.warn('loadGT7Cars:', e.message); }
+}
+
+function carImageUrl(carId){
+  return 'https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car'+carId+'.png';
+}
+
+function populateCarSelect(id, nome){
+  const wrap = document.getElementById('car-wrap-'+id);
+  const sel  = document.getElementById('car-sel-'+id);
+  if(!wrap || !sel) return;
+
+  const champIdx = document.getElementById('champSelect').value;
+  const champ    = getChampBySelectValue(champIdx);
+  const champId  = champ ? champ.id : null;
+
+  const pilotData = pilotCarsMap[nome];
+  const cars = (pilotData && champId && pilotData[champId] && pilotData[champId].cars)
+    ? pilotData[champId].cars : [];
+
+  sel.innerHTML = '<option value="">— Auto —</option>';
+  cars.forEach(function(c){
+    var opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    sel.appendChild(opt);
+  });
+
+  if(cars.length === 1) sel.value = cars[0];
+  wrap.style.display = cars.length ? 'block' : 'none';
+}
+
 // ── ROWS ──
 function addRow(data={}){
   rowCounter++;
@@ -555,6 +625,11 @@ function addRow(data={}){
         <input type="text" placeholder="Nome pilota" value="${esc(data.nome||'')}" id="nome-${id}"
           oninput="onNomeInput(${id},this)" autocomplete="off">
         <button class="btn-pick-pilot" onclick="openPilotPicker(${id})" title="Scegli dalla rosa" type="button">▼</button>
+      </div>
+      <div id="car-wrap-${id}" style="display:none;margin-top:4px;">
+        <select id="car-sel-${id}" style="width:100%;background:#0e0e1c;color:#c9b8a3;border:1px solid rgba(201,162,39,0.25);border-radius:6px;padding:4px 7px;font-family:'Barlow Condensed',sans-serif;font-size:13px;outline:none;">
+          <option value="">— Auto —</option>
+        </select>
       </div>
     </td>
     <td><input type="text" placeholder="26'42''124" value="${esc(data.tempo||'')}" id="tempo-${id}" oninput="formatTime(this);" inputmode="numeric" maxlength="12"></td>
@@ -576,6 +651,21 @@ function addRow(data={}){
   document.getElementById('resultsBody').appendChild(tr);
   updateRowCount();
   if(data.punti!==undefined) calcTotal(id);
+  if(data.nome) {
+    populateCarSelect(id, data.nome);
+    if(data.auto){
+      var carSel = document.getElementById('car-sel-'+id);
+      if(carSel){
+        // add saved car as option if not already present, then select it
+        if(!Array.from(carSel.options).some(function(o){return o.value===data.auto;})){
+          var opt = document.createElement('option'); opt.value=data.auto; opt.textContent=data.auto;
+          carSel.appendChild(opt);
+        }
+        carSel.value = data.auto;
+        document.getElementById('car-wrap-'+id).style.display = 'block';
+      }
+    }
+  }
   
 }
 
@@ -668,7 +758,7 @@ function onNomeInput(id, input){
     item.onmousedown=()=>{
       document.getElementById(`nome-${id}`).value=name;
       dropdown.classList.remove('open');
-      
+      populateCarSelect(id, name);
     };
     dropdown.appendChild(item);
   });
@@ -690,6 +780,7 @@ function collectRows(){
     return {
       pos:     i+1,
       nome:    ( document.getElementById(`nome-${id}`) ? document.getElementById(`nome-${id}`).value.trim() : ''),
+      auto:    ( document.getElementById(`car-sel-${id}`) ? document.getElementById(`car-sel-${id}`).value.trim() : ''),
       tempo:   ( document.getElementById(`tempo-${id}`) ? document.getElementById(`tempo-${id}`).value.trim() : ''),
       bestLap: ( document.getElementById(`bestlap-${id}`) ? document.getElementById(`bestlap-${id}`).value.trim() : ''),
       fl:      ( document.getElementById(`fl-${id}`) ? document.getElementById(`fl-${id}`).checked : false)||false,
@@ -772,7 +863,7 @@ function buildHTML(){
     garaNum: parseInt(garaNum||1),
     garaTot: parseInt(garaTot||1),
     bestOf: (champ && champ.bestOf) ? parseInt(champ.bestOf) : null,
-    rows: rows.map(function(r){return{nome:r.nome,totale:r.totale};})
+    rows: rows.map(function(r){return{nome:r.nome,auto:r.auto||'',totale:r.totale};})
   });
 
   // fastest lap pilot
@@ -783,9 +874,15 @@ function buildHTML(){
     const nameClass = r.pos<=3 ? 'pilot-name-top' : 'pilot-name';
     const flClass  = r.fl ? 'best-lap' : '';
     const statoTag = r.stato==='dnf'?'<span class="dnf-tag">DNF</span>':r.stato==='dsq'?'<span class="dsq-tag">DSQ</span>':'';
+    const carId    = r.auto ? (carNameToId[r.auto.toLowerCase()] || '') : '';
+    const carHtml  = r.auto
+      ? `<div style="display:flex;align-items:center;gap:5px;margin-top:3px;">`
+        + (carId ? `<img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car${carId}.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'">` : '')
+        + `<span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">${esc(r.auto)}</span></div>`
+      : '';
     return `<tr class="${r.stato!=='ok'?'row-retired':''}">
       <td class="${posClass}">${r.pos}°${statoTag}</td>
-      <td class="${nameClass}">${esc(r.nome)}</td>
+      <td class="${nameClass}">${esc(r.nome)}${carHtml}</td>
       <td>${esc(r.tempo)}</td>
       <td class="${flClass}">${esc(r.bestLap)}</td>
       <td>${r.punti}</td>
@@ -1276,7 +1373,7 @@ function selectPilotFromPicker(name){
     var input = document.getElementById('nome-' + _pickerTargetId);
     if(input){
       input.value = name;
-      
+      populateCarSelect(_pickerTargetId, name);
     }
   }
   closePilotPicker();
