@@ -239,15 +239,50 @@ async function loadArchive(){
     const campionati = await calRes.json();
     if(!campionati.length){ showEmpty(); return; }
 
-    // 2. Load list of result JSON files via index.json — 0 API calls
-    let resultFiles = [];
+    // 2. List ALL files in risultati/ via GitHub API (no auth needed for public repos)
+    //    Then fetch each JSON to read champId + garaNum — fully reliable, no regex on filenames.
+    //    Falls back to index.json if the API call fails.
+    let raceIndex = []; // [{ json, html, champId, garaNum, circuit }]
     try {
-      const rfRes = await fetch(`${BASE}/risultati/index.json?_=${Date.now()}`);
-      if(rfRes.ok){
-        const rf = await rfRes.json();
-        resultFiles = (rf||[]).filter(f=>f.endsWith('.json'));
+      const dirRes = await fetch(`${API}/contents/risultati?ref=${BRANCH}`);
+      if(dirRes.ok){
+        const dirFiles = await dirRes.json();
+        const jsonFiles = Array.isArray(dirFiles)
+          ? dirFiles.filter(f=>f.type==='file'&&f.name.endsWith('.json')&&f.name!=='index.json')
+          : [];
+        // Fetch all JSON files in parallel and parse champId/garaNum
+        const parsed = await Promise.all(jsonFiles.map(async f=>{
+          try {
+            const r = await fetch(`${BASE}/risultati/${f.name}?_=${Date.now()}`);
+            if(!r.ok) return null;
+            const d = await r.json();
+            // circuit: extract from filename after rN segment
+            const parts = f.name.replace('.json','').split('-');
+            const rIdx  = parts.findIndex(p=>/^r\d+$/i.test(p));
+            const circuit = rIdx>=0 && parts.length>rIdx+1
+              ? parts.slice(rIdx+1).map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join(' ')
+              : '';
+            return {
+              json: f.name,
+              html: f.name.replace('.json','.html'),
+              champId:  d.champId  || '',
+              garaNum:  parseInt(d.garaNum)||0,
+              circuit
+            };
+          } catch{ return null; }
+        }));
+        raceIndex = parsed.filter(Boolean);
       }
     } catch {}
+
+    // Fallback: use index.json + filename regex if API gave nothing
+    let legacyFiles = [];
+    if(!raceIndex.length){
+      try {
+        const rfRes = await fetch(`${BASE}/risultati/index.json?_=${Date.now()}`);
+        if(rfRes.ok){ const rf=await rfRes.json(); legacyFiles=(rf||[]).filter(f=>f.endsWith('.json')); }
+      } catch {}
+    }
 
     // 3. Group championships by year
     const byYear = {};
@@ -281,39 +316,50 @@ async function loadArchive(){
       const ul = yearDiv.querySelector(`#${listId}`);
 
       champs.forEach((c,ci)=>{
-        const champId = `champ-${year}-${ci}`;
-        const totalRounds = c.totalRounds||0;
+        const champDomId   = `champ-${year}-${ci}`;
+        const totalRounds  = c.totalRounds||0;
 
         // Status pill
-        const statusClass = c.status==='in-corso'?'pill-incorso':c.status==='concluso'?'pill-concluso':'pill-prossimo';
-        const statusLabel  = c.status==='in-corso'?'🔥 In Corso':c.status==='concluso'?'✅ Concluso':'⏳ Prossimamente';
+        const statusNorm  = (c.status||'').toLowerCase().replace(/-/g,' ').trim();
+        const statusClass = statusNorm==='in corso'?'pill-incorso':statusNorm==='concluso'?'pill-concluso':'pill-prossimo';
+        const statusLabel = statusNorm==='in corso'?'🔥 In Corso':statusNorm==='concluso'?'✅ Concluso':'⏳ Prossimamente';
 
         // Build rounds list
         let roundsHTML = '';
         for(let r=1;r<=totalRounds;r++){
-          // Find a result file matching this champ + round
-          // Convention: risultati file contains year-slug-rN in the name
-          const pattern = new RegExp(`${(c.year||'')}.*(${(c.slug||'').replace(/[^a-z0-9]/gi,'.?')}|${(c.name||'').replace(/[^a-z0-9]/gi,'.?')}).*r${r}.*\\.json`,'i');
-          const matchFile = resultFiles.find(f=>pattern.test(f));
-          const hasResult = !!matchFile;
-          const htmlFile  = matchFile ? 'risultati/' + matchFile.replace('.json','.html') : null;
+          let matchEntry = null;
 
-          // Try to get circuit name from file name
-          let circuitLabel = `Round ${r}`;
-          if(matchFile){
-            // extract circuit part: year-slug-rN-circuit.json
-            const parts = matchFile.replace('.json','').split('-');
-            // find the rN part and take everything after
-            const rIdx = parts.findIndex(p=>/^r\d+$/i.test(p));
-            if(rIdx>=0 && parts.length>rIdx+1){
-              circuitLabel = parts.slice(rIdx+1).map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join(' ');
+          if(raceIndex.length){
+            // Primary: match by champId + garaNum (fully reliable)
+            matchEntry = raceIndex.find(e=>e.garaNum===r&&(
+              e.champId===c.id ||
+              e.champId===(c.slug||'') ||
+              e.champId===String(campionati.indexOf(c))
+            ));
+          }
+
+          if(!matchEntry && legacyFiles.length){
+            // Fallback: legacy filename regex
+            const pattern = new RegExp(`${(c.year||'')}.*(${(c.slug||'').replace(/[^a-z0-9]/gi,'.?')}|${(c.name||'').replace(/[^a-z0-9]/gi,'.?')}).*r${r}.*\\.json`,'i');
+            const mf = legacyFiles.find(f=>pattern.test(f));
+            if(mf){
+              const parts = mf.replace('.json','').split('-');
+              const rIdx  = parts.findIndex(p=>/^r\d+$/i.test(p));
+              const circuit = rIdx>=0&&parts.length>rIdx+1
+                ? parts.slice(rIdx+1).map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join(' ')
+                : `Round ${r}`;
+              matchEntry = { json: mf, html: mf.replace('.json','.html'), circuit };
             }
           }
 
-          const tick    = hasResult ? '<span class="round-tick">✅</span>' : '<span class="round-pending">—</span>';
+          const hasResult   = !!matchEntry;
+          const circuitLabel= hasResult&&matchEntry.circuit ? matchEntry.circuit : `Round ${r}`;
+          const htmlFile    = hasResult ? 'risultati/' + matchEntry.html : null;
+
+          const tick      = hasResult ? '<span class="round-tick">✅</span>' : '<span class="round-pending">—</span>';
           const itemClass = hasResult ? 'child-item' : 'child-item no-results';
-          const tag   = hasResult ? `<a href="${htmlFile}" class="${itemClass}">` : `<div class="${itemClass}">`;
-          const endTag= hasResult ? '</a>' : '</div>';
+          const tag       = hasResult ? `<a href="${htmlFile}" class="${itemClass}">` : `<div class="${itemClass}">`;
+          const endTag    = hasResult ? '</a>' : '</div>';
 
           roundsHTML += `<li>
             ${tag}
@@ -325,9 +371,10 @@ async function loadArchive(){
         }
 
         // Classifica finale — only if concluso
-        if(c.status==='concluso'){
-          const classFname = `classifica-${c.slug||c.year+'-'+ci}.html`;
-          const hasClassifica = resultFiles.includes(classFname.replace('.html','.json'));
+        if(statusNorm==='concluso'){
+          const classFname    = `classifica-${c.slug||c.year+'-'+ci}.html`;
+          const hasClassifica = raceIndex.some(e=>e.json===classFname.replace('.html','.json'))
+                             || legacyFiles.includes(classFname.replace('.html','.json'));
           if(hasClassifica){
             roundsHTML += `<li><a href="${classFname}" class="child-item classifica-finale">🏆 Classifica Finale ${c.name} ${c.year}</a></li>`;
           }
@@ -335,7 +382,7 @@ async function loadArchive(){
 
         const li = document.createElement('li');
         li.innerHTML=`
-          <button class="item-toggle" data-target="${champId}">
+          <button class="item-toggle" data-target="${champDomId}">
             <span class="champ-label">
               <span class="champ-cat-pill">${esc(c.cat||'')}</span>
               ${esc(c.name||'?')} ${esc(String(c.year||''))}
@@ -346,7 +393,7 @@ async function loadArchive(){
               <span class="arrow">▶</span>
             </span>
           </button>
-          <ul id="${champId}" class="child-list" role="list">${roundsHTML}</ul>
+          <ul id="${champDomId}" class="child-list" role="list">${roundsHTML}</ul>
         `;
         ul.appendChild(li);
       });
