@@ -31,6 +31,9 @@
         .pilot-photo { width:280px; min-width:280px; height:350px; object-fit:cover; border-radius:10px; display:block; }
         .pilot-content { flex:1; display:flex; flex-direction:column; }
         .pilot-name { font-family:'Teko',sans-serif; font-size:24px; margin:10px 0 2px; color:var(--accent2); }
+        .pilot-stats { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
+        .stat-pill { display:inline-flex; align-items:center; gap:4px; background:rgba(201,162,39,0.06); border:1px solid rgba(201,162,39,0.18); border-radius:6px; padding:2px 8px; font-family:'Teko',sans-serif; font-size:12px; letter-spacing:1px; color:rgba(201,184,163,0.8); }
+        .stat-pill strong { color:#c9a227; font-size:14px; font-weight:600; }
         .psn { color:var(--muted); font-size:0.85rem; margin-bottom:10px; }
         .info { color:var(--cream); font-size:0.9rem; line-height:1.7; margin-bottom:8px; }
         .catchphrase { color:var(--accent2); font-style:italic; font-size:0.85rem; margin-top:8px; }
@@ -200,6 +203,8 @@ searchInput.oninput = function() {
 
 // Map: pilotName (lowercase) → array of { champName, year, trophy }
 var pilotTrophies = {};
+// Map: pilotName (lowercase) → { races: N, champs: Set of champId }
+var pilotStats = {};
         pilotMedals = {};
 // Map: pilotName (lowercase) → array of { champName, year, pos (2 or 3) }
 var pilotMedals = {};
@@ -230,6 +235,19 @@ async function loadAll() {
             return await r.json();
           } catch(e) { return null; }
         }));
+
+        // Scan ALL races to count participations per pilot
+        results.filter(Boolean).forEach(function(race) {
+          var champId = race.champId || '';
+          var rows = race.rows || [];
+          rows.forEach(function(row) {
+            if (!row.nome) return;
+            var key = row.nome.toLowerCase().trim();
+            if (!pilotStats[key]) pilotStats[key] = { races: 0, champs: {} };
+            pilotStats[key].races++;
+            if (champId) pilotStats[key].champs[champId] = true;
+          });
+        });
 
         results.filter(Boolean).forEach(function(race) {
           // Only look at FINAL race of each championship (garaNum === garaTot)
@@ -465,6 +483,18 @@ function renderPilot(p, calendario) {
     + '<div class="pilot-content">'
     +   '<div class="pilot-name">' + esc(nome) + '</div>'
     +   '<div class="psn">🎮 ' + esc(psn) + '</div>'
+    +   (function(){
+          var st = null;
+          names.forEach(function(n){ if(pilotStats[n] && !st) st = pilotStats[n]; });
+          if(!st) return '';
+          var raceCount = st.races;
+          var champCount = Object.keys(st.champs).length;
+          if(!raceCount && !champCount) return '';
+          var pills = '';
+          if(champCount) pills += '<span class="stat-pill"><strong>' + champCount + '</strong>&nbsp;campionat' + (champCount===1?'o':'i') + '</span>';
+          if(raceCount)  pills += '<span class="stat-pill"><strong>' + raceCount + '</strong>&nbsp;gar' + (raceCount===1?'a':'e') + '</span>';
+          return '<div class="pilot-stats">' + pills + '</div>';
+        })()
     +   '<div class="info">'
     +     (locationStr ? locationStr + '<br>' : '')
     +     (auto ? '🚗 ' + esc(auto) + '<br>' : '')
