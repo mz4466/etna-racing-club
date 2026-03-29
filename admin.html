@@ -32,7 +32,6 @@
     overflow: hidden;
   }
 
-  /* ── BACKGROUND LAVA FIELD ── */
   .bg-canvas {
     position: fixed;
     inset: 0;
@@ -40,7 +39,6 @@
     overflow: hidden;
   }
 
-  /* Animated cinder particles */
   .cinder {
     position: absolute;
     bottom: -10px;
@@ -59,7 +57,6 @@
     100% { transform: translateY(-100vh) translateX(var(--drift)) scale(0.2); opacity: 0; }
   }
 
-  /* Lava glow at bottom */
   .lava-glow {
     position: absolute;
     bottom: 0; left: 0; right: 0;
@@ -71,7 +68,6 @@
     pointer-events: none;
   }
 
-  /* Volcano silhouette */
   .volcano {
     position: absolute;
     bottom: 0;
@@ -96,7 +92,6 @@
     border-bottom: 120px solid #070710;
   }
 
-  /* ── LOGIN SCREEN ── */
   #loginScreen {
     position: relative;
     z-index: 10;
@@ -131,9 +126,7 @@
     margin-bottom: 32px;
   }
 
-  .shield {
-    margin-bottom: 14px;
-  }
+  .shield { margin-bottom: 14px; }
 
   .shield img {
     width: 72px;
@@ -159,10 +152,7 @@
     margin-top: 3px;
   }
 
-  /* Form */
-  .field {
-    margin-bottom: 16px;
-  }
+  .field { margin-bottom: 16px; }
 
   .field label {
     display: block;
@@ -233,9 +223,7 @@
 
   .btn-login:active { transform: translateY(0); }
 
-  .btn-login.shake {
-    animation: shake 0.4s ease;
-  }
+  .btn-login.shake { animation: shake 0.4s ease; }
 
   @keyframes shake {
     0%,100% { transform: translateX(0); }
@@ -255,7 +243,6 @@
     text-transform: uppercase;
   }
 
-  /* ── DASHBOARD ── */
   #dashboard {
     display: none;
     position: relative;
@@ -275,7 +262,6 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* Top bar */
   .dash-topbar {
     background: linear-gradient(90deg, #0a0a18 0%, #0e0c1a 100%);
     border-bottom: 1px solid var(--border-hi);
@@ -292,13 +278,11 @@
     width: 34px; height: 34px;
     background: var(--gold-dim);
     clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
-    border: none;
     display: flex; align-items: center; justify-content: center;
   }
 
   .dash-logo-hex img {
-    width: 34px;
-    height: 34px;
+    width: 34px; height: 34px;
     object-fit: contain;
     filter: drop-shadow(0 0 6px var(--gold-glow));
   }
@@ -311,10 +295,7 @@
     text-transform: uppercase;
   }
 
-  .dash-divider {
-    width: 1px; height: 24px;
-    background: var(--border-hi);
-  }
+  .dash-divider { width: 1px; height: 24px; background: var(--border-hi); }
 
   .dash-section-label {
     font-family: 'Teko', sans-serif;
@@ -326,11 +307,7 @@
 
   .dash-spacer { flex: 1; }
 
-  .dash-user {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  .dash-user { display: flex; align-items: center; gap: 10px; }
 
   .dash-user-badge {
     background: var(--gold-dim);
@@ -360,7 +337,6 @@
 
   .btn-logout:hover { border-color: var(--red); color: var(--red); }
 
-  /* Dashboard body */
   .dash-body {
     flex: 1;
     display: flex;
@@ -370,18 +346,11 @@
     overflow: hidden;
   }
 
-  .dash-content {
-    width: 100%;
-    max-width: 860px;
-  }
-
-  .dash-welcome {
-    margin-bottom: 28px !important;
-  }
+  .dash-content { width: 100%; max-width: 960px; }
 
   .dash-welcome {
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 28px;
   }
 
   .dash-welcome h1 {
@@ -401,13 +370,11 @@
     text-transform: uppercase;
   }
 
-  /* Menu cards */
   .menu-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 1fr;
     gap: 16px;
-    max-width: 900px;
+    max-width: 960px;
     margin: 0 auto;
   }
 
@@ -427,8 +394,11 @@
   }
 
   .menu-card:nth-child(1) { animation-delay: 0.05s; }
-  .menu-card:nth-child(2) { animation-delay: 0.12s; }
-  .menu-card:nth-child(3) { animation-delay: 0.19s; }
+  .menu-card:nth-child(2) { animation-delay: 0.10s; }
+  .menu-card:nth-child(3) { animation-delay: 0.15s; }
+  .menu-card:nth-child(4) { animation-delay: 0.20s; }
+  .menu-card:nth-child(5) { animation-delay: 0.25s; }
+  .menu-card:nth-child(6) { animation-delay: 0.30s; }
 
   @keyframes cardIn {
     from { opacity: 0; transform: translateY(20px); }
@@ -485,7 +455,6 @@
     z-index: 1;
   }
 
-  /* Gold line under icon */
   .card-line {
     width: 32px;
     height: 2px;
@@ -499,7 +468,6 @@
 
   .menu-card:hover .card-line { width: 60px; opacity: 1; }
 
-  /* Bottom nav bar */
   .dash-footer {
     border-top: 1px solid var(--border);
     padding: 12px 36px;
@@ -527,7 +495,6 @@
     vertical-align: middle;
   }
 
-  /* ── TOAST ── */
   #toast {
     position: fixed;
     bottom: 28px; right: 28px;
@@ -548,7 +515,6 @@
 
   #toast.show { opacity: 1; transform: translateY(0); }
 
-  /* ── RESPONSIVE ── */
   @media (max-width: 640px) {
     .login-box { width: 90vw; padding: 36px 28px 28px; }
     .menu-grid { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; }
@@ -559,16 +525,13 @@
 </head>
 <body>
 
-<!-- ── ANIMATED BACKGROUND ── -->
 <div class="bg-canvas" id="bgCanvas">
   <div class="volcano"></div>
   <div class="lava-glow"></div>
 </div>
 
-<!-- ── LOGIN ── -->
 <div id="loginScreen">
   <div class="login-box">
-
     <div class="login-emblem">
       <div class="shield">
         <img src="etna-logo.jpg" alt="Etna Racing Club">
@@ -576,28 +539,21 @@
       <div class="login-club">Etna Racing Club</div>
       <div class="login-sub">Area Riservata</div>
     </div>
-
     <div class="field">
       <label>Username</label>
       <input type="text" id="usernameInput" placeholder="Inserisci username" autocomplete="username" spellcheck="false">
     </div>
-
     <div class="field">
       <label>Password</label>
       <input type="password" id="passwordInput" placeholder="••••••••" autocomplete="current-password">
     </div>
-
     <div class="error-msg" id="errorMsg">Username o password errati</div>
-
     <button class="btn-login" id="loginBtn" onclick="doLogin()">Accedi</button>
-
     <div class="login-footer">Etna Racing Club &mdash; GT7 &copy; 2026</div>
   </div>
 </div>
 
-<!-- ── DASHBOARD ── -->
 <div id="dashboard">
-
   <div class="dash-topbar">
     <div class="dash-logo-hex"><img src="etna-logo.jpg" alt="ERC"></div>
     <div class="dash-title">Etna Racing Club</div>
@@ -612,7 +568,6 @@
 
   <div class="dash-body">
     <div class="dash-content">
-
       <div class="dash-welcome">
         <h1>Benvenuto, Admin</h1>
         <p>Cosa vuoi gestire oggi?</p>
@@ -655,6 +610,13 @@
           <div class="card-desc">Carica un campionato esistente, modifica rounds e dettagli, e ripubblica.</div>
         </a>
 
+        <a class="menu-card" href="gestisci_regolamenti.html" onclick="navTo(event,'gestisci_regolamenti.html')">
+          <span class="card-icon">📋</span>
+          <div class="card-line"></div>
+          <div class="card-title">Gestisci Regolamenti</div>
+          <div class="card-desc">Crea, modifica ed elimina i regolamenti del club. Generale, F1 e altro.</div>
+        </a>
+
       </div>
     </div>
   </div>
@@ -665,14 +627,11 @@
     </div>
     <div class="footer-info">Etna Racing Club — GT7 © 2026</div>
   </div>
-
 </div>
 
-<!-- TOAST -->
-<div id="toast" id="toast"></div>
+<div id="toast"></div>
 
 <script>
-  // ── CINDER PARTICLES ──
   (function spawnCinders() {
     const canvas = document.getElementById('bgCanvas');
     for (let i = 0; i < 28; i++) {
@@ -692,8 +651,6 @@
     }
   })();
 
-  // ── AUTH ──
-  // Password 'Etna' hashed with SHA-256
   const ADMIN_USER = 'AdminERC';
   const ADMIN_HASH = '40ede8445092e43118daf16eacc7be7daa689990772d7bf8f71ba4a05b4348e5';
 
@@ -702,7 +659,6 @@
     return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
   }
 
-  // Enter key support
   document.getElementById('passwordInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') doLogin();
   });
@@ -714,12 +670,8 @@
     const user = document.getElementById('usernameInput').value.trim();
     const pass = document.getElementById('passwordInput').value;
     const btn  = document.getElementById('loginBtn');
-    const err  = document.getElementById('errorMsg');
 
-    if (!user || !pass) {
-      showError('Inserisci username e password');
-      return;
-    }
+    if (!user || !pass) { showError('Inserisci username e password'); return; }
 
     btn.textContent = '...';
     btn.style.opacity = '0.7';
@@ -727,7 +679,6 @@
     const hash = await sha256(pass);
 
     if (user === ADMIN_USER && hash === ADMIN_HASH) {
-      // Success
       sessionStorage.setItem('erc_auth', '1');
       sessionStorage.setItem('erc_user', user);
       showDashboard();
@@ -736,7 +687,7 @@
       btn.style.opacity = '1';
       showError('Username o password errati');
       btn.classList.remove('shake');
-      void btn.offsetWidth; // reflow to restart animation
+      void btn.offsetWidth;
       btn.classList.add('shake');
     }
   }
@@ -763,22 +714,24 @@
     document.getElementById('passwordInput').value = '';
   }
 
-  // ── SESSION RESTORE ──
-  // If already authenticated in this browser session, skip login
   if (sessionStorage.getItem('erc_auth') === '1') {
     showDashboard();
   }
 
-  // ── NAVIGATION ──
-  // Pages not yet built show a toast. Add to BUILT_PAGES as each one is created.
-  const BUILT_PAGES = ['crea-campionato.html', 'gestisci-calendario.html', 'modifica-campionato.html', 'gestisci-piloti.html', 'gestisci-risultati.html'];
+  const BUILT_PAGES = [
+    'crea-campionato.html',
+    'gestisci-calendario.html',
+    'modifica-campionato.html',
+    'gestisci-piloti.html',
+    'gestisci-risultati.html',
+    'gestisci_regolamenti.html'
+  ];
 
   function navTo(e, page) {
     if (!BUILT_PAGES.includes(page)) {
       e.preventDefault();
       showToast('📌 ' + page + ' — in costruzione');
     }
-    // else navigate normally
   }
 
   function showToast(msg) {
