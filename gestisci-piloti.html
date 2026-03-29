@@ -249,8 +249,8 @@
           <input type="text" id="fPsn" placeholder="es. SicilianRacer_GT">
         </div>
         <div class="field">
-          <label>Nazione</label>
-          <input type="text" id="fNazione" placeholder="es. Italia 🇮🇹">
+          <label>Regione</label>
+          <input type="text" id="fRegione" placeholder="es. Calabria 🇮🇹">
         </div>
         <div class="field">
           <label>Auto Preferita</label>
@@ -616,7 +616,7 @@ function renderGrid(list){
         <div class="pilot-name">${esc(data.nome||'—')}</div>
         <div class="pilot-psn">🎮 ${esc(data.psn||'—')}</div>
         <div class="pilot-meta">
-          ${data.nazione?`<div class="pilot-meta-row"><span class="lbl">Nazione</span>${esc(data.nazione)}</div>`:''}
+          ${data.Regione?`<div class="pilot-meta-row"><span class="lbl">Regione</span>${esc(data.Regione)}</div>`:''}
           ${data.auto?`<div class="pilot-meta-row"><span class="lbl">Auto</span>${esc(data.auto)}</div>`:''}
           ${data.stile?`<div class="pilot-meta-row"><span class="lbl">Stile</span>${esc(data.stile)}</div>`:''}
           ${data.pistaAma?`<div class="pilot-meta-row"><span class="lbl">❤️</span>${esc(data.pistaAma)}</div>`:''}
@@ -637,7 +637,7 @@ function filterPilots(){
   const q = document.getElementById('searchInput').value.toLowerCase();
   if(!q){ renderGrid(); return; }
   const filtered = allPilots.filter(({slug,data})=>{
-    return [data.nome,data.psn,data.auto,data.nazione,data.stile,slug].some(v=>v&&v.toLowerCase().includes(q));
+    return [data.nome,data.psn,data.auto,data.Regione,data.stile,slug].some(v=>v&&v.toLowerCase().includes(q));
   });
   renderGrid(filtered);
 }
@@ -654,7 +654,7 @@ function openModal(slug){
     document.getElementById('modalTitle').textContent = 'Modifica Pilota';
     document.getElementById('fNome').value    = d.nome    || '';
     document.getElementById('fPsn').value     = d.psn     || '';
-    document.getElementById('fNazione').value = d.nazione || '';
+    document.getElementById('fRegione').value = d.Regione || '';
     document.getElementById('fAuto').value    = d.auto    || '';
     document.getElementById('fStile').value   = d.stile   || '';
     document.getElementById('fPistaAma').value = d.pistaAma || '';
@@ -696,7 +696,7 @@ function closeModal(){
 }
 
 function clearForm(){
-  ['fNome','fPsn','fNazione','fAuto','fStile','fPistaAma','fPistaOdia','fBio','fBadges','fFoto','fSlug'].forEach(id=>{
+  ['fNome','fPsn','fRegione','fAuto','fStile','fPistaAma','fPistaOdia','fBio','fBadges','fFoto','fSlug'].forEach(id=>{
     document.getElementById(id).value='';
   });
   document.getElementById('fFotoFile').value = '';
@@ -803,7 +803,7 @@ async function savePilot(){
   const payload = {
     nome,
     psn:       document.getElementById('fPsn').value.trim(),
-    nazione:   document.getElementById('fNazione').value.trim(),
+    Regione:   document.getElementById('fRegione').value.trim(),
     auto:      document.getElementById('fAuto').value.trim(),
     stile:     document.getElementById('fStile').value.trim(),
     pistaAma:  document.getElementById('fPistaAma').value.trim(),
@@ -832,7 +832,7 @@ async function deletePilot(slug, nome){
   if(!confirm(`Rimuovere ${nome} dal roster? Questa azione è irreversibile.`)) return;
   const token = getToken();
   if(!token){ toast('Token mancante','err'); return; }
-  toast('Eliminazione…','');
+  toast('ElimiRegione…','');
   try {
     const path = `${FOLDER}/${slug}.json`;
     const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`,{
@@ -845,7 +845,7 @@ async function deletePilot(slug, nome){
       headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
       body:JSON.stringify({message:`Remove pilot: ${slug}`,sha:d.sha,branch:BRANCH})
     });
-    if(!del.ok) throw new Error('Eliminazione fallita');
+    if(!del.ok) throw new Error('ElimiRegione fallita');
     await updatePilotIndex(token);
     toast(`✓ ${nome} rimosso`,'ok');
     await loadPilots();
