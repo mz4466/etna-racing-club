@@ -1,0 +1,72 @@
+{
+  "circuito": "Le Mans (13.629 m)",
+  "data": "2025-08-31",
+  "garaNum": "4",
+  "garaTot": "5",
+  "champId": "estate-2025",
+  "champIdx": "estate-2025",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Antonio",
+      "auto": "Ferrari 296 GT3 '23",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Claudio",
+      "auto": "Nissan GT-R NISMO GT3 '18",
+      "tempo": "",
+      "bestLap": "",
+      "fl": true,
+      "pole": false,
+      "punti": 18,
+      "extra": "1",
+      "totale": 19,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Pyer",
+      "auto": "Lamborghini Huracan GT3 '15",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Pyer",
+      "pts": 42,
+      "pos": 1
+    },
+    {
+      "nome": "Claudio",
+      "pts": 37,
+      "pos": 2
+    },
+    {
+      "nome": "Antonio",
+      "pts": 25,
+      "pos": 3
+    },
+    {
+      "nome": "Luca",
+      "pts": 15,
+      "pos": 4
+    }
+  ],
+  "bestOf": 4
+}
