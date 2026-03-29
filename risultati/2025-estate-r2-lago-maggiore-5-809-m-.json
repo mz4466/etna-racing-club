@@ -1,0 +1,103 @@
+{
+  "circuito": "Lago Maggiore (5.809 m)",
+  "data": "2025-07-13",
+  "garaNum": "2",
+  "garaTot": "5",
+  "champId": "estate-2025",
+  "champIdx": "estate-2025",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Carmine",
+      "auto": "BMW M6 GT3 Endurance Model '16",
+      "tempo": "28'09''578",
+      "bestLap": "1'59''283",
+      "fl": true,
+      "pole": true,
+      "punti": 25,
+      "extra": "1+1",
+      "totale": 27,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Pyer",
+      "auto": "Lamborghini Huracan GT3 '15",
+      "tempo": "a 26\"584",
+      "bestLap": "2'00''483",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Claudio",
+      "auto": "Nissan GT-R NISMO GT3 '18",
+      "tempo": "a 1'00\"468",
+      "bestLap": "2'01''744",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Luca",
+      "auto": "McLaren 650S GT3 '15",
+      "tempo": "",
+      "bestLap": "2'06''419",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Fabio",
+      "auto": "Nissan GT-R NISMO '17",
+      "tempo": "",
+      "bestLap": "2'10''642",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Pyer",
+      "pts": 45,
+      "pos": 1
+    },
+    {
+      "nome": "Claudio",
+      "pts": 33,
+      "pos": 2
+    },
+    {
+      "nome": "Luca",
+      "pts": 27,
+      "pos": 3
+    },
+    {
+      "nome": "Carmine",
+      "pts": 27,
+      "pos": 3
+    },
+    {
+      "nome": "Fabio",
+      "pts": 10,
+      "pos": 5
+    }
+  ],
+  "bestOf": 4
+}
