@@ -1,0 +1,67 @@
+{
+  "circuito": "Dragon Trail - Litorale (5.209 m)",
+  "data": "2025-06-20",
+  "garaNum": "1",
+  "garaTot": "5",
+  "champId": "estate-2025",
+  "champIdx": "estate-2025",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Pyer",
+      "auto": "Lamborghini Huracan GT3 '15",
+      "tempo": "27'16''266",
+      "bestLap": "1'43''018",
+      "fl": true,
+      "pole": true,
+      "punti": 25,
+      "extra": "1+1",
+      "totale": 27,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Claudio",
+      "auto": "Nissan GT-R NISMO GT3 '18",
+      "tempo": "a 17\"438",
+      "bestLap": "1'45''376",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Luca",
+      "auto": "SUZUKI Vision Gran Turismo (Gr.3 Version)",
+      "tempo": "a 1 Giro",
+      "bestLap": "1'50''720",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Pyer",
+      "pts": 27,
+      "pos": 1
+    },
+    {
+      "nome": "Claudio",
+      "pts": 18,
+      "pos": 2
+    },
+    {
+      "nome": "Luca",
+      "pts": 15,
+      "pos": 3
+    }
+  ],
+  "bestOf": 4
+}
