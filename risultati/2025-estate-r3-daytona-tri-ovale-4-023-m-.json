@@ -1,0 +1,85 @@
+{
+  "circuito": "Daytona - Tri Ovale (4.023 m)",
+  "data": "2025-07-27",
+  "garaNum": "3",
+  "garaTot": "5",
+  "champId": "estate-2025",
+  "champIdx": "estate-2025",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Claudio",
+      "auto": "Nissan GT-R NISMO GT3 '18",
+      "tempo": "21'08''678",
+      "bestLap": "52''028",
+      "fl": false,
+      "pole": true,
+      "punti": 25,
+      "extra": "1",
+      "totale": 26,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Pyer",
+      "auto": "Lamborghini Huracan GT3 '15",
+      "tempo": "a 5\"867",
+      "bestLap": "51''617",
+      "fl": true,
+      "pole": false,
+      "punti": 18,
+      "extra": "1",
+      "totale": 19,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Luca",
+      "auto": "SUZUKI Vision Gran Turismo (Gr.3 Version)",
+      "tempo": "a 1 Giro",
+      "bestLap": "51''669",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Fabio",
+      "auto": "Nissan GT-R NISMO '17",
+      "tempo": "",
+      "bestLap": "52''615",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Pyer",
+      "pts": 46,
+      "pos": 1
+    },
+    {
+      "nome": "Claudio",
+      "pts": 44,
+      "pos": 2
+    },
+    {
+      "nome": "Luca",
+      "pts": 33,
+      "pos": 3
+    },
+    {
+      "nome": "Fabio",
+      "pts": 15,
+      "pos": 4
+    }
+  ],
+  "bestOf": 4
+}
