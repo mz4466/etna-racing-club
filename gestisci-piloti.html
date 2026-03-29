@@ -924,7 +924,7 @@ function renderChampAssignments(){
   // Filter active championships — show all if none match status filter
   var active = calendarioData.filter(function(c){
     var s = (c.status||'').toLowerCase().trim();
-    return s === 'in corso' || s === 'prossimo' || s === 'attivo' || s === 'ongoing';
+    return s === 'in-corso' || s === 'prossimo' || s === 'attivo' || s === 'ongoing';
   });
   if(!active.length){
     var token = getToken();
