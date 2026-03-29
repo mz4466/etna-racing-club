@@ -1294,7 +1294,7 @@ async function updateRisultatiIndex(token){
     if(!r.ok) return;
     const files = await r.json();
     const names = files
-      .filter(function(f){ return f.name.endsWith('.json'); })
+      .filter(function(f){ return f.name.endsWith('.json') && f.name !== 'index.json'; })
       .map(function(f){ return f.name; })
       .sort();
     await putFile('risultati/index.json', JSON.stringify(names), 'Update risultati index');
