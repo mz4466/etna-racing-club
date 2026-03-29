@@ -1098,25 +1098,23 @@ ${'<scr'+'ipt>'}
       var col=pos===1?cl[0]:pos===2?cl[1]:pos===3?cl[2]:"#F7E7CE";
       var breakdown="";
       if(s.entries.length>1||canDrop){
-        // Build two rows: race labels (R1, R2...) on top, scores below
-        var labelRow=s.entries.map(function(e){
+        var scoreItems=s.entries.map(function(e,idx){
           var isDrop=s.dropped.indexOf(e)>=0;
-          return "<span style='display:inline-block;text-align:center;min-width:22px;color:"+(isDrop?"#e74c3c":"#555")+";font-size:9px;line-height:1.2'>R"+e.rn+"</span>";
-        }).join("<span style='display:inline-block;min-width:10px'></span>");
-        var scoreRow=s.entries.map(function(e,idx){
-          var isDrop=s.dropped.indexOf(e)>=0;
-          var sep=idx>0?"<span style='display:inline-block;min-width:10px;text-align:center;color:#555;font-size:11px'>+</span>":"";
-          return sep+(isDrop
-            ?"<span style='display:inline-block;min-width:22px;text-align:center;text-decoration:line-through;color:#e74c3c;opacity:0.8;font-size:11px'>"+e.pts+"</span>"
-            :"<span style='display:inline-block;min-width:22px;text-align:center;color:#777;font-size:11px'>"+e.pts+"</span>");
+          var sep=idx>0?"<span style='color:#444;font-size:10px;margin:0 2px'>+</span>":"";
+          var labelStyle="color:"+(isDrop?"#e74c3c":"#555")+";font-size:9px;line-height:1;display:block;text-align:center";
+          var scoreStyle="display:block;text-align:center;font-size:11px;"+(isDrop?"text-decoration:line-through;color:#e74c3c;opacity:0.8":"color:#777");
+          return sep+"<span style='display:inline-flex;flex-direction:column;align-items:center;min-width:22px'>"
+            +"<span style='"+labelStyle+"'>R"+e.rn+"</span>"
+            +"<span style='"+scoreStyle+"'>"+e.pts+"</span>"
+            +"</span>";
         }).join("");
-        breakdown="<div style='display:flex;flex-direction:column;align-items:flex-start;margin:0 6px;line-height:1'>"          +"<div style='display:flex;align-items:center'>"+labelRow+"</div>"          +"<div style='display:flex;align-items:center'>"+scoreRow+"</div>"          +"</div>";
+        breakdown="<div style='width:100%;padding:4px 0 2px 38px;display:flex;align-items:center;gap:2px;'>"+scoreItems+"</div>";
       }
-      return "<div class='standings-item' style='flex-wrap:wrap;align-items:center'>"
+      return "<div class='standings-item' style='flex-wrap:wrap;align-items:center;padding-bottom:"+(breakdown?"6px":"12px")+"'>"
         +"<span class='standings-position' style='color:"+col+"'>"+pos+"&deg;</span>"
         +"<span class='standings-driver'>"+s.nome+"</span>"
-        +breakdown
         +"<span class='standings-points'>"+s.total+"</span>"
+        +breakdown
         +"</div>";
     }).join("")||"<div style='color:#c9b8a3;text-align:center;font-size:13px'>Nessun dato</div>";
   });
