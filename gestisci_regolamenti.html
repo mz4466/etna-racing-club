@@ -167,11 +167,15 @@ async function connect(){
   token = getToken();
   if(!token){ toast('Inserisci il PAT Token','err'); return; }
   try {
-    var r = await ghGet('contents/'+FOLDER);
+    // Validate token against repo root — works even if regolamenti/ doesn't exist yet
+    var r = await fetch('https://api.github.com/repos/'+OWNER+'/'+REPO, {
+      headers:{ Authorization:'token '+token, Accept:'application/vnd.github.v3+json' }
+    });
+    if(!r.ok) throw new Error((await r.json()).message || r.status);
     document.getElementById('connStatus').textContent = '✓ Connesso';
     document.getElementById('connStatus').style.color = 'var(--green)';
     document.getElementById('addRegBtn').style.display = '';
-    await loadIndex();
+    await loadIndex(); // gracefully handles missing index.json
   } catch(e) {
     document.getElementById('connStatus').textContent = 'Errore: ' + e.message;
     document.getElementById('connStatus').style.color = 'var(--del)';
