@@ -1,0 +1,95 @@
+{
+  "circuito": "Alsace - Villaggio (5.423 m)",
+  "data": "2025-09-14",
+  "garaNum": "5",
+  "garaTot": "5",
+  "champId": "estate-2025",
+  "champIdx": "estate-2025",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Pyer",
+      "auto": "Lamborghini Huracan GT3 '15",
+      "tempo": "",
+      "bestLap": "",
+      "fl": true,
+      "pole": false,
+      "punti": 25,
+      "extra": "1",
+      "totale": 26,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Antonio",
+      "auto": "Ferrari 296 GT3 '23",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": true,
+      "punti": 18,
+      "extra": "1",
+      "totale": 19,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Claudio",
+      "auto": "Nissan GT-R NISMO GT3 '18",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Luca",
+      "auto": "SUZUKI Vision Gran Turismo (Gr.3 Version)",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Pyer",
+      "pts": 90,
+      "pos": 1
+    },
+    {
+      "nome": "Claudio",
+      "pts": 78,
+      "pos": 2
+    },
+    {
+      "nome": "Luca",
+      "pts": 57,
+      "pos": 3
+    },
+    {
+      "nome": "Antonio",
+      "pts": 44,
+      "pos": 4
+    },
+    {
+      "nome": "Carmine",
+      "pts": 27,
+      "pos": 5
+    },
+    {
+      "nome": "Fabio",
+      "pts": 25,
+      "pos": 6
+    }
+  ],
+  "bestOf": 4
+}
