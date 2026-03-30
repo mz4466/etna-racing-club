@@ -996,20 +996,33 @@ function toggleCostrutt(){
   else { sec.classList.remove('show'); }
 }
 
+var pilotNamesList = [];  // loaded from piloti_schede/ after token verified
+
 var teamColors = ['#e8002d','#3671c6','#ff8000','#00d2be','#006f62','#005aff'];
 var teamCounter = 0;
 
-function addTeamRow(){
+function buildPilotOptions(selected){
+  var opts = '<option value="">— Pilota —</option>';
+  pilotNamesList.forEach(function(n){
+    opts += '<option value="'+n+'"'+(n===selected?' selected':'')+'>'+n+'</option>';
+  });
+  return opts;
+}
+
+function addTeamRow(data){
   teamCounter++;
   var id = 'team-' + teamCounter;
-  var col = teamColors[(document.querySelectorAll('.team-row-inp').length) % teamColors.length];
+  var col = data ? (data.color||'#e8002d') : teamColors[(document.querySelectorAll('.team-row-inp').length) % teamColors.length];
+  var name = data ? (data.name||'') : '';
+  var p1 = data && data.pilots ? (data.pilots[0]||'') : '';
+  var p2 = data && data.pilots ? (data.pilots[1]||'') : '';
   var div = document.createElement('div');
   div.className = 'team-row-inp';
   div.id = id;
   div.innerHTML = '<input type="color" class="team-color-inp" value="'+col+'" title="Colore scuderia">'
-    + '<input type="text" class="team-name-inp" placeholder="es. Ferrari" title="Nome scuderia">'
-    + '<input type="text" class="team-name-inp" placeholder="Pilota 1" title="Nome esatto pilota 1">'
-    + '<input type="text" class="team-name-inp" placeholder="Pilota 2 (opz.)" title="Nome esatto pilota 2">'
+    + '<input type="text" class="team-name-inp" value="'+name+'" placeholder="es. Ferrari" title="Nome scuderia">'
+    + '<select class="team-pilot-sel">'+buildPilotOptions(p1)+'</select>'
+    + '<select class="team-pilot-sel"><option value="">— Pilota 2 (opz.) —</option>'+buildPilotOptions(p2).replace('<option value="">— Pilota —</option>','')+'</select>'
     + '<button class="team-del" onclick="this.parentElement.remove()" title="Rimuovi">✕</button>';
   document.getElementById('teamGrid').appendChild(div);
 }
@@ -1018,13 +1031,15 @@ function collectTeams(){
   var rows = document.querySelectorAll('.team-row-inp');
   var teams = [];
   rows.forEach(function(row){
-    var inputs = row.querySelectorAll('input[type=text], input[type=color]');
-    var color = inputs[0].value;
-    var name  = inputs[1].value.trim();
-    var p1    = inputs[2].value.trim();
-    var p2    = inputs[3].value.trim();
+    var colorEl = row.querySelector('input[type=color]');
+    var nameEl  = row.querySelector('input[type=text]');
+    var sels    = row.querySelectorAll('select.team-pilot-sel');
+    var color = colorEl ? colorEl.value : '#e8002d';
+    var name  = nameEl  ? nameEl.value.trim() : '';
+    var p1    = sels[0] ? sels[0].value.trim() : '';
+    var p2    = sels[1] ? sels[1].value.trim() : '';
     if(!name && !p1) return;
-    var pilots = [p1];
+    var pilots = p1 ? [p1] : [];
     if(p2) pilots.push(p2);
     teams.push({ name: name||'Team', color: color, pilots: pilots });
   });
@@ -1473,6 +1488,34 @@ function downloadHTML() {
 // ── GITHUB ──
 function getToken() { return document.getElementById('patInput').value.trim(); }
 
+
+async function loadCostrutPilots(){
+  var token = getToken();
+  if(!token) return;
+  try {
+    var r = await fetch('https://api.github.com/repos/'+REPO+'/contents/piloti_schede?ref='+BRANCH, {
+      headers:{ Authorization:'token '+token, Accept:'application/vnd.github.v3+json' }
+    });
+    if(!r.ok) return;
+    var files = await r.json();
+    var jsons = files.filter(function(f){ return f.name.endsWith('.json'); });
+    var pilots = await Promise.all(jsons.map(async function(f){
+      var jr = await fetch(f.url, { headers:{ Authorization:'token '+token, Accept:'application/vnd.github.v3+json' }});
+      if(!jr.ok) return null;
+      var meta = await jr.json();
+      try { return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))))); } catch(e){ return null; }
+    }));
+    pilotNamesList = pilots.filter(Boolean).map(function(p){ return p.nome||p.name||p.psn||''; }).filter(Boolean).sort();
+    // Refresh any existing team selects
+    document.querySelectorAll('.team-pilot-sel').forEach(function(sel){
+      var cur = sel.value;
+      sel.innerHTML = (sel.querySelector('option[value=""]') && sel.querySelector('option[value=""]').textContent.includes('opz'))
+        ? '<option value="">— Pilota 2 (opz.) —</option>' + pilotNamesList.map(function(n){ return '<option value="'+n+'"'+(n===cur?' selected':'')+'>'+n+'</option>'; }).join('')
+        : '<option value="">— Pilota —</option>' + pilotNamesList.map(function(n){ return '<option value="'+n+'"'+(n===cur?' selected':'')+'>'+n+'</option>'; }).join('');
+    });
+  } catch(e){ console.warn('loadCostrutPilots:', e.message); }
+}
+
 async function verifyToken() {
   const token = getToken();
   if (!token) { toast('Inserisci un token PAT', 'err'); return; }
@@ -1485,6 +1528,7 @@ async function verifyToken() {
       document.getElementById('statusText').textContent = 'Connesso';
       document.getElementById('publishBtn').disabled = false;
       toast('✓ Connesso a GitHub', 'ok');
+      loadCostrutPilots();
     } else throw new Error();
   } catch {
     document.getElementById('statusDot').className = 'status-dot err';
