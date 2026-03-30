@@ -68,7 +68,7 @@
   },
   {
     "id": "autunno-2025",
-    "name": "Sole & Sorpassi",
+    "name": "Ruggiti d'Autunno",
     "year": "2025",
     "cat": "Campionato",
     "slug": "Autunno",
@@ -86,7 +86,7 @@
         "date": "2025-09-28",
         "laps": "13",
         "weather": "☀️ Soleggiato",
-        "tire": "x5",
+        "tire": "x1",
         "fuel": "x3",
         "types": "Dure/Medie",
         "notes": "1 Pit - 15 min Qualifiche"
