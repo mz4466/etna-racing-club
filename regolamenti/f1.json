@@ -13,17 +13,23 @@
           "type": "rules",
           "subtitle": "🗓️ Struttura",
           "items": [
-            "Il campionato prevede **9 gare** disputate esclusivamente su [[circuiti presenti nel calendario reale di Formula 1]]",
-            "Le gare si svolgeranno di **domenica mattina**, con inizio alle [[10:00]], e avranno la durata reale di una gara di Formula 1",
-            "Le qualifiche si terranno il **sabato dalle 14:30**, con inizio alle [[15:00]] e durata di 30 minuti"
+            "Il campionato prevede **8 gare** disputate esclusivamente su [[circuiti presenti nel calendario reale di Formula 1]]",
+            "Le gare si svolgeranno di **domenica mattina**, con inizio alle [[10:15]], e avranno la durata reale di una gara di Formula 1",
+            "Le qualifiche si terranno il **sabato dalle 14:45**, con inizio alle [[15:30]] e durata di 30 minuti"
           ]
         },
         {
           "type": "format",
           "subtitle": "⏱️ Formato Weekend",
           "steps": [
-            { "label": "Sabato — Qualifiche", "value": "Dalle 14:30, inizio 15:00 — 30 minuti" },
-            { "label": "Domenica — Gara", "value": "Inizio 10:00 — durata reale F1" }
+            {
+              "label": "Sabato — Qualifiche",
+              "value": "Dalle 14:30, inizio 15:00 — 30 minuti"
+            },
+            {
+              "label": "Domenica — Gara",
+              "value": "Inizio 10:00 — durata reale F1"
+            }
           ],
           "items": []
         }
@@ -69,8 +75,14 @@
           "subtitle": "🏆 Super Patente",
           "startPts": 10,
           "deductions": [
-            { "label": "Reprimenda", "pts": -2 },
-            { "label": "Penalità", "pts": -4 }
+            {
+              "label": "Reprimenda",
+              "pts": -2
+            },
+            {
+              "label": "Penalità",
+              "pts": -4
+            }
           ],
           "items": [
             "Nella Stagione successiva i punti verranno restituiti totalmente",
@@ -80,7 +92,24 @@
         {
           "type": "points",
           "subtitle": "🏆 Sistema di Punteggio",
-          "values": [25, 18, 15, 12, 10, 8, 6, 5, 4, 3, 2.5, 2, 1.5, 1, 0.5, 0]
+          "values": [
+            25,
+            18,
+            15,
+            12,
+            10,
+            8,
+            6,
+            5,
+            4,
+            3,
+            2.5,
+            2,
+            1.5,
+            1,
+            0.5,
+            0
+          ]
         }
       ]
     },
