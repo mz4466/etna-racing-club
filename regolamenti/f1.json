@@ -1,0 +1,104 @@
+{
+  "id": "f1",
+  "name": "Formula 1",
+  "desc": "Regolamento del Campionato Formula 1 — 9 gare, circuiti reali, classifica piloti e costruttori",
+  "note": "Iscrizioni obbligatorie — io e Antonio ci aspettiamo iscrizione in massa, siete avvisati 😜",
+  "icon": "🏎️",
+  "sections": [
+    {
+      "icon": "📅",
+      "title": "Formato Campionato",
+      "blocks": [
+        {
+          "type": "rules",
+          "subtitle": "🗓️ Struttura",
+          "items": [
+            "Il campionato prevede **9 gare** disputate esclusivamente su [[circuiti presenti nel calendario reale di Formula 1]]",
+            "Le gare si svolgeranno di **domenica mattina**, con inizio alle [[10:00]], e avranno la durata reale di una gara di Formula 1",
+            "Le qualifiche si terranno il **sabato dalle 14:30**, con inizio alle [[15:00]] e durata di 30 minuti"
+          ]
+        },
+        {
+          "type": "format",
+          "subtitle": "⏱️ Formato Weekend",
+          "steps": [
+            { "label": "Sabato — Qualifiche", "value": "Dalle 14:30, inizio 15:00 — 30 minuti" },
+            { "label": "Domenica — Gara", "value": "Inizio 10:00 — durata reale F1" }
+          ],
+          "items": []
+        }
+      ]
+    },
+    {
+      "icon": "⚙️",
+      "title": "Regolamento Tecnico",
+      "blocks": [
+        {
+          "type": "rules",
+          "subtitle": "🚗 Vettura e Setup",
+          "items": [
+            "L'unica vettura ammessa è la **[[Super Formula '19 Honda]]** — nessuna variazione consentita",
+            "**Non ci saranno gare con pioggia**, tuttavia il meteo sarà sempre variabile con [[avanzamento raddoppiato]]",
+            "In ogni gara si dovranno utilizzare obbligatoriamente **tutte e 3 le mescole** di pneumatici disponibili",
+            "Usura gomme e consumo carburante saranno sempre impostati a **[[X3]]**",
+            "La velocità di rifornimento sarà di **[[12 litri al secondo]]** (nel campionato Gr.3 è 3 litri/s)"
+          ]
+        }
+      ]
+    },
+    {
+      "icon": "📋",
+      "title": "Regolamento Sportivo",
+      "blocks": [
+        {
+          "type": "rules",
+          "subtitle": "📋 Penalità e Infrazioni",
+          "items": [
+            "Le penalità sono **identiche al campionato Gr.3** con una eccezione: il [[taglio della pista]] avrà come penalità **severa**",
+            "**Reprimenda:** assegnata per infrazioni lievi che non causano danni alle vetture altrui",
+            "È severamente vietato cambiare [[2 volte corsia in rettilineo]] per difendere la posizione — penalità: Reprimenda",
+            "Tre Reprimende nella stessa Stagione comportano la [[retrocessione in ultima posizione in griglia]] nella gara successiva",
+            "Se la terza Reprimenda arriva all'ultima gara, il pilota riceve una penalità di [[10 secondi]] nella gara stessa",
+            "Contatti con danni evidenti comportano [[10 secondi di penalità]] per il responsabile",
+            "È **fortemente consigliato restituire la posizione** se il gioco assegna una penalità automatica — la sanzione sarà ridotta",
+            "Penalità multiple nella stessa Stagione avranno secondi [[progressivamente crescenti]]"
+          ]
+        },
+        {
+          "type": "license",
+          "subtitle": "🏆 Super Patente",
+          "startPts": 10,
+          "deductions": [
+            { "label": "Reprimenda", "pts": -2 },
+            { "label": "Penalità", "pts": -4 }
+          ],
+          "items": [
+            "Nella Stagione successiva i punti verranno restituiti totalmente",
+            "Se un Pilota perde tutti i punti della Super Patente riceverà una penalità di [[30 secondi]] nella gara in corso"
+          ]
+        },
+        {
+          "type": "points",
+          "subtitle": "🏆 Sistema di Punteggio",
+          "values": [25, 18, 15, 12, 10, 8, 6, 5, 4, 3, 2.5, 2, 1.5, 1, 0.5, 0]
+        }
+      ]
+    },
+    {
+      "icon": "🏭",
+      "title": "Classifica Costruttori",
+      "blocks": [
+        {
+          "type": "rules",
+          "subtitle": "🏭 Scuderie",
+          "items": [
+            "Oltre alla **classifica piloti** sarà presente una **[[classifica costruttori]]**",
+            "All'iscrizione verranno sorteggiate le coppie di piloti, che dovranno poi scegliere la propria scuderia (livrea)",
+            "Le scuderie selezionabili sono: **Ferrari · Red Bull · McLaren · Mercedes · Aston Martin · Williams**",
+            "I punti dei due piloti della stessa scuderia verranno sommati nella classifica costruttori"
+          ]
+        }
+      ]
+    }
+  ]
+}
