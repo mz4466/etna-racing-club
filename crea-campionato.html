@@ -650,6 +650,24 @@
     color: var(--text-dim); text-transform: uppercase; line-height: 1.2;
   }
   .trophy-option.selected .trophy-name { color: var(--gold); }
+
+  /* ── COSTRUTTORI ── */
+  .costruttori-section { display:none; margin-top:14px; }
+  .costruttori-section.show { display:block; }
+  .toggle-row { display:flex; align-items:center; gap:12px; padding:12px 0; }
+  .toggle-cb { width:18px; height:18px; accent-color:var(--gold); cursor:pointer; flex-shrink:0; }
+  .toggle-label { font-family:'Teko',sans-serif; font-size:14px; letter-spacing:2px; color:var(--text); text-transform:uppercase; cursor:pointer; user-select:none; }
+  .toggle-sub { font-size:12px; color:var(--text-dim); letter-spacing:0.5px; margin-top:1px; }
+  .team-grid { display:grid; gap:8px; margin-top:10px; }
+  .team-row-inp { display:grid; grid-template-columns:36px 1fr 1fr 1fr auto; gap:8px; align-items:center; }
+  .team-color-inp { width:36px; height:32px; border:1px solid var(--border-hi); border-radius:6px; cursor:pointer; background:none; padding:2px; }
+  .team-name-inp { background:var(--bg-input); border:1px solid var(--border-hi); border-radius:6px; padding:7px 10px; color:var(--text); font-family:'Barlow Condensed',sans-serif; font-size:14px; outline:none; }
+  .team-name-inp:focus { border-color:var(--gold); }
+  .team-pilot-sel { background:var(--bg-input); border:1px solid var(--border-hi); border-radius:6px; padding:7px 8px; color:var(--text); font-family:'Barlow Condensed',sans-serif; font-size:13px; outline:none; }
+  .team-pilot-sel:focus { border-color:var(--gold); }
+  .team-del { background:none; border:none; color:rgba(192,57,43,.5); cursor:pointer; font-size:18px; line-height:1; padding:0; }
+  .team-del:hover { color:var(--red); }
+  .team-header { display:grid; grid-template-columns:36px 1fr 1fr 1fr 28px; gap:8px; font-family:'Teko',sans-serif; font-size:11px; letter-spacing:2px; color:var(--text-dim); text-transform:uppercase; margin-bottom:4px; }
 </style>
 </head>
 <body>
@@ -781,6 +799,29 @@
           <span style="font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:var(--text-dim);margin-top:5px;display:block;">
             Clicca un trofeo per selezionarlo. Verrà mostrato nella pagina del campionato.
           </span>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- COSTRUTTORI -->
+    <div class="card">
+      <div class="card-title">🏭 Classifica Costruttori <span style="font-size:12px;color:var(--text-dim);font-weight:300;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;">(opzionale)</span></div>
+      <div class="toggle-row">
+        <input type="checkbox" class="toggle-cb" id="enableCostrutt" onchange="toggleCostrutt()">
+        <label for="enableCostrutt">
+          <div class="toggle-label">Abilita Classifica Costruttori</div>
+          <div class="toggle-sub">Aggiunge classifica per squadre — miglior pilota conta per ogni gara</div>
+        </label>
+      </div>
+      <div class="costruttori-section" id="costruttoriSection">
+        <div class="team-header">
+          <span>Col.</span><span>Scuderia</span><span>Pilota 1</span><span>Pilota 2</span><span></span>
+        </div>
+        <div id="teamGrid" class="team-grid"></div>
+        <button type="button" class="add-round-btn" onclick="addTeamRow()" style="margin-top:10px;">＋ Aggiungi Scuderia</button>
+        <div style="font-family:'Teko',sans-serif;font-size:11px;letter-spacing:1px;color:var(--text-dim);margin-top:8px;">
+          💡 Pilota 2 è opzionale — lascia vuoto per team con un solo pilota. I nomi devono corrispondere esattamente a quelli nelle schede piloti.
         </div>
       </div>
     </div>
@@ -945,6 +986,49 @@ function buildTrophyPicker(sel) {
       + '<img src="trophy_png/' + t.file + '" alt="' + t.label + '" onerror="this.style.opacity=0.3">'
       + '<div class="trophy-name">' + t.label + '</div></div>';
   }).join('');
+}
+
+
+function toggleCostrutt(){
+  var cb = document.getElementById('enableCostrutt');
+  var sec = document.getElementById('costruttoriSection');
+  if(cb.checked){ sec.classList.add('show'); if(!document.querySelectorAll('.team-row-inp').length) addTeamRow(); }
+  else { sec.classList.remove('show'); }
+}
+
+var teamColors = ['#e8002d','#3671c6','#ff8000','#00d2be','#006f62','#005aff'];
+var teamCounter = 0;
+
+function addTeamRow(){
+  teamCounter++;
+  var id = 'team-' + teamCounter;
+  var col = teamColors[(document.querySelectorAll('.team-row-inp').length) % teamColors.length];
+  var div = document.createElement('div');
+  div.className = 'team-row-inp';
+  div.id = id;
+  div.innerHTML = '<input type="color" class="team-color-inp" value="'+col+'" title="Colore scuderia">'
+    + '<input type="text" class="team-name-inp" placeholder="es. Ferrari" title="Nome scuderia">'
+    + '<input type="text" class="team-name-inp" placeholder="Pilota 1" title="Nome esatto pilota 1">'
+    + '<input type="text" class="team-name-inp" placeholder="Pilota 2 (opz.)" title="Nome esatto pilota 2">'
+    + '<button class="team-del" onclick="this.parentElement.remove()" title="Rimuovi">✕</button>';
+  document.getElementById('teamGrid').appendChild(div);
+}
+
+function collectTeams(){
+  var rows = document.querySelectorAll('.team-row-inp');
+  var teams = [];
+  rows.forEach(function(row){
+    var inputs = row.querySelectorAll('input[type=text], input[type=color]');
+    var color = inputs[0].value;
+    var name  = inputs[1].value.trim();
+    var p1    = inputs[2].value.trim();
+    var p2    = inputs[3].value.trim();
+    if(!name && !p1) return;
+    var pilots = [p1];
+    if(p2) pilots.push(p2);
+    teams.push({ name: name||'Team', color: color, pilots: pilots });
+  });
+  return teams;
 }
 
 function selectTrophy(file) {
@@ -1517,7 +1601,9 @@ async function updateCalendario(token, fname, champPath) {
     totalRounds,
     completedRounds: 0,
     bestOf: bestOf || null,
-    rounds: roundsDetail
+    rounds: roundsDetail,
+    costruttori: document.getElementById('enableCostrutt').checked || false,
+    teams: document.getElementById('enableCostrutt').checked ? collectTeams() : []
   };
 
   try {
