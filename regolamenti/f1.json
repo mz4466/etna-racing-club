@@ -1,7 +1,7 @@
 {
   "id": "f1",
   "name": "Formula 1",
-  "desc": "Regolamento del Campionato Formula 1 — 9 gare, circuiti reali, classifica piloti e costruttori",
+  "desc": "Regolamento del Campionato Formula 1 — 8 gare, circuiti reali, classifica piloti e costruttori",
   "note": "Iscrizioni obbligatorie — Pyer e Antonio, ci aspettiamo iscrizione in massa, siete avvisati 😜",
   "icon": "🏎️",
   "sections": [
@@ -13,9 +13,9 @@
           "type": "rules",
           "subtitle": "🗓️ Struttura",
           "items": [
-            "Il campionato prevede **8 gare** disputate esclusivamente su [[circuiti presenti nel calendario reale di Formula 1]]",
-            "Le gare si svolgeranno di **domenica mattina**, con inizio alle [[10:15]], e avranno la durata reale di una gara di Formula 1",
-            "Le qualifiche si terranno il **sabato dalle 14:45**, con inizio alle [[15:30]] e durata di 30 minuti"
+            "Il campionato prevede **9 gare** disputate esclusivamente su [[circuiti presenti nel calendario reale di Formula 1]]",
+            "Le gare si svolgeranno di **domenica mattina**, con inizio alle [[10:00]], e avranno la durata reale di una gara di Formula 1",
+            "Le qualifiche si terranno il **sabato dalle 14:30**, con inizio alle [[15:00]] e durata di 30 minuti"
           ]
         },
         {
