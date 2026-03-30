@@ -18,7 +18,7 @@
         "circuit": "Dragon Trail - Litorale (5.209 m)",
         "date": "2025-06-20",
         "laps": "15",
-        "weather": "☀️ Soleggiato",
+        "weather": "âï¸ Soleggiato",
         "tire": "x2",
         "fuel": "x2",
         "types": "Dure/Morbide",
@@ -28,7 +28,7 @@
         "circuit": "Lago Maggiore (5.809 m)",
         "date": "2025-07-13",
         "laps": "14",
-        "weather": "☀️ Soleggiato",
+        "weather": "âï¸ Soleggiato",
         "tire": "x3",
         "fuel": "x2",
         "types": "Dure/Medie",
@@ -38,7 +38,7 @@
         "circuit": "Daytona - Tri Ovale (4.023 m)",
         "date": "2025-07-27",
         "laps": "24",
-        "weather": "🌥️ Nuvoloso",
+        "weather": "ð¥ï¸ Nuvoloso",
         "tire": "x1",
         "fuel": "x1",
         "types": "Medie/Morbide",
@@ -48,7 +48,7 @@
         "circuit": "Le Mans (13.629 m)",
         "date": "2025-08-31",
         "laps": "6",
-        "weather": "☀️ Soleggiato",
+        "weather": "âï¸ Soleggiato",
         "tire": "x3",
         "fuel": "x4",
         "types": "Dure/Morbide",
@@ -58,12 +58,81 @@
         "circuit": "Alsace - Villaggio (5.423 m)",
         "date": "2025-09-14",
         "laps": "15",
-        "weather": "🌥️ Nuvoloso",
+        "weather": "ð¥ï¸ Nuvoloso",
         "tire": "x6",
         "fuel": "x2",
         "types": "Dure/Medie/morbide",
         "notes": "Pit 2"
       }
     ]
+  },
+  {
+    "id": "autunno-2025",
+    "name": "Sole & Sorpassi",
+    "year": "2025",
+    "cat": "Campionato",
+    "slug": "Autunno",
+    "trophy": "GR3_Championship_Winner.png",
+    "cars": "Gr.3",
+    "desc": "",
+    "status": "prossimo",
+    "file": "campionati/sole--sorpassi-2025-campionato-autunno.html",
+    "totalRounds": 5,
+    "completedRounds": 0,
+    "bestOf": 4,
+    "rounds": [
+      {
+        "circuit": "Mount Panorama (6.213 m)",
+        "date": "2025-09-28",
+        "laps": "13",
+        "weather": "☀️ Soleggiato",
+        "tire": "x5",
+        "fuel": "x3",
+        "types": "Dure/Medie",
+        "notes": "1 Pit - 15 min Qualifiche"
+      },
+      {
+        "circuit": "Trial Mountain (5.434 m)",
+        "date": "2025-10-18",
+        "laps": "14",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x2",
+        "fuel": "x1",
+        "types": "Medie/Morbide",
+        "notes": "1 Pit - 15 min Qualifiche"
+      },
+      {
+        "circuit": "Spa (7.004 m)",
+        "date": "2025-11-02",
+        "laps": "11",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x4",
+        "fuel": "x2",
+        "types": "Medie",
+        "notes": "1 Pit - 15 min Qualifiche"
+      },
+      {
+        "circuit": "Sardegna - Stradale (conf. A) (5.113 m)",
+        "date": "2025-11-16",
+        "laps": "15",
+        "weather": "🌥️ Nuvoloso",
+        "tire": "x4",
+        "fuel": "x3",
+        "types": "Dure/Medie/Morbide",
+        "notes": "1 Pit - 15 min Qualifiche"
+      },
+      {
+        "circuit": "Laguna Seca (3.602 m)",
+        "date": "2025-11-30",
+        "laps": "22",
+        "weather": "☀️ Soleggiato",
+        "tire": "x3",
+        "fuel": "x3",
+        "types": "Medie/Morbide",
+        "notes": "1 Pit - 15 min Qualifiche"
+      }
+    ],
+    "costruttori": false,
+    "teams": []
   }
 ]
