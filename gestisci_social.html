@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestisci Social — ERC Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#07070f;--card:#0e0e1c;--input:#13131f;
+      --border:rgba(201,184,163,0.1);--border-hi:rgba(201,184,163,0.2);
+      --gold:#c9a227;--gold-hi:#e8c547;--gold-dim:rgba(201,162,39,0.10);
+      --red:#ff5014;--orange:#ff8c42;--cream:#fff5e6;--muted:#c9b8a3;
+      --green:#27ae60;--del:#c0392b;--text:#fff5e6;--dim:#5a5470;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Barlow Condensed',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+    /* TOPBAR */
+    .topbar{background:#050510;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:100}
+    .topbar-brand{display:flex;align-items:center;gap:10px;font-family:'Teko',sans-serif;font-size:18px;letter-spacing:2px;color:var(--gold-hi)}
+    .topbar-brand img{width:30px;height:30px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(201,162,39,0.4))}
+    .topbar-right{display:flex;align-items:center;gap:10px}
+    /* LAYOUT */
+    .layout{display:grid;grid-template-columns:260px 1fr;height:calc(100vh - 53px)}
+    .sidebar{background:#0a0a16;border-right:1px solid var(--border);padding:16px;display:flex;flex-direction:column;gap:12px;overflow-y:auto}
+    .sidebar-title{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:2px}
+    /* AUTH */
+    .auth-section{background:var(--card);border:1px solid var(--border-hi);border-radius:10px;padding:12px}
+    .auth-section label{font-size:12px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:5px}
+    .auth-section input{width:100%;background:var(--input);border:1px solid var(--border-hi);border-radius:7px;padding:8px 10px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;outline:none}
+    .auth-section input:focus{border-color:var(--gold)}
+    /* BUTTONS */
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:none;cursor:pointer;font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;transition:all .15s}
+    .btn-gold{background:var(--gold);color:#000}.btn-gold:hover{background:var(--gold-hi)}
+    .btn-outline{background:transparent;border:1px solid var(--border-hi);color:var(--muted)}.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+    .btn-red{background:var(--del);color:#fff}.btn-red:hover{background:#e74c3c}
+    .btn-green{background:var(--green);color:#fff}.btn-green:hover{background:#2ecc71}
+    .btn-sm{padding:5px 10px;font-size:11px}
+    /* SIDEBAR NAV ITEMS */
+    .nav-item{background:var(--card);border:1px solid var(--border-hi);border-radius:7px;padding:8px 12px;cursor:pointer;transition:border-color .15s;margin-bottom:4px}
+    .nav-item:hover{border-color:var(--gold)}
+    .nav-item.active{border-color:var(--gold);background:var(--gold-dim)}
+    .nav-item-label{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--cream)}
+    .nav-item-sub{font-size:11px;color:var(--dim);margin-top:1px}
+    .nav-item-del{background:none;border:none;color:rgba(192,57,43,.5);cursor:pointer;font-size:14px;float:right;line-height:1;padding:0}
+    .nav-item-del:hover{color:var(--del)}
+    /* MAIN */
+    .main{padding:24px 28px;overflow-y:auto;display:flex;flex-direction:column;gap:18px}
+    .panel{background:var(--card);border:1px solid var(--border-hi);border-radius:12px;padding:20px}
+    .panel-title{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    /* FORM */
+    .field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+    .field label{font-size:12px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+    .field input,.field select,.field textarea{background:var(--input);border:1px solid var(--border-hi);border-radius:7px;padding:8px 11px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;outline:none;width:100%}
+    .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold)}
+    .field textarea{resize:vertical;min-height:80px}
+    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    /* TYPE PILLS */
+    .type-pills{display:flex;gap:6px;flex-wrap:wrap}
+    .tpill{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:2px;padding:5px 14px;border-radius:20px;border:1px solid var(--border-hi);color:var(--dim);cursor:pointer;text-transform:uppercase;transition:all .15s}
+    .tpill:hover{border-color:var(--gold);color:var(--muted)}
+    .tpill.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold)}
+    /* UPLOAD ZONE */
+    .upload-zone{border:2px dashed rgba(201,162,39,0.2);border-radius:8px;padding:24px;text-align:center;cursor:pointer;transition:border-color .2s}
+    .upload-zone:hover{border-color:var(--gold)}
+    .upload-zone input{display:none}
+    .upload-icon{font-size:28px;margin-bottom:8px}
+    .upload-text{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
+    .upload-sub{font-size:11px;color:#3a3450;margin-top:3px}
+    .upload-preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px;margin-top:10px}
+    .upload-thumb{position:relative;border-radius:5px;overflow:hidden;border:1px solid var(--border-hi)}
+    .upload-thumb img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+    .upload-thumb-del{position:absolute;top:2px;right:2px;background:rgba(192,57,43,0.8);border:none;color:#fff;font-size:12px;border-radius:3px;cursor:pointer;padding:1px 4px;line-height:1}
+    /* RICH TEXT TOOLBAR */
+    .rtoolbar{display:flex;gap:4px;padding:6px 8px;background:var(--input);border:1px solid var(--border-hi);border-radius:7px 7px 0 0;border-bottom:none}
+    .rtbtn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:3px 7px;border-radius:4px;font-family:serif}
+    .rtbtn:hover{background:var(--card);color:var(--text)}
+    .rich-editor{background:var(--input);border:1px solid var(--border-hi);border-radius:0 0 7px 7px;padding:10px;color:var(--text);min-height:120px;outline:none;font-size:14px;line-height:1.7}
+    .rich-editor:focus{border-color:var(--gold)}
+    /* ITEMS LIST */
+    .item-list{display:flex;flex-direction:column;gap:6px}
+    .item-row{background:var(--input);border:1px solid var(--border);border-radius:7px;padding:9px 12px;display:flex;align-items:center;gap:10px}
+    .item-badge{font-family:'Teko',sans-serif;font-size:10px;letter-spacing:2px;padding:2px 8px;border-radius:12px;text-transform:uppercase;flex-shrink:0}
+    .badge-photo{background:rgba(52,152,219,0.15);color:#3498db}
+    .badge-video{background:rgba(231,76,60,0.15);color:#e74c3c}
+    .badge-interview{background:rgba(155,89,182,0.15);color:#9b59b6}
+    .badge-article{background:rgba(39,174,96,0.15);color:#27ae60}
+    .item-name{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    /* STATUS DOT */
+    .status-dot{width:7px;height:7px;border-radius:50%;background:var(--dim);flex-shrink:0}
+    .status-dot.ok{background:var(--green);box-shadow:0 0 5px var(--green)}
+    .status-dot.err{background:var(--del)}
+    /* CONN STATUS */
+    #connStatus{font-size:12px;margin-top:7px;color:var(--dim)}
+    /* EMPTY/HINT */
+    .hint{text-align:center;padding:50px 20px;font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
+    .hint-icon{font-size:36px;margin-bottom:10px;display:block}
+    /* TOAST */
+    #toast{position:fixed;bottom:24px;right:24px;background:var(--card);border:1px solid var(--gold);border-radius:8px;padding:10px 18px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--text);z-index:999;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;pointer-events:none}
+    #toast.show{opacity:1;transform:translateY(0)}
+    #toast.ok{border-color:var(--green);color:#2ecc71}
+    #toast.err{border-color:var(--del);color:#e74c3c}
+    @media(max-width:768px){.layout{grid-template-columns:1fr;height:auto}.sidebar{height:auto}.field-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <img src="etna-logo.jpg" alt="ERC" onerror="this.style.display='none'">
+    <span>Gestisci Social</span>
+  </div>
+  <div class="topbar-right">
+    <a href="social.html" class="btn btn-outline btn-sm" target="_blank">👁 Visualizza</a>
+    <a href="index.html" class="btn btn-outline btn-sm">← Home</a>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div>
+      <div class="sidebar-title">GitHub</div>
+      <div class="auth-section">
+        <label>PAT Token</label>
+        <input type="password" id="patInput" placeholder="ghp_xxxx" autocomplete="off">
+        <div style="margin-top:8px;display:flex;gap:6px">
+          <button class="btn btn-gold" style="flex:1" onclick="connect()">Connetti</button>
+          <button class="btn btn-outline" onclick="reload()">↺</button>
+        </div>
+        <div id="connStatus">Non connesso</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sidebar-title">Anno</div>
+      <div id="yearList"><div class="hint" style="padding:10px 0;font-size:11px">—</div></div>
+      <button class="btn btn-outline" id="addYearBtn" style="width:100%;justify-content:center;display:none;margin-top:4px" onclick="showAddYear()">＋ Anno</button>
+    </div>
+
+    <div>
+      <div class="sidebar-title">Campionato</div>
+      <div id="champList"><div class="hint" style="padding:10px 0;font-size:11px">—</div></div>
+    </div>
+
+    <div>
+      <div class="sidebar-title">Gara</div>
+      <div id="raceList"><div class="hint" style="padding:10px 0;font-size:11px">—</div></div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main" id="mainArea">
+    <div class="hint">
+      <span class="hint-icon">📡</span>Connetti GitHub per iniziare
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const OWNER = 'mz4466', REPO = 'etna-racing-club', BRANCH = 'main';
+const API = 'https://api.github.com/repos/' + OWNER + '/' + REPO;
+const SOCIAL_FOLDER = 'social';
+
+var token = '';
+var socialIndex = [];  // full index.json
+var sel = { year: null, champ: null, race: null };
+var pendingUploads = []; // { name, b64, mimeType } for photo uploads
+
+function getToken(){ return document.getElementById('patInput').value.trim(); }
+
+// ── GITHUB HELPERS ──
+async function ghGet(path){
+  var r = await fetch(API+'/contents/'+path+'?ref='+BRANCH, { headers:{ Authorization:'token '+token, Accept:'application/vnd.github.v3+json' }});
+  if(!r.ok) throw new Error((await r.json()).message||r.status);
+  return await r.json();
+}
+async function ghPut(path, content, message){
+  var sha = null;
+  try{ var ex = await ghGet(path); sha = ex.sha; }catch(e){}
+  var body = { message, content: btoa(unescape(encodeURIComponent(content))), branch: BRANCH };
+  if(sha) body.sha = sha;
+  var r = await fetch(API+'/contents/'+path, { method:'PUT', headers:{ Authorization:'token '+token, Accept:'application/vnd.github.v3+json', 'Content-Type':'application/json' }, body: JSON.stringify(body)});
+  if(!r.ok) throw new Error((await r.json()).message||r.status);
+}
+async function ghPutBinary(path, b64, message){
+  var sha = null;
+  try{ var ex = await ghGet(path); sha = ex.sha; }catch(e){}
+  var body = { message, content: b64, branch: BRANCH };
+  if(sha) body.sha = sha;
+  var r = await fetch(API+'/contents/'+path, { method:'PUT', headers:{ Authorization:'token '+token, Accept:'application/vnd.github.v3+json', 'Content-Type':'application/json' }, body: JSON.stringify(body)});
+  if(!r.ok) throw new Error((await r.json()).message||r.status);
+}
+async function ghDelete(path, message){
+  var ex = await ghGet(path);
+  var r = await fetch(API+'/contents/'+path, { method:'DELETE', headers:{ Authorization:'token '+token, Accept:'application/vnd.github.v3+json', 'Content-Type':'application/json' }, body: JSON.stringify({ message, sha: ex.sha, branch: BRANCH })});
+  if(!r.ok) throw new Error((await r.json()).message||r.status);
+}
+async function ghReadJson(path){
+  var meta = await ghGet(path);
+  return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
+}
+
+// ── CONNECT ──
+async function connect(){
+  token = getToken();
+  if(!token){ toast('Inserisci il PAT Token','err'); return; }
+  try {
+    var r = await fetch(API, { headers:{ Authorization:'token '+token, Accept:'application/vnd.github.v3+json' }});
+    if(!r.ok) throw new Error((await r.json()).message);
+    var el = document.getElementById('connStatus');
+    el.textContent = '✓ Connesso';
+    el.style.color = 'var(--green)';
+    document.getElementById('addYearBtn').style.display = '';
+    await loadIndex();
+  } catch(e){
+    var el = document.getElementById('connStatus');
+    el.textContent = 'Errore: ' + e.message;
+    el.style.color = 'var(--del)';
+  }
+}
+async function reload(){ token = getToken(); await loadIndex(); }
+
+// ── INDEX ──
+async function loadIndex(){
+  try {
+    socialIndex = await ghReadJson(SOCIAL_FOLDER+'/index.json');
+  } catch(e){ socialIndex = []; }
+  renderYears();
+}
+
+async function saveIndex(){
+  await ghPut(SOCIAL_FOLDER+'/index.json', JSON.stringify(socialIndex, null, 2), 'Update social index');
+}
+
+// ── RENDER SIDEBAR ──
+function renderYears(){
+  var years = [...new Set(socialIndex.map(function(c){ return c.year; }))].sort(function(a,b){ return b-a; });
+  var list = document.getElementById('yearList');
+  list.innerHTML = years.length ? '' : '<div class="hint" style="padding:6px 0;font-size:11px">Nessun anno</div>';
+  years.forEach(function(y){
+    var div = document.createElement('div');
+    div.className = 'nav-item' + (sel.year===y?' active':'');
+    div.innerHTML = '<span class="nav-item-label">'+y+'</span>';
+    div.onclick = function(){ selectYear(y); };
+    list.appendChild(div);
+  });
+  if(!sel.year && years.length) selectYear(years[0]);
+  else if(sel.year) renderChamps();
+}
+
+function selectYear(y){
+  sel.year = y; sel.champ = null; sel.race = null;
+  document.querySelectorAll('#yearList .nav-item').forEach(function(n){ n.classList.toggle('active', n.querySelector('.nav-item-label').textContent==y); });
+  renderChamps();
+}
+
+function renderChamps(){
+  var yearChamps = socialIndex.filter(function(c){ return String(c.year)===String(sel.year); });
+  var list = document.getElementById('champList');
+  list.innerHTML = '';
+  // Add champ from calendario button
+  var addBtn = document.createElement('button');
+  addBtn.className = 'btn btn-outline'; addBtn.style.cssText = 'width:100%;justify-content:center;margin-bottom:8px;';
+  addBtn.textContent = '＋ Aggiungi da Calendario';
+  addBtn.onclick = showAddChamp;
+  list.appendChild(addBtn);
+  yearChamps.forEach(function(c){
+    var div = document.createElement('div');
+    div.className = 'nav-item' + (sel.champ&&sel.champ.id===c.id?' active':'');
+    div.innerHTML = '<button class="nav-item-del" onclick="event.stopPropagation();deleteChamp(\''+c.id+'\')">✕</button>'
+      + '<div class="nav-item-label">'+esc(c.name)+'</div>'
+      + '<div class="nav-item-sub">'+esc(c.year)+'</div>';
+    div.onclick = function(){ selectChamp(c); };
+    list.appendChild(div);
+  });
+  if(!sel.champ && yearChamps.length) selectChamp(yearChamps[0]);
+  else renderRaces();
+}
+
+function selectChamp(c){
+  sel.champ = c; sel.race = null;
+  document.querySelectorAll('#champList .nav-item').forEach(function(n){ n.classList.toggle('active', n.querySelector('.nav-item-label') && n.querySelector('.nav-item-label').textContent===c.name); });
+  renderRaces();
+}
+
+function renderRaces(){
+  if(!sel.champ){ document.getElementById('raceList').innerHTML = ''; return; }
+  var races = sel.champ.races||[];
+  var list = document.getElementById('raceList');
+  list.innerHTML = '';
+  var addBtn = document.createElement('button');
+  addBtn.className = 'btn btn-outline'; addBtn.style.cssText = 'width:100%;justify-content:center;margin-bottom:8px;';
+  addBtn.textContent = '＋ Aggiungi Gara';
+  addBtn.onclick = showAddRace;
+  list.appendChild(addBtn);
+  races.forEach(function(race){
+    var div = document.createElement('div');
+    div.className = 'nav-item' + (sel.race&&sel.race.slug===race.slug?' active':'');
+    div.innerHTML = '<button class="nav-item-del" onclick="event.stopPropagation();deleteRace(\''+race.slug+'\')">✕</button>'
+      + '<div class="nav-item-label">'+esc(race.label)+'</div>';
+    div.onclick = function(){ selectRace(race); };
+    list.appendChild(div);
+  });
+  if(!sel.race && races.length) selectRace(races[0]);
+  else renderMain();
+}
+
+function selectRace(race){
+  sel.race = race;
+  document.querySelectorAll('#raceList .nav-item').forEach(function(n){ n.classList.toggle('active', n.querySelector('.nav-item-label') && n.querySelector('.nav-item-label').textContent===race.label); });
+  renderMain();
+}
+
+// ── MAIN PANEL ──
+async function renderMain(){
+  if(!sel.race){
+    document.getElementById('mainArea').innerHTML = '<div class="hint"><span class="hint-icon">🏁</span>Seleziona una gara</div>';
+    return;
+  }
+  var main = document.getElementById('mainArea');
+  main.innerHTML = '<div class="hint"><span class="hint-icon">⏳</span>Caricamento...</div>';
+
+  var path = SOCIAL_FOLDER + '/' + sel.champ.year + '/' + sel.champ.slug + '/' + sel.race.slug + '/index.json';
+  var items = [];
+  try { items = await ghReadJson(path); } catch(e){ items = []; }
+
+  main.innerHTML = '';
+
+  // ── ADD CONTENT PANEL ──
+  var addPanel = document.createElement('div');
+  addPanel.className = 'panel';
+  addPanel.innerHTML = '<div class="panel-title">'+esc(sel.race.label)+' — Aggiungi Contenuto</div>'
+    + '<div class="field"><label>Tipo</label><div class="type-pills" id="typePills">'
+    + '<div class="tpill active" data-t="photo">📷 Foto</div>'
+    + '<div class="tpill" data-t="video">🎥 Video</div>'
+    + '<div class="tpill" data-t="interview">🎤 Intervista</div>'
+    + '<div class="tpill" data-t="article">📝 Articolo</div>'
+    + '</div></div>'
+    + '<div id="typeFields"></div>'
+    + '<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">'
+    + '<button class="btn btn-outline" onclick="renderMain()">Annulla</button>'
+    + '<button class="btn btn-green" onclick="publishItem()">↑ Pubblica su GitHub</button>'
+    + '</div>';
+  main.appendChild(addPanel);
+
+  // Wire type pills
+  addPanel.querySelectorAll('.tpill').forEach(function(p){
+    p.onclick = function(){
+      addPanel.querySelectorAll('.tpill').forEach(function(x){ x.classList.remove('active'); });
+      p.classList.add('active');
+      renderTypeFields(p.dataset.t);
+    };
+  });
+  renderTypeFields('photo');
+
+  // ── EXISTING ITEMS PANEL ──
+  var itemPanel = document.createElement('div');
+  itemPanel.className = 'panel';
+  var itemsHtml = '<div class="panel-title">Contenuti Pubblicati ('+items.length+')</div>';
+  if(!items.length){
+    itemsHtml += '<div class="hint" style="padding:20px 0;font-size:12px">Nessun contenuto</div>';
+  } else {
+    itemsHtml += '<div class="item-list">';
+    items.forEach(function(item, i){
+      var badge = 'badge-'+item.type;
+      var label = {photo:'foto',video:'video',interview:'intervista',article:'articolo'}[item.type]||item.type;
+      itemsHtml += '<div class="item-row">'
+        + '<span class="item-badge '+badge+'">'+label+'</span>'
+        + '<span class="item-name">'+esc(item.title||item.file||'—')+'</span>'
+        + '<button class="btn btn-red btn-sm" onclick="deleteItem('+i+')">✕</button>'
+        + '</div>';
+    });
+    itemsHtml += '</div>';
+  }
+  itemPanel.innerHTML = itemsHtml;
+  main.appendChild(itemPanel);
+
+  // store items in DOM for delete access
+  main.dataset.items = JSON.stringify(items);
+}
+
+function renderTypeFields(type){
+  pendingUploads = [];
+  var c = document.getElementById('typeFields');
+  if(!c) return;
+
+  if(type === 'photo'){
+    c.innerHTML = '<div class="field"><label>Carica Immagini o URL</label>'
+      + '<div class="upload-zone" id="uploadZone" onclick="document.getElementById(\'fileInput\').click()">'
+      + '<input type="file" id="fileInput" accept="image/*" multiple onchange="handleFiles(this.files)">'
+      + '<div class="upload-icon">📁</div>'
+      + '<div class="upload-text">Clicca o trascina immagini</div>'
+      + '<div class="upload-sub">JPG · PNG · WebP · max 5MB</div>'
+      + '</div>'
+      + '<div class="upload-preview" id="uploadPreview"></div>'
+      + '</div>'
+      + '<div class="field"><label>— oppure — URL Esterno</label><input type="text" id="photoUrl" placeholder="https://..."></div>'
+      + '<div class="field"><label>Didascalia (opzionale)</label><input type="text" id="itemTitle" placeholder="es. Partenza Gara 1"></div>';
+  } else if(type === 'video' || type === 'interview'){
+    c.innerHTML = '<div class="field"><label>URL YouTube</label><input type="url" id="videoUrl" placeholder="https://www.youtube.com/watch?v=..."></div>'
+      + '<div class="field"><label>Titolo</label><input type="text" id="itemTitle" placeholder="es. Highlights Gara 1"></div>'
+      + '<div class="field"><label>Descrizione (opzionale)</label><input type="text" id="itemDesc" placeholder=""></div>'
+      + '<div style="margin:6px 0 2px;font-family:\'Teko\',sans-serif;font-size:11px;letter-spacing:2px;color:var(--dim);text-transform:uppercase">— oppure — Upload Diretto</div>'
+      + '<div class="upload-zone" onclick="document.getElementById(\'vidFileInput\').click()">'
+      + '<input type="file" id="vidFileInput" accept="video/*" style="display:none" onchange="handleVideoFile(this.files[0])">'
+      + '<div class="upload-icon">🎬</div>'
+      + '<div class="upload-text">Carica video file</div>'
+      + '<div class="upload-sub">MP4 · max 50MB</div>'
+      + '</div>'
+      + '<div id="vidFileName" style="font-size:12px;color:var(--gold);margin-top:6px"></div>';
+  } else if(type === 'article'){
+    c.innerHTML = '<div class="field"><label>Titolo</label><input type="text" id="itemTitle" placeholder="Titolo articolo"></div>'
+      + '<div class="field"><label>Testo</label>'
+      + '<div class="rtoolbar">'
+      + '<button class="rtbtn" onclick="fmt(\'bold\')" title="Grassetto"><b>B</b></button>'
+      + '<button class="rtbtn" onclick="fmt(\'italic\')" title="Corsivo"><i>I</i></button>'
+      + '<button class="rtbtn" onclick="fmtLink()" title="Link">🔗</button>'
+      + '</div>'
+      + '<div class="rich-editor" id="richEditor" contenteditable="true" spellcheck="false"></div>'
+      + '</div>'
+      + '<div class="field"><label>Data (opzionale)</label><input type="text" id="itemDate" placeholder="es. 20 giugno 2026"></div>';
+  }
+}
+
+function fmt(cmd){ document.execCommand(cmd,false,null); document.getElementById('richEditor').focus(); }
+function fmtLink(){
+  var url = prompt('URL link:');
+  if(url) document.execCommand('createLink',false,url);
+}
+
+function handleFiles(files){
+  Array.from(files).forEach(function(file){
+    if(file.size > 5*1024*1024){ toast('File troppo grande: '+file.name+' (max 5MB)','err'); return; }
+    var reader = new FileReader();
+    reader.onload = function(e){
+      var b64 = e.target.result.split(',')[1];
+      pendingUploads.push({ name: file.name, b64: b64, mimeType: file.type });
+      var prev = document.getElementById('uploadPreview');
+      if(prev){
+        var thumb = document.createElement('div');
+        thumb.className = 'upload-thumb';
+        thumb.innerHTML = '<img src="'+e.target.result+'" alt=""><button class="upload-thumb-del" onclick="removeUpload('+( pendingUploads.length-1)+',this)">✕</button>';
+        prev.appendChild(thumb);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+var pendingVideoFile = null;
+function handleVideoFile(file){
+  if(!file) return;
+  if(file.size > 50*1024*1024){ toast('File troppo grande (max 50MB)','err'); return; }
+  var reader = new FileReader();
+  reader.onload = function(e){
+    pendingVideoFile = { name: file.name, b64: e.target.result.split(',')[1], mimeType: file.type };
+    var el = document.getElementById('vidFileName');
+    if(el) el.textContent = '✓ ' + file.name;
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeUpload(idx, btn){
+  pendingUploads.splice(idx, 1);
+  btn.parentElement.remove();
+}
+
+async function publishItem(){
+  var activePill = document.querySelector('#typePills .tpill.active');
+  if(!activePill) return;
+  var type = activePill.dataset.t;
+  var basePath = SOCIAL_FOLDER + '/' + sel.champ.year + '/' + sel.champ.slug + '/' + sel.race.slug;
+
+  try {
+    toast('Pubblicazione…', '');
+    var itemsPath = basePath + '/index.json';
+    var items = [];
+    try { items = await ghReadJson(itemsPath); } catch(e){ items = []; }
+
+    if(type === 'photo'){
+      var photoUrl = (document.getElementById('photoUrl')||{}).value || '';
+      var title = (document.getElementById('itemTitle')||{}).value || '';
+
+      if(photoUrl){
+        items.push({ type:'photo', url: photoUrl.trim(), title: title.trim() });
+      }
+      if(pendingUploads.length){
+        for(var i=0; i<pendingUploads.length; i++){
+          var up = pendingUploads[i];
+          var fname = Date.now() + '-' + up.name.replace(/[^a-zA-Z0-9._-]/g,'-');
+          await ghPutBinary(basePath+'/'+fname, up.b64, 'Add photo: '+fname);
+          items.push({ type:'photo', file: fname, title: title||up.name });
+        }
+      }
+    } else if(type === 'video' || type === 'interview'){
+      var videoUrl = (document.getElementById('videoUrl')||{}).value || '';
+      var title = (document.getElementById('itemTitle')||{}).value || '';
+      var desc  = (document.getElementById('itemDesc')||{}).value || '';
+      if(pendingVideoFile){
+        var fname = Date.now() + '-' + pendingVideoFile.name.replace(/[^a-zA-Z0-9._-]/g,'-');
+        await ghPutBinary(basePath+'/'+fname, pendingVideoFile.b64, 'Add video: '+fname);
+        items.push({ type: type, file: fname, title: title||pendingVideoFile.name, desc: desc });
+        pendingVideoFile = null;
+      } else if(videoUrl){
+        items.push({ type: type, url: videoUrl.trim(), title: title, desc: desc });
+      }
+    } else if(type === 'article'){
+      var title = (document.getElementById('itemTitle')||{}).value || '';
+      var body  = document.getElementById('richEditor') ? document.getElementById('richEditor').innerHTML : '';
+      var date  = (document.getElementById('itemDate')||{}).value || '';
+      if(!title && !body){ toast('Inserisci titolo o testo','err'); return; }
+      items.push({ type:'article', title: title.trim(), body: body, date: date.trim() });
+    }
+
+    await ghPut(itemsPath, JSON.stringify(items, null, 2), 'Update social items: '+sel.race.slug);
+    toast('Pubblicato ✓', 'ok');
+    renderMain();
+  } catch(e){ toast('Errore: '+e.message, 'err'); }
+}
+
+async function deleteItem(idx){
+  if(!confirm('Eliminare questo contenuto?')) return;
+  var main = document.getElementById('mainArea');
+  var items = JSON.parse(main.dataset.items||'[]');
+  var item = items[idx];
+  var basePath = SOCIAL_FOLDER+'/'+sel.champ.year+'/'+sel.champ.slug+'/'+sel.race.slug;
+
+  try {
+    // If it's a file stored in repo, delete the file too
+    if(item.file){
+      try { await ghDelete(basePath+'/'+item.file, 'Delete media: '+item.file); } catch(e){}
+    }
+    items.splice(idx,1);
+    await ghPut(basePath+'/index.json', JSON.stringify(items,null,2), 'Remove item from '+sel.race.slug);
+    toast('Eliminato','ok');
+    renderMain();
+  } catch(e){ toast('Errore: '+e.message,'err'); }
+}
+
+// ── ADD YEAR / CHAMP / RACE ──
+function showAddYear(){
+  var y = prompt('Anno (es. 2027):');
+  if(!y||!y.trim()) return;
+  sel.year = y.trim();
+  renderYears();
+}
+
+async function showAddChamp(){
+  if(!token){ toast('Connetti prima GitHub','err'); return; }
+  // Load from calendario.json
+  try {
+    var cal = await ghReadJson('calendario.json');
+    var yearCal = cal.filter(function(c){ return String(c.year)===String(sel.year); });
+    if(!yearCal.length){ toast('Nessun campionato per il '+sel.year+' in calendario.json','err'); return; }
+    var opts = yearCal.map(function(c,i){ return i+': '+c.name+' ('+c.id+')'; }).join('\n');
+    var choice = prompt('Scegli campionato:\n'+opts+'\n\nInserisci il numero:');
+    if(choice===null) return;
+    var idx = parseInt(choice);
+    if(isNaN(idx)||!yearCal[idx]){ toast('Scelta non valida','err'); return; }
+    var c = yearCal[idx];
+    // Check not already added
+    if(socialIndex.find(function(x){ return x.id===c.id; })){ toast('Già presente','err'); return; }
+    socialIndex.push({ id:c.id, name:c.name, year:c.year, slug:c.slug||c.id, races:[] });
+    await saveIndex();
+    renderChamps();
+    toast('Campionato aggiunto ✓','ok');
+  } catch(e){ toast('Errore: '+e.message,'err'); }
+}
+
+async function showAddRace(){
+  if(!sel.champ){ return; }
+  var label = prompt('Nome gara (es. R1 · Dragon Trail):');
+  if(!label||!label.trim()) return;
+  var slug = label.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  if(!sel.champ.races) sel.champ.races = [];
+  sel.champ.races.push({ label: label.trim(), slug: slug });
+  // Update in socialIndex
+  var ci = socialIndex.findIndex(function(c){ return c.id===sel.champ.id; });
+  if(ci>=0) socialIndex[ci].races = sel.champ.races;
+  await saveIndex();
+  renderRaces();
+  toast('Gara aggiunta ✓','ok');
+}
+
+async function deleteChamp(id){
+  if(!confirm('Eliminare questo campionato dal Social?')) return;
+  socialIndex = socialIndex.filter(function(c){ return c.id!==id; });
+  await saveIndex();
+  sel.champ = null; sel.race = null;
+  renderChamps();
+  toast('Eliminato','ok');
+}
+
+async function deleteRace(slug){
+  if(!confirm('Eliminare questa gara?')) return;
+  sel.champ.races = (sel.champ.races||[]).filter(function(r){ return r.slug!==slug; });
+  var ci = socialIndex.findIndex(function(c){ return c.id===sel.champ.id; });
+  if(ci>=0) socialIndex[ci].races = sel.champ.races;
+  await saveIndex();
+  sel.race = null;
+  renderRaces();
+  toast('Eliminato','ok');
+}
+
+// ── TOAST ──
+function toast(msg, type){
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'show '+(type||'');
+  clearTimeout(t._t); t._t = setTimeout(function(){ t.className=''; }, 3000);
+}
+
+function esc(s){ return String(s||'').replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+</script>
+</body>
+</html>
