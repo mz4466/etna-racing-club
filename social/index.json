@@ -4,6 +4,11 @@
     "name": "Ruggiti d'Autunno",
     "year": "2025",
     "slug": "Autunno",
-    "races": []
+    "races": [
+      {
+        "label": "R1 · Dragon Trail",
+        "slug": "r1-dragon-trail"
+      }
+    ]
   }
 ]
