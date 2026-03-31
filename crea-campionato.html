@@ -1628,10 +1628,17 @@ async function pushFile(token, fname, content, message) {
   }
 }
 
-function generateChampId(slug, year) {
-  // e.g. "estate-2025" — stable forever, based on slug+year
-  const s = (slug || 'champ').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  return s + '-' + String(year || new Date().getFullYear());
+function generateChampId(slug, year, name) {
+  // Build a unique ID from name + slug + year to avoid collisions
+  // e.g. "trofeo-abarth-autunno-2025", "ruggiti-autunno-2025"
+  const cleanName = (name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const cleanSlug = (slug || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const yr = String(year || new Date().getFullYear());
+  // Combine: name-slug-year, but skip slug if it's already contained in name
+  const parts = [cleanName];
+  if (cleanSlug && !cleanName.includes(cleanSlug)) parts.push(cleanSlug);
+  parts.push(yr);
+  return parts.join('-');
 }
 
 async function updateCalendario(token, fname, champPath) {
@@ -1704,11 +1711,11 @@ async function updateCalendario(token, fname, champPath) {
       // preserve status, completedRounds AND the stable id
       newEntry.status = existing[idx].status || 'prossimo';
       newEntry.completedRounds = existing[idx].completedRounds || 0;
-      newEntry.id = existing[idx].id || generateChampId(slug || cat, year);
+      newEntry.id = existing[idx].id || generateChampId(slug || cat, year, name);
       existing[idx] = newEntry;
     } else {
       // brand new — generate a stable id
-      newEntry.id = generateChampId(slug || cat, year);
+      newEntry.id = generateChampId(slug || cat, year, name);
       existing.push(newEntry);
     }
 
