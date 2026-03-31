@@ -14,9 +14,9 @@
       "bestLap": "15'95''011",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 25,
       "extra": "-",
-      "totale": 0,
+      "totale": 25,
       "stato": "ok"
     },
     {
@@ -27,9 +27,9 @@
       "bestLap": "2'01''479",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 18,
       "extra": "-",
-      "totale": 0,
+      "totale": 18,
       "stato": "ok"
     },
     {
@@ -40,22 +40,22 @@
       "bestLap": "2'01''803",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 15,
       "extra": "-",
-      "totale": 0,
+      "totale": 15,
       "stato": "ok"
     },
     {
       "pos": 4,
       "nome": "Pyer",
-      "auto": "",
+      "auto": "Abarth 500 '09",
       "tempo": "a 24\"471",
       "bestLap": "2'01''124",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 12,
       "extra": "-",
-      "totale": 0,
+      "totale": 12,
       "stato": "ok"
     },
     {
@@ -66,9 +66,9 @@
       "bestLap": "2'04''012",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 10,
       "extra": "-",
-      "totale": 0,
+      "totale": 10,
       "stato": "ok"
     },
     {
@@ -79,42 +79,42 @@
       "bestLap": "2'10''188",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 8,
       "extra": "-",
-      "totale": 0,
+      "totale": 8,
       "stato": "ok"
     }
   ],
   "standings": [
     {
       "nome": "Carmine",
-      "pts": 0,
+      "pts": 25,
       "pos": 1
     },
     {
       "nome": "Giuseppe",
-      "pts": 0,
-      "pos": 1
+      "pts": 18,
+      "pos": 2
     },
     {
       "nome": "Antonio",
-      "pts": 0,
-      "pos": 1
+      "pts": 15,
+      "pos": 3
     },
     {
       "nome": "Pyer",
-      "pts": 0,
-      "pos": 1
+      "pts": 12,
+      "pos": 4
     },
     {
       "nome": "Claudio",
-      "pts": 0,
-      "pos": 1
+      "pts": 10,
+      "pos": 5
     },
     {
       "nome": "Luca",
-      "pts": 0,
-      "pos": 1
+      "pts": 8,
+      "pos": 6
     }
   ],
   "bestOf": null
