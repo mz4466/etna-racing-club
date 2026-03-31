@@ -1,0 +1,139 @@
+{
+  "circuito": "Mount Panorama (6.213 m)",
+  "data": "2025-09-28",
+  "garaNum": "1",
+  "garaTot": "5",
+  "champId": "autunno-2025",
+  "champIdx": "autunno-2025",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Mattia",
+      "auto": "Ferrari 458 Italia GT3 '13",
+      "tempo": "",
+      "bestLap": "2'12''937",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Carmine",
+      "auto": "BMW M6 GT3 Endurance Model '16",
+      "tempo": "",
+      "bestLap": "2'13''397",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Antonio",
+      "auto": "Ferrari 458 Italia GT3 '13",
+      "tempo": "",
+      "bestLap": "2'13''475",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Claudio",
+      "auto": "BMW M6 GT3 Endurance Model '16",
+      "tempo": "",
+      "bestLap": "2'14''361",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Pyer",
+      "auto": "Lamborghini Huracan GT3 '15",
+      "tempo": "",
+      "bestLap": "2'16''642",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    },
+    {
+      "pos": 6,
+      "nome": "Luca",
+      "auto": "Mazda RX-VISION GT3 CONCEPT",
+      "tempo": "",
+      "bestLap": "2'17''975",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "ok"
+    },
+    {
+      "pos": 7,
+      "nome": "Fabio",
+      "auto": "Ferrari 458 Italia GT3 '13",
+      "tempo": "",
+      "bestLap": "2'18''569",
+      "fl": false,
+      "pole": false,
+      "punti": 6,
+      "extra": "-",
+      "totale": 6,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Mattia",
+      "pts": 25,
+      "pos": 1
+    },
+    {
+      "nome": "Carmine",
+      "pts": 18,
+      "pos": 2
+    },
+    {
+      "nome": "Antonio",
+      "pts": 15,
+      "pos": 3
+    },
+    {
+      "nome": "Claudio",
+      "pts": 12,
+      "pos": 4
+    },
+    {
+      "nome": "Pyer",
+      "pts": 10,
+      "pos": 5
+    },
+    {
+      "nome": "Luca",
+      "pts": 8,
+      "pos": 6
+    },
+    {
+      "nome": "Fabio",
+      "pts": 6,
+      "pos": 7
+    }
+  ],
+  "bestOf": 4
+}
