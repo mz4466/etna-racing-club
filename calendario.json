@@ -231,10 +231,10 @@
     "trophy": "Crono_Vincitore.png",
     "cars": "Radical",
     "desc": "",
-    "status": "prossimo",
+    "status": "concluso",
     "file": "campionati/trofeo-cronoscalata-2025-trofeo-autunno.html",
     "totalRounds": 1,
-    "completedRounds": 0,
+    "completedRounds": 1,
     "bestOf": null,
     "rounds": [
       {
