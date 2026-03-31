@@ -1,0 +1,139 @@
+{
+  "circuito": "Mount Panorama (6.213 m)",
+  "data": "2025-11-25",
+  "garaNum": "1",
+  "garaTot": "1",
+  "champId": "trofeo-cronoscalata-autunno-2025",
+  "champIdx": "trofeo-cronoscalata-autunno-2025",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Carmine",
+      "auto": "SR3 SL '13",
+      "tempo": "2'08''455",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Antonio",
+      "auto": "SR3 SL '13",
+      "tempo": "2'08''986",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Claudio",
+      "auto": "SR3 SL '13",
+      "tempo": "2'09''653",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Giovanni",
+      "auto": "SR3 SL '13",
+      "tempo": "2'10''317",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Pyer",
+      "auto": "SR3 SL '13",
+      "tempo": "2'10''456",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    },
+    {
+      "pos": 6,
+      "nome": "Fabio",
+      "auto": "SR3 SL '13",
+      "tempo": "2'13''512",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "ok"
+    },
+    {
+      "pos": 7,
+      "nome": "Luca",
+      "auto": "SR3 SL '13",
+      "tempo": "2'16''001",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 6,
+      "extra": "-",
+      "totale": 6,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Carmine",
+      "pts": 25,
+      "pos": 1
+    },
+    {
+      "nome": "Antonio",
+      "pts": 18,
+      "pos": 2
+    },
+    {
+      "nome": "Claudio",
+      "pts": 15,
+      "pos": 3
+    },
+    {
+      "nome": "Giovanni",
+      "pts": 12,
+      "pos": 4
+    },
+    {
+      "nome": "Pyer",
+      "pts": 10,
+      "pos": 5
+    },
+    {
+      "nome": "Fabio",
+      "pts": 8,
+      "pos": 6
+    },
+    {
+      "nome": "Luca",
+      "pts": 6,
+      "pos": 7
+    }
+  ],
+  "bestOf": null
+}
