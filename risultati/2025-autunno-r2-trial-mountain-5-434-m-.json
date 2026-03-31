@@ -1,0 +1,157 @@
+{
+  "circuito": "Trial Mountain (5.434 m)",
+  "data": "2025-10-18",
+  "garaNum": "2",
+  "garaTot": "5",
+  "champId": "autunno-2025",
+  "champIdx": "autunno-2025",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Carmine",
+      "auto": "BMW M6 GT3 Endurance Model '16",
+      "tempo": "26'42''124",
+      "bestLap": "1'52''144",
+      "fl": true,
+      "pole": true,
+      "punti": 25,
+      "extra": "1+1",
+      "totale": 27,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Mattia",
+      "auto": "Ferrari 458 Italia GT3 '13",
+      "tempo": "a 21\"760",
+      "bestLap": "1'52''852",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Pyer",
+      "auto": "Lamborghini Huracan GT3 '15",
+      "tempo": "a 22\"805",
+      "bestLap": "1'53''785",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Claudio",
+      "auto": "BMW M6 GT3 Endurance Model '16",
+      "tempo": "a 1'01\"361",
+      "bestLap": "1'53''920",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Giuseppe",
+      "auto": "911 GT3 RS (991) '16",
+      "tempo": "a 1'08\"031",
+      "bestLap": "1'56''092",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    },
+    {
+      "pos": 6,
+      "nome": "Luca",
+      "auto": "Mazda RX-VISION GT3 CONCEPT",
+      "tempo": "a 1'34\"494",
+      "bestLap": "1'57''811",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "ok"
+    },
+    {
+      "pos": 7,
+      "nome": "Antonio",
+      "auto": "Ferrari 458 Italia GT3 '13",
+      "tempo": "a 1'51\"067",
+      "bestLap": "1'55''873",
+      "fl": false,
+      "pole": false,
+      "punti": 6,
+      "extra": "-",
+      "totale": 6,
+      "stato": "ok"
+    },
+    {
+      "pos": 8,
+      "nome": "Fabio",
+      "auto": "Ferrari 458 Italia GT3 '13",
+      "tempo": "a 1 Giro",
+      "bestLap": "1'58''838",
+      "fl": false,
+      "pole": false,
+      "punti": 5,
+      "extra": "-",
+      "totale": 5,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Carmine",
+      "pts": 27,
+      "pos": 1
+    },
+    {
+      "nome": "Mattia",
+      "pts": 18,
+      "pos": 2
+    },
+    {
+      "nome": "Pyer",
+      "pts": 15,
+      "pos": 3
+    },
+    {
+      "nome": "Claudio",
+      "pts": 12,
+      "pos": 4
+    },
+    {
+      "nome": "Giuseppe",
+      "pts": 10,
+      "pos": 5
+    },
+    {
+      "nome": "Luca",
+      "pts": 8,
+      "pos": 6
+    },
+    {
+      "nome": "Antonio",
+      "pts": 6,
+      "pos": 7
+    },
+    {
+      "nome": "Fabio",
+      "pts": 5,
+      "pos": 8
+    }
+  ],
+  "bestOf": 4
+}
