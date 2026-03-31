@@ -476,7 +476,14 @@ function updateOutputFilename(){
   if(!champIdx||!circ) return;
   const champ = getChampBySelectValue(champIdx);
   const year  = champ.year||'2025';
-  const slug  = `${year}-${(champ.slug||champ.name).toLowerCase().replace(/[^a-z0-9]+/g,'-')}-r${round}-${circ.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.html`;
+  // Use champ.id (always unique) stripping the year suffix to keep filenames shorter
+  // e.g. "trofeo-cronoscalata-autunno-2025" → "trofeo-cronoscalata-autunno"
+  const champKey = (champ.id || champ.slug || champ.name)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,'-')
+    .replace(new RegExp('-'+year+'$'), '')  // strip trailing -year
+    .replace(/^-|-$/g,'');
+  const slug  = `${year}-${champKey}-r${round}-${circ.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.html`;
   document.getElementById('outputFilenameInput').value = slug;
   document.getElementById('outputFilename').textContent = slug;
 }
