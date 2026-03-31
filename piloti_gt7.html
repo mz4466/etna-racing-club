@@ -144,6 +144,12 @@
 <main class="container">
     <div class="controls">
         <input id="search" type="search" placeholder="Cerca pilota, PSN, auto..." style="flex:1;padding:12px;border-radius:10px;border:1px solid rgba(201,184,163,0.06);background:#0b0b0d;color:var(--cream)">
+        <select id="sortSelect" style="padding:12px 14px;border-radius:10px;border:1px solid rgba(255,80,20,0.3);background:#0b0b0d;color:var(--cream);font-family:'Russo One',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;outline:none;min-width:190px;">
+            <option value="trofei">🏆 Trofei vinti</option>
+            <option value="nome">🔤 Nome</option>
+            <option value="campionati">🏟️ Campionati</option>
+            <option value="gare">🏎️ Gare</option>
+        </select>
     </div>
     <div id="grid" class="grid"></div>
 </main>
@@ -415,6 +421,7 @@ async function loadAll() {
     var valid = pilots.filter(function(p) { return p && (p.nome || p.name || p.psn); });
     valid.forEach(function(p) { renderPilot(p, calendario); });
     if (!valid.length) grid.innerHTML = '<div style="color:var(--muted)">Nessuna scheda trovata</div>';
+    else sortPilots('trofei');
 
   } catch(err) {
     console.error(err);
@@ -426,6 +433,26 @@ function renderPilot(p, calendario) {
   calendario = calendario || [];
   var el = document.createElement('div');
   el.className = 'pilot-card';
+
+  // ── Sort data ──
+  var _sortNames = [p.nome, p.name, p.psn, p.gt7Name].filter(Boolean).map(function(n){ return n.toLowerCase().trim(); });
+  var _sortStat = null;
+  _sortNames.forEach(function(n){ if(pilotStats[n] && !_sortStat) _sortStat = pilotStats[n]; });
+  var _sortTrofei = 0, _sortSilver = 0, _sortBronze = 0;
+  _sortNames.forEach(function(n){
+    if(pilotTrophies[n]) _sortTrofei += pilotTrophies[n].length;
+    if(pilotMedals[n]) pilotMedals[n].forEach(function(m){
+      if(m.pos===2) _sortSilver++;
+      else if(m.pos===3) _sortBronze++;
+    });
+  });
+  el.dataset.trofei     = _sortTrofei;
+  el.dataset.silver     = _sortSilver;
+  el.dataset.bronze     = _sortBronze;
+  el.dataset.campionati = _sortStat ? Object.keys(_sortStat.champs).length : 0;
+  el.dataset.gare       = _sortStat ? _sortStat.races : 0;
+  el.dataset.nome       = (p.nome || p.name || '').toLowerCase();
+
 
   // Support both old format (name/photo/country/car/gt7Name) and new admin format (nome/foto/nazione/auto/psn)
   var nome     = p.nome   || p.name  || '—';
@@ -671,6 +698,35 @@ function renderPilot(p, calendario) {
 }
 
 function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+function sortPilots(key) {
+  var cards = Array.from(grid.querySelectorAll('.pilot-card'));
+  cards.sort(function(a, b) {
+    if (key === 'trofei') {
+      // Primary: trofei desc, secondary: silver desc, tertiary: bronze desc
+      var dt = parseInt(b.dataset.trofei||0) - parseInt(a.dataset.trofei||0);
+      if (dt !== 0) return dt;
+      var ds = parseInt(b.dataset.silver||0) - parseInt(a.dataset.silver||0);
+      if (ds !== 0) return ds;
+      return parseInt(b.dataset.bronze||0) - parseInt(a.dataset.bronze||0);
+    }
+    if (key === 'nome') {
+      return (a.dataset.nome||'').localeCompare(b.dataset.nome||'');
+    }
+    if (key === 'campionati') {
+      return parseInt(b.dataset.campionati||0) - parseInt(a.dataset.campionati||0);
+    }
+    if (key === 'gare') {
+      return parseInt(b.dataset.gare||0) - parseInt(a.dataset.gare||0);
+    }
+    return 0;
+  });
+  cards.forEach(function(c){ grid.appendChild(c); });
+}
+
+document.getElementById('sortSelect').addEventListener('change', function(){
+  sortPilots(this.value);
+});
 
 loadGT7Cars();
 loadAll();
