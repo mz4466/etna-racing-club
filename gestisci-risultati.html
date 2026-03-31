@@ -1297,7 +1297,7 @@ async function publish(){
     await linkResultToChampionship('../risultati/' + fname);
 
     // 4. update risultati/index.json for public pages
-    await updateRisultatiIndex(token);
+    await updateRisultatiIndex(token, jsonFname);
 
     toast(`✓ Pubblicato: ${fname}`,'ok');
   } catch(e){
@@ -1344,20 +1344,36 @@ async function linkResultToChampionship(resultFile){
   } catch(e){ console.warn('Could not auto-link to championship:',e.message); }
 }
 
-async function updateRisultatiIndex(token){
-  // Maintains risultati/index.json — a list of all result JSON filenames
-  // Used by public pages to fetch via raw.githubusercontent.com (no API rate limit)
+async function updateRisultatiIndex(token, newFilename){
+  // Adds newFilename to risultati/index.json without relying on folder listing.
+  // Folder listing has a race condition — the newly written file may not appear
+  // in the API response immediately after being saved. Instead we read the current
+  // index, append the new entry if missing, and write it back.
   try {
-    const r = await fetch('https://api.github.com/repos/' + REPO + '/contents/risultati?ref=' + BRANCH, {
+    var indexPath = 'risultati/index.json';
+    var existing = [];
+    var existingSha = null;
+
+    // Fetch current index (may or may not exist)
+    var r = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + indexPath + '?ref=' + BRANCH, {
       headers:{Authorization:'token ' + token, Accept:'application/vnd.github.v3+json'}
     });
-    if(!r.ok) return;
-    const files = await r.json();
-    const names = files
-      .filter(function(f){ return f.name.endsWith('.json') && f.name !== 'index.json'; })
-      .map(function(f){ return f.name; })
-      .sort();
-    await putFile('risultati/index.json', JSON.stringify(names), 'Update risultati index');
+    if(r.ok){
+      var d = await r.json();
+      existingSha = d.sha;
+      try {
+        existing = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\s/g,'')))));
+      } catch(e2){ existing = []; }
+    }
+
+    // Add the new filename if not already present, then sort
+    if(newFilename && !existing.includes(newFilename)){
+      existing.push(newFilename);
+    }
+    existing = existing.filter(function(n){ return n && n.endsWith('.json') && n !== 'index.json'; });
+    existing.sort();
+
+    await putFile(indexPath, JSON.stringify(existing), 'Update risultati index', existingSha);
   } catch(e){ console.warn('updateRisultatiIndex:', e.message); }
 }
 
