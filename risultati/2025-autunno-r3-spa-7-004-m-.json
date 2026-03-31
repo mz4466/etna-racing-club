@@ -1,0 +1,121 @@
+{
+  "circuito": "Spa (7.004 m)",
+  "data": "2025-11-02",
+  "garaNum": "3",
+  "garaTot": "5",
+  "champId": "autunno-2025",
+  "champIdx": "autunno-2025",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Mattia",
+      "auto": "Ferrari 458 Italia GT3 '13",
+      "tempo": "15'41''509",
+      "bestLap": "2'20''557",
+      "fl": true,
+      "pole": true,
+      "punti": 25,
+      "extra": "1+1",
+      "totale": 27,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Pyer",
+      "auto": "Lamborghini Huracan GT3 '15",
+      "tempo": "a 15\"374",
+      "bestLap": "2'22''533",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Claudio",
+      "auto": "BMW M6 GT3 Endurance Model '16",
+      "tempo": "a 35\"389",
+      "bestLap": "2'24''345",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Antonio",
+      "auto": "Ferrari 458 Italia GT3 '13",
+      "tempo": "a 43\"285",
+      "bestLap": "2'22''357",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Giovanni",
+      "auto": "McLaren 650S GT3 '15",
+      "tempo": "a 1'02\"649",
+      "bestLap": "2'27''529",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    },
+    {
+      "pos": 6,
+      "nome": "Carmine",
+      "auto": "BMW M6 GT3 Endurance Model '16",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "dnf"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Mattia",
+      "pts": 27,
+      "pos": 1
+    },
+    {
+      "nome": "Pyer",
+      "pts": 18,
+      "pos": 2
+    },
+    {
+      "nome": "Claudio",
+      "pts": 15,
+      "pos": 3
+    },
+    {
+      "nome": "Antonio",
+      "pts": 12,
+      "pos": 4
+    },
+    {
+      "nome": "Giovanni",
+      "pts": 10,
+      "pos": 5
+    },
+    {
+      "nome": "Carmine",
+      "pts": 8,
+      "pos": 6
+    }
+  ],
+  "bestOf": 4
+}
