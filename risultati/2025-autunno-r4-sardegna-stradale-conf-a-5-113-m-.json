@@ -1,0 +1,139 @@
+{
+  "circuito": "Sardegna - Stradale (conf. A) (5.113 m)",
+  "data": "2025-11-16",
+  "garaNum": "4",
+  "garaTot": "5",
+  "champId": "autunno-2025",
+  "champIdx": "autunno-2025",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Carmine",
+      "auto": "BMW M6 GT3 Endurance Model '16",
+      "tempo": "27'19''797",
+      "bestLap": "1'43''932",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Claudio",
+      "auto": "BMW M6 GT3 Endurance Model '16",
+      "tempo": "a 13\"710",
+      "bestLap": "1'44''021",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Mattia",
+      "auto": "Ferrari 458 Italia GT3 '13",
+      "tempo": "a 13\"817",
+      "bestLap": "1'44''178",
+      "fl": false,
+      "pole": true,
+      "punti": 15,
+      "extra": "1",
+      "totale": 16,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Giovanni",
+      "auto": "McLaren 650S GT3 '15",
+      "tempo": "a 16\" 368",
+      "bestLap": "1'44''182",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Pyer",
+      "auto": "Lamborghini Huracan GT3 '15",
+      "tempo": "a 17\" 709",
+      "bestLap": "1'43''249",
+      "fl": true,
+      "pole": false,
+      "punti": 10,
+      "extra": "1",
+      "totale": 11,
+      "stato": "ok"
+    },
+    {
+      "pos": 6,
+      "nome": "Fabio",
+      "auto": "Ferrari 458 Italia GT3 '13",
+      "tempo": "a 45\" 907",
+      "bestLap": "1'46''796",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "ok"
+    },
+    {
+      "pos": 7,
+      "nome": "Luca",
+      "auto": "Mazda RX-VISION GT3 CONCEPT",
+      "tempo": "a 1'49\" 212",
+      "bestLap": "1'46''374",
+      "fl": false,
+      "pole": false,
+      "punti": 6,
+      "extra": "-",
+      "totale": 6,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Carmine",
+      "pts": 25,
+      "pos": 1
+    },
+    {
+      "nome": "Claudio",
+      "pts": 18,
+      "pos": 2
+    },
+    {
+      "nome": "Mattia",
+      "pts": 16,
+      "pos": 3
+    },
+    {
+      "nome": "Giovanni",
+      "pts": 12,
+      "pos": 4
+    },
+    {
+      "nome": "Pyer",
+      "pts": 11,
+      "pos": 5
+    },
+    {
+      "nome": "Fabio",
+      "pts": 8,
+      "pos": 6
+    },
+    {
+      "nome": "Luca",
+      "pts": 6,
+      "pos": 7
+    }
+  ],
+  "bestOf": 4
+}
