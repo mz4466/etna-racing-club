@@ -671,16 +671,38 @@ function openModal(slug){
       document.getElementById('fotoStatus').style.color = 'var(--green)';
     }
     updateSlugPreview();
-    // Load existing car assignments
+    // Build selectedCarsMap ONLY for currently active championships.
+    // Each championship is independent — new ones start empty regardless
+    // of what the pilot had saved for other championships.
     selectedCarsMap = {};
     var existing = d.campionati || {};
-    Object.keys(existing).forEach(function(cid){
-      selectedCarsMap[cid] = (existing[cid].cars || []).slice();
+    var activeIds = calendarioData
+      .filter(function(c){
+        var s = (c.status||'').toLowerCase().trim();
+        return s === 'in-corso' || s === 'prossimo' || s === 'attivo' || s === 'ongoing';
+      })
+      .map(function(c){ return c.id; });
+    activeIds.forEach(function(cid){
+      // Only load saved cars if this pilot has an entry for this specific championship
+      // Otherwise start completely empty (new championship = no pre-selection)
+      if(existing[cid] && existing[cid].cars && existing[cid].cars.length){
+        selectedCarsMap[cid] = existing[cid].cars.slice();
+      } else {
+        selectedCarsMap[cid] = [];
+      }
     });
   } else {
     document.getElementById('modalTitle').textContent = 'Aggiungi Pilota';
     document.getElementById('fSlug').readOnly = false;
+    // New pilot: all active championships start empty
     selectedCarsMap = {};
+    var activeIds = calendarioData
+      .filter(function(c){
+        var s = (c.status||'').toLowerCase().trim();
+        return s === 'in-corso' || s === 'prossimo' || s === 'attivo' || s === 'ongoing';
+      })
+      .map(function(c){ return c.id; });
+    activeIds.forEach(function(cid){ selectedCarsMap[cid] = []; });
   }
 
   renderChampAssignments();
@@ -942,9 +964,10 @@ function renderChampAssignments(){
   active.forEach(function(champ){
     var cid = champ.id || '';
     if(!cid) return;
-    if(!selectedCarsMap[cid]) selectedCarsMap[cid] = [];
+    // Read only — never mutate selectedCarsMap here
+    var champCars = selectedCarsMap[cid] || [];
 
-    var pillsHtml = selectedCarsMap[cid].map(function(carName){
+    var pillsHtml = champCars.map(function(carName){
       var car = gt7Cars.find(function(c){ return c.displayName === carName; }) || null;
       var mfrColors2 = {
         'Ferrari':'#e8002d','Porsche':'#a8872d','McLaren':'#ff8000','Lamborghini':'#c8a000',
@@ -967,7 +990,7 @@ function renderChampAssignments(){
 
     html += '<div class="champ-assign-block" style="margin-bottom:10px;">'
       + '<div class="champ-assign-title">'+esc(champ.name)+' '+esc(champ.year||'')+'</div>'
-      + '<div class="car-pills" id="pills-'+cid+'">'+pillsHtml+'</div>'
+      + '<div class="car-pills" id="pills-'+cid+'">' + pillsHtml + '</div>'
       + '<div class="car-search-wrap">'
       +   '<input type="text" placeholder="'+(gt7CarsLoaded ? 'Cerca auto GT7...' : 'Caricamento auto...')+'" id="search-'+cid+'"'
       +     ' oninput="filterCars(\''+cid+'\',this.value)"'
@@ -1037,8 +1060,8 @@ function filterCars(champId, query){
 }
 
 function addCarToPilot(champId, carName){
-  if(!selectedCarsMap[champId]) selectedCarsMap[champId] = [];
-  if(selectedCarsMap[champId].indexOf(carName) >= 0) return;
+  if(!selectedCarsMap[champId]) selectedCarsMap[champId] = [];  // safety init
+  if(selectedCarsMap[champId].indexOf(carName) >= 0) return;      // no duplicates
   selectedCarsMap[champId].push(carName);
   // Clear search
   var input = document.getElementById('search-'+champId);
