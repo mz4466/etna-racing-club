@@ -1,0 +1,85 @@
+{
+  "circuito": "Nurburgring - 24 Ore",
+  "data": "2025-11-09",
+  "garaNum": "1",
+  "garaTot": "1",
+  "champId": "trofeo-formula-autunno-2025",
+  "champIdx": "trofeo-formula-autunno-2025",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Mattia",
+      "auto": "Porsche F3500-A",
+      "tempo": "28'36''986",
+      "bestLap": "7'09''858",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Antonio",
+      "auto": "Porsche F3500-A",
+      "tempo": "a 28\"197",
+      "bestLap": "7'04''482",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Pyer",
+      "auto": "Porsche F3500-A",
+      "tempo": "a 37\"300",
+      "bestLap": "7'27''060",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Luca",
+      "auto": "Porsche F3500-A",
+      "tempo": "a 3+ Giro",
+      "bestLap": "7'54''562",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Mattia",
+      "pts": 25,
+      "pos": 1
+    },
+    {
+      "nome": "Antonio",
+      "pts": 18,
+      "pos": 2
+    },
+    {
+      "nome": "Pyer",
+      "pts": 15,
+      "pos": 3
+    },
+    {
+      "nome": "Luca",
+      "pts": 12,
+      "pos": 4
+    }
+  ],
+  "bestOf": null
+}
