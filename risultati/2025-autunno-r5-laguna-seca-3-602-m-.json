@@ -1,0 +1,136 @@
+{
+  "circuito": "Laguna Seca (3.602 m)",
+  "data": "2025-11-30",
+  "garaNum": "5",
+  "garaTot": "5",
+  "champId": "autunno-2025",
+  "champIdx": "autunno-2025",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Mattia",
+      "auto": "Ferrari 458 Italia GT3 '13",
+      "tempo": "31'54''485",
+      "bestLap": "1'23''845",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Carmine",
+      "auto": "BMW M6 GT3 Endurance Model '16",
+      "tempo": "a 5\"248",
+      "bestLap": "1'23''792",
+      "fl": true,
+      "pole": true,
+      "punti": 18,
+      "extra": "1+1",
+      "totale": 20,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Giovanni",
+      "auto": "McLaren 650S GT3 '15",
+      "tempo": "a 28\"413",
+      "bestLap": "1'25''244",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Claudio",
+      "auto": "BMW M6 GT3 Endurance Model '16",
+      "tempo": "a 32\"199",
+      "bestLap": "1'24''654",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Pyer",
+      "auto": "Lamborghini Huracan GT3 '15",
+      "tempo": "a 33\"788",
+      "bestLap": "1'24''806",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    },
+    {
+      "pos": 6,
+      "nome": "Luca",
+      "auto": "Mazda RX-VISION GT3 CONCEPT",
+      "tempo": "a 1 Giro",
+      "bestLap": "1'28''088",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Mattia",
+      "pts": 95,
+      "pos": 1
+    },
+    {
+      "nome": "Carmine",
+      "pts": 90,
+      "pos": 2
+    },
+    {
+      "nome": "Claudio",
+      "pts": 57,
+      "pos": 3
+    },
+    {
+      "nome": "Pyer",
+      "pts": 54,
+      "pos": 4
+    },
+    {
+      "nome": "Giovanni",
+      "pts": 37,
+      "pos": 5
+    },
+    {
+      "nome": "Antonio",
+      "pts": 33,
+      "pos": 6
+    },
+    {
+      "nome": "Luca",
+      "pts": 30,
+      "pos": 7
+    },
+    {
+      "nome": "Fabio",
+      "pts": 19,
+      "pos": 8
+    },
+    {
+      "nome": "Giuseppe",
+      "pts": 10,
+      "pos": 9
+    }
+  ],
+  "bestOf": 4
+}
