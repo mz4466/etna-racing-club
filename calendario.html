@@ -368,10 +368,10 @@
 </header>
 
 <div class="filters" id="filters">
-  <button class="filter-btn active" onclick="filterCards('all', this)">Tutti</button>
-  <button class="filter-btn" onclick="filterCards('in-corso', this)">🔥 In Corso</button>
+  <button class="filter-btn active" onclick="filterCards('in-corso', this)">🔥 In Corso</button>
   <button class="filter-btn" onclick="filterCards('prossimo', this)">⏳ Prossimamente</button>
   <button class="filter-btn" onclick="filterCards('concluso', this)">✅ Conclusi</button>
+  <button class="filter-btn" onclick="filterCards('all', this)">Tutti</button>
 </div>
 
 <div class="wrap">
@@ -475,7 +475,10 @@ function filterCards(status, btn) {
   });
 }
 
-loadCalendario();
+loadCalendario().then(() => {
+  const defaultBtn = document.querySelector('.filter-btn.active');
+  if (defaultBtn) filterCards('in-corso', defaultBtn);
+});
 </script>
 </body>
 </html>
