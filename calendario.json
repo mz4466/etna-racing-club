@@ -75,10 +75,10 @@
     "trophy": "GR3_Championship_Winner.png",
     "cars": "Gr.3",
     "desc": "",
-    "status": "in-corso",
+    "status": "concluso",
     "file": "campionati/sole--sorpassi-2025-campionato-autunno.html",
     "totalRounds": 5,
-    "completedRounds": 3,
+    "completedRounds": 5,
     "bestOf": 4,
     "rounds": [
       {
