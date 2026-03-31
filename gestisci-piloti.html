@@ -654,12 +654,12 @@ function openModal(slug){
     document.getElementById('modalTitle').textContent = 'Modifica Pilota';
     document.getElementById('fNome').value    = d.nome    || '';
     document.getElementById('fPsn').value     = d.psn     || '';
-    document.getElementById('fRegione').value = d.Regione || '';
+    document.getElementById('fRegione').value = d.nazione || d.Regione || '';
     document.getElementById('fAuto').value    = d.auto    || '';
     document.getElementById('fStile').value   = d.stile   || '';
     document.getElementById('fPistaAma').value = d.pistaAma || '';
     document.getElementById('fPistaOdia').value= d.pistaOdia|| '';
-    document.getElementById('fBio').value     = d.bio     || '';
+    document.getElementById('fBio').value     = d.catchphrase || d.bio || '';
     document.getElementById('fBadges').value  = (d.badges||[]).join(', ');
     document.getElementById('fFoto').value    = d.foto    || '';
     document.getElementById('fSlug').value    = slug;
@@ -803,12 +803,12 @@ async function savePilot(){
   const payload = {
     nome,
     psn:       document.getElementById('fPsn').value.trim(),
-    Regione:   document.getElementById('fRegione').value.trim(),
+    nazione:   document.getElementById('fRegione').value.trim(),
     auto:      document.getElementById('fAuto').value.trim(),
     stile:     document.getElementById('fStile').value.trim(),
     pistaAma:  document.getElementById('fPistaAma').value.trim(),
     pistaOdia: document.getElementById('fPistaOdia').value.trim(),
-    bio:       document.getElementById('fBio').value.trim(),
+    catchphrase: document.getElementById('fBio').value.trim(),
     badges:    document.getElementById('fBadges').value.split(',').map(s=>s.trim()).filter(Boolean),
     foto:      document.getElementById('fFoto').value.trim(),
     campionati: campionatiPayload,
