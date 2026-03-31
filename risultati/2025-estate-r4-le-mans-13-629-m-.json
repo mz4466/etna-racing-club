@@ -10,8 +10,8 @@
       "pos": 1,
       "nome": "Antonio",
       "auto": "Ferrari 296 GT3 '23",
-      "tempo": "",
-      "bestLap": "",
+      "tempo": "26'13''315",
+      "bestLap": "4'11''943",
       "fl": false,
       "pole": false,
       "punti": 25,
@@ -23,8 +23,8 @@
       "pos": 2,
       "nome": "Claudio",
       "auto": "Nissan GT-R NISMO GT3 '18",
-      "tempo": "",
-      "bestLap": "",
+      "tempo": "a 2\"190",
+      "bestLap": "4'09''725",
       "fl": true,
       "pole": false,
       "punti": 18,
@@ -36,8 +36,8 @@
       "pos": 3,
       "nome": "Pyer",
       "auto": "Lamborghini Huracan GT3 '15",
-      "tempo": "",
-      "bestLap": "",
+      "tempo": "a 1'32\"514",
+      "bestLap": "4'26''339",
       "fl": false,
       "pole": false,
       "punti": 15,
@@ -49,23 +49,33 @@
   "standings": [
     {
       "nome": "Pyer",
-      "pts": 42,
+      "pts": 90,
       "pos": 1
     },
     {
       "nome": "Claudio",
-      "pts": 37,
+      "pts": 78,
       "pos": 2
     },
     {
-      "nome": "Antonio",
-      "pts": 25,
+      "nome": "Luca",
+      "pts": 57,
       "pos": 3
     },
     {
-      "nome": "Luca",
-      "pts": 15,
+      "nome": "Antonio",
+      "pts": 44,
       "pos": 4
+    },
+    {
+      "nome": "Carmine",
+      "pts": 27,
+      "pos": 5
+    },
+    {
+      "nome": "Fabio",
+      "pts": 25,
+      "pos": 6
     }
   ],
   "bestOf": 4
