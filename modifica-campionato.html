@@ -337,6 +337,14 @@
   .trophy-option img { width: 100%; max-width: 80px; height: 90px; object-fit: contain; display: block; margin: 0 auto 4px; }
   .trophy-option .trophy-name { font-family: 'Teko', sans-serif; font-size: 11px; letter-spacing: 1px; color: var(--text-dim); text-transform: uppercase; line-height: 1.2; }
   .trophy-option.selected .trophy-name { color: var(--gold); }
+
+  /* ── WEATHER PICKER ── */
+  .weather-picker{padding:6px 0;}
+  .wp-group-label{font-family:'Teko',sans-serif;font-size:10px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;margin:6px 0 3px;}
+  .wp-row{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px;}
+  .wp-pill{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:1px;padding:3px 8px;border-radius:12px;border:1px solid var(--border-hi);color:var(--text-dim);cursor:pointer;user-select:none;transition:all .12s;background:transparent;}
+  .wp-pill:hover{border-color:var(--gold);color:var(--text);}
+  .wp-pill.sel{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);}
 </style>
 </head>
 <body>
@@ -743,7 +751,7 @@ function addRoundWithData(data) {
   document.getElementById('racesList').appendChild(el);
 
   // Set select values after insert
-  if (data.weather) setVal(`rweather-${id}`, data.weather);
+  if (data.weather) setWeatherVal('${id}', data.weather);
   if (data.tire)    setVal(`rtire-${id}`,    data.tire);
   if (data.fuel)    setVal(`rfuel-${id}`,    data.fuel);
 
@@ -769,13 +777,7 @@ function roundHTML(id, pos, d={}) {
       <div class="form-row col4">
         <div class="field">
           <label>Meteo</label>
-          <select id="rweather-${id}" onchange="syncRound(${id})">
-            <option value="☀️ Soleggiato">☀️ Soleggiato</option>
-            <option value="🌥️ Nuvoloso">🌥️ Nuvoloso</option>
-            <option value="🌧️ Pioggia">🌧️ Pioggia</option>
-            <option value="⛈️ Temporale">⛈️ Temporale</option>
-            <option value="❄️ Neve">❄️ Neve</option>
-          </select>
+          <div class="weather-picker" id="rweather-${id}"><div class="wp-group-label">☀️ Sereno</div><div class="wp-row"><div class="wp-pill" data-code="S01" data-label="☀️ Sereno assoluto" onclick="toggleWeather(this,'${id}')" title="☀️ Sereno assoluto">S01</div><div class="wp-pill" data-code="S02" data-label="🌤️ Soleggiato foschia" onclick="toggleWeather(this,'${id}')" title="🌤️ Soleggiato foschia">S02</div><div class="wp-pill" data-code="S03" data-label="🌤️ Sereno velature" onclick="toggleWeather(this,'${id}')" title="🌤️ Sereno velature">S03</div><div class="wp-pill" data-code="S04" data-label="⛅ Sereno nuvole sparse" onclick="toggleWeather(this,'${id}')" title="⛅ Sereno nuvole sparse">S04</div><div class="wp-pill" data-code="S05" data-label="🌅 Soleggiato pomeridiano" onclick="toggleWeather(this,'${id}')" title="🌅 Soleggiato pomeridiano">S05</div></div><div class="wp-group-label">☁️ Nuvoloso</div><div class="wp-row"><div class="wp-pill" data-code="C01" data-label="🌤️ Poco nuvoloso" onclick="toggleWeather(this,'${id}')" title="🌤️ Poco nuvoloso">C01</div><div class="wp-pill" data-code="C02" data-label="🌥️ Nuvoloso" onclick="toggleWeather(this,'${id}')" title="🌥️ Nuvoloso">C02</div><div class="wp-pill" data-code="C03" data-label="☁️ Molto nuvoloso" onclick="toggleWeather(this,'${id}')" title="☁️ Molto nuvoloso">C03</div><div class="wp-pill" data-code="C04" data-label="🌧️ Nuvoloso cupo" onclick="toggleWeather(this,'${id}')" title="🌧️ Nuvoloso cupo">C04</div><div class="wp-pill" data-code="C05" data-label="🌥️ Post-pioggia" onclick="toggleWeather(this,'${id}')" title="🌥️ Post-pioggia">C05</div></div><div class="wp-group-label">🌧️ Pioggia</div><div class="wp-row"><div class="wp-pill" data-code="R01" data-label="🌦️ Pioviggine" onclick="toggleWeather(this,'${id}')" title="🌦️ Pioviggine">R01</div><div class="wp-pill" data-code="R02" data-label="🌧️ Pioggia leggera" onclick="toggleWeather(this,'${id}')" title="🌧️ Pioggia leggera">R02</div><div class="wp-pill" data-code="R03" data-label="🌧️ Pioggia moderata" onclick="toggleWeather(this,'${id}')" title="🌧️ Pioggia moderata">R03</div><div class="wp-pill" data-code="R04" data-label="🌧️ Pioggia costante" onclick="toggleWeather(this,'${id}')" title="🌧️ Pioggia costante">R04</div><div class="wp-pill" data-code="R05" data-label="⛈️ Pioggia intensa" onclick="toggleWeather(this,'${id}')" title="⛈️ Pioggia intensa">R05</div><div class="wp-pill" data-code="R06" data-label="⛈️ Temporale" onclick="toggleWeather(this,'${id}')" title="⛈️ Temporale">R06</div><div class="wp-pill" data-code="R07" data-label="🌊 Pioggia battente" onclick="toggleWeather(this,'${id}')" title="🌊 Pioggia battente">R07</div><div class="wp-pill" data-code="R08" data-label="🌊 Nubifragio" onclick="toggleWeather(this,'${id}')" title="🌊 Nubifragio">R08</div></div><input type="hidden" class="weather-val" id="rweather-val-${id}"></div>
         </div>
         <div class="field">
           <label>Consumo Gomme</label>
@@ -811,10 +813,43 @@ function setVal(id, val) {
 
 function toggleRound(id) { document.getElementById(`round-${id}`).classList.toggle('collapsed'); }
 
+
+function toggleWeather(pill, id){
+  pill.classList.toggle('sel');
+  updateWeatherVal(id);
+}
+function updateWeatherVal(id){
+  var picker = document.getElementById('rweather-'+id);
+  if(!picker) return;
+  var sel = picker.querySelectorAll('.wp-pill.sel');
+  var parts = Array.from(sel).map(function(p){ return p.dataset.label; });
+  var inp = document.getElementById('rweather-val-'+id);
+  if(inp) inp.value = parts.join(' + ');
+  // trigger syncRound
+  var rid = parseInt(id);
+  if(!isNaN(rid)) syncRound(rid);
+}
+function getWeatherVal(id){
+  var inp = document.getElementById('rweather-val-'+id);
+  return inp ? inp.value : '';
+}
+function setWeatherVal(id, val){
+  // restore from saved string — mark matching pills as selected
+  var picker = document.getElementById('rweather-'+id);
+  if(!picker) return;
+  picker.querySelectorAll('.wp-pill').forEach(function(p){ p.classList.remove('sel'); });
+  if(!val) return;
+  var parts = val.split('+').map(function(s){ return s.trim(); });
+  picker.querySelectorAll('.wp-pill').forEach(function(p){
+    if(parts.indexOf(p.dataset.label) >= 0 || parts.indexOf(p.dataset.code) >= 0) p.classList.add('sel');
+  });
+  updateWeatherVal(id);
+}
+
 function syncRound(id) {
   const circuit = val(`rcircuit-${id}`);
   const date    = val(`rdate-${id}`);
-  const weather = val(`rweather-${id}`);
+  const weather = getWeatherVal(id);
   const tire    = val(`rtire-${id}`);
   const fuel    = val(`rfuel-${id}`);
 
@@ -878,7 +913,7 @@ function buildHTML() {
     const circuit = val(`rcircuit-${id}`) || '—';
     const date    = val(`rdate-${id}`);
     const laps    = val(`rlaps-${id}`) || '—';
-    const weather = val(`rweather-${id}`);
+    const weather = getWeatherVal(id);
     const tire    = val(`rtire-${id}`);
     const fuel    = val(`rfuel-${id}`);
     const types   = val(`rtypes-${id}`);
@@ -1045,8 +1080,7 @@ async function updateCalendarioEntry(token, fname) {
         var circEl    = document.getElementById('rcircuit-'+rid);
         var dateEl    = document.getElementById('rdate-'+rid);
         var lapsEl    = document.getElementById('rlaps-'+rid);
-        var weatherEl = document.getElementById('rweather-'+rid);
-        var tireEl    = document.getElementById('rtire-'+rid);
+                var tireEl    = document.getElementById('rtire-'+rid);
         var fuelEl    = document.getElementById('rfuel-'+rid);
         var typesEl   = document.getElementById('rtypes-'+rid);
         var notesEl   = document.getElementById('rnotes-'+rid);
@@ -1054,7 +1088,7 @@ async function updateCalendarioEntry(token, fname) {
           circuit: circEl    ? circEl.value.trim()  : '',
           date:    dateEl    ? dateEl.value          : '',
           laps:    lapsEl    ? lapsEl.value          : '17',
-          weather: weatherEl ? weatherEl.value       : '',
+          weather: getWeatherVal(rid),
           tire:    tireEl    ? tireEl.value          : '',
           fuel:    fuelEl    ? fuelEl.value          : '',
           types:   typesEl   ? typesEl.value.trim()  : '',
