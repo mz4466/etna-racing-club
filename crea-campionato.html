@@ -756,7 +756,7 @@
       <div class="form-row col3">
         <div class="field">
           <label>Nome Campionato</label>
-          <input type="text" id="champName" placeholder="es. Traiettorie Gelate" oninput="updateAll()">
+          <input type="text" id="champName" placeholder="es. Traiettorie Gelate" oninput="autoFillSlug(); updateAll()">
         </div>
         <div class="field">
           <label>Anno</label>
@@ -779,8 +779,19 @@
           <input type="text" id="champCars" placeholder="es. GR.3 — Solo" oninput="updateAll()">
         </div>
         <div class="field">
-          <label>Stagione / Suffix (per filename)</label>
-          <input type="text" id="champSlug" placeholder="es. q1  oppure  autunno" oninput="updateAll()">
+          <label>Stagione / Suffix (per filename)
+            <span id="slugAutoHint" style="font-family:'Teko',sans-serif;font-size:11px;letter-spacing:1px;color:var(--gold);margin-left:6px;">⚡ auto</span>
+          </label>
+          <input type="text" id="champSlug" placeholder="es. q1  oppure  autunno"
+            oninput="slugManuallyEdited=true; updateAll()"
+            style="font-family:monospace;">
+          <span style="font-family:'Teko',sans-serif;font-size:11px;letter-spacing:1px;color:var(--text-dim);margin-top:4px;display:block;line-height:1.5;">
+            Viene auto-compilato dal nome. Modificalo solo se necessario.
+            Deve essere <strong style="color:var(--gold);">unico</strong> per ogni campionato.
+          </span>
+          <span id="slugDupeWarn" style="display:none;font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:#e74c3c;margin-top:4px;">
+            ⛔ ID già esistente in calendario — cambia il suffix.
+          </span>
         </div>
       </div>
       <div class="form-row col2">
@@ -1642,6 +1653,21 @@ function generateChampId(slug, year, name) {
   return parts.join('-');
 }
 
+// Auto-fill slug from name unless user has manually edited it
+var slugManuallyEdited = false;
+function autoFillSlug() {
+  if (slugManuallyEdited) return;
+  var name = document.getElementById('champName').value.trim();
+  if (!name) return;
+  var autoSlug = name.toLowerCase()
+    .replace(/[àáâãäå]/g,'a').replace(/[èéêë]/g,'e')
+    .replace(/[ìíîï]/g,'i').replace(/[òóôõö]/g,'o').replace(/[ùúûü]/g,'u')
+    .replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  document.getElementById('champSlug').value = autoSlug;
+  document.getElementById('slugAutoHint').style.display = '';
+  updateAll();
+}
+
 async function updateCalendario(token, fname, champPath) {
   const name  = document.getElementById('champName').value.trim() || 'Campionato';
   const year  = document.getElementById('champYear').value || '2026';
@@ -1715,8 +1741,14 @@ async function updateCalendario(token, fname, champPath) {
       newEntry.id = existing[idx].id || generateChampId(slug || cat, year, name);
       existing[idx] = newEntry;
     } else {
-      // brand new — generate a stable id
+      // brand new — generate a stable id and check for collision
       newEntry.id = generateChampId(slug || cat, year, name);
+      var collision = existing.find(function(e){ return e.id === newEntry.id; });
+      if (collision) {
+        document.getElementById('slugDupeWarn').style.display = 'block';
+        throw new Error('ID "' + newEntry.id + '" già esistente in calendario. Cambia il Suffix per renderlo unico.');
+      }
+      document.getElementById('slugDupeWarn').style.display = 'none';
       existing.push(newEntry);
     }
 
