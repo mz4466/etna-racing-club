@@ -1,0 +1,121 @@
+{
+  "circuito": "Monza (5.793 m)",
+  "data": "2025-10-05",
+  "garaNum": "1",
+  "garaTot": "1",
+  "champId": "trofeo-abarth-2025",
+  "champIdx": "trofeo-abarth-2025",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Carmine",
+      "auto": "Abarth 500 '09",
+      "tempo": "24'50''458",
+      "bestLap": "15'95''011",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Giuseppe",
+      "auto": "Abarth 500 '09",
+      "tempo": "a 16\"898",
+      "bestLap": "2'01''479",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Antonio",
+      "auto": "Abarth 500 '09",
+      "tempo": "a 18\"087",
+      "bestLap": "2'01''803",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Pyer",
+      "auto": "",
+      "tempo": "a 24\"471",
+      "bestLap": "2'01''124",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Claudio",
+      "auto": "Abarth 500 '09",
+      "tempo": "a 1'20\"968",
+      "bestLap": "2'04''012",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "ok"
+    },
+    {
+      "pos": 6,
+      "nome": "Luca",
+      "auto": "Abarth 500 '09",
+      "tempo": "a 1 Giro",
+      "bestLap": "2'10''188",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Carmine",
+      "pts": 0,
+      "pos": 1
+    },
+    {
+      "nome": "Giuseppe",
+      "pts": 0,
+      "pos": 1
+    },
+    {
+      "nome": "Antonio",
+      "pts": 0,
+      "pos": 1
+    },
+    {
+      "nome": "Pyer",
+      "pts": 0,
+      "pos": 1
+    },
+    {
+      "nome": "Claudio",
+      "pts": 0,
+      "pos": 1
+    },
+    {
+      "nome": "Luca",
+      "pts": 0,
+      "pos": 1
+    }
+  ],
+  "bestOf": null
+}
