@@ -136,11 +136,11 @@
     "teams": []
   },
   {
-    "id": "autunno-2025",
+    "id": "trofeo-abarth-2025",
     "name": "Trofeo Abarth",
     "year": "2025",
     "cat": "Campionato",
-    "slug": "Autunno",
+    "slug": "Abarth",
     "trophy": "Abarth_Scorpion_Challenge.png",
     "cars": "Abarth 500 '09",
     "desc": "",
