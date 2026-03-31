@@ -144,10 +144,10 @@
     "trophy": "Abarth_Scorpion_Challenge.png",
     "cars": "Abarth 500 '09",
     "desc": "",
-    "status": "prossimo",
+    "status": "concluso",
     "file": "campionati/trofeo-abarth-2025-campionato-autunno.html",
     "totalRounds": 1,
-    "completedRounds": 0,
+    "completedRounds": 1,
     "bestOf": null,
     "rounds": [
       {
