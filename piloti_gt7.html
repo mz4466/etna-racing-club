@@ -161,6 +161,22 @@
 <script>
 const BASE_API = 'https://api.github.com/repos/mz4466/etna-racing-club';
 const BASE_RAW = 'https://raw.githubusercontent.com/mz4466/etna-racing-club/main';
+
+// Fetch URLs in small batches to avoid 429 Too Many Requests from raw.githubusercontent.com
+async function fetchBatched(urls, fetchFn, batchSize, delayMs) {
+  batchSize = batchSize || 4;
+  delayMs   = delayMs   || 300;
+  var results = [];
+  for (var i = 0; i < urls.length; i += batchSize) {
+    var batch = urls.slice(i, i + batchSize);
+    var batchResults = await Promise.all(batch.map(fetchFn));
+    results = results.concat(batchResults);
+    if (i + batchSize < urls.length) {
+      await new Promise(function(r){ setTimeout(r, delayMs); });
+    }
+  }
+  return results;
+}
 const BRANCH   = 'main';
 
 const grid        = document.getElementById('grid');
@@ -252,14 +268,14 @@ async function loadAll() {
         var rNames = await rIndexRes.json();
         var jsonFiles = (rNames||[]).filter(function(n){ return n.endsWith('.json'); });
 
-        // Load each result file via raw — no API calls
-        var results = await Promise.all(jsonFiles.map(async function(name) {
+        // Load each result file in batches to avoid 429 rate limits
+        var results = await fetchBatched(jsonFiles, async function(name) {
           try {
             var r = await fetch(BASE_RAW + '/risultati/' + name);
             if (!r.ok) return null;
             return await r.json();
           } catch(e) { return null; }
-        }));
+        }, 4, 300);
 
         // Scan ALL races to count participations per pilot
         results.filter(Boolean).forEach(function(race) {
@@ -409,13 +425,13 @@ async function loadAll() {
     var pilotNames = await indexRes.json();
     var jsonFiles = (pilotNames||[]).filter(function(n){ return n.endsWith('.json'); });
 
-    var pilots = await Promise.all(jsonFiles.map(async function(name) {
+    var pilots = await fetchBatched(jsonFiles, async function(name) {
       try {
         var r = await fetch(BASE_RAW + '/piloti_schede/' + name);
         if (!r.ok) return null;
         return await r.json();
       } catch(e) { return null; }
-    }));
+    }, 4, 300);
 
     grid.innerHTML = '';
     var valid = pilots.filter(function(p) { return p && (p.nome || p.name || p.psn); });
