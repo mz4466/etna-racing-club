@@ -54,16 +54,16 @@
         }
         .trophies-row { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; }
         .trophy-won {
-            display:flex; flex-direction:column; align-items:center; gap:4px;
+            display:flex; flex-direction:row; align-items:center; gap:10px;
             background: var(--gold-dim);
             border:1px solid rgba(201,162,39,0.25);
             border-radius:10px;
-            padding:8px 10px;
-            min-width:80px; max-width:100px;
+            padding:8px 12px;
         }
         .trophy-won img {
-            width:60px; height:70px;
+            width:50px; height:60px;
             object-fit:contain;
+            flex-shrink:0;
         }
         .trophy-won-name {
             font-family:'Teko',sans-serif;
@@ -97,14 +97,14 @@
         .costrutt-card.bronze-team .costrutt-win-row { color:rgba(205,127,50,0.8); }
         .costrutt-badge { font-family:'Teko',sans-serif; font-size:10px; letter-spacing:1px; color:#c9a227; }
         .trophy-won-count {
-            position:absolute; top:2px; right:2px;
             background:#c9a227; color:#000; font-family:'Teko',sans-serif;
-            font-size:10px; font-weight:700; border-radius:999px;
-            padding:0 5px; line-height:16px; letter-spacing:0.5px;
+            font-size:11px; font-weight:700; border-radius:999px;
+            padding:0 6px; line-height:18px; letter-spacing:0.5px;
+            display:inline-block; margin-bottom:2px;
         }
         .trophy-won-img-wrap { position:relative; display:inline-block; }
-        .trophy-won-wins { display:flex; flex-direction:column; gap:1px; margin-top:2px; }
-        .trophy-won-win-row { font-family:'Teko',sans-serif; font-size:10px; letter-spacing:0.5px; color:rgba(201,162,39,0.75); text-align:center; line-height:1.3; }
+        .trophy-won-wins { display:flex; flex-direction:column; gap:2px; }
+        .trophy-won-win-row { font-family:'Teko',sans-serif; font-size:11px; letter-spacing:0.5px; color:rgba(201,162,39,0.75); text-align:left; line-height:1.3; }
         /* ── MEDALS ── */
         .medals-section { margin-top:10px; padding-top:10px; border-top:1px solid rgba(201,162,39,0.1); }
         .medals-label { font-family:'Teko',sans-serif; font-size:11px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; margin-bottom:8px; }
@@ -498,11 +498,8 @@ function renderPilot(p, calendario) {
         return '<div class="trophy-won-win-row">' + esc(w.year) + ' ' + esc(w.champName) + '</div>';
       }).join('');
       return '<div class="trophy-won">'
-        + '<div class="trophy-won-img-wrap">'
-        +   '<img src="trophy_png/' + esc(g.trophy) + '" alt="trophy" style="width:60px;height:70px;object-fit:contain;">'
-        +   countBadge
-        + '</div>'
-        + '<div class="trophy-won-wins">' + winsList + '</div>'
+        + '<img src="trophy_png/' + esc(g.trophy) + '" alt="trophy" style="width:50px;height:60px;object-fit:contain;flex-shrink:0;">'
+        + '<div class="trophy-won-wins">' + countBadge + winsList + '</div>'
         + '</div>';
     }).join('');
 
