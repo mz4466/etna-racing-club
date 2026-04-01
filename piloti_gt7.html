@@ -189,7 +189,23 @@ reloadBtn.onclick = () => loadAll();
 var gt7Cars = [];
 var carNameToId = {};   // displayName (lowercase) → numeric id
 
+var gt7CarsLoading = false;  // guard against concurrent calls
+
 async function loadGT7Cars() {
+  if (gt7CarsLoading) return;         // already in progress
+  if (Object.keys(carNameToId).length > 10) return;  // already loaded
+
+  // Check sessionStorage cache first
+  try {
+    var cached = sessionStorage.getItem('gt7cars');
+    if (cached) {
+      carNameToId = JSON.parse(cached);
+      console.log('GT7 cars from cache:', Object.keys(carNameToId).length);
+      return;
+    }
+  } catch(e) {}
+
+  gt7CarsLoading = true;
   try {
     var makersMap = {
       '3':'Alfa Romeo','4':'Aston Martin','5':'Audi','6':'BMW','7':'Chevrolet',
@@ -223,8 +239,10 @@ async function loadGT7Cars() {
     if (Object.keys(tmp).length > 10) {
       carNameToId = tmp;
       console.log('GT7 cars loaded:', Object.keys(carNameToId).length);
+      try { sessionStorage.setItem('gt7cars', JSON.stringify(carNameToId)); } catch(e) {}
     }
   } catch(e) { console.warn('loadGT7Cars failed:', e.message); }
+  finally { gt7CarsLoading = false; }
 }
 
 function carImageUrl(carId) {
