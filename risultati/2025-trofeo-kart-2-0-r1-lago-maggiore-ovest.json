@@ -1,0 +1,121 @@
+{
+  "circuito": "Lago Maggiore - Ovest",
+  "data": "2025-11-01",
+  "garaNum": "1",
+  "garaTot": "1",
+  "champId": "trofeo-kart-2-0-2025",
+  "champIdx": "trofeo-kart-2-0-2025",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Mattia",
+      "auto": "Porsche Racing Kart 125 Shifter",
+      "tempo": "17'41''603",
+      "bestLap": "52''544",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Antonio",
+      "auto": "Porsche Racing Kart 125 Shifter",
+      "tempo": "a 5\"680",
+      "bestLap": "52''533",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Pyer",
+      "auto": "Porsche Racing Kart 125 Shifter",
+      "tempo": "a 12\"165",
+      "bestLap": "52''689",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Carmine",
+      "auto": "Porsche Racing Kart 125 Shifter",
+      "tempo": "a 34\"245",
+      "bestLap": "53''044",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Luca",
+      "auto": "Porsche Racing Kart 125 Shifter",
+      "tempo": "a 36\"075",
+      "bestLap": "53''427",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    },
+    {
+      "pos": 6,
+      "nome": "Giovanni",
+      "auto": "Porsche Racing Kart 125 Shifter",
+      "tempo": "a 1 Giro",
+      "bestLap": "54''274",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Mattia",
+      "pts": 25,
+      "pos": 1
+    },
+    {
+      "nome": "Antonio",
+      "pts": 18,
+      "pos": 2
+    },
+    {
+      "nome": "Pyer",
+      "pts": 15,
+      "pos": 3
+    },
+    {
+      "nome": "Carmine",
+      "pts": 12,
+      "pos": 4
+    },
+    {
+      "nome": "Luca",
+      "pts": 10,
+      "pos": 5
+    },
+    {
+      "nome": "Giovanni",
+      "pts": 8,
+      "pos": 6
+    }
+  ],
+  "bestOf": null
+}
