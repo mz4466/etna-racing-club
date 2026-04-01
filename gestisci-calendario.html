@@ -547,6 +547,8 @@ function renderList() {
 
     list.appendChild(row);
   });
+  // Apply active filter immediately after rendering
+  applyFilter();
 }
 
 // ── FILTER ──
