@@ -195,8 +195,15 @@
     padding: 20px 20px 14px;
     border-bottom: 1px solid rgba(255,80,20,0.15);
     display: flex;
-    align-items: flex-start;
-    gap: 14px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .card-top-pills {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
   }
 
   .cat-badge {
@@ -215,17 +222,15 @@
     white-space: nowrap;
   }
 
-  .card-name-wrap { flex: 1; }
+  .card-name-wrap { }
 
   .card-name {
     font-family: 'Russo One', sans-serif;
-    font-size: 16px;
+    font-size: 17px;
     letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--cream);
-    line-height: 1.25;
-    word-break: break-word;
-    hyphens: auto;
+    line-height: 1.2;
   }
 
   .card-season {
@@ -451,12 +456,14 @@ function renderCards(data) {
 
     card.innerHTML = `
       <div class="card-top">
-        <div class="cat-badge" title="${c.slug || c.cat}">${c.slug || c.cat}</div>
+        <div class="card-top-pills">
+          <div class="cat-badge" title="${c.slug || c.cat}">${c.slug || c.cat}</div>
+          ${statusLabel}
+        </div>
         <div class="card-name-wrap">
           <div class="card-name">${c.name}</div>
           <div class="card-season">${c.year} · ${c.cat}</div>
         </div>
-        ${statusLabel}
       </div>
       <div class="card-body">
         ${c.cars ? `<div class="card-cars">${c.cars}</div>` : ''}
