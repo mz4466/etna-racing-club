@@ -697,7 +697,7 @@ function renderPilot(p, calendario) {
           sortNames2.forEach(function(n){ if(pilotTrophies[n]) trophyCount += pilotTrophies[n].length; });
 
           var pills = '';
-          if(champCount) pills += '<span class="stat-pill"><strong>' + champCount + '</strong>&nbsp;campionat' + (champCount===1?'o':'i') + '</span>';
+          if(champCount) pills += '<span class="stat-pill"><strong>' + champCount + '</strong>&nbsp;campionati e trofei</span>';
           if(trophyCount) pills += '<span class="stat-pill"><strong>' + trophyCount + '</strong>&nbsp;trof' + (trophyCount===1?'eo':'ei') + '</span>';
           return '<div class="pilot-stats">' + pills + '</div>';
         })()
