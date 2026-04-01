@@ -105,6 +105,35 @@
   .card { background: var(--bg-card); border: 1px solid var(--border-hi); border-radius: 12px; padding: 24px; }
   .card-title { font-family: 'Teko', sans-serif; font-size: 17px; letter-spacing: 3px; color: var(--gold-hi); text-transform: uppercase; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
 
+  /* ── FILTER BAR ── */
+  .filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+
+  .filter-btn {
+    font-family: 'Teko', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 7px 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,80,20,0.4);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover,
+  .filter-btn.active {
+    background: #ff5014;
+    border-color: #ffa500;
+    color: #fff;
+  }
+
   /* ── CHAMPIONSHIP ROWS ── */
   .champ-list { display: flex; flex-direction: column; gap: 10px; min-height: 60px; }
 
@@ -370,6 +399,13 @@
         </span>
       </div>
 
+      <div class="filters" id="filterBar">
+        <button class="filter-btn active" onclick="filterRows('in-corso', this)">🔥 In Corso</button>
+        <button class="filter-btn" onclick="filterRows('prossimo', this)">⏳ Prossimamente</button>
+        <button class="filter-btn" onclick="filterRows('concluso', this)">✅ Conclusi</button>
+        <button class="filter-btn" onclick="filterRows('all', this)">Tutti</button>
+      </div>
+
       <div class="champ-list" id="champList">
         <div class="loading-state">Inserisci il token e clicca "Connetti e Carica"</div>
       </div>
@@ -511,6 +547,34 @@ function renderList() {
 
     list.appendChild(row);
   });
+}
+
+// ── FILTER ──
+var activeFilter = 'in-corso';
+
+function filterRows(status, btn) {
+  activeFilter = status;
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  applyFilter();
+}
+
+function applyFilter() {
+  document.querySelectorAll('.champ-row').forEach(function(row) {
+    if (activeFilter === 'all') {
+      row.style.display = '';
+    } else {
+      var idx = parseInt(row.dataset.idx);
+      var status = (championships[idx] && championships[idx].status) || 'prossimo';
+      row.style.display = (status === activeFilter) ? '' : 'none';
+    }
+  });
+  // Update count label to reflect visible items
+  var visible = activeFilter === 'all'
+    ? championships.length
+    : championships.filter(function(c){ return (c.status||'prossimo') === activeFilter; }).length;
+  var lbl = document.getElementById('countLabel');
+  if (lbl) lbl.textContent = championships.length ? '(' + visible + ' / ' + championships.length + ')' : '';
 }
 
 // ── FIELD UPDATE ──
