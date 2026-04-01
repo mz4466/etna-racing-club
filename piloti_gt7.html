@@ -691,14 +691,9 @@ function renderPilot(p, calendario) {
           var raceCount = st.races;
           var champCount = Object.keys(st.champs).length;
           if(!raceCount && !champCount) return '';
-          // Count trophies for this pilot
-          var sortNames2 = [p.nome, p.name, p.psn, p.gt7Name].filter(Boolean).map(function(n){ return n.toLowerCase().trim(); });
-          var trophyCount = 0;
-          sortNames2.forEach(function(n){ if(pilotTrophies[n]) trophyCount += pilotTrophies[n].length; });
-
           var pills = '';
           if(champCount) pills += '<span class="stat-pill"><strong>' + champCount + '</strong>&nbsp;campionati e trofei</span>';
-          if(trophyCount) pills += '<span class="stat-pill"><strong>' + trophyCount + '</strong>&nbsp;trof' + (trophyCount===1?'eo':'ei') + '</span>';
+          if(raceCount)  pills += '<span class="stat-pill"><strong>' + raceCount + '</strong>&nbsp;gar' + (raceCount===1?'a':'e') + '</span>';
           return '<div class="pilot-stats">' + pills + '</div>';
         })()
     +   '<div class="info">'
