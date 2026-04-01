@@ -260,10 +260,10 @@
     "trophy": "trofeo_Kart.png",
     "cars": "Porsche Racing Kart 125 Shifter",
     "desc": "",
-    "status": "prossimo",
+    "status": "concluso",
     "file": "campionati/trofeo-kart-20-2025-trofeo-trofeo-kart-2-0.html",
     "totalRounds": 1,
-    "completedRounds": 0,
+    "completedRounds": 1,
     "bestOf": null,
     "rounds": [
       {
