@@ -201,25 +201,31 @@
 
   .cat-badge {
     font-family: 'Russo One', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     background: var(--volcano-red);
     color: #fff;
     border-radius: 7px;
-    padding: 4px 12px;
+    padding: 4px 10px;
     flex-shrink: 0;
     margin-top: 3px;
     letter-spacing: 1px;
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .card-name-wrap { flex: 1; }
 
   .card-name {
     font-family: 'Russo One', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--cream);
-    line-height: 1.2;
+    line-height: 1.25;
+    word-break: break-word;
+    hyphens: auto;
   }
 
   .card-season {
@@ -445,7 +451,7 @@ function renderCards(data) {
 
     card.innerHTML = `
       <div class="card-top">
-        <div class="cat-badge">${c.slug || c.cat}</div>
+        <div class="cat-badge" title="${c.slug || c.cat}">${c.slug || c.cat}</div>
         <div class="card-name-wrap">
           <div class="card-name">${c.name}</div>
           <div class="card-season">${c.year} · ${c.cat}</div>
