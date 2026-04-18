@@ -1,0 +1,211 @@
+{
+  "circuito": "Sainte Croix - Layout B (7.062 m)",
+  "data": "2026-03-29",
+  "garaNum": "1",
+  "garaTot": "5",
+  "champId": "risveglio-dei-motori-2026",
+  "champIdx": "risveglio-dei-motori-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Sandro",
+      "auto": "Mercedes-AMG GT Black Series '20",
+      "tempo": "24'47''506",
+      "bestLap": "2'10''648",
+      "fl": false,
+      "pole": true,
+      "punti": 25,
+      "extra": "1",
+      "totale": 26,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Carmine",
+      "auto": "Volkswagen Beetle Gr.3",
+      "tempo": "a 6\"278",
+      "bestLap": "2'10''768",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Alessandro H",
+      "auto": "Peugeot RCZ Gr.3",
+      "tempo": "a 8\"893",
+      "bestLap": "2'09''487",
+      "fl": true,
+      "pole": false,
+      "punti": 15,
+      "extra": "1",
+      "totale": 16,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Stefano",
+      "auto": "Mercedes-AMG GT Black Series '20",
+      "tempo": "a 10\"224",
+      "bestLap": "2'10''590",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Claudio",
+      "auto": "BMW M6 GT3 Endurance Model '16",
+      "tempo": "a 37\"252",
+      "bestLap": "2'11''125",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    },
+    {
+      "pos": 6,
+      "nome": "Pyer",
+      "auto": "Peugeot RCZ Gr.3",
+      "tempo": "a 39\"060",
+      "bestLap": "2'11''101",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "ok"
+    },
+    {
+      "pos": 7,
+      "nome": "Giovanni",
+      "auto": "Lexus RC F GT3 '17",
+      "tempo": "a 43\"350",
+      "bestLap": "2'11''098",
+      "fl": false,
+      "pole": false,
+      "punti": 6,
+      "extra": "-",
+      "totale": 6,
+      "stato": "ok"
+    },
+    {
+      "pos": 8,
+      "nome": "Alessandro",
+      "auto": "911 GT3 R (992) '22",
+      "tempo": "a 2'15\"749",
+      "bestLap": "2'11''785",
+      "fl": false,
+      "pole": false,
+      "punti": 5,
+      "extra": "-",
+      "totale": 5,
+      "stato": "ok"
+    },
+    {
+      "pos": 9,
+      "nome": "Daniele",
+      "auto": "Audi R8 LMS Evo '19",
+      "tempo": "a 3'23\"695",
+      "bestLap": "2'16''092",
+      "fl": false,
+      "pole": false,
+      "punti": 4,
+      "extra": "-",
+      "totale": 4,
+      "stato": "ok"
+    },
+    {
+      "pos": 10,
+      "nome": "William",
+      "auto": "Ford GT Race Car '18",
+      "tempo": "a 3'24\"811",
+      "bestLap": "2'14''469",
+      "fl": false,
+      "pole": false,
+      "punti": 3,
+      "extra": "-",
+      "totale": 3,
+      "stato": "ok"
+    },
+    {
+      "pos": 11,
+      "nome": "Fabio",
+      "auto": "Subaru WRX Gr.3",
+      "tempo": "",
+      "bestLap": "2'15''650",
+      "fl": false,
+      "pole": false,
+      "punti": 1,
+      "extra": "-",
+      "totale": 1,
+      "stato": "dnf"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Sandro",
+      "pts": 26,
+      "pos": 1
+    },
+    {
+      "nome": "Carmine",
+      "pts": 18,
+      "pos": 2
+    },
+    {
+      "nome": "Alessandro H",
+      "pts": 16,
+      "pos": 3
+    },
+    {
+      "nome": "Stefano",
+      "pts": 12,
+      "pos": 4
+    },
+    {
+      "nome": "Claudio",
+      "pts": 10,
+      "pos": 5
+    },
+    {
+      "nome": "Pyer",
+      "pts": 8,
+      "pos": 6
+    },
+    {
+      "nome": "Giovanni",
+      "pts": 6,
+      "pos": 7
+    },
+    {
+      "nome": "Alessandro",
+      "pts": 5,
+      "pos": 8
+    },
+    {
+      "nome": "Daniele",
+      "pts": 4,
+      "pos": 9
+    },
+    {
+      "nome": "William",
+      "pts": 3,
+      "pos": 10
+    },
+    {
+      "nome": "Fabio",
+      "pts": 1,
+      "pos": 11
+    }
+  ],
+  "bestOf": 4
+}
