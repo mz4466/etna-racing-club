@@ -9,7 +9,7 @@
     {
       "pos": 1,
       "nome": "Sandro",
-      "auto": "",
+      "auto": "Ferrari 296 GTB '22",
       "tempo": "31'05''180",
       "bestLap": "2'04''783",
       "fl": true,
@@ -22,7 +22,7 @@
     {
       "pos": 2,
       "nome": "Carmine",
-      "auto": "",
+      "auto": "911 GT3 RS (991) '16",
       "tempo": "a 1\"418",
       "bestLap": "2'05''481",
       "fl": false,
@@ -35,7 +35,7 @@
     {
       "pos": 3,
       "nome": "Stefano",
-      "auto": "",
+      "auto": "Ferrari 296 GTB '22",
       "tempo": "a 6\"176",
       "bestLap": "2'05''120",
       "fl": false,
@@ -48,7 +48,7 @@
     {
       "pos": 4,
       "nome": "William",
-      "auto": "",
+      "auto": "Ferrari 296 GTB '22",
       "tempo": "a 1'09\"210",
       "bestLap": "2'09''736",
       "fl": false,
@@ -61,7 +61,7 @@
     {
       "pos": 5,
       "nome": "Pyer",
-      "auto": "",
+      "auto": "Honda NSX Gr.3",
       "tempo": "a 1'22\"275",
       "bestLap": "2'05''721",
       "fl": false,
@@ -74,7 +74,7 @@
     {
       "pos": 6,
       "nome": "Alessandro",
-      "auto": "",
+      "auto": "911 GT3 RS (991) '16",
       "tempo": "a 1 Giro",
       "bestLap": "2'06''033",
       "fl": false,
