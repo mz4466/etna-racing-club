@@ -9,7 +9,7 @@
     {
       "pos": 1,
       "nome": "Carmine",
-      "auto": "",
+      "auto": "911 GT3 RS (991) '16",
       "tempo": "29'16''489",
       "bestLap": "1'33''177",
       "fl": true,
@@ -22,7 +22,7 @@
     {
       "pos": 2,
       "nome": "Sandro",
-      "auto": "",
+      "auto": "Ferrari 296 GTB '22",
       "tempo": "a 5\"041",
       "bestLap": "1'33''304",
       "fl": false,
@@ -35,7 +35,7 @@
     {
       "pos": 3,
       "nome": "Giovanni",
-      "auto": "",
+      "auto": "McLaren 650S GT3 '15",
       "tempo": "a 16\"245",
       "bestLap": "1'33''269",
       "fl": false,
@@ -48,7 +48,7 @@
     {
       "pos": 4,
       "nome": "Pyer",
-      "auto": "",
+      "auto": "Honda NSX Gr.3",
       "tempo": "a 18\"228",
       "bestLap": "1'33''598",
       "fl": false,
@@ -61,7 +61,7 @@
     {
       "pos": 5,
       "nome": "Claudio",
-      "auto": "",
+      "auto": "Ferrari 296 GTB '22",
       "tempo": "a 1'08\"299",
       "bestLap": "1'33''394",
       "fl": false,
@@ -75,48 +75,63 @@
   "standings": [
     {
       "nome": "Carmine",
-      "pts": 52,
+      "pts": 97,
       "pos": 1
     },
     {
       "nome": "Sandro",
-      "pts": 38,
+      "pts": 77,
       "pos": 2
     },
     {
       "nome": "Pyer",
-      "pts": 27,
+      "pts": 55,
       "pos": 3
     },
     {
-      "nome": "Giovanni",
-      "pts": 25,
+      "nome": "Stefano",
+      "pts": 45,
       "pos": 4
     },
     {
-      "nome": "Stefano",
-      "pts": 12,
+      "nome": "Giovanni",
+      "pts": 43,
       "pos": 5
     },
     {
-      "nome": "Claudio",
-      "pts": 10,
+      "nome": "Alessandro",
+      "pts": 27,
       "pos": 6
     },
     {
-      "nome": "Alessandro",
-      "pts": 8,
-      "pos": 7
+      "nome": "Alessandro H",
+      "pts": 27,
+      "pos": 6
+    },
+    {
+      "nome": "William",
+      "pts": 26,
+      "pos": 8
+    },
+    {
+      "nome": "Claudio",
+      "pts": 25,
+      "pos": 9
+    },
+    {
+      "nome": "Giuseppe",
+      "pts": 15,
+      "pos": 10
     },
     {
       "nome": "Andrea",
       "pts": 6,
-      "pos": 8
+      "pos": 11
     },
     {
-      "nome": "Giuseppe",
+      "nome": "Daniele",
       "pts": 5,
-      "pos": 9
+      "pos": 12
     }
   ],
   "bestOf": 4
