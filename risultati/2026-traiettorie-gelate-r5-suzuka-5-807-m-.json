@@ -1,0 +1,151 @@
+{
+  "circuito": "Suzuka (5.807 m)",
+  "data": "2026-03-08",
+  "garaNum": "5",
+  "garaTot": "5",
+  "champId": "traiettorie-gelate-2026",
+  "champIdx": "traiettorie-gelate-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Sandro",
+      "auto": "",
+      "tempo": "31'05''180",
+      "bestLap": "2'04''783",
+      "fl": true,
+      "pole": true,
+      "punti": 25,
+      "extra": "1+1",
+      "totale": 27,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Carmine",
+      "auto": "",
+      "tempo": "a 1\"418",
+      "bestLap": "2'05''481",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Stefano",
+      "auto": "",
+      "tempo": "a 6\"176",
+      "bestLap": "2'05''120",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "William",
+      "auto": "",
+      "tempo": "a 1'09\"210",
+      "bestLap": "2'09''736",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Pyer",
+      "auto": "",
+      "tempo": "a 1'22\"275",
+      "bestLap": "2'05''721",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    },
+    {
+      "pos": 6,
+      "nome": "Alessandro",
+      "auto": "",
+      "tempo": "a 1 Giro",
+      "bestLap": "2'06''033",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Carmine",
+      "pts": 97,
+      "pos": 1
+    },
+    {
+      "nome": "Sandro",
+      "pts": 77,
+      "pos": 2
+    },
+    {
+      "nome": "Pyer",
+      "pts": 55,
+      "pos": 3
+    },
+    {
+      "nome": "Stefano",
+      "pts": 45,
+      "pos": 4
+    },
+    {
+      "nome": "Giovanni",
+      "pts": 43,
+      "pos": 5
+    },
+    {
+      "nome": "Alessandro",
+      "pts": 27,
+      "pos": 6
+    },
+    {
+      "nome": "Alessandro H",
+      "pts": 27,
+      "pos": 6
+    },
+    {
+      "nome": "William",
+      "pts": 26,
+      "pos": 8
+    },
+    {
+      "nome": "Claudio",
+      "pts": 25,
+      "pos": 9
+    },
+    {
+      "nome": "Giuseppe",
+      "pts": 15,
+      "pos": 10
+    },
+    {
+      "nome": "Andrea",
+      "pts": 6,
+      "pos": 11
+    },
+    {
+      "nome": "Daniele",
+      "pts": 5,
+      "pos": 12
+    }
+  ],
+  "bestOf": 4
+}
