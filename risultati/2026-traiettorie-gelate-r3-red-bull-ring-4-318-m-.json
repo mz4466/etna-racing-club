@@ -9,7 +9,7 @@
     {
       "pos": 1,
       "nome": "Carmine",
-      "auto": "",
+      "auto": "911 GT3 RS (991) '16",
       "tempo": "28'25''081",
       "bestLap": "1'32''118",
       "fl": true,
@@ -22,7 +22,7 @@
     {
       "pos": 2,
       "nome": "Pyer",
-      "auto": "",
+      "auto": "Honda NSX Gr.3",
       "tempo": "a 20\"709",
       "bestLap": "1'32''266",
       "fl": false,
@@ -35,7 +35,7 @@
     {
       "pos": 3,
       "nome": "Claudio",
-      "auto": "",
+      "auto": "Ferrari 296 GTB '22",
       "tempo": "a 27\"144",
       "bestLap": "1'32''421",
       "fl": false,
@@ -48,7 +48,7 @@
     {
       "pos": 4,
       "nome": "Giovanni",
-      "auto": "",
+      "auto": "McLaren 650S GT3 '15",
       "tempo": "a 27\"758",
       "bestLap": "1'32''741",
       "fl": false,
@@ -61,7 +61,7 @@
     {
       "pos": 5,
       "nome": "William",
-      "auto": "",
+      "auto": "Ferrari 296 GTB '22",
       "tempo": "a 1'25\"369",
       "bestLap": "1'34''320",
       "fl": false,
@@ -74,7 +74,7 @@
     {
       "pos": 6,
       "nome": "Alessandro",
-      "auto": "",
+      "auto": "911 GT3 RS (991) '16",
       "tempo": "",
       "bestLap": "1'33''008",
       "fl": false,
@@ -87,7 +87,7 @@
     {
       "pos": 7,
       "nome": "Giuseppe",
-      "auto": "",
+      "auto": "911 GT3 RS (991) '16",
       "tempo": "a 17\"464",
       "bestLap": "1'33''049",
       "fl": false,
@@ -100,7 +100,7 @@
     {
       "pos": 8,
       "nome": "Stefano",
-      "auto": "",
+      "auto": "Ferrari 296 GTB '22",
       "tempo": "a 24\"160",
       "bestLap": "1'33''080",
       "fl": false,
@@ -114,53 +114,63 @@
   "standings": [
     {
       "nome": "Carmine",
-      "pts": 53,
+      "pts": 97,
       "pos": 1
     },
     {
-      "nome": "Pyer",
-      "pts": 33,
+      "nome": "Sandro",
+      "pts": 77,
       "pos": 2
     },
     {
-      "nome": "Giovanni",
-      "pts": 22,
+      "nome": "Pyer",
+      "pts": 55,
       "pos": 3
     },
     {
-      "nome": "Sandro",
-      "pts": 19,
+      "nome": "Stefano",
+      "pts": 45,
       "pos": 4
     },
     {
-      "nome": "Alessandro",
-      "pts": 16,
+      "nome": "Giovanni",
+      "pts": 43,
       "pos": 5
     },
     {
-      "nome": "Claudio",
-      "pts": 15,
+      "nome": "Alessandro",
+      "pts": 27,
       "pos": 6
     },
     {
-      "nome": "Stefano",
-      "pts": 12,
-      "pos": 7
+      "nome": "Alessandro H",
+      "pts": 27,
+      "pos": 6
     },
     {
       "nome": "William",
-      "pts": 10,
+      "pts": 26,
       "pos": 8
     },
     {
-      "nome": "Andrea",
-      "pts": 6,
+      "nome": "Claudio",
+      "pts": 25,
       "pos": 9
     },
     {
       "nome": "Giuseppe",
-      "pts": 5,
+      "pts": 15,
       "pos": 10
+    },
+    {
+      "nome": "Andrea",
+      "pts": 6,
+      "pos": 11
+    },
+    {
+      "nome": "Daniele",
+      "pts": 5,
+      "pos": 12
     }
   ],
   "bestOf": 4
