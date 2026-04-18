@@ -1,0 +1,167 @@
+{
+  "circuito": "Red Bull Ring (4.318 m)",
+  "data": "2026-02-01",
+  "garaNum": "3",
+  "garaTot": "5",
+  "champId": "traiettorie-gelate-2026",
+  "champIdx": "traiettorie-gelate-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Carmine",
+      "auto": "",
+      "tempo": "28'25''081",
+      "bestLap": "1'32''118",
+      "fl": true,
+      "pole": true,
+      "punti": 25,
+      "extra": "1+1",
+      "totale": 27,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Pyer",
+      "auto": "",
+      "tempo": "a 20\"709",
+      "bestLap": "1'32''266",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Claudio",
+      "auto": "",
+      "tempo": "a 27\"144",
+      "bestLap": "1'32''421",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Giovanni",
+      "auto": "",
+      "tempo": "a 27\"758",
+      "bestLap": "1'32''741",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "William",
+      "auto": "",
+      "tempo": "a 1'25\"369",
+      "bestLap": "1'34''320",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    },
+    {
+      "pos": 6,
+      "nome": "Alessandro",
+      "auto": "",
+      "tempo": "",
+      "bestLap": "1'33''008",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "dnf"
+    },
+    {
+      "pos": 7,
+      "nome": "Giuseppe",
+      "auto": "",
+      "tempo": "a 17\"464",
+      "bestLap": "1'33''049",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "dsq"
+    },
+    {
+      "pos": 8,
+      "nome": "Stefano",
+      "auto": "",
+      "tempo": "a 24\"160",
+      "bestLap": "1'33''080",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "dsq"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Carmine",
+      "pts": 53,
+      "pos": 1
+    },
+    {
+      "nome": "Pyer",
+      "pts": 33,
+      "pos": 2
+    },
+    {
+      "nome": "Giovanni",
+      "pts": 22,
+      "pos": 3
+    },
+    {
+      "nome": "Sandro",
+      "pts": 19,
+      "pos": 4
+    },
+    {
+      "nome": "Alessandro",
+      "pts": 16,
+      "pos": 5
+    },
+    {
+      "nome": "Claudio",
+      "pts": 15,
+      "pos": 6
+    },
+    {
+      "nome": "Stefano",
+      "pts": 12,
+      "pos": 7
+    },
+    {
+      "nome": "William",
+      "pts": 10,
+      "pos": 8
+    },
+    {
+      "nome": "Andrea",
+      "pts": 6,
+      "pos": 9
+    },
+    {
+      "nome": "Giuseppe",
+      "pts": 5,
+      "pos": 10
+    }
+  ],
+  "bestOf": 4
+}
