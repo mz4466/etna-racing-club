@@ -1,0 +1,216 @@
+{
+  "circuito": "Deep Forest (4.253)",
+  "data": "2026-02-22",
+  "garaNum": "4",
+  "garaTot": "5",
+  "champId": "traiettorie-gelate-2026",
+  "champIdx": "traiettorie-gelate-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Alessandro H",
+      "auto": "",
+      "tempo": "27'37''976",
+      "bestLap": "1'27''220",
+      "fl": true,
+      "pole": true,
+      "punti": 25,
+      "extra": "1+1",
+      "totale": 27,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Stefano",
+      "auto": "",
+      "tempo": "a 4\"345",
+      "bestLap": "1'28''562",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Carmine",
+      "auto": "",
+      "tempo": "a 8\"335",
+      "bestLap": "1'28''216",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Sandro",
+      "auto": "",
+      "tempo": "a 17\"695",
+      "bestLap": "1'28''099",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Giuseppe",
+      "auto": "",
+      "tempo": "a 35\"749",
+      "bestLap": "1'29''046",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    },
+    {
+      "pos": 6,
+      "nome": "Pyer",
+      "auto": "",
+      "tempo": "a 46\"624",
+      "bestLap": "1'28''304",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "ok"
+    },
+    {
+      "pos": 7,
+      "nome": "Giovanni",
+      "auto": "",
+      "tempo": "a 51\"436",
+      "bestLap": "1'28''666",
+      "fl": false,
+      "pole": false,
+      "punti": 6,
+      "extra": "-",
+      "totale": 6,
+      "stato": "ok"
+    },
+    {
+      "pos": 8,
+      "nome": "Daniele",
+      "auto": "",
+      "tempo": "a 1'22\"329",
+      "bestLap": "1'31''730",
+      "fl": false,
+      "pole": false,
+      "punti": 5,
+      "extra": "-",
+      "totale": 5,
+      "stato": "ok"
+    },
+    {
+      "pos": 9,
+      "nome": "William",
+      "auto": "",
+      "tempo": "a 1'26\"688",
+      "bestLap": "1'31''527",
+      "fl": false,
+      "pole": false,
+      "punti": 4,
+      "extra": "-",
+      "totale": 4,
+      "stato": "ok"
+    },
+    {
+      "pos": 10,
+      "nome": "Alessandro",
+      "auto": "",
+      "tempo": "a 2 Giri",
+      "bestLap": "1'30''459",
+      "fl": false,
+      "pole": false,
+      "punti": 3,
+      "extra": "-",
+      "totale": 3,
+      "stato": "ok"
+    },
+    {
+      "pos": 11,
+      "nome": "Claudio",
+      "auto": "",
+      "tempo": "",
+      "bestLap": "1'31''151",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "dnf"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Carmine",
+      "pts": 41,
+      "pos": 1
+    },
+    {
+      "nome": "Sandro",
+      "pts": 31,
+      "pos": 2
+    },
+    {
+      "nome": "Stefano",
+      "pts": 30,
+      "pos": 3
+    },
+    {
+      "nome": "Alessandro H",
+      "pts": 27,
+      "pos": 4
+    },
+    {
+      "nome": "Pyer",
+      "pts": 23,
+      "pos": 5
+    },
+    {
+      "nome": "Giovanni",
+      "pts": 16,
+      "pos": 6
+    },
+    {
+      "nome": "Giuseppe",
+      "pts": 15,
+      "pos": 7
+    },
+    {
+      "nome": "Alessandro",
+      "pts": 11,
+      "pos": 8
+    },
+    {
+      "nome": "Andrea",
+      "pts": 6,
+      "pos": 9
+    },
+    {
+      "nome": "Daniele",
+      "pts": 5,
+      "pos": 10
+    },
+    {
+      "nome": "William",
+      "pts": 4,
+      "pos": 11
+    },
+    {
+      "nome": "Claudio",
+      "pts": 0,
+      "pos": 12
+    }
+  ],
+  "bestOf": 4
+}
