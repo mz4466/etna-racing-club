@@ -1,0 +1,157 @@
+{
+  "circuito": "Fuji Intern. Speedway (4.563 m)",
+  "data": "2026-04-12",
+  "garaNum": "2",
+  "garaTot": "5",
+  "champId": "risveglio-dei-motori-2026",
+  "champIdx": "risveglio-dei-motori-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Pyer",
+      "auto": "Peugeot RCZ Gr.3",
+      "tempo": "32'11''440",
+      "bestLap": "01'50''017",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Carmine",
+      "auto": "Volkswagen Beetle Gr.3",
+      "tempo": "a 13\"678",
+      "bestLap": "01'52''635",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Sandro",
+      "auto": "Mercedes-AMG GT Black Series '20",
+      "tempo": "a 15\"566",
+      "bestLap": "01'50''586",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Alessandro H",
+      "auto": "Peugeot RCZ Gr.3",
+      "tempo": "a 54\"334",
+      "bestLap": "01'45''636",
+      "fl": true,
+      "pole": true,
+      "punti": 12,
+      "extra": "1+1",
+      "totale": 14,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Alessandro",
+      "auto": "911 GT3 R (992) '22",
+      "tempo": "a 54\"496",
+      "bestLap": "01'49''722",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    },
+    {
+      "pos": 6,
+      "nome": "Claudio",
+      "auto": "BMW M6 GT3 Endurance Model '16",
+      "tempo": "a 1'13\"788",
+      "bestLap": "01'45''844",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "ok"
+    },
+    {
+      "pos": 7,
+      "nome": "William",
+      "auto": "Ford GT Race Car '18",
+      "tempo": "a 1'28\"573",
+      "bestLap": "01'51''097",
+      "fl": false,
+      "pole": false,
+      "punti": 6,
+      "extra": "-",
+      "totale": 6,
+      "stato": "ok"
+    },
+    {
+      "pos": 8,
+      "nome": "Daniele",
+      "auto": "Audi R8 LMS Evo '19",
+      "tempo": "a 1 Giro",
+      "bestLap": "01'50''368",
+      "fl": false,
+      "pole": false,
+      "punti": 4,
+      "extra": "-",
+      "totale": 4,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Pyer",
+      "pts": 25,
+      "pos": 1
+    },
+    {
+      "nome": "Carmine",
+      "pts": 18,
+      "pos": 2
+    },
+    {
+      "nome": "Sandro",
+      "pts": 15,
+      "pos": 3
+    },
+    {
+      "nome": "Alessandro H",
+      "pts": 14,
+      "pos": 4
+    },
+    {
+      "nome": "Alessandro",
+      "pts": 10,
+      "pos": 5
+    },
+    {
+      "nome": "Claudio",
+      "pts": 8,
+      "pos": 6
+    },
+    {
+      "nome": "William",
+      "pts": 6,
+      "pos": 7
+    },
+    {
+      "nome": "Daniele",
+      "pts": 4,
+      "pos": 8
+    }
+  ],
+  "bestOf": 4
+}
