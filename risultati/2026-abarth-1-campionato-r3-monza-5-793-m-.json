@@ -12,11 +12,11 @@
       "auto": "Abarth 500 '09",
       "tempo": "33'08''610",
       "bestLap": "1'57''705",
-      "fl": false,
-      "pole": false,
-      "punti": 0,
-      "extra": "-",
-      "totale": 0,
+      "fl": true,
+      "pole": true,
+      "punti": 25,
+      "extra": "1+1",
+      "totale": 27,
       "stato": "ok"
     },
     {
@@ -27,9 +27,9 @@
       "bestLap": "1'58''929",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 18,
       "extra": "-",
-      "totale": 0,
+      "totale": 18,
       "stato": "ok"
     },
     {
@@ -40,9 +40,9 @@
       "bestLap": "2'00''547",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 15,
       "extra": "-",
-      "totale": 0,
+      "totale": 15,
       "stato": "ok"
     },
     {
@@ -53,9 +53,9 @@
       "bestLap": "2'02''566",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 12,
       "extra": "-",
-      "totale": 0,
+      "totale": 12,
       "stato": "ok"
     },
     {
@@ -66,56 +66,56 @@
       "bestLap": "2'01''409",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 10,
       "extra": "-",
-      "totale": 0,
+      "totale": 10,
       "stato": "ok"
     }
   ],
   "standings": [
     {
       "nome": "Pyer",
-      "pts": 45,
+      "pts": 60,
       "pos": 1
     },
     {
-      "nome": "Giovanni",
-      "pts": 33,
+      "nome": "Carmine",
+      "pts": 54,
       "pos": 2
     },
     {
-      "nome": "Carmine",
-      "pts": 27,
+      "nome": "Giovanni",
+      "pts": 51,
       "pos": 3
+    },
+    {
+      "nome": "Claudio",
+      "pts": 20,
+      "pos": 4
     },
     {
       "nome": "Antonio",
       "pts": 15,
-      "pos": 4
+      "pos": 5
+    },
+    {
+      "nome": "William",
+      "pts": 12,
+      "pos": 6
     },
     {
       "nome": "Fabio",
       "pts": 12,
-      "pos": 5
+      "pos": 6
     },
     {
       "nome": "Giuseppe",
       "pts": 12,
-      "pos": 5
-    },
-    {
-      "nome": "Claudio",
-      "pts": 10,
-      "pos": 7
+      "pos": 6
     },
     {
       "nome": "Alessandro",
       "pts": 10,
-      "pos": 7
-    },
-    {
-      "nome": "William",
-      "pts": 0,
       "pos": 9
     }
   ],
