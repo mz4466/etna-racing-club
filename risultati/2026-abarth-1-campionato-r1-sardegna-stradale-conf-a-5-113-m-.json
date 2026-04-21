@@ -1,0 +1,103 @@
+{
+  "circuito": "Sardegna - Stradale (conf. A) (5.113 m)",
+  "data": "2025-12-07",
+  "garaNum": "1",
+  "garaTot": "3",
+  "champId": "abarth-1-campionato-2026",
+  "champIdx": "abarth-1-campionato-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Pyer",
+      "auto": "Abarth 500 '09",
+      "tempo": "28'58''614",
+      "bestLap": "1'50''786",
+      "fl": true,
+      "pole": true,
+      "punti": 25,
+      "extra": "1+1",
+      "totale": 27,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Giovanni",
+      "auto": "Abarth 500 '09",
+      "tempo": "a 27\"703",
+      "bestLap": "1'52''078",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Antonio",
+      "auto": "Abarth 500 '09",
+      "tempo": "a 48\"986",
+      "bestLap": "1'52''439",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Fabio",
+      "auto": "Abarth 500 '09",
+      "tempo": "",
+      "bestLap": "1'58''391",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Claudio",
+      "auto": "Abarth 500 '09",
+      "tempo": "",
+      "bestLap": "2'10''328",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Pyer",
+      "pts": 27,
+      "pos": 1
+    },
+    {
+      "nome": "Giovanni",
+      "pts": 18,
+      "pos": 2
+    },
+    {
+      "nome": "Antonio",
+      "pts": 15,
+      "pos": 3
+    },
+    {
+      "nome": "Fabio",
+      "pts": 12,
+      "pos": 4
+    },
+    {
+      "nome": "Claudio",
+      "pts": 10,
+      "pos": 5
+    }
+  ],
+  "bestOf": null
+}
