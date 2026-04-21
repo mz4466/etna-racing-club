@@ -1,0 +1,118 @@
+{
+  "circuito": "Lago Maggiore (5.809 m)",
+  "data": "2026-01-18",
+  "garaNum": "2",
+  "garaTot": "3",
+  "champId": "abarth-1-campionato-2026",
+  "champIdx": "abarth-1-campionato-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Carmine",
+      "auto": "Abarth 500 '09",
+      "tempo": "28'52''640",
+      "bestLap": "2'09''472",
+      "fl": true,
+      "pole": true,
+      "punti": 25,
+      "extra": "1+1",
+      "totale": 27,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Pyer",
+      "auto": "Abarth 500 '09",
+      "tempo": "a 27\"547",
+      "bestLap": "2'11''212",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Giovanni",
+      "auto": "Abarth 500 '09",
+      "tempo": "a 46\"417",
+      "bestLap": "2'11''622",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Giuseppe",
+      "auto": "Abarth 500 '09",
+      "tempo": "a 46\"975",
+      "bestLap": "2'12''135",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Alessandro",
+      "auto": "Abarth 500 '09",
+      "tempo": "a 1'43\"302",
+      "bestLap": "2'16''677",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Pyer",
+      "pts": 45,
+      "pos": 1
+    },
+    {
+      "nome": "Giovanni",
+      "pts": 33,
+      "pos": 2
+    },
+    {
+      "nome": "Carmine",
+      "pts": 27,
+      "pos": 3
+    },
+    {
+      "nome": "Antonio",
+      "pts": 15,
+      "pos": 4
+    },
+    {
+      "nome": "Fabio",
+      "pts": 12,
+      "pos": 5
+    },
+    {
+      "nome": "Giuseppe",
+      "pts": 12,
+      "pos": 5
+    },
+    {
+      "nome": "Claudio",
+      "pts": 10,
+      "pos": 7
+    },
+    {
+      "nome": "Alessandro",
+      "pts": 10,
+      "pos": 7
+    }
+  ],
+  "bestOf": null
+}
