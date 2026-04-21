@@ -427,10 +427,10 @@
     "trophy": "Abarth_Championship_Winner.jpg",
     "cars": "Abarth",
     "desc": "Nessun limite di modifica",
-    "status": "prossimo",
+    "status": "concluso",
     "file": "campionati/abarth---1-campionato-2026-campionato-abarth-1-campionato.html",
     "totalRounds": 3,
-    "completedRounds": 0,
+    "completedRounds": 3,
     "bestOf": 2,
     "rounds": [
       {
