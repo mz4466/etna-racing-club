@@ -13,10 +13,10 @@
       "tempo": "31'22''701",
       "bestLap": "01'47''654",
       "fl": false,
-      "pole": true,
+      "pole": false,
       "punti": 25,
-      "extra": "1",
-      "totale": 26,
+      "extra": "-",
+      "totale": 25,
       "stato": "ok"
     },
     {
@@ -26,10 +26,10 @@
       "tempo": "a 07\"649",
       "bestLap": "01'47''745",
       "fl": false,
-      "pole": false,
+      "pole": true,
       "punti": 18,
-      "extra": "-",
-      "totale": 18,
+      "extra": "1",
+      "totale": 19,
       "stato": "ok"
     },
     {
@@ -105,9 +105,9 @@
       "bestLap": "01'51''289",
       "fl": false,
       "pole": false,
-      "punti": 5,
+      "punti": 4,
       "extra": "-",
-      "totale": 5,
+      "totale": 4,
       "stato": "ok"
     },
     {
@@ -127,12 +127,12 @@
   "standings": [
     {
       "nome": "Carmine",
-      "pts": 62,
+      "pts": 61,
       "pos": 1
     },
     {
       "nome": "Pyer",
-      "pts": 51,
+      "pts": 52,
       "pos": 2
     },
     {
@@ -172,7 +172,7 @@
     },
     {
       "nome": "William",
-      "pts": 14,
+      "pts": 13,
       "pos": 10
     },
     {
