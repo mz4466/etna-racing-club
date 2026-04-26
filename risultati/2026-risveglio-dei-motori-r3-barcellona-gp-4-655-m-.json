@@ -1,0 +1,185 @@
+{
+  "circuito": "Barcellona GP (4.655 m)",
+  "data": "2026-04-26",
+  "garaNum": "3",
+  "garaTot": "5",
+  "champId": "risveglio-dei-motori-2026",
+  "champIdx": "risveglio-dei-motori-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Carmine",
+      "auto": "Volkswagen Beetle Gr.3",
+      "tempo": "31'22''701",
+      "bestLap": "01'47''654",
+      "fl": false,
+      "pole": true,
+      "punti": 25,
+      "extra": "1",
+      "totale": 26,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Pyer",
+      "auto": "Peugeot RCZ Gr.3",
+      "tempo": "a 07\"649",
+      "bestLap": "01'47''745",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Giovanni",
+      "auto": "Lexus RC F GT3 '17",
+      "tempo": "a 14\"314",
+      "bestLap": "01'48''034",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Alessandro",
+      "auto": "911 GT3 R (992) '22",
+      "tempo": "a 19\"372",
+      "bestLap": "01'47''135",
+      "fl": true,
+      "pole": false,
+      "punti": 12,
+      "extra": "1",
+      "totale": 13,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Stefano",
+      "auto": "Mercedes-AMG GT Black Series '20",
+      "tempo": "a 55\"742",
+      "bestLap": "01'47''446",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    },
+    {
+      "pos": 6,
+      "nome": "Claudio",
+      "auto": "BMW M6 GT3 Endurance Model '16",
+      "tempo": "a 1'00\"902",
+      "bestLap": "01'49''403",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "ok"
+    },
+    {
+      "pos": 7,
+      "nome": "Daniele",
+      "auto": "Audi R8 LMS Evo '19",
+      "tempo": "a 1'11\"337",
+      "bestLap": "01'51''209",
+      "fl": false,
+      "pole": false,
+      "punti": 6,
+      "extra": "-",
+      "totale": 6,
+      "stato": "ok"
+    },
+    {
+      "pos": 8,
+      "nome": "William",
+      "auto": "Ford GT Race Car '18",
+      "tempo": "a 4'00\"472",
+      "bestLap": "01'51''289",
+      "fl": false,
+      "pole": false,
+      "punti": 5,
+      "extra": "-",
+      "totale": 5,
+      "stato": "ok"
+    },
+    {
+      "pos": 9,
+      "nome": "Sandro",
+      "auto": "Mercedes-AMG GT Black Series '20",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "dnf"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Carmine",
+      "pts": 62,
+      "pos": 1
+    },
+    {
+      "nome": "Pyer",
+      "pts": 51,
+      "pos": 2
+    },
+    {
+      "nome": "Sandro",
+      "pts": 41,
+      "pos": 3
+    },
+    {
+      "nome": "Alessandro H",
+      "pts": 30,
+      "pos": 4
+    },
+    {
+      "nome": "Alessandro",
+      "pts": 28,
+      "pos": 5
+    },
+    {
+      "nome": "Claudio",
+      "pts": 26,
+      "pos": 6
+    },
+    {
+      "nome": "Stefano",
+      "pts": 22,
+      "pos": 7
+    },
+    {
+      "nome": "Giovanni",
+      "pts": 21,
+      "pos": 8
+    },
+    {
+      "nome": "Daniele",
+      "pts": 15,
+      "pos": 9
+    },
+    {
+      "nome": "William",
+      "pts": 14,
+      "pos": 10
+    },
+    {
+      "nome": "Fabio",
+      "pts": 1,
+      "pos": 11
+    }
+  ],
+  "bestOf": 4
+}
