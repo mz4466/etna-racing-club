@@ -39,10 +39,10 @@
       "tempo": "a 15\"566",
       "bestLap": "01'50''586",
       "fl": false,
-      "pole": false,
+      "pole": true,
       "punti": 15,
-      "extra": "-",
-      "totale": 15,
+      "extra": "1",
+      "totale": 16,
       "stato": "ok"
     },
     {
@@ -52,10 +52,10 @@
       "tempo": "a 54\"334",
       "bestLap": "01'45''636",
       "fl": true,
-      "pole": true,
+      "pole": false,
       "punti": 12,
-      "extra": "1+1",
-      "totale": 14,
+      "extra": "1",
+      "totale": 13,
       "stato": "ok"
     },
     {
@@ -105,52 +105,67 @@
       "bestLap": "01'50''368",
       "fl": false,
       "pole": false,
-      "punti": 5,
+      "punti": 4,
       "extra": "-",
-      "totale": 5,
+      "totale": 4,
       "stato": "ok"
     }
   ],
   "standings": [
     {
-      "nome": "Pyer",
-      "pts": 25,
+      "nome": "Carmine",
+      "pts": 61,
       "pos": 1
     },
     {
-      "nome": "Carmine",
-      "pts": 18,
+      "nome": "Pyer",
+      "pts": 52,
       "pos": 2
     },
     {
       "nome": "Sandro",
-      "pts": 15,
+      "pts": 42,
       "pos": 3
     },
     {
       "nome": "Alessandro H",
-      "pts": 14,
+      "pts": 29,
       "pos": 4
     },
     {
       "nome": "Alessandro",
-      "pts": 10,
+      "pts": 28,
       "pos": 5
     },
     {
       "nome": "Claudio",
-      "pts": 8,
+      "pts": 26,
       "pos": 6
     },
     {
-      "nome": "William",
-      "pts": 6,
+      "nome": "Stefano",
+      "pts": 22,
       "pos": 7
     },
     {
-      "nome": "Daniele",
-      "pts": 5,
+      "nome": "Giovanni",
+      "pts": 21,
       "pos": 8
+    },
+    {
+      "nome": "Daniele",
+      "pts": 14,
+      "pos": 9
+    },
+    {
+      "nome": "William",
+      "pts": 13,
+      "pos": 10
+    },
+    {
+      "nome": "Fabio",
+      "pts": 1,
+      "pos": 11
     }
   ],
   "bestOf": 4
