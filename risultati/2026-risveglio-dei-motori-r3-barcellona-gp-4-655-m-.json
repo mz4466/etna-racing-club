@@ -60,10 +60,10 @@
     },
     {
       "pos": 5,
-      "nome": "Stefano",
-      "auto": "Mercedes-AMG GT Black Series '20",
-      "tempo": "a 55\"742",
-      "bestLap": "01'47''446",
+      "nome": "Claudio",
+      "auto": "BMW M6 GT3 Endurance Model '16",
+      "tempo": "a 1'00\"902",
+      "bestLap": "01'49''403",
       "fl": false,
       "pole": false,
       "punti": 10,
@@ -73,10 +73,10 @@
     },
     {
       "pos": 6,
-      "nome": "Claudio",
-      "auto": "BMW M6 GT3 Endurance Model '16",
-      "tempo": "a 1'00\"902",
-      "bestLap": "01'49''403",
+      "nome": "Stefano",
+      "auto": "Mercedes-AMG GT Black Series '20",
+      "tempo": "a 1'05\"742",
+      "bestLap": "01'47''446",
       "fl": false,
       "pole": false,
       "punti": 8,
@@ -146,23 +146,23 @@
       "pos": 4
     },
     {
+      "nome": "Claudio",
+      "pts": 28,
+      "pos": 5
+    },
+    {
       "nome": "Alessandro",
       "pts": 28,
       "pos": 5
     },
     {
-      "nome": "Claudio",
-      "pts": 26,
-      "pos": 6
-    },
-    {
-      "nome": "Stefano",
-      "pts": 22,
+      "nome": "Giovanni",
+      "pts": 21,
       "pos": 7
     },
     {
-      "nome": "Giovanni",
-      "pts": 21,
+      "nome": "Stefano",
+      "pts": 20,
       "pos": 8
     },
     {
