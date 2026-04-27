@@ -144,66 +144,66 @@
       "bestLap": "2'15''650",
       "fl": false,
       "pole": false,
-      "punti": 1,
+      "punti": 2,
       "extra": "-",
-      "totale": 1,
+      "totale": 2,
       "stato": "dnf"
     }
   ],
   "standings": [
     {
-      "nome": "Sandro",
-      "pts": 26,
+      "nome": "Carmine",
+      "pts": 61,
       "pos": 1
     },
     {
-      "nome": "Carmine",
-      "pts": 18,
+      "nome": "Pyer",
+      "pts": 52,
       "pos": 2
     },
     {
-      "nome": "Alessandro H",
-      "pts": 16,
+      "nome": "Sandro",
+      "pts": 41,
       "pos": 3
     },
     {
-      "nome": "Stefano",
-      "pts": 12,
+      "nome": "Alessandro H",
+      "pts": 30,
       "pos": 4
     },
     {
-      "nome": "Claudio",
-      "pts": 10,
+      "nome": "Alessandro",
+      "pts": 28,
       "pos": 5
     },
     {
-      "nome": "Pyer",
-      "pts": 8,
+      "nome": "Claudio",
+      "pts": 26,
       "pos": 6
     },
     {
-      "nome": "Giovanni",
-      "pts": 6,
+      "nome": "Stefano",
+      "pts": 22,
       "pos": 7
     },
     {
-      "nome": "Alessandro",
-      "pts": 5,
+      "nome": "Giovanni",
+      "pts": 21,
       "pos": 8
     },
     {
       "nome": "Daniele",
-      "pts": 4,
+      "pts": 15,
       "pos": 9
     },
     {
       "nome": "William",
-      "pts": 3,
+      "pts": 13,
       "pos": 10
     },
     {
       "nome": "Fabio",
-      "pts": 1,
+      "pts": 2,
       "pos": 11
     }
   ],
