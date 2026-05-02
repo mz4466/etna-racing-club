@@ -94,6 +94,8 @@
   .pilot-badge{background:var(--gold-dim);border:1px solid rgba(201,162,39,.2);border-radius:20px;padding:2px 9px;font-family:'Teko',sans-serif;font-size:11px;letter-spacing:1px;color:var(--gold);text-transform:uppercase;}
   .pilot-card-footer{padding:8px 14px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;grid-column:2;}
   .btn-sm{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:6px;cursor:pointer;border:1px solid;transition:all .2s;}
+  .pilot-card.pilot-inactive{opacity:.55;border-color:var(--border);}
+  .pilot-card.pilot-inactive:hover{border-color:var(--border-hi);box-shadow:none;transform:none;}
   .btn-edit{background:transparent;border-color:var(--border-hi);color:var(--text-mid);}
   .btn-edit:hover{border-color:var(--gold);color:var(--gold);}
   .btn-del{background:transparent;border-color:transparent;color:var(--text-dim);}
@@ -163,6 +165,18 @@
   .car-option-name{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--text);}
   .car-option-group{font-family:'Teko',sans-serif;font-size:11px;color:var(--text-dim);letter-spacing:1px;}
   .car-loading{padding:12px;text-align:center;font-family:'Teko',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:2px;}
+
+  /* ACTIVE TOGGLE */
+  .toggle-wrap{display:flex;align-items:center;gap:6px;}
+  .toggle-label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);transition:color .2s;white-space:nowrap;}
+  .toggle-label.on{color:var(--green);}
+  .toggle-label.off{color:var(--red);}
+  .toggle{position:relative;width:34px;height:18px;flex-shrink:0;}
+  .toggle input{opacity:0;width:0;height:0;position:absolute;}
+  .toggle-slider{position:absolute;inset:0;background:#2a2a3a;border:1px solid var(--border-hi);border-radius:18px;cursor:pointer;transition:background .25s,border-color .25s;}
+  .toggle-slider::before{content:'';position:absolute;width:12px;height:12px;left:2px;top:2px;background:var(--text-dim);border-radius:50%;transition:transform .25s,background .25s;}
+  .toggle input:checked + .toggle-slider{background:rgba(39,174,96,.18);border-color:var(--green);}
+  .toggle input:checked + .toggle-slider::before{transform:translateX(16px);background:var(--green);}
 
   ::-webkit-scrollbar{width:5px;}
   ::-webkit-scrollbar-track{background:var(--bg);}
@@ -597,7 +611,8 @@ function renderGrid(list){
   grid.innerHTML='';
   pilots.forEach(({slug,data},i)=>{
     const card = document.createElement('div');
-    card.className='pilot-card';
+    const isActive = data.attivo !== false;
+    card.className='pilot-card' + (isActive ? '' : ' pilot-inactive');
     card.style.animationDelay=`${i*0.06}s`;
 
     const photoHTML = data.foto
@@ -626,6 +641,13 @@ function renderGrid(list){
         ${data.bio?`<div style="margin-top:6px;font-size:12px;color:var(--text-dim);line-height:1.5;font-style:italic;padding-bottom:8px;">"${esc(data.bio)}"</div>`:''}
       </div>
       <div class="pilot-card-footer">
+        <div class="toggle-wrap" title="${isActive ? 'Pilota attivo' : 'Pilota non attivo'}">
+          <span class="toggle-label ${isActive ? 'on' : 'off'}">${isActive ? 'Attivo' : 'Non Attivo'}</span>
+          <label class="toggle">
+            <input type="checkbox" ${isActive ? 'checked' : ''} onchange="toggleActive('${slug}',this)">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
         <button class="btn-sm btn-edit" onclick="editPilot('${slug}')">✏️ Modifica</button>
         <button class="btn-sm btn-del" onclick="deletePilot('${slug}','${esc(data.nome||slug)}')">✕</button>
       </div>`;
@@ -834,6 +856,7 @@ async function savePilot(){
     badges:    document.getElementById('fBadges').value.split(',').map(s=>s.trim()).filter(Boolean),
     foto:      document.getElementById('fFoto').value.trim(),
     campionati: campionatiPayload,
+    attivo: editingSlug ? (allPilots.find(p=>p.slug===editingSlug)?.data?.attivo !== false) : true,
   };
 
   toast('Salvataggio…','');
@@ -876,7 +899,40 @@ async function deletePilot(slug, nome){
   }
 }
 
-// ── UPDATE PILOT INDEX ──
+// ── TOGGLE ACTIVE ──
+async function toggleActive(slug, checkbox){
+  const token = getToken();
+  if(!token){ toast('Token mancante','err'); checkbox.checked = !checkbox.checked; return; }
+
+  const isActive = checkbox.checked;
+  const pilot = allPilots.find(p=>p.slug===slug);
+  if(!pilot){ toast('Pilota non trovato','err'); return; }
+
+  // Update local state
+  pilot.data.attivo = isActive;
+
+  const label = checkbox.closest('.toggle-wrap').querySelector('.toggle-label');
+  label.textContent = isActive ? 'Attivo' : 'Non Attivo';
+  label.className = 'toggle-label ' + (isActive ? 'on' : 'off');
+  const card = checkbox.closest('.pilot-card');
+  card.classList.toggle('pilot-inactive', !isActive);
+
+  try {
+    const payload = Object.assign({}, pilot.data, { attivo: isActive });
+    await putFile(`${FOLDER}/${slug}.json`, JSON.stringify(payload,null,2), `${isActive?'Activate':'Deactivate'} pilot: ${slug}`, token);
+    toast(`${pilot.data.nome} — ${isActive ? '✓ Attivo' : 'Non Attivo'}`, isActive ? 'ok' : '');
+  } catch(e){
+    // Revert on failure
+    pilot.data.attivo = !isActive;
+    checkbox.checked = !isActive;
+    label.textContent = !isActive ? 'Attivo' : 'Non Attivo';
+    label.className = 'toggle-label ' + (!isActive ? 'on' : 'off');
+    card.classList.toggle('pilot-inactive', isActive);
+    toast('Errore: '+e.message,'err');
+  }
+}
+
+
 async function updatePilotIndex(token){
   try {
     // List current files in piloti_schede via API
