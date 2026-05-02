@@ -501,8 +501,8 @@ async function loadPilots(){
       const meta = await jr.json();
       return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
     }));
-    pilotNames = pilots.filter(Boolean).map(p=>p.nome||p.name||p.psn||'').filter(Boolean);
-    pilots.filter(Boolean).forEach(function(p){
+    pilotNames = pilots.filter(Boolean).filter(p=>p.attivo !== false).map(p=>p.nome||p.name||p.psn||'').filter(Boolean);
+    pilots.filter(Boolean).filter(p=>p.attivo !== false).forEach(function(p){
       var nome = p.nome||p.name||p.psn||'';
       if(nome && p.campionati) pilotCarsMap[nome] = p.campionati;
     });
