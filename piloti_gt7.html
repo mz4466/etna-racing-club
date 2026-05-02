@@ -666,6 +666,7 @@ function renderPilot(p, calendario) {
   }
 
   var photoSrc = foto || 'https://via.placeholder.com/280x350?text=Pilota';
+  var isActive = p.attivo !== false;
 
   // Build campionati cars display (active championships only)
   var campionatiHTML = '';
@@ -698,10 +699,16 @@ function renderPilot(p, calendario) {
   }
 
   el.innerHTML = ''
-    + '<img class="pilot-photo" src="' + esc(photoSrc) + '" alt="' + esc(nome) + '" onerror="this.src=\'https://via.placeholder.com/280x350?text=Pilota\'">'
+    + (isActive
+        ? '<img class="pilot-photo" src="' + esc(photoSrc) + '" alt="' + esc(nome) + '" onerror="this.src=\'https://via.placeholder.com/280x350?text=Pilota\'">'
+        : '<div class="pilot-photo" style="background:linear-gradient(135deg,#0d0d1a,#1a1a2e);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-size:48px;opacity:.3;">🪖</span></div>'
+      )
     + '<div class="pilot-content">'
-    +   '<div class="pilot-name">' + esc(nome) + '</div>'
-    +   '<div class="psn">🎮 ' + esc(psn) + '</div>'
+    +   '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">'
+    +     '<div class="pilot-name">' + esc(nome) + '</div>'
+    +     (!isActive ? '<span style="display:inline-block;background:rgba(192,57,43,.18);border:1px solid rgba(192,57,43,.4);border-radius:20px;padding:2px 10px;font-family:Teko,sans-serif;font-size:11px;letter-spacing:1.5px;color:#e05a4a;text-transform:uppercase;">Non Attivo</span>' : '')
+    +   '</div>'
+    +   (isActive ? '<div class="psn">🎮 ' + esc(psn) + '</div>' : '')
     +   (function(){
           var st = null;
           names.forEach(function(n){ if(pilotStats[n] && !st) st = pilotStats[n]; });
@@ -714,19 +721,22 @@ function renderPilot(p, calendario) {
           if(raceCount)  pills += '<span class="stat-pill"><strong>' + raceCount + '</strong>&nbsp;gar' + (raceCount===1?'a':'e') + '</span>';
           return '<div class="pilot-stats">' + pills + '</div>';
         })()
-    +   '<div class="info">'
-    +     (locationStr ? locationStr + '<br>' : '')
-    +     (auto ? '🚗 ' + esc(auto) + '<br>' : '')
-    +     (p.dr || p.sr ? '📊 DR: ' + esc(p.dr||'-') + ' • SR: ' + esc(p.sr||'-') + '<br>' : '')
-    +     (stile ? '💪 ' + esc(stile) + '<br>' : '')
-    +     (pistaAma ? '❤️ ' + esc(pistaAma) + (pistaOdia ? ' • 💀 ' + esc(pistaOdia) : '') : '')
-    +   '</div>'
-    +   ((p.catchphrase||p.bio) ? '<div class="catchphrase">💬 "' + esc(p.catchphrase||p.bio) + '"</div>' : '')
+    +   (isActive
+          ? '<div class="info">'
+          +   (locationStr ? locationStr + '<br>' : '')
+          +   (auto ? '🚗 ' + esc(auto) + '<br>' : '')
+          +   (p.dr || p.sr ? '📊 DR: ' + esc(p.dr||'-') + ' • SR: ' + esc(p.sr||'-') + '<br>' : '')
+          +   (stile ? '💪 ' + esc(stile) + '<br>' : '')
+          +   (pistaAma ? '❤️ ' + esc(pistaAma) + (pistaOdia ? ' • 💀 ' + esc(pistaOdia) : '') : '')
+          + '</div>'
+          + ((p.catchphrase||p.bio) ? '<div class="catchphrase">💬 "' + esc(p.catchphrase||p.bio) + '"</div>' : '')
+          : ''
+      )
     +   '<div class="badges">' + (p.badges||[]).map(function(b){ return '<span class="badge">' + esc(b) + '</span>'; }).join('') + '</div>'
     +   trophiesHTML
     +   medalsHTML
     +   costrutHTML
-    +   campionatiHTML
+    +   (isActive ? campionatiHTML : '')
     + '</div>';
 
   grid.appendChild(el);
