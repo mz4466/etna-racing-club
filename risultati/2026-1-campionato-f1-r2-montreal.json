@@ -1,0 +1,110 @@
+{
+  "circuito": "Montreal",
+  "data": "",
+  "garaNum": "2",
+  "garaTot": "8",
+  "champId": "1-campionato-f1-2026",
+  "champIdx": "1-campionato-f1-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Stefano",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "",
+      "bestLap": "",
+      "fl": true,
+      "pole": false,
+      "punti": 25,
+      "extra": "1",
+      "totale": 26,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Pyer",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": true,
+      "punti": 18,
+      "extra": "1",
+      "totale": 19,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Claudio",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "William",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Stefano",
+      "pts": 45,
+      "pos": 1
+    },
+    {
+      "nome": "Pyer",
+      "pts": 31,
+      "pos": 2
+    },
+    {
+      "nome": "Sandro",
+      "pts": 26,
+      "pos": 3
+    },
+    {
+      "nome": "Claudio",
+      "pts": 23,
+      "pos": 4
+    },
+    {
+      "nome": "William",
+      "pts": 18,
+      "pos": 5
+    },
+    {
+      "nome": "Carmine",
+      "pts": 15,
+      "pos": 6
+    },
+    {
+      "nome": "Giovanni",
+      "pts": 10,
+      "pos": 7
+    },
+    {
+      "nome": "Antonio",
+      "pts": 5,
+      "pos": 8
+    },
+    {
+      "nome": "Fabio",
+      "pts": 4,
+      "pos": 9
+    }
+  ],
+  "bestOf": 7
+}
