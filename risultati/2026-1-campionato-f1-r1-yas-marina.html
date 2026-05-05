@@ -24,7 +24,8 @@
   .results-wrapper{display:grid;grid-template-columns:1fr 360px;gap:28px;margin-bottom:40px;}
   @media(max-width:1024px){.results-wrapper{grid-template-columns:1fr;}}
   .results-table{background:linear-gradient(135deg,rgba(26,26,26,0.95),rgba(13,13,13,0.98));border:2px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,0.8);}
-  .standings-card{background:linear-gradient(135deg,rgba(26,26,26,0.95),rgba(13,13,13,0.98));border:2px solid var(--border);border-radius:14px;padding:22px;box-shadow:0 10px 40px rgba(0,0,0,0.8);position:sticky;top:20px;}
+  .standings-sidebar{position:sticky;top:20px;display:flex;flex-direction:column;gap:16px;}
+  .standings-card{background:linear-gradient(135deg,rgba(26,26,26,0.95),rgba(13,13,13,0.98));border:2px solid var(--border);border-radius:14px;padding:22px;box-shadow:0 10px 40px rgba(0,0,0,0.8);}
   .standings-title{font-family:'Russo One',sans-serif;font-size:22px;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:18px;text-align:center;text-shadow:0 0 15px rgba(255,215,0,0.5);}
   .standings-item{display:flex;align-items:center;justify-content:space-between;padding:12px 10px;margin-bottom:8px;background:linear-gradient(90deg,rgba(255,215,0,0.07),transparent);border:1px solid rgba(255,215,0,0.12);border-radius:9px;transition:all .3s;}
   .standings-item:hover{background:linear-gradient(90deg,rgba(255,215,0,0.14),transparent);transform:translateX(4px);}
@@ -171,8 +172,8 @@
     </tr></tbody>
       </table>
     </div>
-    <div>
-      <div class="standings-card" style="margin-bottom:16px">
+    <div class="standings-sidebar">
+      <div class="standings-card">
         <h2 class="standings-title">🏆 Piloti</h2>
         <div style="font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:#c9a227;background:rgba(201,162,39,0.08);border:1px solid rgba(201,162,39,0.2);border-radius:5px;padding:5px 10px;margin-bottom:12px;">⚡ Migliori 7 risultati su 8</div>
         <div id="champStandings"><div class="standings-item">
@@ -345,7 +346,8 @@
           var perRace=allRns.map(function(rn){
             var scores=team.pilots.map(function(pName){
               var pKey=pName.toLowerCase().trim();
-              var pEntry=sc[pKey];
+              var scKey=Object.keys(sc).find(function(k){return k.toLowerCase().trim()===pKey;});
+              var pEntry=scKey?sc[scKey]:null;
               if(!pEntry)return null;
               var rEntry=pEntry.find(function(e){return e.rn===rn;});
               return rEntry?rEntry.pts:null;
