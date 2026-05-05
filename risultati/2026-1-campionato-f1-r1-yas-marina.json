@@ -1,0 +1,175 @@
+{
+  "circuito": "Yas Marina",
+  "data": "",
+  "garaNum": "1",
+  "garaTot": "8",
+  "champId": "1-campionato-f1-2026",
+  "champIdx": "1-campionato-f1-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Sandro",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "133'21''534",
+      "bestLap": "1'33''278",
+      "fl": true,
+      "pole": false,
+      "punti": 25,
+      "extra": "1",
+      "totale": 26,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Stefano",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "a 38\"601",
+      "bestLap": "1'33''711",
+      "fl": false,
+      "pole": true,
+      "punti": 18,
+      "extra": "1",
+      "totale": 19,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Carmine",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "a 44\"646",
+      "bestLap": "1'34''471",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Pyer",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "1'11''584",
+      "bestLap": "1'34''597",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Giovanni",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "a 1 Giro",
+      "bestLap": "1'36''512",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    },
+    {
+      "pos": 6,
+      "nome": "Claudio",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "a 2 Giri",
+      "bestLap": "1'38''400",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "ok"
+    },
+    {
+      "pos": 7,
+      "nome": "William",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "a 3 Giri",
+      "bestLap": "1'35''562",
+      "fl": false,
+      "pole": false,
+      "punti": 6,
+      "extra": "-",
+      "totale": 6,
+      "stato": "ok"
+    },
+    {
+      "pos": 8,
+      "nome": "Antonio",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "",
+      "bestLap": "1'35''208",
+      "fl": false,
+      "pole": false,
+      "punti": 5,
+      "extra": "-",
+      "totale": 5,
+      "stato": "dnf"
+    },
+    {
+      "pos": 9,
+      "nome": "Fabio",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "",
+      "bestLap": "1'45''414",
+      "fl": false,
+      "pole": false,
+      "punti": 4,
+      "extra": "-",
+      "totale": 4,
+      "stato": "dnf"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Sandro",
+      "pts": 26,
+      "pos": 1
+    },
+    {
+      "nome": "Stefano",
+      "pts": 19,
+      "pos": 2
+    },
+    {
+      "nome": "Carmine",
+      "pts": 15,
+      "pos": 3
+    },
+    {
+      "nome": "Pyer",
+      "pts": 12,
+      "pos": 4
+    },
+    {
+      "nome": "Giovanni",
+      "pts": 10,
+      "pos": 5
+    },
+    {
+      "nome": "Claudio",
+      "pts": 8,
+      "pos": 6
+    },
+    {
+      "nome": "William",
+      "pts": 6,
+      "pos": 7
+    },
+    {
+      "nome": "Antonio",
+      "pts": 5,
+      "pos": 8
+    },
+    {
+      "nome": "Fabio",
+      "pts": 4,
+      "pos": 9
+    }
+  ],
+  "bestOf": 7
+}
