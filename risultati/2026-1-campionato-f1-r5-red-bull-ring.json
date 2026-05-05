@@ -1,0 +1,110 @@
+{
+  "circuito": "Red Bull Ring",
+  "data": "",
+  "garaNum": "5",
+  "garaTot": "8",
+  "champId": "1-campionato-f1-2026",
+  "champIdx": "1-campionato-f1-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Stefano",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "131'02''415",
+      "bestLap": "1'12''431",
+      "fl": true,
+      "pole": true,
+      "punti": 25,
+      "extra": "1+1",
+      "totale": 27,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Giovanni",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "a 54\"267",
+      "bestLap": "1'12''749",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Pyer",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "",
+      "bestLap": "1'15''185",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Claudio",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "",
+      "bestLap": "1'14''677",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Stefano",
+      "pts": 46,
+      "pos": 1
+    },
+    {
+      "nome": "Giovanni",
+      "pts": 28,
+      "pos": 2
+    },
+    {
+      "nome": "Pyer",
+      "pts": 27,
+      "pos": 3
+    },
+    {
+      "nome": "Sandro",
+      "pts": 26,
+      "pos": 4
+    },
+    {
+      "nome": "Claudio",
+      "pts": 20,
+      "pos": 5
+    },
+    {
+      "nome": "Carmine",
+      "pts": 15,
+      "pos": 6
+    },
+    {
+      "nome": "William",
+      "pts": 6,
+      "pos": 7
+    },
+    {
+      "nome": "Antonio",
+      "pts": 5,
+      "pos": 8
+    },
+    {
+      "nome": "Fabio",
+      "pts": 4,
+      "pos": 9
+    }
+  ],
+  "bestOf": 7
+}
