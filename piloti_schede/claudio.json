@@ -15,10 +15,11 @@
         "BMW M6 GT3 Endurance Model '16"
       ]
     },
-    "abarth-1-campionato-2026": {
+    "1-campionato-f1-2026": {
       "cars": [
-        "Abarth 500 '09"
+        "SF19 Super Formula / Honda '19"
       ]
     }
-  }
+  },
+  "attivo": true
 }
