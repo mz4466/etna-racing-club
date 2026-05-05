@@ -476,10 +476,10 @@
     "trophy": "Formula1_Vincitore.png",
     "cars": "Super Formula '19 Honda",
     "desc": "",
-    "status": "prossimo",
+    "status": "in-corso",
     "file": "campionati/1-campionato-f1-2026-formula-1-campionato-f1.html",
     "totalRounds": 9,
-    "completedRounds": 0,
+    "completedRounds": 5,
     "bestOf": 8,
     "rounds": [
       {
