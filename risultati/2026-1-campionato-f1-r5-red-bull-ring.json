@@ -43,7 +43,7 @@
       "punti": 15,
       "extra": "-",
       "totale": 15,
-      "stato": "ok"
+      "stato": "dnf"
     },
     {
       "pos": 4,
@@ -56,43 +56,43 @@
       "punti": 12,
       "extra": "-",
       "totale": 12,
-      "stato": "ok"
+      "stato": "dnf"
     }
   ],
   "standings": [
     {
       "nome": "Stefano",
-      "pts": 46,
+      "pts": 124,
       "pos": 1
     },
     {
-      "nome": "Giovanni",
-      "pts": 28,
+      "nome": "Pyer",
+      "pts": 81,
       "pos": 2
     },
     {
-      "nome": "Pyer",
-      "pts": 27,
+      "nome": "Giovanni",
+      "pts": 61,
       "pos": 3
+    },
+    {
+      "nome": "Claudio",
+      "pts": 59,
+      "pos": 4
+    },
+    {
+      "nome": "William",
+      "pts": 38,
+      "pos": 5
     },
     {
       "nome": "Sandro",
       "pts": 26,
-      "pos": 4
-    },
-    {
-      "nome": "Claudio",
-      "pts": 20,
-      "pos": 5
+      "pos": 6
     },
     {
       "nome": "Carmine",
       "pts": 15,
-      "pos": 6
-    },
-    {
-      "nome": "William",
-      "pts": 6,
       "pos": 7
     },
     {
