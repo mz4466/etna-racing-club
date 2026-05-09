@@ -329,6 +329,24 @@ zone.addEventListener('drop', function(e){
 });
 
 // ── SAVE ──
+async function putFile(path, content, message, token){
+  let sha = null;
+  const check = await fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref='+BRANCH,{
+    headers:{Authorization:'token '+token,Accept:'application/vnd.github.v3+json'}
+  });
+  if(check.ok){ const d = await check.json(); sha = d.sha; }
+  const base64 = btoa(unescape(encodeURIComponent(content)));
+  const body = { message: message, content: base64, branch: BRANCH };
+  if(sha) body.sha = sha;
+  const r = await fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{
+    method:'PUT',
+    headers:{Authorization:'token '+token,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  });
+  if(!r.ok){ const e = await r.json(); throw new Error(e.message || r.status); }
+  return r.json();
+}
+
 async function putImageFile(path, base64, message, token){
   // Get existing SHA if file exists
   let sha = null;
