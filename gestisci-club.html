@@ -81,8 +81,6 @@
   .btn-save:hover{opacity:.85;}
   .btn-save:disabled{opacity:.4;cursor:not-allowed;}
 
-  .files-written{margin-top:14px;display:none;}
-  .files-written.show{display:block;}
   .file-item{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;padding:5px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
   .file-item:last-child{border-bottom:none;}
   .file-item .fi-ok{color:var(--green);}
@@ -123,16 +121,6 @@
       <button class="btn-verify" onclick="verifyAndLoad()">Connetti</button>
       <div class="repo-note">Repository: <span>mz4466/etna-racing-club</span><br>Branch: <span>main</span></div>
     </div>
-
-    <div class="sidebar-block">
-      <div class="sidebar-label">Info</div>
-      <div class="repo-note" style="line-height:1.9;">
-        Il logo viene salvato come:<br>
-        <span>club-logo.png</span> (nuovo standard)<br>
-        <span>etna-logo.jpg</span> (compatibilità pagine esistenti)<br><br>
-        Entrambi i file vengono aggiornati con la stessa immagine ad ogni salvataggio.
-      </div>
-    </div>
   </aside>
 
   <main class="main">
@@ -170,11 +158,6 @@
           <button class="btn-save" id="btnSave" onclick="saveLogo()" disabled>
             <span>💾</span> Salva e Pubblica
           </button>
-
-          <div class="files-written" id="filesWritten">
-            <div class="file-item" id="fi-club"><span class="fi-spin">⏳</span> club-logo.png</div>
-            <div class="file-item" id="fi-etna"><span class="fi-spin">⏳</span> etna-logo.jpg</div>
-          </div>
         </div>
 
       </div>
@@ -305,9 +288,7 @@ async function saveLogo(){
   if(!selectedFileBase64){ toast('Seleziona prima un\'immagine','err'); return; }
 
   const btn = document.getElementById('btnSave');
-  const filesDiv = document.getElementById('filesWritten');
   btn.disabled = true;
-  filesDiv.classList.add('show');
   setFileStatus('fi-club','spin','club-logo.png');
   setFileStatus('fi-etna','spin','etna-logo.jpg');
 
