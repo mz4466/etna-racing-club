@@ -410,6 +410,12 @@ async function loadCalendario() {
     championships = [];
   }
 
+  championships.sort((a, b) => {
+    const dateA = (a.rounds && a.rounds[0] && a.rounds[0].date) ? a.rounds[0].date : '9999-99-99';
+    const dateB = (b.rounds && b.rounds[0] && b.rounds[0].date) ? b.rounds[0].date : '9999-99-99';
+    return dateA.localeCompare(dateB);
+  });
+
   renderCards(championships);
 }
 
