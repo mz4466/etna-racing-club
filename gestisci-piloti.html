@@ -61,6 +61,10 @@
   /* SEARCH BAR */
   .search-bar{display:flex;gap:10px;align-items:center;}
   .search-bar input{flex:1;background:var(--bg-card);border:1px solid var(--border-hi);border-radius:8px;padding:10px 14px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;outline:none;transition:border-color .2s;}
+  .filter-bar{display:flex;gap:8px;margin-bottom:12px;}
+  .filter-btn{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 16px;border-radius:20px;border:1px solid var(--border-hi);background:transparent;color:var(--text-dim);cursor:pointer;transition:all .2s;}
+  .filter-btn:hover{border-color:var(--gold);color:var(--gold);}
+  .filter-btn.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);}
   .search-bar input:focus{border-color:var(--gold);}
 
   /* PILOTS GRID */
@@ -232,6 +236,12 @@
     <div>
       <div class="page-title">🏎️ Gestisci Piloti</div>
       <div class="page-sub">Aggiungi, modifica e rimuovi i piloti del club</div>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" id="filterAttivi"   onclick="setFilter('attivi',this)">🟢 Attivi</button>
+      <button class="filter-btn"        id="filterInattivi" onclick="setFilter('inattivi',this)">⚫ Non Attivi</button>
+      <button class="filter-btn"        id="filterTutti"    onclick="setFilter('tutti',this)">Tutti</button>
     </div>
 
     <div class="search-bar">
@@ -587,7 +597,7 @@ async function loadPilots(){
     }));
 
     allPilots = results.filter(Boolean);
-    renderGrid();
+    filterPilots();
     document.getElementById('statTotal').textContent = allPilots.length;
     toast(`✓ ${allPilots.length} piloti caricati`,'ok');
   } catch(e){
@@ -655,13 +665,28 @@ function renderGrid(list){
   });
 }
 
+var activeFilter = 'attivi';
+
+function setFilter(f, btn){
+  activeFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterPilots();
+}
+
 function filterPilots(){
   const q = document.getElementById('searchInput').value.toLowerCase();
-  if(!q){ renderGrid(); return; }
-  const filtered = allPilots.filter(({slug,data})=>{
-    return [data.nome,data.psn,data.auto,data.Regione,data.stile,slug].some(v=>v&&v.toLowerCase().includes(q));
-  });
-  renderGrid(filtered);
+  let list = allPilots;
+
+  if(activeFilter === 'attivi')   list = list.filter(({data}) => data.attivo !== false);
+  if(activeFilter === 'inattivi') list = list.filter(({data}) => data.attivo === false);
+
+  if(q){
+    list = list.filter(({slug,data}) =>
+      [data.nome,data.psn,data.auto,data.Regione,data.stile,slug].some(v => v && v.toLowerCase().includes(q))
+    );
+  }
+  renderGrid(list);
 }
 
 // ── MODAL ──
@@ -921,6 +946,7 @@ async function toggleActive(slug, checkbox){
     const payload = Object.assign({}, pilot.data, { attivo: isActive });
     await putFile(`${FOLDER}/${slug}.json`, JSON.stringify(payload,null,2), `${isActive?'Activate':'Deactivate'} pilot: ${slug}`, token);
     toast(`${pilot.data.nome} — ${isActive ? '✓ Attivo' : 'Non Attivo'}`, isActive ? 'ok' : '');
+    filterPilots();
   } catch(e){
     // Revert on failure
     pilot.data.attivo = !isActive;
