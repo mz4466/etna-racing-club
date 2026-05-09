@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etna Racing Club — Gestisci Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@300;400;600&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#07070f; --bg-card:#0e0e1c; --bg-input:#13131f;
+    --border:#1e1e30; --border-hi:#2e2e48;
+    --gold:#c9a227; --gold-hi:#e8c547; --gold-dim:rgba(201,162,39,0.12); --gold-glow:rgba(201,162,39,0.25);
+    --green:#27ae60; --red:#c0392b;
+    --text:#e8e0d0; --text-dim:#5a5470; --text-mid:#9a90a8;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;}
+  ::-webkit-scrollbar{width:5px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--border-hi);border-radius:3px;}
+  ::-webkit-scrollbar-thumb:hover{background:var(--gold);}
+
+  /* ── TOPBAR ── */
+  .topbar{display:flex;align-items:center;gap:12px;padding:0 20px;height:52px;background:rgba(14,14,28,0.98);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+  .topbar-logo img{width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 0 6px var(--gold-glow));}
+  .topbar-title{font-family:'Russo One',sans-serif;font-size:13px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
+  .topbar-divider{width:1px;height:20px;background:var(--border-hi);}
+  .topbar-section{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:var(--text-mid);text-transform:uppercase;}
+  .topbar-spacer{flex:1;}
+  .github-status{display:flex;align-items:center;gap:8px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--text-dim);}
+  .status-dot{width:7px;height:7px;border-radius:50%;background:var(--text-dim);transition:background .3s;}
+  .status-dot.ok{background:var(--green);box-shadow:0 0 6px var(--green);}
+  .status-dot.err{background:var(--red);}
+  .btn-back{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;color:var(--text-dim);text-decoration:none;border:1px solid var(--border-hi);border-radius:6px;padding:5px 12px;transition:all .2s;}
+  .btn-back:hover{color:var(--text);border-color:var(--gold);}
+
+  /* ── LAYOUT ── */
+  .page-body{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 52px);}
+
+  /* ── SIDEBAR ── */
+  .sidebar{background:var(--bg-card);border-right:1px solid var(--border);padding:20px 16px;display:flex;flex-direction:column;gap:16px;}
+  .sidebar-block{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;}
+  .sidebar-label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;}
+  .pat-wrap{display:flex;gap:6px;margin-bottom:8px;}
+  .pat-wrap input{flex:1;background:var(--bg-input);border:1px solid var(--border-hi);border-radius:6px;padding:8px 10px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;outline:none;}
+  .pat-toggle{background:transparent;border:1px solid var(--border-hi);border-radius:6px;padding:6px 10px;color:var(--text-dim);cursor:pointer;font-size:14px;}
+  .btn-verify{width:100%;background:var(--gold-dim);border:1px solid var(--gold);border-radius:6px;padding:9px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:var(--gold);cursor:pointer;text-transform:uppercase;transition:all .2s;}
+  .btn-verify:hover{background:rgba(201,162,39,0.2);}
+  .repo-note{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:var(--text-dim);margin-top:10px;line-height:1.6;}
+  .repo-note span{color:var(--text-mid);}
+
+  /* ── MAIN ── */
+  .main{padding:28px 32px;overflow-y:auto;}
+  .page-title{font-family:'Russo One',sans-serif;font-size:20px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:4px;}
+  .page-sub{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--text-dim);margin-bottom:28px;}
+
+  .section-card{background:var(--bg-card);border:1px solid var(--border-hi);border-radius:12px;padding:24px;margin-bottom:20px;}
+  .section-heading{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+
+  /* ── LOGO SECTION ── */
+  .logo-layout{display:grid;grid-template-columns:200px 1fr;gap:28px;align-items:start;}
+  .logo-preview-box{background:var(--bg);border:1px solid var(--border-hi);border-radius:10px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .logo-preview-box img{width:100px;height:100px;object-fit:contain;filter:drop-shadow(0 0 10px var(--gold-glow));}
+  .logo-preview-label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;}
+
+  .upload-zone{border:2px dashed var(--border-hi);border-radius:10px;padding:32px 20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;}
+  .upload-zone:hover,.upload-zone.drag{border-color:var(--gold);background:var(--gold-dim);}
+  .upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+  .upload-zone-icon{font-size:32px;margin-bottom:8px;}
+  .upload-zone-text{font-family:'Teko',sans-serif;font-size:16px;letter-spacing:2px;color:var(--text-mid);text-transform:uppercase;}
+  .upload-zone-sub{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--text-dim);margin-top:4px;}
+
+  .new-preview-wrap{display:none;margin-top:14px;background:var(--bg);border:1px solid var(--border-hi);border-radius:10px;padding:16px;display:none;align-items:center;gap:14px;}
+  .new-preview-wrap.show{display:flex;}
+  .new-preview-wrap img{width:70px;height:70px;object-fit:contain;border-radius:6px;}
+  .new-preview-info{flex:1;}
+  .new-preview-name{font-family:'Teko',sans-serif;font-size:15px;letter-spacing:1px;color:var(--text);}
+  .new-preview-size{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--text-dim);margin-top:2px;}
+
+  .btn-save{background:linear-gradient(135deg,var(--gold),var(--gold-hi));border:none;border-radius:8px;padding:12px 28px;font-family:'Teko',sans-serif;font-size:16px;letter-spacing:2px;color:#07070f;cursor:pointer;text-transform:uppercase;font-weight:600;margin-top:16px;transition:opacity .2s;display:flex;align-items:center;gap:8px;}
+  .btn-save:hover{opacity:.85;}
+  .btn-save:disabled{opacity:.4;cursor:not-allowed;}
+
+  .files-written{margin-top:14px;display:none;}
+  .files-written.show{display:block;}
+  .file-item{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;padding:5px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+  .file-item:last-child{border-bottom:none;}
+  .file-item .fi-ok{color:var(--green);}
+  .file-item .fi-spin{color:var(--gold);}
+  .file-item .fi-err{color:var(--red);}
+
+  /* ── TOAST ── */
+  #toast{position:fixed;bottom:28px;right:28px;background:var(--bg-card);border:1px solid var(--gold);border-radius:8px;padding:12px 20px;font-family:'Teko',sans-serif;font-size:15px;letter-spacing:1px;color:var(--text);z-index:999;opacity:0;transform:translateY(12px);transition:opacity .3s,transform .3s;pointer-events:none;}
+  #toast.show{opacity:1;transform:translateY(0);}
+  #toast.ok{border-color:var(--green);color:var(--green);}
+  #toast.err{border-color:var(--red);color:var(--red);}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-logo"><img src="etna-logo.jpg" alt="ERC" id="topbarLogo"></div>
+  <div class="topbar-title">Etna Racing Club</div>
+  <div class="topbar-divider"></div>
+  <div class="topbar-section">Gestisci Club</div>
+  <div class="topbar-spacer"></div>
+  <div class="github-status">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusText">Non connesso</span>
+  </div>
+  <a href="admin.html" class="btn-back">← Admin</a>
+</header>
+
+<div class="page-body">
+
+  <aside class="sidebar">
+    <div class="sidebar-block">
+      <div class="sidebar-label">GitHub</div>
+      <div class="pat-wrap">
+        <input type="password" id="patInput" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+        <button class="pat-toggle" onclick="togglePAT()">👁</button>
+      </div>
+      <button class="btn-verify" onclick="verifyAndLoad()">Connetti</button>
+      <div class="repo-note">Repository: <span>mz4466/etna-racing-club</span><br>Branch: <span>main</span></div>
+    </div>
+
+    <div class="sidebar-block">
+      <div class="sidebar-label">Info</div>
+      <div class="repo-note" style="line-height:1.9;">
+        Il logo viene salvato come:<br>
+        <span>club-logo.png</span> (nuovo standard)<br>
+        <span>etna-logo.jpg</span> (compatibilità pagine esistenti)<br><br>
+        Entrambi i file vengono aggiornati con la stessa immagine ad ogni salvataggio.
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-title">🏟️ Gestisci Club</div>
+    <div class="page-sub">Impostazioni generali del club</div>
+
+    <div class="section-card">
+      <div class="section-heading">🖼️ Logo del Club</div>
+
+      <div class="logo-layout">
+
+        <div>
+          <div class="logo-preview-box">
+            <img id="currentLogo" src="etna-logo.jpg" alt="Logo attuale" onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><rect width=\'100\' height=\'100\' fill=\'%230e0e1c\'/><text x=\'50\' y=\'55\' text-anchor=\'middle\' fill=\'%235a5470\' font-size=\'12\' font-family=\'sans-serif\'>No logo</text></svg>'">
+            <div class="logo-preview-label">Logo attuale</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="upload-zone" id="uploadZone">
+            <input type="file" id="fileInput" accept="image/*" onchange="onFileSelected(this)">
+            <div class="upload-zone-icon">📁</div>
+            <div class="upload-zone-text">Scegli nuovo logo</div>
+            <div class="upload-zone-sub">JPG, PNG, WEBP — qualsiasi dimensione</div>
+          </div>
+
+          <div class="new-preview-wrap" id="newPreviewWrap">
+            <img id="newPreviewImg" src="" alt="Nuovo logo">
+            <div class="new-preview-info">
+              <div class="new-preview-name" id="newPreviewName">—</div>
+              <div class="new-preview-size" id="newPreviewSize">—</div>
+            </div>
+          </div>
+
+          <button class="btn-save" id="btnSave" onclick="saveLogo()" disabled>
+            <span>💾</span> Salva e Pubblica
+          </button>
+
+          <div class="files-written" id="filesWritten">
+            <div class="file-item" id="fi-club"><span class="fi-spin">⏳</span> club-logo.png</div>
+            <div class="file-item" id="fi-etna"><span class="fi-spin">⏳</span> etna-logo.jpg</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const REPO   = 'mz4466/etna-racing-club';
+const BRANCH = 'main';
+
+function getToken(){ return document.getElementById('patInput').value.trim(); }
+
+function togglePAT(){
+  const i = document.getElementById('patInput');
+  i.type = i.type === 'password' ? 'text' : 'password';
+}
+
+function toast(msg, type){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show' + (type ? ' '+type : '');
+  clearTimeout(t._t);
+  t._t = setTimeout(function(){ t.className = ''; }, 3500);
+}
+
+async function verifyAndLoad(){
+  const token = getToken();
+  if(!token){ toast('Inserisci il token PAT','err'); return; }
+  const dot  = document.getElementById('statusDot');
+  const text = document.getElementById('statusText');
+  dot.className = 'status-dot';
+  text.textContent = 'Verifica...';
+  try {
+    const r = await fetch('https://api.github.com/repos/'+REPO+'/contents/calendario.json?ref='+BRANCH,{
+      headers:{Authorization:'token '+token,Accept:'application/vnd.github.v3+json'}
+    });
+    if(!r.ok) throw new Error('Token non valido o repo non accessibile');
+    dot.className = 'status-dot ok';
+    text.textContent = 'Connesso';
+    toast('✓ Connesso','ok');
+  } catch(e){
+    dot.className = 'status-dot err';
+    text.textContent = 'Errore';
+    toast(e.message,'err');
+  }
+}
+
+// ── FILE SELECTION ──
+var selectedFileBase64 = null;
+
+function onFileSelected(input){
+  const file = input.files[0];
+  if(!file) return;
+
+  const wrap = document.getElementById('newPreviewWrap');
+  const img  = document.getElementById('newPreviewImg');
+  const name = document.getElementById('newPreviewName');
+  const size = document.getElementById('newPreviewSize');
+  const btn  = document.getElementById('btnSave');
+
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const dataUrl = e.target.result;
+    // Extract raw base64 (strip "data:image/...;base64,")
+    selectedFileBase64 = dataUrl.split(',')[1];
+
+    img.src = dataUrl;
+    name.textContent = file.name;
+    size.textContent = (file.size / 1024).toFixed(1) + ' KB';
+    wrap.classList.add('show');
+    btn.disabled = false;
+  };
+  reader.readAsDataURL(file);
+}
+
+// drag styling
+const zone = document.getElementById('uploadZone');
+zone.addEventListener('dragover', function(e){ e.preventDefault(); zone.classList.add('drag'); });
+zone.addEventListener('dragleave', function(){ zone.classList.remove('drag'); });
+zone.addEventListener('drop', function(e){
+  e.preventDefault();
+  zone.classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if(file && file.type.startsWith('image/')){
+    const input = document.getElementById('fileInput');
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    input.files = dt.files;
+    onFileSelected(input);
+  }
+});
+
+// ── SAVE ──
+async function putImageFile(path, base64, message, token){
+  // Get existing SHA if file exists
+  let sha = null;
+  const check = await fetch('https://api.github.com/repos/'+REPO+'/contents/'+path+'?ref='+BRANCH,{
+    headers:{Authorization:'token '+token,Accept:'application/vnd.github.v3+json'}
+  });
+  if(check.ok){ const d = await check.json(); sha = d.sha; }
+
+  const body = { message: message, content: base64, branch: BRANCH };
+  if(sha) body.sha = sha;
+
+  const r = await fetch('https://api.github.com/repos/'+REPO+'/contents/'+path,{
+    method:'PUT',
+    headers:{Authorization:'token '+token,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  });
+  if(!r.ok){ const e = await r.json(); throw new Error(e.message || r.status); }
+  return r.json();
+}
+
+function setFileStatus(id, type, extra){
+  const el = document.getElementById(id);
+  const icons = { spin:'⏳', ok:'✅', err:'❌' };
+  const cls   = { spin:'fi-spin', ok:'fi-ok', err:'fi-err' };
+  el.innerHTML = '<span class="'+cls[type]+'">'+icons[type]+'</span> '+(extra || el.textContent.replace(/^.{2}/,''));
+}
+
+async function saveLogo(){
+  const token = getToken();
+  if(!token){ toast('Connetti prima con il token PAT','err'); return; }
+  if(!selectedFileBase64){ toast('Seleziona prima un\'immagine','err'); return; }
+
+  const btn = document.getElementById('btnSave');
+  const filesDiv = document.getElementById('filesWritten');
+  btn.disabled = true;
+  filesDiv.classList.add('show');
+  setFileStatus('fi-club','spin','club-logo.png');
+  setFileStatus('fi-etna','spin','etna-logo.jpg');
+
+  let allOk = true;
+
+  // Write club-logo.png
+  try {
+    await putImageFile('club-logo.png', selectedFileBase64, 'Update club logo (club-logo.png)', token);
+    setFileStatus('fi-club','ok','club-logo.png');
+  } catch(e){
+    setFileStatus('fi-etna','err','club-logo.png — '+e.message);
+    allOk = false;
+  }
+
+  // Write etna-logo.jpg (compatibility)
+  try {
+    await putImageFile('etna-logo.jpg', selectedFileBase64, 'Update club logo (etna-logo.jpg)', token);
+    setFileStatus('fi-etna','ok','etna-logo.jpg');
+  } catch(e){
+    setFileStatus('fi-etna','err','etna-logo.jpg — '+e.message);
+    allOk = false;
+  }
+
+  if(allOk){
+    // Update preview in topbar and current logo box
+    const newSrc = 'data:image/png;base64,'+selectedFileBase64+'?_='+Date.now();
+    document.getElementById('currentLogo').src = newSrc;
+    document.getElementById('topbarLogo').src  = newSrc;
+    toast('✓ Logo aggiornato su tutto il sito','ok');
+  } else {
+    toast('Alcuni file non sono stati salvati','err');
+  }
+
+  btn.disabled = false;
+}
+</script>
+</body>
+</html>
