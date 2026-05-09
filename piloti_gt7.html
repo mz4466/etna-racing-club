@@ -18,6 +18,9 @@
         .container { max-width:1200px; margin:20px auto; padding:20px; }
 
         .controls { display:flex; gap:12px; align-items:center; margin-bottom:20px; }
+        .pilot-filter-btn{font-family:'Russo One',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 16px;border-radius:20px;border:1px solid rgba(201,184,163,0.15);background:transparent;color:rgba(201,184,163,0.4);cursor:pointer;transition:all .2s;}
+        .pilot-filter-btn:hover{border-color:rgba(255,80,20,0.5);color:var(--cream);}
+        .pilot-filter-btn.active{background:rgba(255,80,20,0.12);border-color:rgba(255,80,20,0.5);color:var(--cream);}
         .btn { background: linear-gradient(90deg,var(--accent),var(--accent2)); color:#fff; border:none; padding:12px 18px; border-radius:12px; cursor:pointer; font-family:'Russo One',sans-serif; letter-spacing:1px; box-shadow:0 10px 30px rgba(255,80,20,0.25); }
         .btn.alt { background: transparent; border:2px solid rgba(201,184,163,0.12); color:var(--muted); }
 
@@ -151,6 +154,11 @@
             <option value="gare">🏎️ Gare</option>
         </select>
     </div>
+    <div style="display:flex;gap:8px;margin-bottom:16px;">
+      <button class="pilot-filter-btn active" onclick="setPilotFilter('tutti',this)">Tutti</button>
+      <button class="pilot-filter-btn" onclick="setPilotFilter('attivi',this)">🟢 Attivi</button>
+      <button class="pilot-filter-btn" onclick="setPilotFilter('inattivi',this)">⚫ Non Attivi</button>
+    </div>
     <div id="grid" class="grid"></div>
 </main>
 
@@ -249,12 +257,28 @@ function carImageUrl(carId) {
   if (!carId) return '';
   return 'https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car' + carId + '.png';
 }
-searchInput.oninput = function() {
+var activePilotFilter = 'tutti';
+
+function setPilotFilter(f, btn) {
+  activePilotFilter = f;
+  document.querySelectorAll('.pilot-filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  applyPilotFilter();
+}
+
+function applyPilotFilter() {
   var q = searchInput.value.trim().toLowerCase();
   document.querySelectorAll('.pilot-card').forEach(function(card) {
-    card.style.display = card.innerText.toLowerCase().includes(q) ? '' : 'none';
+    var matchSearch = !q || card.innerText.toLowerCase().includes(q);
+    var isActive = card.dataset.active === 'true';
+    var matchFilter = activePilotFilter === 'tutti'
+      || (activePilotFilter === 'attivi' && isActive)
+      || (activePilotFilter === 'inattivi' && !isActive);
+    card.style.display = (matchSearch && matchFilter) ? '' : 'none';
   });
-};
+}
+
+searchInput.oninput = function() { applyPilotFilter(); };
 
 // Map: pilotName (lowercase) → array of { champName, year, trophy }
 var pilotTrophies = {};
@@ -462,6 +486,8 @@ function renderPilot(p, calendario) {
   calendario = calendario || [];
   var el = document.createElement('div');
   el.className = 'pilot-card';
+  var isActiveCard = p.attivo !== false;
+  el.dataset.active = isActiveCard ? 'true' : 'false';
 
   // ── Sort data ──
   var _sortNames = [p.nome, p.name, p.psn, p.gt7Name].filter(Boolean).map(function(n){ return n.toLowerCase().trim(); });
