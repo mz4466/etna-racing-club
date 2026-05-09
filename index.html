@@ -580,20 +580,20 @@
                 <img class="gt7-logo" src="gt7.jpg" alt="Gran Turismo 7 logo" loading="lazy">
             </div>
 
-            <h1 class="club-name">Etna Racing Club</h1>
-            <p class="club-tagline">Dove Corrono Le Leggende</p>
-            <p class="club-subtitle">Gran Turismo 7</p>
+            <h1 class="club-name" id="cfg-club-name">Etna Racing Club</h1>
+            <p class="club-tagline" id="cfg-tagline">Dove Corrono Le Leggende</p>
+            <p class="club-subtitle" id="cfg-subtitle">Gran Turismo 7</p>
 
             <div class="decorative-divider"></div>
 
             <div class="welcome-section">
-                <h2 class="welcome-title">Benvenuti Piloti</h2>
-                <p class="welcome-text">
+                <h2 class="welcome-title" id="cfg-welcome-title">Benvenuti Piloti</h2>
+                <p class="welcome-text" id="cfg-welcome-p1">
                     Sotto l'ombra del vulcano più attivo d'Europa, nasce la comunità racing più competitiva della Sicilia.
                     L'<span class="highlight-text">Etna Racing Club</span> unisce passione, adrenalina e spirito sportivo
                     attraverso una serie di campionati che testeranno le tue abilità sui circuiti più iconici del mondo.
                 </p>
-                <p class="welcome-text">
+                <p class="welcome-text" id="cfg-welcome-p2">
                     Preparati a sfidare i migliori piloti e a scrivere il tuo nome nella storia.
                     <span class="highlight-text">Sei pronto a correre?</span>
                 </p>
@@ -620,7 +620,6 @@
             <div class="cta-container">
                 <!-- ── CALENDARIO BUTTON ── -->
                 <div class="calendario-btn-wrap">
-                    <span class="calendario-badge">📅 Tutti i Campionati della Stagione</span>
                     <a href="calendario.html" class="calendario-button">
                         <span class="cal-icon">🗓️</span>
                         Calendario Campionati
@@ -636,18 +635,35 @@
             </div>
 
             <div class="footer-section">
-                <p class="footer-motto">
+                <p class="footer-motto" id="cfg-motto">
                     🏁 Gareggia con Onore
                     <span class="footer-separator">•</span>
                     Rispetta le Regole
                     <span class="footer-separator">•</span>
                     Divertiti 🌋
                 </p>
-                <p class="footer-copyright">© 2026 Etna Racing Club • Sicilia, Italia</p>
+                <p class="footer-copyright" id="cfg-copyright">© 2026 Etna Racing Club • Sicilia, Italia</p>
             </div>
         </div>
     </section>
     <script>
+      // ── Club config ──
+      (async function(){
+        try {
+          var r = await fetch('club-config.json?_=' + Date.now());
+          if (!r.ok) return;
+          var cfg = await r.json();
+          function set(id, val){ if(val && document.getElementById(id)) document.getElementById(id).textContent = val; }
+          set('cfg-club-name',    cfg.clubName);
+          set('cfg-tagline',      cfg.tagline);
+          set('cfg-subtitle',     cfg.subtitle);
+          set('cfg-welcome-title',cfg.welcomeTitle);
+          set('cfg-welcome-p1',   cfg.welcomeP1);
+          set('cfg-welcome-p2',   cfg.welcomeP2);
+          set('cfg-motto',        cfg.motto);
+          set('cfg-copyright',    cfg.copyright);
+        } catch(e){}
+      })();
       let _sc = 0, _st;
       function secretClick() {
         clearTimeout(_st);

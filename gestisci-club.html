@@ -77,9 +77,16 @@
   .new-preview-name{font-family:'Teko',sans-serif;font-size:15px;letter-spacing:1px;color:var(--text);}
   .new-preview-size{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--text-dim);margin-top:2px;}
 
-  .btn-save{background:linear-gradient(135deg,var(--gold),var(--gold-hi));border:none;border-radius:8px;padding:12px 28px;font-family:'Teko',sans-serif;font-size:16px;letter-spacing:2px;color:#07070f;cursor:pointer;text-transform:uppercase;font-weight:600;margin-top:16px;transition:opacity .2s;display:flex;align-items:center;gap:8px;}
-  .btn-save:hover{opacity:.85;}
-  .btn-save:disabled{opacity:.4;cursor:not-allowed;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .form-field{display:flex;flex-direction:column;gap:6px;}
+  .form-field.full{grid-column:1/-1;}
+  .form-label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;}
+  .form-input,.form-textarea{background:var(--bg-input);border:1px solid var(--border-hi);border-radius:6px;padding:9px 12px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;outline:none;transition:border-color .2s;width:100%;}
+  .form-input:focus,.form-textarea:focus{border-color:var(--gold);}
+  .form-textarea{resize:vertical;min-height:80px;line-height:1.5;}
+  .btn-save-text{background:linear-gradient(135deg,var(--gold),var(--gold-hi));border:none;border-radius:8px;padding:11px 28px;font-family:'Teko',sans-serif;font-size:16px;letter-spacing:2px;color:#07070f;cursor:pointer;text-transform:uppercase;font-weight:600;margin-top:8px;transition:opacity .2s;}
+  .btn-save-text:hover{opacity:.85;}
+  .btn-save-text:disabled{opacity:.4;cursor:not-allowed;}
 
   .file-item{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;padding:5px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
   .file-item:last-child{border-bottom:none;}
@@ -163,6 +170,54 @@
       </div>
     </div>
 
+    <div class="section-card">
+      <div class="section-heading">✏️ Testi Homepage</div>
+      <div class="form-grid">
+
+        <div class="form-field">
+          <label class="form-label">Nome Club</label>
+          <input class="form-input" id="t-clubName" type="text" placeholder="Etna Racing Club">
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Tagline</label>
+          <input class="form-input" id="t-tagline" type="text" placeholder="Dove Corrono Le Leggende">
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Sottotitolo</label>
+          <input class="form-input" id="t-subtitle" type="text" placeholder="Gran Turismo 7">
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Titolo Benvenuto</label>
+          <input class="form-input" id="t-welcomeTitle" type="text" placeholder="Benvenuti Piloti">
+        </div>
+
+        <div class="form-field full">
+          <label class="form-label">Paragrafo 1</label>
+          <textarea class="form-textarea" id="t-welcomeP1" rows="3"></textarea>
+        </div>
+
+        <div class="form-field full">
+          <label class="form-label">Paragrafo 2</label>
+          <textarea class="form-textarea" id="t-welcomeP2" rows="2"></textarea>
+        </div>
+
+        <div class="form-field full">
+          <label class="form-label">Footer Motto</label>
+          <input class="form-input" id="t-motto" type="text" placeholder="🏁 Gareggia con Onore • Rispetta le Regole • Divertiti 🌋">
+        </div>
+
+        <div class="form-field full">
+          <label class="form-label">Copyright</label>
+          <input class="form-input" id="t-copyright" type="text" placeholder="© 2026 Etna Racing Club • Sicilia, Italia">
+        </div>
+
+      </div>
+      <button class="btn-save-text" id="btnSaveText" onclick="saveTexts()" disabled>💾 Salva Testi</button>
+    </div>
+
   </main>
 </div>
 
@@ -201,12 +256,31 @@ async function verifyAndLoad(){
     if(!r.ok) throw new Error('Token non valido o repo non accessibile');
     dot.className = 'status-dot ok';
     text.textContent = 'Connesso';
+    document.getElementById('btnSave').disabled = false;
+    document.getElementById('btnSaveText').disabled = false;
     toast('✓ Connesso','ok');
+    await loadConfig(token);
   } catch(e){
     dot.className = 'status-dot err';
     text.textContent = 'Errore';
     toast(e.message,'err');
   }
+}
+
+async function loadConfig(token){
+  try {
+    const r = await fetch('https://api.github.com/repos/'+REPO+'/contents/club-config.json?ref='+BRANCH,{
+      headers:{Authorization:'token '+token,Accept:'application/vnd.github.v3+json'}
+    });
+    if(!r.ok) return;
+    const d = await r.json();
+    const cfg = JSON.parse(atob(d.content.replace(/\s/g,'')));
+    var fields = ['clubName','tagline','subtitle','welcomeTitle','welcomeP1','welcomeP2','motto','copyright'];
+    fields.forEach(function(k){
+      var el = document.getElementById('t-'+k);
+      if(el && cfg[k]) el.value = cfg[k];
+    });
+  } catch(e){ console.warn('Could not load club-config:', e); }
 }
 
 // ── FILE SELECTION ──
@@ -322,6 +396,28 @@ async function saveLogo(){
     toast('Alcuni file non sono stati salvati','err');
   }
 
+  btn.disabled = false;
+}async function saveTexts(){
+  const token = getToken();
+  if(!token){ toast('Connetti prima con il token PAT','err'); return; }
+  const btn = document.getElementById('btnSaveText');
+  btn.disabled = true;
+  var cfg = {
+    clubName:     document.getElementById('t-clubName').value,
+    tagline:      document.getElementById('t-tagline').value,
+    subtitle:     document.getElementById('t-subtitle').value,
+    welcomeTitle: document.getElementById('t-welcomeTitle').value,
+    welcomeP1:    document.getElementById('t-welcomeP1').value,
+    welcomeP2:    document.getElementById('t-welcomeP2').value,
+    motto:        document.getElementById('t-motto').value,
+    copyright:    document.getElementById('t-copyright').value
+  };
+  try {
+    await putFile('club-config.json', JSON.stringify(cfg, null, 2), 'Update club config', token);
+    toast('✓ Testi salvati','ok');
+  } catch(e){
+    toast('Errore: '+e.message,'err');
+  }
   btn.disabled = false;
 }
 </script>
