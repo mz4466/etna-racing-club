@@ -616,10 +616,10 @@
     "trophy": "Crono_Vincitore.png",
     "cars": "Gr.3",
     "desc": "",
-    "status": "prossimo",
+    "status": "concluso",
     "file": "campionati/1-trofeo-cronoscalata-2025-2025-trofeo-1-trofeo-cronoscalata-2025.html",
     "totalRounds": 1,
-    "completedRounds": 0,
+    "completedRounds": 1,
     "bestOf": null,
     "rounds": [
       {
