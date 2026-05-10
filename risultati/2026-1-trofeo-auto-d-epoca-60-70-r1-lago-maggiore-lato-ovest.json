@@ -1,0 +1,67 @@
+{
+  "circuito": "Lago Maggiore - lato ovest",
+  "data": "2026-05-10",
+  "garaNum": "1",
+  "garaTot": "3",
+  "champId": "1-trofeo-auto-d-epoca-60-70-2026",
+  "champIdx": "1-trofeo-auto-d-epoca-60-70-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Giovanni",
+      "auto": "Abarth 595 SS '70",
+      "tempo": "06'02''282",
+      "bestLap": "01'09''434",
+      "fl": true,
+      "pole": true,
+      "punti": 20,
+      "extra": "1+1",
+      "totale": 22,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Pyer",
+      "auto": "Abarth 595 SS '70",
+      "tempo": "a 01\"023",
+      "bestLap": "01'10''362",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "William",
+      "auto": "Abarth 595 SS '70",
+      "tempo": "a 13\"239",
+      "bestLap": "01'12''945",
+      "fl": false,
+      "pole": false,
+      "punti": 16,
+      "extra": "-",
+      "totale": 16,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Giovanni",
+      "pts": 22,
+      "pos": 1
+    },
+    {
+      "nome": "Pyer",
+      "pts": 18,
+      "pos": 2
+    },
+    {
+      "nome": "William",
+      "pts": 16,
+      "pos": 3
+    }
+  ],
+  "bestOf": null
+}
