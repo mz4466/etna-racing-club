@@ -645,10 +645,10 @@
     "trophy": "Classic_Vintage.png",
     "cars": "Gara 1: Abarth 500 '70 - Gara 2: Alfa Giulia sprint '67 - Gara 3: Ferrari 512 bb '76 o Lamborghini countach Lp400 '74 o Porsche 911 Carrera RS (901) '73",
     "desc": "Il trofeo si disputerà su 3 manches \nGara 1 sarà preceduta da 15 minuti di qualifiche\nGara 2 avrà come griglia di partenza i risultati invertiti di gara 1\nGara 3 avrà come griglia di partenza i risultati invertiti di gara 2\nOgni manches assegnerà dei punti\n(20-18-16-14-12-10-9-8-7-6-5-4-3-2-1-0) Dal 1° al 16°\nVincerà il trofeo chi avrà più punti dopo le 3 manches\n\nIn ognuna delle 3 manches ci saranno delle impostazioni sempre uguali:\nGiri: 5\nBop: disattivo\nConsumo carburante: x1\nUsura gomme: x1",
-    "status": "prossimo",
+    "status": "concluso",
     "file": "campionati/1-trofeo-auto-depoca-6070-2026-trofeo-1-trofeo-auto-d-epoca-60-70.html",
     "totalRounds": 3,
-    "completedRounds": 0,
+    "completedRounds": 3,
     "bestOf": null,
     "rounds": [
       {
