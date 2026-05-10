@@ -1733,7 +1733,7 @@ async function updateCalendario(token, fname, champPath) {
     if (r.ok) {
       const d = await r.json();
       sha = d.sha;
-      existing = JSON.parse(atob(d.content.replace(/\n/g, '')));
+      existing = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\n/g, '')))));
     }
 
     // Add or update entry
