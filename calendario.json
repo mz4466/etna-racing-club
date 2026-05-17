@@ -504,7 +504,7 @@
       },
       {
         "circuit": "Barcellona",
-        "date": "",
+        "date": "2026-03-22",
         "laps": "65",
         "weather": "",
         "tire": "x1",
@@ -514,7 +514,7 @@
       },
       {
         "circuit": "Monza",
-        "date": "",
+        "date": "2026-04-19",
         "laps": "53",
         "weather": "",
         "tire": "x1",
@@ -524,7 +524,7 @@
       },
       {
         "circuit": "Red Bull Ring",
-        "date": "",
+        "date": "2026-05-03",
         "laps": "71",
         "weather": "",
         "tire": "x3",
@@ -534,18 +534,18 @@
       },
       {
         "circuit": "SPA",
-        "date": "",
-        "laps": "20",
+        "date": "2026-05-17",
+        "laps": "44",
         "weather": "",
-        "tire": "x1",
-        "fuel": "x1",
+        "tire": "x3",
+        "fuel": "x5",
         "types": "Dure/Medie/morbide",
         "notes": "Tutte e tre le mescole"
       },
       {
-        "circuit": "xxx",
-        "date": "",
-        "laps": "17",
+        "circuit": "Suzuka",
+        "date": "2026-05-31",
+        "laps": "70",
         "weather": "",
         "tire": "x3",
         "fuel": "x4",
@@ -553,9 +553,9 @@
         "notes": ""
       },
       {
-        "circuit": "yyy",
-        "date": "",
-        "laps": "17",
+        "circuit": "Interlagos",
+        "date": "2026-06-14",
+        "laps": "60",
         "weather": "",
         "tire": "x3",
         "fuel": "x4",
