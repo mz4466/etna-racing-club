@@ -25,12 +25,44 @@
         .btn.alt { background: transparent; border:2px solid rgba(201,184,163,0.12); color:var(--muted); }
 
         .grid { display:flex; flex-direction:column; gap:18px; }
+        
         .pilot-card {
-            background: linear-gradient(180deg, rgba(18,19,24,0.9), rgba(8,8,10,0.9));
-            border:2px solid rgba(255,80,20,0.06);
-            padding:14px; border-radius:14px; box-shadow:0 8px 30px rgba(0,0,0,0.6);
-            display:flex; gap:20px; align-items:flex-start;
-        }
+    background:
+        linear-gradient(
+            180deg,
+            rgba(18,19,24,0.95),
+            rgba(8,8,10,0.96)
+        );
+
+    border:1px solid rgba(255,255,255,0.05);
+
+    padding:18px;
+
+    border-radius:20px;
+
+    box-shadow:
+        0 12px 40px rgba(0,0,0,0.6),
+        0 0 20px rgba(255,80,20,0.04);
+
+    display:flex;
+    gap:24px;
+    align-items:flex-start;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        border-color .25s ease;
+}
+
+.pilot-card:hover{
+    transform:translateY(-3px);
+
+    border-color:rgba(255,80,20,0.15);
+
+    box-shadow:
+        0 18px 50px rgba(0,0,0,0.7),
+        0 0 30px rgba(255,80,20,0.08);
+}
         .pilot-photo { width:280px; min-width:280px; height:350px; object-fit:cover; border-radius:10px; display:block; }
         .pilot-content { flex:1; display:flex; flex-direction:column; }
         .pilot-name { font-family:'Teko',sans-serif; font-size:24px; margin:10px 0 2px; color:var(--accent2); }
