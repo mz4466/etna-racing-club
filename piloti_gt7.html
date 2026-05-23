@@ -120,7 +120,6 @@
         .medal-card.silver .medal-card-win-row { color:rgba(192,192,192,0.8); }
         .medal-card.bronze .medal-card-win-row { color:rgba(205,127,50,0.8); }
 
-
         footer { max-width:1200px; margin:40px auto; color:rgba(201,184,163,0.7); font-size:14px; text-align:center; padding-bottom:40px; }
         @media (max-width:768px){
             header h1{font-size:20px}
@@ -170,7 +169,6 @@
 const BASE_API = 'https://api.github.com/repos/mz4466/etna-racing-club';
 const BASE_RAW = 'https://raw.githubusercontent.com/mz4466/etna-racing-club/main';
 
-// Fetch URLs in small batches to avoid 429 Too Many Requests from raw.githubusercontent.com
 async function fetchBatched(urls, fetchFn, batchSize, delayMs) {
   batchSize = batchSize || 4;
   delayMs   = delayMs   || 300;
@@ -190,20 +188,26 @@ const BRANCH   = 'main';
 const grid        = document.getElementById('grid');
 const reloadBtn   = document.getElementById('reload');
 const searchInput = document.getElementById('search');
+const sortSelect  = document.getElementById('sortSelect');
 
 reloadBtn.onclick = () => loadAll();
+sortSelect.onchange = () => sortPilots(sortSelect.value);
 
-// GT7 car list — loaded once, used to resolve car names to thumbnail IDs
 var gt7Cars = [];
-var carNameToId = {};   // displayName (lowercase) → numeric id
+var carNameToId = {};   
 
-var gt7CarsLoading = false;  // guard against concurrent calls
+var gt7CarsLoading = false;  
+
+// Semplice funzione di escape per evitare XSS iniettando dati dai JSON esterni
+function esc(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
 
 async function loadGT7Cars() {
-  if (gt7CarsLoading) return;         // already in progress
-  if (Object.keys(carNameToId).length > 10) return;  // already loaded
+  if (gt7CarsLoading) return;         
+  if (Object.keys(carNameToId).length > 10) return;  
 
-  // Check sessionStorage cache first
   try {
     var cached = sessionStorage.getItem('gt7cars');
     if (cached) {
@@ -280,37 +284,34 @@ function applyPilotFilter() {
 
 searchInput.oninput = function() { applyPilotFilter(); };
 
-// Map: pilotName (lowercase) → array of { champName, year, trophy }
 var pilotTrophies = {};
-// Map: pilotName (lowercase) → array of { champName, year, trophy, teamName, teamColor } (costruttori wins)
 var pilotCostrutTrophies = {};
-// Map: pilotName (lowercase) → array of { champName, year, pos, teamName, teamColor }
 var pilotCostrutMedals = {};
-// Map: pilotName (lowercase) → { races: N, champs: Set of champId }
 var pilotStats = {};
-        pilotMedals = {};
-// Map: pilotName (lowercase) → array of { champName, year, pos (2 or 3) }
 var pilotMedals = {};
 
 async function loadAll() {
   grid.innerHTML = '<div style="color:var(--muted)">Caricamento...</div>';
   try {
-    // 1. Load calendario.json — via raw URL (non-fatal if missing)
+    await loadGT7Cars();
+    
     var calendario = [];
     try {
       var calRes = await fetch(BASE_RAW + '/calendario.json?_=' + Date.now());
       if(calRes.ok) calendario = await calRes.json();
     } catch(e) { console.warn('calendario.json non disponibile:', e.message); }
 
-    // 2. Load risultati via index.json + raw — 0 API calls
     pilotTrophies = {};
+    pilotMedals = {};
+    pilotStats = {};
+    pilotCostrutTrophies = {};
+
     try {
       var rIndexRes = await fetch(BASE_RAW + '/risultati/index.json?_=' + Date.now());
       if (rIndexRes.ok) {
         var rNames = await rIndexRes.json();
         var jsonFiles = (rNames||[]).filter(function(n){ return n.endsWith('.json'); });
 
-        // Load each result file in batches to avoid 429 rate limits
         var results = await fetchBatched(jsonFiles, async function(name) {
           try {
             var r = await fetch(BASE_RAW + '/risultati/' + name);
@@ -319,7 +320,6 @@ async function loadAll() {
           } catch(e) { return null; }
         }, 4, 300);
 
-        // Scan ALL races to count participations per pilot
         results.filter(Boolean).forEach(function(race) {
           var champId = race.champId || '';
           var rows = race.rows || [];
@@ -333,14 +333,11 @@ async function loadAll() {
         });
 
         results.filter(Boolean).forEach(function(race) {
-          // Only look at FINAL race of each championship (garaNum === garaTot)
           var garaNum = parseInt(race.garaNum) || 0;
           var garaTot = parseInt(race.garaTot) || 0;
           if (garaNum !== garaTot || garaTot === 0) return;
 
           var standings = race.standings || [];
-
-          // Get championship info from calendario
           var champ = null;
           if (race.champId) {
             champ = calendario.find(function(c) { return c.id === race.champId; }) || null;
@@ -351,7 +348,6 @@ async function loadAll() {
           }
           if (!champ) return;
 
-          // ── 1ST PLACE: Trophy ──
           if (champ.trophy) {
             var champion = standings.find(function(s) { return s.pos === 1; });
             if (!champion && race.rows && race.rows.length) {
@@ -368,10 +364,8 @@ async function loadAll() {
             }
           }
 
-          // ── 2ND & 3RD PLACE: Medals ──
           [2, 3].forEach(function(pos) {
             var finisher = standings.find(function(s) { return s.pos === pos; });
-            // fallback to rows if standings missing
             if (!finisher && race.rows && race.rows.length >= pos) {
               finisher = { nome: race.rows[pos - 1].nome };
             }
@@ -385,13 +379,11 @@ async function loadAll() {
             });
           });
 
-          // ── COSTRUTTORI: 1st place only → MANUFACTURER.png ──
           if (champ.costruttori && champ.teams && champ.teams.length) {
             var totalRaces = parseInt(garaTot) || 0;
             var halfRaces  = totalRaces / 2;
             var bestOf     = parseInt(champ.bestOf) || 0;
 
-            // Per-pilot scores and individual race counts for this championship
             var pilotScoresMap    = {};
             var pilotRaceCountMap = {};
             results.filter(Boolean).forEach(function(r2){
@@ -406,7 +398,6 @@ async function loadAll() {
               });
             });
 
-            // Build team totals: best pilot per round, then apply bestOf drop rule
             var teamTotals = champ.teams.map(function(team){
               var allRns = {};
               (team.pilots || []).forEach(function(p){
@@ -428,7 +419,6 @@ async function loadAll() {
               return { team: team, total: total };
             }).sort(function(a, b){ return b.total - a.total; });
 
-            // Award MANUFACTURER.png only to 1st place pilots who did > half the total races
             if (teamTotals.length && teamTotals[0].total > 0) {
               var winTeam    = teamTotals[0].team;
               var teamPilots = (winTeam.pilots || []).map(function(pn){
@@ -456,7 +446,6 @@ async function loadAll() {
       }
     } catch(e) { console.warn('Could not load trophies:', e.message); }
 
-    // 3. Load pilots via index.json + raw — 0 API calls
     var indexRes = await fetch(BASE_RAW + '/piloti_schede/index.json?_=' + Date.now());
     if (!indexRes.ok) throw new Error('Cartella piloti_schede non trovata');
     var pilotNames = await indexRes.json();
@@ -489,7 +478,6 @@ function renderPilot(p, calendario) {
   var isActiveCard = p.attivo !== false;
   el.dataset.active = isActiveCard ? 'true' : 'false';
 
-  // ── Sort data ──
   var _sortNames = [p.nome, p.name, p.psn, p.gt7Name].filter(Boolean).map(function(n){ return n.toLowerCase().trim(); });
   var _sortStat = null;
   _sortNames.forEach(function(n){ if(pilotStats[n] && !_sortStat) _sortStat = pilotStats[n]; });
@@ -509,7 +497,6 @@ function renderPilot(p, calendario) {
   el.dataset.nome       = (p.nome || p.name || '').toLowerCase();
   el.dataset.origIndex  = grid.children.length;
 
-  // Support both old format (name/photo/country/car/gt7Name) and new admin format (nome/foto/nazione/auto/psn)
   var nome     = p.nome   || p.name  || '—';
   var psn      = p.psn    || p.gt7Name || '—';
   var nazione  = p.nazione || p.Regione || p.country || p.region || '';
@@ -517,18 +504,15 @@ function renderPilot(p, calendario) {
   var stile    = p.stile  || p.strengths || '';
   var pistaAma = p.pistaAma || p.favTrack || '';
   var pistaOdia= p.pistaOdia|| p.hatedTrack || '';
-  var foto     = p.foto   || p.photo || null;  // old format: photo is filename in root; new format: foto is base64
+  var foto     = p.foto   || p.photo || null;  
   var locationStr = nazione ? '🌍 ' + esc(nazione) : '';
   if (p.location) locationStr += ' • 📍 ' + esc(p.location);
 
-  // Find trophies for this pilot
-  // Match by nome, psn, gt7Name (any of them)
   var names = [p.nome, p.name, p.psn, p.gt7Name].filter(Boolean).map(function(n) { return n.toLowerCase().trim(); });
   var won = [];
   names.forEach(function(n) {
     if (pilotTrophies[n]) {
       pilotTrophies[n].forEach(function(t) {
-        // avoid duplicates
         var exists = won.find(function(w) { return w.champName === t.champName && w.year === t.year; });
         if (!exists) won.push(t);
       });
@@ -537,7 +521,6 @@ function renderPilot(p, calendario) {
 
   var trophiesHTML = '';
   if (won.length) {
-    // Group by trophy filename — multiple wins of same trophy image stacked under one card
     var grouped = {};
     won.forEach(function(t) {
       var key = t.trophy;
@@ -553,7 +536,7 @@ function renderPilot(p, calendario) {
         return '<div class="trophy-won-win-row">' + esc(w.year) + ' ' + esc(w.champName) + '</div>';
       }).join('');
       return '<div class="trophy-won">'
-        + '<img src="trophy_png/' + esc(g.trophy) + '" alt="trophy" style="width:50px;height:60px;object-fit:contain;flex-shrink:0;">'
+        + '<img src="' + BASE_RAW + '/trophy_png/' + esc(g.trophy) + '" alt="trophy" style="width:50px;height:60px;object-fit:contain;flex-shrink:0;">'
         + '<div class="trophy-won-wins">' + countBadge + winsList + '</div>'
         + '</div>';
     }).join('');
@@ -564,7 +547,6 @@ function renderPilot(p, calendario) {
       + '</div>';
   }
 
-  // ── Medals (2nd & 3rd place) ──
   var medalsHTML = '';
   var pilotMedalWins = [];
   names.forEach(function(n) {
@@ -577,7 +559,6 @@ function renderPilot(p, calendario) {
   });
 
   if (pilotMedalWins.length) {
-    // Group by position (2 = silver, 3 = bronze)
     var silverWins = pilotMedalWins.filter(function(m) { return m.pos === 2; });
     var bronzeWins = pilotMedalWins.filter(function(m) { return m.pos === 3; });
 
@@ -599,7 +580,6 @@ function renderPilot(p, calendario) {
     function medalCards(wins, pos) {
       if (!wins.length) return '';
       var cls   = pos === 2 ? 'silver' : 'bronze';
-      var color = pos === 2 ? '#b8b8cc' : '#cd7f32';
       var pillBg  = pos === 2 ? '#9090b8' : '#a06030';
       var pillClr = '#fff';
       var count = wins.length > 1
@@ -621,148 +601,117 @@ function renderPilot(p, calendario) {
       + '</div>';
   }
 
-  // ── Costruttori Trophies (1st place only → MANUFACTURER.png) ──
   var costrutHTML = '';
   var cTrophyWins = [];
   names.forEach(function(n) {
     if (pilotCostrutTrophies[n]) pilotCostrutTrophies[n].forEach(function(t){ cTrophyWins.push(t); });
   });
 
-  var costrutParts = [];
-
   if (cTrophyWins.length) {
-    // Each entry is already one championship win — key by champName+year to deduplicate
     var ctGrouped = {};
     cTrophyWins.forEach(function(t){
       var k = t.champName + '|' + (t.year || '');
       if (!ctGrouped[k]) ctGrouped[k] = t;
     });
     var ctCards = Object.values(ctGrouped).map(function(g){
-      // Build label: only qualified pilots shown with their race counts
       var qualPilots = (g.teamPilots || []).filter(function(p){ return p.qualified; });
       var pilotStr   = qualPilots.map(function(p){ return esc(p.name) + ' [' + p.count + ']'; }).join(' – ');
-      var label      = pilotStr
-        ? '(' + pilotStr + ' · ' + esc(g.teamName) + ')'
-        : '(' + esc(g.teamName) + ')';
-      return '<div class="trophy-won">'
-        + '<img src="trophy_png/' + esc(g.trophy) + '" alt="trophy" style="width:50px;height:60px;object-fit:contain;flex-shrink:0;">'
-        + '<div class="trophy-won-wins">'
-        + '<div class="trophy-won-win-row">' + esc(g.year || '') + ' ' + esc(g.champName) + '</div>'
-        + '<div class="trophy-won-win-row" style="font-size:10px;opacity:0.75;">' + label + '</div>'
+      var label      = pilotStr ? '(' + pilotStr + ' · ' + esc(g.teamName) + ')' : '(' + esc(g.teamName) + ')';
+      
+      return '<div class="costrutt-card gold-team">'
+        + '<div class="costrutt-team-dot" style="background:' + esc(g.teamColor) + '"></div>'
+        + '<div class="costrutt-wins">'
+        + '<div class="costrutt-win-row">' + esc(g.year) + ' ' + esc(g.champName) + '</div>'
+        + '<div class="costrutt-badge" style="font-size:9px;">' + label + '</div>'
         + '</div>'
         + '</div>';
     }).join('');
-    costrutParts.push('<div class="trophies-label">🏭 Costruttori Vinti</div><div class="trophies-row">' + ctCards + '</div>');
+
+    costrutHTML = '<div class="costrutt-section">'
+      + '<div class="costrutt-label">🏆 Campionato Costruttori</div>'
+      + '<div class="costrutt-row">' + ctCards + '</div>'
+      + '</div>';
   }
 
-  if (costrutParts.length) {
-    costrutHTML = '<div class="costrutt-section">' + costrutParts.join('') + '</div>';
-  }
-
-  var photoSrc = foto || 'https://via.placeholder.com/280x350?text=Pilota';
-  var isActive = p.attivo !== false;
-
-  // Build campionati cars display (active championships only)
-  var campionatiHTML = '';
-  if(p.campionati && calendario && calendario.length) {
-    var activeChamps = calendario.filter(function(c){
-      var s = (c.status||'').toLowerCase().replace(/-/g,' ').trim();
-      return s === 'in corso' || s === 'prossimo' || s === 'attivo' || s === 'ongoing';
-    });
-    var rows = [];
-    activeChamps.forEach(function(champ){
-      var cid = champ.id || '';
-      if(!cid) return;
-      var entry = p.campionati[cid];
-      if(!entry || !entry.cars || !entry.cars.length) return;
-      var carsHtml = entry.cars.map(function(carName){
-        var carId = carNameToId[carName.toLowerCase()] || carNameToId[carName.trim().toLowerCase()] || '';
-        var imgHtml = carId
-          ? '<img src="' + carImageUrl(carId) + '" alt="" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'">'
-          : '';
-        return '<span class="campionato-car-pill">' + imgHtml + esc(carName) + '</span>';
-      }).join('');
-      rows.push('<div class="campionato-row">'
-        + '<div class="campionato-row-label">🏁 ' + esc(champ.name) + ' ' + esc(champ.year||'') + '</div>'
-        + '<div class="campionato-cars">' + carsHtml + '</div>'
-        + '</div>');
-    });
-    if(rows.length) {
-      campionatiHTML = '<div class="pilot-campionati">' + rows.join('') + '</div>';
+  // Risoluzione dinamica dell'immagine dell'auto preferita su GT7
+  var carImgHTML = '';
+  if (auto) {
+    var carId = carNameToId[auto.toLowerCase().trim()];
+    if (carId) {
+      carImgHTML = '<div class="campionato-car-pill" style="margin-top:5px; max-width: fit-content;">'
+        + '<img src="' + carImageUrl(carId) + '" alt="' + esc(auto) + '">'
+        + '<span>' + esc(auto) + '</span>'
+        + '</div>';
+    } else {
+      carImgHTML = '<div class="stat-pill">🏎️ Auto: <strong>' + esc(auto) + '</strong></div>';
     }
   }
 
-  el.innerHTML = ''
-    + (isActive
-        ? '<img class="pilot-photo" src="' + esc(photoSrc) + '" alt="' + esc(nome) + '" onerror="this.src=\'https://via.placeholder.com/280x350?text=Pilota\'">'
-        : '<div class="pilot-photo" style="background:linear-gradient(135deg,#0d0d1a,#1a1a2e);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-size:48px;opacity:.3;">🪖</span></div>'
-      )
-    + '<div class="pilot-content">'
-    +   '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">'
-    +     '<div class="pilot-name">' + esc(nome) + '</div>'
-    +     (!isActive ? '<span style="display:inline-block;background:rgba(192,57,43,.18);border:1px solid rgba(192,57,43,.4);border-radius:20px;padding:2px 10px;font-family:Teko,sans-serif;font-size:11px;letter-spacing:1.5px;color:#e05a4a;text-transform:uppercase;">Non Attivo</span>' : '')
-    +   '</div>'
-    +   (isActive ? '<div class="psn">🎮 ' + esc(psn) + '</div>' : '')
-    +   (function(){
-          var st = null;
-          names.forEach(function(n){ if(pilotStats[n] && !st) st = pilotStats[n]; });
-          if(!st) return '';
-          var raceCount = st.races;
-          var champCount = Object.keys(st.champs).length;
-          if(!raceCount && !champCount) return '';
-          var pills = '';
-          if(champCount) pills += '<span class="stat-pill"><strong>' + champCount + '</strong>&nbsp;campionati e trofei</span>';
-          if(raceCount)  pills += '<span class="stat-pill"><strong>' + raceCount + '</strong>&nbsp;gar' + (raceCount===1?'a':'e') + '</span>';
-          return '<div class="pilot-stats">' + pills + '</div>';
-        })()
-    +   (isActive
-          ? '<div class="info">'
-          +   (locationStr ? locationStr + '<br>' : '')
-          +   (auto ? '🚗 ' + esc(auto) + '<br>' : '')
-          +   (p.dr || p.sr ? '📊 DR: ' + esc(p.dr||'-') + ' • SR: ' + esc(p.sr||'-') + '<br>' : '')
-          +   (stile ? '💪 ' + esc(stile) + '<br>' : '')
-          +   (pistaAma ? '❤️ ' + esc(pistaAma) + (pistaOdia ? ' • 💀 ' + esc(pistaOdia) : '') : '')
-          + '</div>'
-          + ((p.catchphrase||p.bio) ? '<div class="catchphrase">💬 "' + esc(p.catchphrase||p.bio) + '"</div>' : '')
-          : ''
-      )
-    +   '<div class="badges">' + (p.badges||[]).map(function(b){ return '<span class="badge">' + esc(b) + '</span>'; }).join('') + '</div>'
-    +   trophiesHTML
-    +   medalsHTML
-    +   costrutHTML
-    +   (isActive ? campionatiHTML : '')
-    + '</div>';
+  // Costruzione della foto pilota (Base64 o file relativo)
+  var photoSrc = 'placeholder-pilot.jpg'; 
+  if (foto) {
+    photoSrc = (foto.startsWith('data:') || foto.length > 200) ? foto : BASE_RAW + '/piloti_schede/' + foto;
+  }
+
+  // Layout finale della card pilota inserito nel DOM
+  el.innerHTML = `
+    <img class="pilot-photo" src="${photoSrc}" alt="${esc(nome)}" onerror="this.src='https://via.placeholder.com/280x350?text=No+Photo'">
+    <div class="pilot-content">
+        <div class="pilot-name">${esc(nome)}</div>
+        <div class="psn">PSN: <strong>${esc(psn)}</strong></div>
+        <div style="font-size:12px; color:var(--muted); margin-bottom:8px;">${locationStr}</div>
+        
+        <div class="pilot-stats">
+            <div class="stat-pill">Gare disputate: <strong>${el.dataset.gare}</strong></div>
+            <div class="stat-pill">Campionati: <strong>${el.dataset.campionati}</strong></div>
+            <div class="stat-pill">Trofei: <strong>${el.dataset.trofei}</strong></div>
+        </div>
+
+        ${carImgHTML}
+
+        <div class="info" style="margin-top:10px;">
+            ${stile ? `<div><strong>Stile di Guida:</strong> ${esc(stile)}</div>` : ''}
+            ${pistaAma ? `<div><strong>Pista Preferita:</strong> ❤️ ${esc(pistaAma)}</div>` : ''}
+            ${pistaOdia ? `<div><strong>Pista Odiata:</strong> 💔 ${esc(pistaOdia)}</div>` : ''}
+        </div>
+
+        ${trophiesHTML}
+        ${medalsHTML}
+        ${costrutHTML}
+    </div>
+  `;
 
   grid.appendChild(el);
 }
 
-function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
-
-function sortPilots(key) {
-  var cards = Array.from(grid.querySelectorAll('.pilot-card'));
-  cards.sort(function(a, b) {
-    if (key === 'trofei') {
-      var dt = parseInt(b.dataset.trofei||0) - parseInt(a.dataset.trofei||0);
-      if (dt !== 0) return dt;
-      var ds = parseInt(b.dataset.silver||0) - parseInt(a.dataset.silver||0);
-      if (ds !== 0) return ds;
-      return parseInt(b.dataset.bronze||0) - parseInt(a.dataset.bronze||0);
+// Funzione per l'ordinamento dinamico delle schede piloti nella griglia
+function sortPilots(type) {
+  var items = Array.from(grid.children);
+  items.sort(function(a, b) {
+    if (type === 'nome') {
+      return a.dataset.nome.localeCompare(b.dataset.nome);
+    } else if (type === 'campionati') {
+      return parseInt(b.dataset.campionati) - parseInt(a.dataset.cumpionati) || parseInt(a.dataset.origIndex) - parseInt(b.dataset.origIndex);
+    } else if (type === 'gare') {
+      return parseInt(b.dataset.gare) - parseInt(a.dataset.gare) || parseInt(a.dataset.origIndex) - parseInt(b.dataset.origIndex);
+    } else {
+      // Default: trofei vinti (considerando anche l'ordine dei podi)
+      var tA = parseInt(a.dataset.trofei), tB = parseInt(b.dataset.trofei);
+      if (tA !== tB) return tB - tA;
+      var sA = parseInt(a.dataset.silver), sB = parseInt(b.dataset.silver);
+      if (sA !== sB) return sB - sA;
+      return parseInt(b.dataset.bronze) - parseInt(a.dataset.bronze) || parseInt(a.dataset.origIndex) - parseInt(b.dataset.origIndex);
     }
-    if (key === 'nome') return (a.dataset.nome||'').localeCompare(b.dataset.nome||'');
-    if (key === 'campionati') return parseInt(b.dataset.campionati||0) - parseInt(a.dataset.campionati||0);
-    if (key === 'gare') return parseInt(b.dataset.gare||0) - parseInt(a.dataset.gare||0);
-    return 0;
   });
-  cards.forEach(function(c){ grid.appendChild(c); });
+  grid.innerHTML = '';
+  items.forEach(function(item) { grid.appendChild(item); });
+  applyPilotFilter();
 }
 
-document.getElementById('sortSelect').addEventListener('change', function(){
-  sortPilots(this.value);
-});
-
-loadGT7Cars();
-loadAll();
+// Avvio automatico al caricamento della pagina
+window.onload = function() {
+  loadAll();
+};
 </script>
-<script src="copyright.js"></script>
 </body>
 </html>
