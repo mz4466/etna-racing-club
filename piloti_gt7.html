@@ -17,7 +17,25 @@
         header h1 { font-family:'Russo One',sans-serif; font-size:28px; margin:0; letter-spacing:2px; color:var(--accent2); }
         .container { max-width:1200px; margin:20px auto; padding:20px; }
 
-        .controls { display:flex; gap:12px; align-items:center; margin-bottom:20px; }
+        .controls {
+    display:flex;
+
+    gap:12px;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+    padding:14px;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,0.02);
+
+    border:1px solid rgba(255,255,255,0.04);
+
+    backdrop-filter:blur(10px);
+}
         .pilot-filter-btn{font-family:'Russo One',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 16px;border-radius:20px;border:1px solid rgba(201,184,163,0.15);background:transparent;color:rgba(201,184,163,0.4);cursor:pointer;transition:all .2s;}
         .pilot-filter-btn:hover{border-color:rgba(255,80,20,0.5);color:var(--cream);}
         .pilot-filter-btn.active{background:rgba(255,80,20,0.12);border-color:rgba(255,80,20,0.5);color:var(--cream);}
@@ -123,7 +141,23 @@
     backdrop-filter:blur(10px);
 }        .stat-pill strong { color:#c9a227; font-size:14px; font-weight:600; }
         .psn { color:var(--muted); font-size:0.85rem; margin-bottom:10px; }
-        .info { color:var(--cream); font-size:0.9rem; line-height:1.7; margin-bottom:8px; }
+        .info {
+    color:var(--cream);
+
+    font-size:0.92rem;
+
+    line-height:1.9;
+
+    margin-bottom:10px;
+
+    background:rgba(255,255,255,0.025);
+
+    border:1px solid rgba(255,255,255,0.04);
+
+    border-radius:14px;
+
+    padding:12px 14px;
+}
         .catchphrase { color:var(--accent2); font-style:italic; font-size:0.85rem; margin-top:8px; }
         .badges { margin-top:6px; display:flex; gap:8px; flex-wrap:wrap; }
         .badge { background: rgba(255,140,66,0.12); padding:6px 10px; border-radius:999px; color:var(--muted); font-size:0.8rem; }
@@ -142,12 +176,35 @@
         }
         .trophies-row { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; }
         .trophy-won {
-            display:flex; flex-direction:row; align-items:center; gap:10px;
-            background: var(--gold-dim);
-            border:1px solid rgba(201,162,39,0.25);
-            border-radius:10px;
-            padding:8px 12px;
-        }
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    gap:12px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(201,162,39,0.10),
+            rgba(201,162,39,0.04)
+        );
+
+    border:1px solid rgba(201,162,39,0.22);
+
+    border-radius:16px;
+
+    padding:10px 14px;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.trophy-won:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.35);
+}
         .trophy-won img {
             width:50px; height:60px;
             object-fit:contain;
