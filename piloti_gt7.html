@@ -99,8 +99,29 @@
 
     letter-spacing:1px;
 }        .pilot-stats { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
-        .stat-pill { display:inline-flex; align-items:center; gap:4px; background:rgba(201,162,39,0.06); border:1px solid rgba(201,162,39,0.18); border-radius:6px; padding:2px 8px; font-family:'Teko',sans-serif; font-size:12px; letter-spacing:1px; color:rgba(201,184,163,0.8); }
-        .stat-pill strong { color:#c9a227; font-size:14px; font-weight:600; }
+.stat-pill {
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+
+    background:rgba(255,255,255,0.04);
+
+    border:1px solid rgba(255,255,255,0.05);
+
+    border-radius:999px;
+
+    padding:5px 12px;
+
+    font-family:'Teko',sans-serif;
+
+    font-size:13px;
+
+    letter-spacing:1px;
+
+    color:rgba(201,184,163,0.9);
+
+    backdrop-filter:blur(10px);
+}        .stat-pill strong { color:#c9a227; font-size:14px; font-weight:600; }
         .psn { color:var(--muted); font-size:0.85rem; margin-bottom:10px; }
         .info { color:var(--cream); font-size:0.9rem; line-height:1.7; margin-bottom:8px; }
         .catchphrase { color:var(--accent2); font-style:italic; font-size:0.85rem; margin-top:8px; }
