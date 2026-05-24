@@ -1,0 +1,172 @@
+{
+  "circuito": "Monza (5.793 m)",
+  "data": "2026-05-24",
+  "garaNum": "4",
+  "garaTot": "5",
+  "champId": "risveglio-dei-motori-2026",
+  "champIdx": "risveglio-dei-motori-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Carmine",
+      "auto": "Volkswagen Beetle Gr.3",
+      "tempo": "26'37''873",
+      "bestLap": "01'51''627",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Pyer",
+      "auto": "Peugeot RCZ Gr.3",
+      "tempo": "a 08\"341",
+      "bestLap": "01'50''651",
+      "fl": true,
+      "pole": false,
+      "punti": 18,
+      "extra": "1",
+      "totale": 19,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Giovanni",
+      "auto": "Lexus RC F GT3 '17",
+      "tempo": "a 17\"385",
+      "bestLap": "01'50''810",
+      "fl": false,
+      "pole": true,
+      "punti": 15,
+      "extra": "1",
+      "totale": 16,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Claudio",
+      "auto": "BMW M6 GT3 Endurance Model '16",
+      "tempo": "a 21\"474",
+      "bestLap": "01'50''905",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "William",
+      "auto": "Ford GT Race Car '18",
+      "tempo": "a 53\"605",
+      "bestLap": "01'52''573",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    },
+    {
+      "pos": 6,
+      "nome": "Fabio",
+      "auto": "Subaru WRX Gr.3",
+      "tempo": "a 1'21\"985",
+      "bestLap": "01'52''175",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "ok"
+    },
+    {
+      "pos": 7,
+      "nome": "Daniele",
+      "auto": "Audi R8 LMS Evo '19",
+      "tempo": "",
+      "bestLap": "01'56''538",
+      "fl": false,
+      "pole": false,
+      "punti": 6,
+      "extra": "-",
+      "totale": 6,
+      "stato": "dnf"
+    },
+    {
+      "pos": 8,
+      "nome": "Alessandro",
+      "auto": "911 GT3 R (992) '22",
+      "tempo": "",
+      "bestLap": "01'53''255",
+      "fl": false,
+      "pole": false,
+      "punti": 5,
+      "extra": "-",
+      "totale": 5,
+      "stato": "dnf"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Carmine",
+      "pts": 86,
+      "pos": 1
+    },
+    {
+      "nome": "Pyer",
+      "pts": 71,
+      "pos": 2
+    },
+    {
+      "nome": "Sandro",
+      "pts": 42,
+      "pos": 3
+    },
+    {
+      "nome": "Claudio",
+      "pts": 40,
+      "pos": 4
+    },
+    {
+      "nome": "Giovanni",
+      "pts": 37,
+      "pos": 5
+    },
+    {
+      "nome": "Alessandro",
+      "pts": 33,
+      "pos": 6
+    },
+    {
+      "nome": "Alessandro H",
+      "pts": 29,
+      "pos": 7
+    },
+    {
+      "nome": "William",
+      "pts": 24,
+      "pos": 8
+    },
+    {
+      "nome": "Daniele",
+      "pts": 21,
+      "pos": 9
+    },
+    {
+      "nome": "Stefano",
+      "pts": 20,
+      "pos": 10
+    },
+    {
+      "nome": "Fabio",
+      "pts": 10,
+      "pos": 11
+    }
+  ],
+  "bestOf": 4
+}
