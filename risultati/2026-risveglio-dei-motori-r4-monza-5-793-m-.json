@@ -86,10 +86,10 @@
     },
     {
       "pos": 7,
-      "nome": "Daniele",
-      "auto": "Audi R8 LMS Evo '19",
+      "nome": "Alessandro",
+      "auto": "911 GT3 R (992) '22",
       "tempo": "",
-      "bestLap": "01'56''538",
+      "bestLap": "01'53''255",
       "fl": false,
       "pole": false,
       "punti": 6,
@@ -99,10 +99,10 @@
     },
     {
       "pos": 8,
-      "nome": "Alessandro",
-      "auto": "911 GT3 R (992) '22",
+      "nome": "Daniele",
+      "auto": "Audi R8 LMS Evo '19",
       "tempo": "",
-      "bestLap": "01'53''255",
+      "bestLap": "01'56''538",
       "fl": false,
       "pole": false,
       "punti": 5,
@@ -139,7 +139,7 @@
     },
     {
       "nome": "Alessandro",
-      "pts": 33,
+      "pts": 34,
       "pos": 6
     },
     {
@@ -153,14 +153,14 @@
       "pos": 8
     },
     {
-      "nome": "Daniele",
-      "pts": 21,
+      "nome": "Stefano",
+      "pts": 20,
       "pos": 9
     },
     {
-      "nome": "Stefano",
+      "nome": "Daniele",
       "pts": 20,
-      "pos": 10
+      "pos": 9
     },
     {
       "nome": "Fabio",
