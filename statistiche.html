@@ -45,6 +45,13 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 .sort-pill:hover{border-color:rgba(201,162,39,0.3);color:var(--muted)}
 .sort-pill.active{background:var(--gold-dim);border-color:rgba(201,162,39,0.3);color:var(--gold-hi)}
 
+.status-filter{display:flex;gap:8px;margin-bottom:20px;align-items:center}
+.status-label{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-right:4px}
+.status-pill{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:6px 18px;border-radius:20px;border:1px solid rgba(255,255,255,0.06);color:var(--dim);cursor:pointer;transition:all 0.15s;background:transparent}
+.status-pill:hover{border-color:rgba(201,162,39,0.3);color:var(--muted)}
+.status-pill.active{background:var(--gold-dim);border-color:rgba(201,162,39,0.3);color:var(--gold-hi)}
+.status-count{font-size:11px;color:var(--dim);margin-left:4px;opacity:0.6}
+
 .stats-table-wrap{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow-x:auto;margin-bottom:32px}
 .stats-table{width:100%;border-collapse:collapse;min-width:600px}
 .stats-table thead{background:rgba(201,162,39,0.06)}
@@ -136,6 +143,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     <div class="overview-grid" id="overviewGrid"></div>
 
     <div class="section-title">Classifica piloti all-time</div>
+    <div class="status-filter" id="statusFilter"></div>
     <div class="sort-pills" id="sortPills"></div>
     <div class="stats-table-wrap">
       <table class="stats-table">
@@ -184,6 +192,31 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   var carWins = {};
   var seasonMap = {};
   var champWinners = {};
+  var pilotStatus = {};
+  var currentFilter = 'attivi';
+
+  function fetchPilotStatus(){
+    return fetch(BASE + 'piloti_schede/index.json?_=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(list){
+        var promises = [];
+        for(var i=0;i<list.length;i++){
+          if(list[i] === 'index.json') continue;
+          (function(file){
+            var p = fetch(BASE + 'piloti_schede/' + file + '?_=' + Date.now())
+              .then(function(r){ return r.json(); })
+              .then(function(d){
+                var nome = d.nome || file.replace('.json','');
+                pilotStatus[nome] = d.attivo !== false;
+              })
+              .catch(function(){});
+            promises.push(p);
+          })(list[i]);
+        }
+        return Promise.all(promises);
+      })
+      .catch(function(){});
+  }
 
   function fetchIndex(){
     return fetch(BASE + 'risultati/index.json?_=' + Date.now())
@@ -223,6 +256,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       Promise.all(promises).then(function(results){
         races = results;
         processData();
+        return fetchPilotStatus();
+      }).then(function(){
         renderAll();
       });
     }).catch(function(e){
@@ -317,6 +352,66 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   var currentSort = 'wins';
   var allPilots = [];
 
+  function isPilotVisible(nome){
+    if(currentFilter === 'tutti') return true;
+    var isActive = pilotStatus.hasOwnProperty(nome) ? pilotStatus[nome] : true;
+    if(currentFilter === 'attivi') return isActive;
+    return !isActive;
+  }
+
+  function getFilteredPilots(){
+    var out = [];
+    for(var i=0;i<allPilots.length;i++){
+      if(isPilotVisible(allPilots[i].nome)) out.push(allPilots[i]);
+    }
+    return out;
+  }
+
+  function renderStatusFilter(){
+    var activeCount = 0, inactiveCount = 0;
+    for(var i=0;i<allPilots.length;i++){
+      var isAct = pilotStatus.hasOwnProperty(allPilots[i].nome) ? pilotStatus[allPilots[i].nome] : true;
+      if(isAct) activeCount++; else inactiveCount++;
+    }
+    var filters = [
+      {key:'attivi',   label:'Attivi',   count:activeCount},
+      {key:'inattivi', label:'Inattivi', count:inactiveCount},
+      {key:'tutti',    label:'Tutti',    count:allPilots.length}
+    ];
+    var html = '<span class="status-label">Filtra:</span>';
+    for(var j=0;j<filters.length;j++){
+      var f = filters[j];
+      var cls = f.key === currentFilter ? ' active' : '';
+      html += '<button class="status-pill' + cls + '" data-filter="' + f.key + '">' + f.label + '<span class="status-count">(' + f.count + ')</span></button>';
+    }
+    var el = document.getElementById('statusFilter');
+    el.innerHTML = html;
+    var btns = el.querySelectorAll('.status-pill');
+    for(var k=0;k<btns.length;k++){
+      btns[k].addEventListener('click', function(){
+        currentFilter = this.getAttribute('data-filter');
+        renderStatusFilter();
+        renderFilteredSections();
+      });
+    }
+  }
+
+  function renderFilteredSections(){
+    var filtered = getFilteredPilots();
+    var uniqueCircuits = Object.keys(circuitMap).length;
+    var completedChamps = Object.keys(champWinners).length;
+    document.getElementById('overviewGrid').innerHTML =
+      ovCard(races.length, 'Gare disputate') +
+      ovCard(completedChamps, 'Campionati conclusi') +
+      ovCard(filtered.length, 'Piloti') +
+      ovCard(uniqueCircuits, 'Circuiti diversi');
+
+    renderPilotTable();
+    renderH2HSelectors();
+    renderCars();
+    renderSeasons();
+  }
+
   function renderAll(){
     document.getElementById('loadingBox').style.display = 'none';
     document.getElementById('dashboard').style.display = '';
@@ -327,6 +422,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       allPilots.push(pilotMap[n]);
     }
 
+    var filtered = getFilteredPilots();
     var uniqueCircuits = Object.keys(circuitMap).length;
     var completedChamps = Object.keys(champWinners).length;
 
@@ -334,9 +430,10 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     document.getElementById('overviewGrid').innerHTML =
       ovCard(races.length, 'Gare disputate') +
       ovCard(completedChamps, 'Campionati conclusi') +
-      ovCard(allPilots.length, 'Piloti totali') +
+      ovCard(filtered.length, 'Piloti') +
       ovCard(uniqueCircuits, 'Circuiti diversi');
 
+    renderStatusFilter();
     renderPilotTable();
     renderSortPills();
     renderH2HSelectors();
@@ -385,7 +482,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
   /* ── pilot table ── */
   function renderPilotTable(){
-    var sorted = allPilots.slice();
+    var filtered = getFilteredPilots();
+    var sorted = filtered.slice();
     sorted.sort(function(a,b){
       var va, vb;
       if(currentSort === 'avgPos'){
@@ -432,8 +530,9 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
   /* ── head to head ── */
   function renderH2HSelectors(){
+    var filtered = getFilteredPilots();
     var names = [];
-    for(var i=0;i<allPilots.length;i++) names.push(allPilots[i].nome);
+    for(var i=0;i<filtered.length;i++) names.push(filtered[i].nome);
     names.sort();
 
     var optA = '<option value="">Scegli pilota</option>';
@@ -446,7 +545,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     document.getElementById('h2hB').innerHTML = optB;
 
     /* default selection: first two most winning */
-    var byWins = allPilots.slice().sort(function(a,b){ return b.wins - a.wins; });
+    var byWins = filtered.slice().sort(function(a,b){ return b.wins - a.wins; });
     if(byWins.length >= 2){
       document.getElementById('h2hA').value = byWins[0].nome;
       document.getElementById('h2hB').value = byWins[1].nome;
@@ -560,10 +659,20 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
   /* ── cars ── */
   function renderCars(){
+    var filteredCarWins = {};
+    for(var ri=0;ri<races.length;ri++){
+      var rows = races[ri].rows || [];
+      for(var pi=0;pi<rows.length;pi++){
+        var r = rows[pi];
+        if(r.pos === 1 && r.auto && r.nome && isPilotVisible(r.nome)){
+          filteredCarWins[r.auto] = (filteredCarWins[r.auto] || 0) + 1;
+        }
+      }
+    }
     var arr = [];
-    for(var c in carWins){
-      if(!carWins.hasOwnProperty(c)) continue;
-      arr.push({name:c, count:carWins[c]});
+    for(var c in filteredCarWins){
+      if(!filteredCarWins.hasOwnProperty(c)) continue;
+      arr.push({name:c, count:filteredCarWins[c]});
     }
     arr.sort(function(a,b){ return b.count - a.count; });
 
@@ -588,7 +697,11 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     for(var i=0;i<years.length;i++){
       var yr = years[i];
       var s = seasonMap[yr];
-      var pilotCount = Object.keys(s.pilots).length;
+      var pilotCount = 0;
+      var names = Object.keys(s.pilots);
+      for(var j=0;j<names.length;j++){
+        if(isPilotVisible(names[j])) pilotCount++;
+      }
       var avgGrid = avg(s.gridSizes);
       html += '<div class="season-card">' +
         '<div class="season-year">' + yr + '</div>' +
