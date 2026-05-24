@@ -269,7 +269,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   function processData(){
     for(var ri=0;ri<races.length;ri++){
       var race = races[ri];
-      var yr = (race.data || '').substring(0,4) || 'N/A';
+      var yr = (race.data || '').substring(0,4) || (race._file || '').substring(0,4) || 'N/A';
       var circuit = race.circuito || 'Sconosciuto';
       var rows = race.rows || [];
       var isFinal = String(race.garaNum) === String(race.garaTot) && race.standings && race.standings.length;
