@@ -21,6 +21,7 @@
     if (file === 'calendario.html')   return pg === 'calendario.html';
     if (file === 'piloti_gt7.html')   return pg === 'piloti_gt7.html';
     if (file === 'social.html')       return pg === 'social.html';
+    if (file === 'statistiche.html')  return pg === 'statistiche.html';
     if (file === 'regolamento_etna_racing_club.html') return pg === 'regolamento_etna_racing_club.html';
     return false;
   }
@@ -31,7 +32,8 @@
     { label: 'Calendario',  href: 'calendario.html' },
     { label: 'Archivio',    href: 'archivio.html' },
     { label: 'Piloti',      href: 'piloti_gt7.html' },
-    { label: 'Social',      href: 'social.html' },
+    { label: 'Social',       href: 'social.html' },
+    { label: 'Statistiche', href: 'statistiche.html' },
     { label: 'Regolamento', href: 'regolamento_etna_racing_club.html' }
   ];
 
