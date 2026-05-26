@@ -1,0 +1,32 @@
+{
+  "title": "Riunione 21-06-26",
+  "slug": "riunione-21-06-26",
+  "date": "2026-05-26",
+  "year": 2026,
+  "campionato": "",
+  "blocks": [
+    {
+      "id": "b0",
+      "type": "title",
+      "x": 21.73,
+      "y": 16.49,
+      "w": 40,
+      "h": 8,
+      "content": {
+        "text": "              🛑🛑🛑                Comunicazione di servizio ",
+        "size": "medium"
+      }
+    },
+    {
+      "id": "b1",
+      "type": "text",
+      "x": 24.4,
+      "y": 30.25,
+      "w": 22,
+      "h": 15,
+      "content": {
+        "html": "<div>Domenica 21 giugno alle 10:00 ci sarà una riunione di fine stagione/inizio seconda stagione&nbsp;</div><div>A cui siete TUTTI invitati</div><div>Cercate di essere presenti per favore perché verranno fatte tante comunicazioni importanti&nbsp;</div>Grazie Scrivi qui..."
+      }
+    }
+  ]
+}
