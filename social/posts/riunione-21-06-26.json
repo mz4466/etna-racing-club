@@ -22,10 +22,10 @@
       "type": "text",
       "x": 21.6,
       "y": 34.4,
-      "w": 27.7,
-      "h": 29.72,
+      "w": 31.18,
+      "h": 29.06,
       "content": {
-        "html": "<div>Domenica 21 giugno alle 10:00 ci sarà una riunione di fine stagione/inizio seconda stagione&nbsp;</div><div>A cui siete TUTTI invitati</div><div>Cercate di essere presenti per favore perché verranno fatte tante comunicazioni importanti&nbsp;</div>Grazie Scrivi qui..."
+        "html": "<div>Domenica 21 giugno alle 10:00 ci sarà una riunione di fine stagione/inizio seconda stagione&nbsp;</div><div>A cui siete TUTTI invitati</div><div>Cercate di essere presenti per favore perché verranno fatte tante comunicazioni importanti&nbsp;</div>Grazie&nbsp;"
       }
     },
     {
@@ -33,8 +33,8 @@
       "type": "photo",
       "x": 1.75,
       "y": 16.74,
-      "w": 19.59,
-      "h": 39.85,
+      "w": 19.83,
+      "h": 46.83,
       "content": {
         "src": "social/media/riunione-21-06-26-b2.jpg",
         "caption": "",
