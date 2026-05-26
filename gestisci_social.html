@@ -192,25 +192,36 @@ var selectedBlock=null;
 
 function ghHeaders(){return{Authorization:'token '+token,Accept:'application/vnd.github.v3+json'};}
 async function ghGet(path){
-  var r=await fetch(API+'/contents/'+path+'?ref='+BRANCH,{headers:ghHeaders()});
+  var r=await fetch(API+'/contents/'+path+'?ref='+BRANCH+'&_='+Date.now(),{headers:ghHeaders()});
   if(!r.ok) throw new Error((await r.json()).message||r.status);
   return await r.json();
 }
 async function ghPut(path,content,message){
-  var sha=null;
-  try{var ex=await ghGet(path);sha=ex.sha;}catch(e){}
-  var body={message:message,content:btoa(unescape(encodeURIComponent(content))),branch:BRANCH};
-  if(sha) body.sha=sha;
-  var r=await fetch(API+'/contents/'+path,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},ghHeaders()),body:JSON.stringify(body)});
-  if(!r.ok) throw new Error((await r.json()).message||r.status);
+  var b64=btoa(unescape(encodeURIComponent(content)));
+  for(var attempt=0;attempt<2;attempt++){
+    var sha=null;
+    try{var ex=await ghGet(path);sha=ex.sha;}catch(e){}
+    var body={message:message,content:b64,branch:BRANCH};
+    if(sha) body.sha=sha;
+    var r=await fetch(API+'/contents/'+path,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},ghHeaders()),body:JSON.stringify(body)});
+    if(r.ok) return;
+    var err=await r.json();
+    if(attempt===0&&err.message&&err.message.indexOf('does not match')!==-1) continue;
+    throw new Error(err.message||r.status);
+  }
 }
 async function ghPutBinary(path,b64,message){
-  var sha=null;
-  try{var ex=await ghGet(path);sha=ex.sha;}catch(e){}
-  var body={message:message,content:b64,branch:BRANCH};
-  if(sha) body.sha=sha;
-  var r=await fetch(API+'/contents/'+path,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},ghHeaders()),body:JSON.stringify(body)});
-  if(!r.ok) throw new Error((await r.json()).message||r.status);
+  for(var attempt=0;attempt<2;attempt++){
+    var sha=null;
+    try{var ex=await ghGet(path);sha=ex.sha;}catch(e){}
+    var body={message:message,content:b64,branch:BRANCH};
+    if(sha) body.sha=sha;
+    var r=await fetch(API+'/contents/'+path,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},ghHeaders()),body:JSON.stringify(body)});
+    if(r.ok) return;
+    var err=await r.json();
+    if(attempt===0&&err.message&&err.message.indexOf('does not match')!==-1) continue;
+    throw new Error(err.message||r.status);
+  }
 }
 async function ghDelete(path,message){
   var ex=await ghGet(path);
