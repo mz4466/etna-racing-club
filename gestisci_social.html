@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestisci Social — ERC Admin</title>
-  <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@400;500;600&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root{
       --bg:#07070f;--card:#0e0e1c;--input:#13131f;
@@ -14,93 +14,92 @@
       --green:#27ae60;--del:#c0392b;--text:#fff5e6;--dim:#5a5470;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Barlow Condensed',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-    /* TOPBAR */
-    .topbar{background:#050510;border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:100}
+    body{font-family:'Barlow Condensed',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow:hidden}
+    .topbar{background:#050510;border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
     .topbar-brand{display:flex;align-items:center;gap:10px;font-family:'Teko',sans-serif;font-size:18px;letter-spacing:2px;color:var(--gold-hi)}
-    .topbar-brand img{width:30px;height:30px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(201,162,39,0.4))}
-    .topbar-right{display:flex;align-items:center;gap:10px}
-    /* LAYOUT */
-    .layout{display:grid;grid-template-columns:260px 1fr;height:calc(100vh - 53px)}
-    .sidebar{background:#0a0a16;border-right:1px solid var(--border);padding:16px;display:flex;flex-direction:column;gap:12px;overflow-y:auto}
-    .sidebar-title{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:2px}
-    /* AUTH */
-    .auth-section{background:var(--card);border:1px solid var(--border-hi);border-radius:10px;padding:12px}
-    .auth-section label{font-size:12px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:5px}
-    .auth-section input{width:100%;background:var(--input);border:1px solid var(--border-hi);border-radius:7px;padding:8px 10px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;outline:none}
-    .auth-section input:focus{border-color:var(--gold)}
-    /* BUTTONS */
-    .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:none;cursor:pointer;font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;transition:all .15s}
+    .topbar-brand img{width:28px;height:28px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(201,162,39,0.4))}
+    .topbar-right{display:flex;align-items:center;gap:8px}
+    .layout{display:grid;grid-template-columns:240px 1fr;height:calc(100vh - 49px)}
+    .sidebar{background:#0a0a16;border-right:1px solid var(--border);padding:14px;display:flex;flex-direction:column;gap:10px;overflow-y:auto}
+    .sb-title{font-family:'Teko',sans-serif;font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:2px}
+    .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:7px;border:none;cursor:pointer;font-family:'Teko',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;transition:all .15s}
     .btn-gold{background:var(--gold);color:#000}.btn-gold:hover{background:var(--gold-hi)}
-    .btn-outline{background:transparent;border:1px solid var(--border-hi);color:var(--muted)}.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+    .btn-out{background:transparent;border:1px solid var(--border-hi);color:var(--muted)}.btn-out:hover{border-color:var(--gold);color:var(--gold)}
     .btn-red{background:var(--del);color:#fff}.btn-red:hover{background:#e74c3c}
     .btn-green{background:var(--green);color:#fff}.btn-green:hover{background:#2ecc71}
-    .btn-sm{padding:5px 10px;font-size:11px}
-    /* SIDEBAR NAV ITEMS */
-    .nav-item{background:var(--card);border:1px solid var(--border-hi);border-radius:7px;padding:8px 12px;cursor:pointer;transition:border-color .15s;margin-bottom:4px}
-    .nav-item:hover{border-color:var(--gold)}
-    .nav-item.active{border-color:var(--gold);background:var(--gold-dim)}
-    .nav-item-label{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--cream)}
-    .nav-item-sub{font-size:11px;color:var(--dim);margin-top:1px}
-    .nav-item-del{background:none;border:none;color:rgba(192,57,43,.5);cursor:pointer;font-size:14px;float:right;line-height:1;padding:0}
-    .nav-item-del:hover{color:var(--del)}
-    /* MAIN */
-    .main{padding:24px 28px;overflow-y:auto;display:flex;flex-direction:column;gap:18px}
-    .panel{background:var(--card);border:1px solid var(--border-hi);border-radius:12px;padding:20px}
-    .panel-title{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-    /* FORM */
-    .field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
-    .field label{font-size:12px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
-    .field input,.field select,.field textarea{background:var(--input);border:1px solid var(--border-hi);border-radius:7px;padding:8px 11px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px;outline:none;width:100%}
-    .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold)}
-    .field textarea{resize:vertical;min-height:80px}
-    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    /* TYPE PILLS */
-    .type-pills{display:flex;gap:6px;flex-wrap:wrap}
-    .tpill{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:2px;padding:5px 14px;border-radius:20px;border:1px solid var(--border-hi);color:var(--dim);cursor:pointer;text-transform:uppercase;transition:all .15s}
-    .tpill:hover{border-color:var(--gold);color:var(--muted)}
-    .tpill.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold)}
-    /* UPLOAD ZONE */
-    .upload-zone{border:2px dashed rgba(201,162,39,0.2);border-radius:8px;padding:24px;text-align:center;cursor:pointer;transition:border-color .2s}
+    .btn-sm{padding:4px 9px;font-size:11px}
+    .auth-box{background:var(--card);border:1px solid var(--border-hi);border-radius:8px;padding:10px}
+    .auth-box label{font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px}
+    .auth-box input{width:100%;background:var(--input);border:1px solid var(--border-hi);border-radius:6px;padding:7px 10px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:13px;outline:none}
+    .auth-box input:focus{border-color:var(--gold)}
+    #connStatus{font-size:11px;margin-top:5px;color:var(--dim)}
+    .sb-item{background:var(--card);border:1px solid var(--border-hi);border-radius:6px;padding:7px 10px;cursor:pointer;transition:border-color .15s;margin-bottom:3px;position:relative}
+    .sb-item:hover{border-color:var(--gold)}
+    .sb-item.active{border-color:var(--gold);background:var(--gold-dim)}
+    .sb-item-title{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:0.5px;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:20px}
+    .sb-item-sub{font-size:10px;color:var(--dim);margin-top:1px}
+    .sb-item-del{position:absolute;top:6px;right:6px;background:none;border:none;color:rgba(192,57,43,.4);cursor:pointer;font-size:12px;padding:0;line-height:1}
+    .sb-item-del:hover{color:var(--del)}
+    .main-area{display:flex;flex-direction:column;height:100%;overflow:hidden}
+    .toolbar{background:var(--card);border-bottom:1px solid var(--border);padding:7px 14px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .tb-btn{background:var(--gold-dim);border:1px solid rgba(201,162,39,0.25);border-radius:6px;padding:5px 11px;font-family:'Teko',sans-serif;font-size:11px;letter-spacing:1.5px;color:var(--gold);cursor:pointer;text-transform:uppercase;transition:all .15s;display:flex;align-items:center;gap:4px}
+    .tb-btn:hover{background:rgba(201,162,39,0.18);border-color:var(--gold)}
+    .tb-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
+    .tb-right{margin-left:auto;display:flex;gap:6px;align-items:center}
+    .tb-pub{background:var(--gold);color:#000;border:none;border-radius:6px;padding:6px 14px;font-family:'Teko',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-weight:600}
+    .tb-pub:hover{background:var(--gold-hi)}
+    .canvas-wrap{flex:1;display:flex;overflow:hidden}
+    .canvas{flex:1;position:relative;overflow:hidden;background:
+      repeating-linear-gradient(0deg,transparent,transparent 29px,rgba(201,184,163,0.025) 29px,rgba(201,184,163,0.025) 30px),
+      repeating-linear-gradient(90deg,transparent,transparent 29px,rgba(201,184,163,0.025) 29px,rgba(201,184,163,0.025) 30px)}
+    .block{position:absolute;border:1.5px solid rgba(201,184,163,0.18);border-radius:7px;background:var(--card);cursor:grab;user-select:none;min-width:80px;min-height:40px;transition:box-shadow .15s}
+    .block:hover{border-color:rgba(201,162,39,0.4)}
+    .block.selected{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 0 16px rgba(201,162,39,0.15)}
+    .block.dragging{z-index:200;cursor:grabbing;box-shadow:0 6px 24px rgba(0,0,0,0.5);border-color:var(--gold-hi)}
+    .block-hdr{display:flex;align-items:center;gap:5px;padding:4px 8px;border-bottom:1px solid rgba(201,184,163,0.06);font-family:'Teko',sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase}
+    .block-body{padding:6px 8px;overflow:hidden}
+    .block-del{position:absolute;top:3px;right:5px;background:none;border:none;color:rgba(192,57,43,.4);cursor:pointer;font-size:11px;display:none;z-index:10;padding:0}
+    .block.selected .block-del,.block:hover .block-del{display:block}
+    .block-del:hover{color:var(--del)}
+    .block-resize{position:absolute;bottom:0;right:0;width:14px;height:14px;cursor:nwse-resize;opacity:0}
+    .block.selected .block-resize{opacity:1}
+    .btype-title .block-hdr{color:var(--gold-hi)}
+    .btype-photo .block-hdr{color:#3498db}
+    .btype-video .block-hdr{color:#e74c3c}
+    .btype-text .block-hdr{color:#27ae60}
+    .btype-audio .block-hdr{color:#9b59b6}
+    .btype-notes .block-hdr{color:var(--orange)}
+    .btype-embed .block-hdr{color:#1abc9c}
+    .bc-title{font-family:'Russo One',sans-serif;font-size:18px;color:var(--gold-hi);letter-spacing:1px;padding:4px;outline:none;min-height:28px}
+    .bc-photo{display:flex;align-items:center;justify-content:center;min-height:60px;color:#3498db;font-size:10px;letter-spacing:1px;cursor:pointer}
+    .bc-photo img{max-width:100%;max-height:100%;object-fit:contain;border-radius:4px;display:block}
+    .bc-video{display:flex;align-items:center;justify-content:center;min-height:60px;background:rgba(231,76,60,0.05);border-radius:4px;color:#e74c3c;font-size:24px;cursor:pointer}
+    .bc-text{font-size:13px;color:var(--muted);line-height:1.6;outline:none;min-height:40px}
+    .bc-audio{display:flex;align-items:center;gap:8px;color:#9b59b6;font-size:12px}
+    .bc-notes{font-size:12px;color:var(--orange);font-style:italic;line-height:1.5;outline:none;min-height:30px}
+    .bc-embed{font-size:11px;color:#1abc9c;min-height:40px}
+    .edit-panel{width:260px;background:#0a0a16;border-left:1px solid var(--border);padding:14px;overflow-y:auto;display:none;flex-shrink:0}
+    .edit-panel.open{display:block}
+    .ep-title{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+    .field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+    .field label{font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+    .field input,.field select,.field textarea{background:var(--input);border:1px solid var(--border-hi);border-radius:6px;padding:7px 10px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:13px;outline:none;width:100%}
+    .field input:focus,.field textarea:focus{border-color:var(--gold)}
+    .field textarea{resize:vertical;min-height:60px}
+    .upload-zone{border:2px dashed rgba(201,162,39,0.2);border-radius:7px;padding:14px;text-align:center;cursor:pointer;transition:border-color .2s}
     .upload-zone:hover{border-color:var(--gold)}
     .upload-zone input{display:none}
-    .upload-icon{font-size:28px;margin-bottom:8px}
-    .upload-text{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
-    .upload-sub{font-size:11px;color:#3a3450;margin-top:3px}
-    .upload-preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px;margin-top:10px}
-    .upload-thumb{position:relative;border-radius:5px;overflow:hidden;border:1px solid var(--border-hi)}
-    .upload-thumb img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
-    .upload-thumb-del{position:absolute;top:2px;right:2px;background:rgba(192,57,43,0.8);border:none;color:#fff;font-size:12px;border-radius:3px;cursor:pointer;padding:1px 4px;line-height:1}
-    /* RICH TEXT TOOLBAR */
-    .rtoolbar{display:flex;gap:4px;padding:6px 8px;background:var(--input);border:1px solid var(--border-hi);border-radius:7px 7px 0 0;border-bottom:none}
-    .rtbtn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:3px 7px;border-radius:4px;font-family:serif}
-    .rtbtn:hover{background:var(--card);color:var(--text)}
-    .rich-editor{background:var(--input);border:1px solid var(--border-hi);border-radius:0 0 7px 7px;padding:10px;color:var(--text);min-height:120px;outline:none;font-size:14px;line-height:1.7}
-    .rich-editor:focus{border-color:var(--gold)}
-    /* ITEMS LIST */
-    .item-list{display:flex;flex-direction:column;gap:6px}
-    .item-row{background:var(--input);border:1px solid var(--border);border-radius:7px;padding:9px 12px;display:flex;align-items:center;gap:10px}
-    .item-badge{font-family:'Teko',sans-serif;font-size:10px;letter-spacing:2px;padding:2px 8px;border-radius:12px;text-transform:uppercase;flex-shrink:0}
-    .badge-photo{background:rgba(52,152,219,0.15);color:#3498db}
-    .badge-video{background:rgba(231,76,60,0.15);color:#e74c3c}
-    .badge-interview{background:rgba(155,89,182,0.15);color:#9b59b6}
-    .badge-article{background:rgba(39,174,96,0.15);color:#27ae60}
-    .item-name{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    /* STATUS DOT */
-    .status-dot{width:7px;height:7px;border-radius:50%;background:var(--dim);flex-shrink:0}
-    .status-dot.ok{background:var(--green);box-shadow:0 0 5px var(--green)}
-    .status-dot.err{background:var(--del)}
-    /* CONN STATUS */
-    #connStatus{font-size:12px;margin-top:7px;color:var(--dim)}
-    /* EMPTY/HINT */
-    .hint{text-align:center;padding:50px 20px;font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
-    .hint-icon{font-size:36px;margin-bottom:10px;display:block}
-    /* TOAST */
-    #toast{position:fixed;bottom:24px;right:24px;background:var(--card);border:1px solid var(--gold);border-radius:8px;padding:10px 18px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--text);z-index:999;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;pointer-events:none}
+    .upload-hint{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
+    .new-post-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(5,5,16,0.85);z-index:300;display:none;align-items:center;justify-content:center}
+    .new-post-overlay.open{display:flex}
+    .new-post-form{background:var(--card);border:1px solid var(--border-hi);border-radius:12px;padding:24px;width:380px;max-width:90%}
+    .new-post-form h3{font-family:'Teko',sans-serif;font-size:16px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
+    .hint{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
+    .hint-icon{font-size:40px;margin-bottom:12px}
+    #toast{position:fixed;bottom:20px;right:20px;background:var(--card);border:1px solid var(--gold);border-radius:8px;padding:8px 16px;font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;color:var(--text);z-index:999;opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s;pointer-events:none}
     #toast.show{opacity:1;transform:translateY(0)}
     #toast.ok{border-color:var(--green);color:#2ecc71}
     #toast.err{border-color:var(--del);color:#e74c3c}
-    @media(max-width:768px){.layout{grid-template-columns:1fr;height:auto}.sidebar{height:auto}.field-row{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -111,48 +110,70 @@
     <span>Gestisci Social</span>
   </div>
   <div class="topbar-right">
-    <a href="social.html" class="btn btn-outline btn-sm" target="_blank">👁 Visualizza</a>
-    <a href="index.html" class="btn btn-outline btn-sm">← Home</a>
+    <a href="social.html" class="btn btn-out btn-sm" target="_blank">&#128065; Visualizza</a>
+    <a href="admin.html" class="btn btn-out btn-sm">&larr; Admin</a>
   </div>
 </div>
 
 <div class="layout">
-  <!-- SIDEBAR -->
   <div class="sidebar">
     <div>
-      <div class="sidebar-title">GitHub</div>
-      <div class="auth-section">
+      <div class="sb-title">GitHub</div>
+      <div class="auth-box">
         <label>PAT Token</label>
         <input type="password" id="patInput" placeholder="ghp_xxxx" autocomplete="off">
-        <div style="margin-top:8px;display:flex;gap:6px">
+        <div style="margin-top:6px;display:flex;gap:5px">
           <button class="btn btn-gold" style="flex:1" onclick="connect()">Connetti</button>
-          <button class="btn btn-outline" onclick="reload()">↺</button>
+          <button class="btn btn-out" onclick="reloadIndex()">&#8634;</button>
         </div>
         <div id="connStatus">Non connesso</div>
       </div>
     </div>
-
     <div>
-      <div class="sidebar-title">Anno</div>
-      <div id="yearList"><div class="hint" style="padding:10px 0;font-size:11px">—</div></div>
-      <button class="btn btn-outline" id="addYearBtn" style="width:100%;justify-content:center;display:none;margin-top:4px" onclick="showAddYear()">＋ Anno</button>
-    </div>
-
-    <div>
-      <div class="sidebar-title">Campionato</div>
-      <div id="champList"><div class="hint" style="padding:10px 0;font-size:11px">—</div></div>
-    </div>
-
-    <div>
-      <div class="sidebar-title">Gara</div>
-      <div id="raceList"><div class="hint" style="padding:10px 0;font-size:11px">—</div></div>
+      <div class="sb-title">Post</div>
+      <button class="btn btn-out" style="width:100%;justify-content:center;margin-bottom:6px" onclick="showNewPostForm()">&#65291; Nuovo Post</button>
+      <div id="postList"></div>
     </div>
   </div>
 
-  <!-- MAIN -->
-  <div class="main" id="mainArea">
-    <div class="hint">
-      <span class="hint-icon">📡</span>Connetti GitHub per iniziare
+  <div class="main-area" id="mainArea">
+    <div class="toolbar" id="toolbar" style="display:none">
+      <div class="tb-btn" onclick="addBlock('title')">&#9733; Titolo</div>
+      <div class="tb-btn" onclick="addBlock('photo')">&#128247; Foto</div>
+      <div class="tb-btn" onclick="addBlock('video')">&#127909; Video</div>
+      <div class="tb-btn" onclick="addBlock('text')">&#128221; Testo</div>
+      <div class="tb-btn" onclick="addBlock('audio')">&#127925; Audio</div>
+      <div class="tb-btn" onclick="addBlock('notes')">&#128204; Note</div>
+      <div class="tb-sep"></div>
+      <div class="tb-btn" onclick="addBlock('embed')">&#128279; Embed</div>
+      <div class="tb-right">
+        <button class="btn btn-out btn-sm" onclick="savePostData()">&#128190; Salva Bozza</button>
+        <button class="tb-pub" onclick="publishPost()">&#8593; Pubblica</button>
+      </div>
+    </div>
+    <div class="canvas-wrap" id="canvasWrap" style="display:none">
+      <div class="canvas" id="canvas"></div>
+      <div class="edit-panel" id="editPanel">
+        <div class="ep-title" id="epTitle">Proprietà</div>
+        <div id="epFields"></div>
+      </div>
+    </div>
+    <div class="hint" id="hintArea">
+      <span class="hint-icon">&#128225;</span>
+      Connetti GitHub e seleziona o crea un post
+    </div>
+  </div>
+</div>
+
+<div class="new-post-overlay" id="newPostOverlay">
+  <div class="new-post-form">
+    <h3>Nuovo Post</h3>
+    <div class="field"><label>Titolo</label><input type="text" id="npTitle" placeholder="es. Race Day Recap — Dragon Trail"></div>
+    <div class="field"><label>Data</label><input type="date" id="npDate"></div>
+    <div class="field"><label>Campionato (opzionale)</label><select id="npChamp"><option value="">— Nessuno —</option></select></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">
+      <button class="btn btn-out" onclick="hideNewPostForm()">Annulla</button>
+      <button class="btn btn-gold" onclick="createPost()">Crea Post</button>
     </div>
   </div>
 </div>
@@ -160,459 +181,582 @@
 <div id="toast"></div>
 
 <script>
-const OWNER = 'mz4466', REPO = 'etna-racing-club', BRANCH = 'main';
-const API = 'https://api.github.com/repos/' + OWNER + '/' + REPO;
-const SOCIAL_FOLDER = 'social';
+var OWNER='mz4466',REPO='etna-racing-club',BRANCH='main';
+var API='https://api.github.com/repos/'+OWNER+'/'+REPO;
+var token='';
+var socialIndex=[];
+var currentPost=null;
+var blocks=[];
+var blockIdCounter=0;
+var selectedBlock=null;
 
-var token = '';
-var socialIndex = [];  // full index.json
-var sel = { year: null, champ: null, race: null };
-var pendingUploads = []; // { name, b64, mimeType } for photo uploads
-
-function getToken(){ return document.getElementById('patInput').value.trim(); }
-
-// ── GITHUB HELPERS ──
+function ghHeaders(){return{Authorization:'token '+token,Accept:'application/vnd.github.v3+json'};}
 async function ghGet(path){
-  var r = await fetch(API+'/contents/'+path+'?ref='+BRANCH, { headers:{ Authorization:'token '+token, Accept:'application/vnd.github.v3+json' }});
+  var r=await fetch(API+'/contents/'+path+'?ref='+BRANCH,{headers:ghHeaders()});
   if(!r.ok) throw new Error((await r.json()).message||r.status);
   return await r.json();
 }
-async function ghPut(path, content, message){
-  var sha = null;
-  try{ var ex = await ghGet(path); sha = ex.sha; }catch(e){}
-  var body = { message, content: btoa(unescape(encodeURIComponent(content))), branch: BRANCH };
-  if(sha) body.sha = sha;
-  var r = await fetch(API+'/contents/'+path, { method:'PUT', headers:{ Authorization:'token '+token, Accept:'application/vnd.github.v3+json', 'Content-Type':'application/json' }, body: JSON.stringify(body)});
+async function ghPut(path,content,message){
+  var sha=null;
+  try{var ex=await ghGet(path);sha=ex.sha;}catch(e){}
+  var body={message:message,content:btoa(unescape(encodeURIComponent(content))),branch:BRANCH};
+  if(sha) body.sha=sha;
+  var r=await fetch(API+'/contents/'+path,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},ghHeaders()),body:JSON.stringify(body)});
   if(!r.ok) throw new Error((await r.json()).message||r.status);
 }
-async function ghPutBinary(path, b64, message){
-  var sha = null;
-  try{ var ex = await ghGet(path); sha = ex.sha; }catch(e){}
-  var body = { message, content: b64, branch: BRANCH };
-  if(sha) body.sha = sha;
-  var r = await fetch(API+'/contents/'+path, { method:'PUT', headers:{ Authorization:'token '+token, Accept:'application/vnd.github.v3+json', 'Content-Type':'application/json' }, body: JSON.stringify(body)});
+async function ghPutBinary(path,b64,message){
+  var sha=null;
+  try{var ex=await ghGet(path);sha=ex.sha;}catch(e){}
+  var body={message:message,content:b64,branch:BRANCH};
+  if(sha) body.sha=sha;
+  var r=await fetch(API+'/contents/'+path,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},ghHeaders()),body:JSON.stringify(body)});
   if(!r.ok) throw new Error((await r.json()).message||r.status);
 }
-async function ghDelete(path, message){
-  var ex = await ghGet(path);
-  var r = await fetch(API+'/contents/'+path, { method:'DELETE', headers:{ Authorization:'token '+token, Accept:'application/vnd.github.v3+json', 'Content-Type':'application/json' }, body: JSON.stringify({ message, sha: ex.sha, branch: BRANCH })});
+async function ghDelete(path,message){
+  var ex=await ghGet(path);
+  var r=await fetch(API+'/contents/'+path,{method:'DELETE',headers:Object.assign({'Content-Type':'application/json'},ghHeaders()),body:JSON.stringify({message:message,sha:ex.sha,branch:BRANCH})});
   if(!r.ok) throw new Error((await r.json()).message||r.status);
 }
 async function ghReadJson(path){
-  var meta = await ghGet(path);
+  var meta=await ghGet(path);
   return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
 }
 
-// ── CONNECT ──
+function getToken(){return document.getElementById('patInput').value.trim();}
+
 async function connect(){
-  token = getToken();
-  if(!token){ toast('Inserisci il PAT Token','err'); return; }
-  try {
-    var r = await fetch(API, { headers:{ Authorization:'token '+token, Accept:'application/vnd.github.v3+json' }});
-    if(!r.ok) throw new Error((await r.json()).message);
-    var el = document.getElementById('connStatus');
-    el.textContent = '✓ Connesso';
-    el.style.color = 'var(--green)';
-    document.getElementById('addYearBtn').style.display = '';
+  token=getToken();
+  if(!token){toast('Inserisci il PAT Token','err');return;}
+  try{
+    var r=await fetch(API,{headers:ghHeaders()});
+    if(!r.ok) throw new Error('Auth failed');
+    document.getElementById('connStatus').textContent='\u2713 Connesso';
+    document.getElementById('connStatus').style.color='var(--green)';
     await loadIndex();
-  } catch(e){
-    var el = document.getElementById('connStatus');
-    el.textContent = 'Errore: ' + e.message;
-    el.style.color = 'var(--del)';
+    await loadCalendario();
+  }catch(e){
+    document.getElementById('connStatus').textContent='Errore: '+e.message;
+    document.getElementById('connStatus').style.color='var(--del)';
   }
 }
-async function reload(){ token = getToken(); await loadIndex(); }
+async function reloadIndex(){token=getToken();if(token)await loadIndex();}
 
-// ── INDEX ──
 async function loadIndex(){
-  try {
-    socialIndex = await ghReadJson(SOCIAL_FOLDER+'/index.json');
-  } catch(e){ socialIndex = []; }
-  renderYears();
+  try{socialIndex=await ghReadJson('social/index.json');}catch(e){socialIndex=[];}
+  if(!Array.isArray(socialIndex)) socialIndex=[];
+  socialIndex.sort(function(a,b){return(b.date||'').localeCompare(a.date||'');});
+  renderPostList();
 }
-
 async function saveIndex(){
-  await ghPut(SOCIAL_FOLDER+'/index.json', JSON.stringify(socialIndex, null, 2), 'Update social index');
+  await ghPut('social/index.json',JSON.stringify(socialIndex,null,2),'Update social index');
+}
+async function loadCalendario(){
+  try{
+    var cal=await ghReadJson('calendario.json');
+    var sel=document.getElementById('npChamp');
+    sel.innerHTML='<option value="">— Nessuno —</option>';
+    cal.forEach(function(c){
+      var opt=document.createElement('option');
+      opt.value=c.name+' ('+c.year+')';
+      opt.textContent=c.name+' — '+c.year;
+      sel.appendChild(opt);
+    });
+  }catch(e){}
 }
 
-// ── RENDER SIDEBAR ──
-function renderYears(){
-  var years = [...new Set(socialIndex.map(function(c){ return c.year; }))].sort(function(a,b){ return b-a; });
-  var list = document.getElementById('yearList');
-  list.innerHTML = years.length ? '' : '<div class="hint" style="padding:6px 0;font-size:11px">Nessun anno</div>';
-  years.forEach(function(y){
-    var div = document.createElement('div');
-    div.className = 'nav-item' + (sel.year===y?' active':'');
-    div.innerHTML = '<span class="nav-item-label">'+y+'</span>';
-    div.onclick = function(){ selectYear(y); };
-    list.appendChild(div);
-  });
-  if(!sel.year && years.length) selectYear(years[0]);
-  else if(sel.year) renderChamps();
-}
-
-function selectYear(y){
-  sel.year = y; sel.champ = null; sel.race = null;
-  document.querySelectorAll('#yearList .nav-item').forEach(function(n){ n.classList.toggle('active', n.querySelector('.nav-item-label').textContent==y); });
-  renderChamps();
-}
-
-function renderChamps(){
-  var yearChamps = socialIndex.filter(function(c){ return String(c.year)===String(sel.year); });
-  var list = document.getElementById('champList');
-  list.innerHTML = '';
-  // Add champ from calendario button
-  var addBtn = document.createElement('button');
-  addBtn.className = 'btn btn-outline'; addBtn.style.cssText = 'width:100%;justify-content:center;margin-bottom:8px;';
-  addBtn.textContent = '＋ Aggiungi da Calendario';
-  addBtn.onclick = showAddChamp;
-  list.appendChild(addBtn);
-  yearChamps.forEach(function(c){
-    var div = document.createElement('div');
-    div.className = 'nav-item' + (sel.champ&&sel.champ.id===c.id?' active':'');
-    div.innerHTML = '<button class="nav-item-del" onclick="event.stopPropagation();deleteChamp(\''+c.id+'\')">✕</button>'
-      + '<div class="nav-item-label">'+esc(c.name)+'</div>'
-      + '<div class="nav-item-sub">'+esc(c.year)+'</div>';
-    div.onclick = function(){ selectChamp(c); };
-    list.appendChild(div);
-  });
-  if(!sel.champ && yearChamps.length) selectChamp(yearChamps[0]);
-  else renderRaces();
-}
-
-function selectChamp(c){
-  sel.champ = c; sel.race = null;
-  document.querySelectorAll('#champList .nav-item').forEach(function(n){ n.classList.toggle('active', n.querySelector('.nav-item-label') && n.querySelector('.nav-item-label').textContent===c.name); });
-  renderRaces();
-}
-
-function renderRaces(){
-  if(!sel.champ){ document.getElementById('raceList').innerHTML = ''; return; }
-  var races = sel.champ.races||[];
-  var list = document.getElementById('raceList');
-  list.innerHTML = '';
-  var addBtn = document.createElement('button');
-  addBtn.className = 'btn btn-outline'; addBtn.style.cssText = 'width:100%;justify-content:center;margin-bottom:8px;';
-  addBtn.textContent = '＋ Aggiungi Gara';
-  addBtn.onclick = showAddRace;
-  list.appendChild(addBtn);
-  races.forEach(function(race){
-    var div = document.createElement('div');
-    div.className = 'nav-item' + (sel.race&&sel.race.slug===race.slug?' active':'');
-    div.innerHTML = '<button class="nav-item-del" onclick="event.stopPropagation();deleteRace(\''+race.slug+'\')">✕</button>'
-      + '<div class="nav-item-label">'+esc(race.label)+'</div>';
-    div.onclick = function(){ selectRace(race); };
-    list.appendChild(div);
-  });
-  if(!sel.race && races.length) selectRace(races[0]);
-  else renderMain();
-}
-
-function selectRace(race){
-  sel.race = race;
-  document.querySelectorAll('#raceList .nav-item').forEach(function(n){ n.classList.toggle('active', n.querySelector('.nav-item-label') && n.querySelector('.nav-item-label').textContent===race.label); });
-  renderMain();
-}
-
-// ── MAIN PANEL ──
-async function renderMain(){
-  if(!sel.race){
-    document.getElementById('mainArea').innerHTML = '<div class="hint"><span class="hint-icon">🏁</span>Seleziona una gara</div>';
+function renderPostList(){
+  var list=document.getElementById('postList');
+  if(!socialIndex.length){
+    list.innerHTML='<div style="text-align:center;padding:10px;font-size:11px;color:var(--dim)">Nessun post</div>';
     return;
   }
-  var main = document.getElementById('mainArea');
-  main.innerHTML = '<div class="hint"><span class="hint-icon">⏳</span>Caricamento...</div>';
-
-  var path = SOCIAL_FOLDER + '/' + sel.champ.year + '/' + sel.champ.slug + '/' + sel.race.slug + '/index.json';
-  var items = [];
-  try { items = await ghReadJson(path); } catch(e){ items = []; }
-
-  main.innerHTML = '';
-
-  // ── ADD CONTENT PANEL ──
-  var addPanel = document.createElement('div');
-  addPanel.className = 'panel';
-  addPanel.innerHTML = '<div class="panel-title">'+esc(sel.race.label)+' — Aggiungi Contenuto</div>'
-    + '<div class="field"><label>Tipo</label><div class="type-pills" id="typePills">'
-    + '<div class="tpill active" data-t="photo">📷 Foto</div>'
-    + '<div class="tpill" data-t="video">🎥 Video</div>'
-    + '<div class="tpill" data-t="interview">🎤 Intervista</div>'
-    + '<div class="tpill" data-t="article">📝 Articolo</div>'
-    + '</div></div>'
-    + '<div id="typeFields"></div>'
-    + '<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">'
-    + '<button class="btn btn-outline" onclick="renderMain()">Annulla</button>'
-    + '<button class="btn btn-green" onclick="publishItem()">↑ Pubblica su GitHub</button>'
-    + '</div>';
-  main.appendChild(addPanel);
-
-  // Wire type pills
-  addPanel.querySelectorAll('.tpill').forEach(function(p){
-    p.onclick = function(){
-      addPanel.querySelectorAll('.tpill').forEach(function(x){ x.classList.remove('active'); });
-      p.classList.add('active');
-      renderTypeFields(p.dataset.t);
-    };
+  var html='';
+  socialIndex.forEach(function(p,i){
+    var cls='sb-item'+(currentPost&&currentPost.slug===p.slug?' active':'');
+    html+='<div class="'+cls+'" onclick="selectPost('+i+')">';
+    html+='<button class="sb-item-del" onclick="event.stopPropagation();deletePost('+i+')">\u2715</button>';
+    html+='<div class="sb-item-title">'+esc(p.title)+'</div>';
+    html+='<div class="sb-item-sub">'+esc(p.date||'')+' \u00b7 '+esc(p.campionato||'')+'</div>';
+    html+='</div>';
   });
-  renderTypeFields('photo');
+  list.innerHTML=html;
+}
 
-  // ── EXISTING ITEMS PANEL ──
-  var itemPanel = document.createElement('div');
-  itemPanel.className = 'panel';
-  var itemsHtml = '<div class="panel-title">Contenuti Pubblicati ('+items.length+')</div>';
-  if(!items.length){
-    itemsHtml += '<div class="hint" style="padding:20px 0;font-size:12px">Nessun contenuto</div>';
-  } else {
-    itemsHtml += '<div class="item-list">';
-    items.forEach(function(item, i){
-      var badge = 'badge-'+item.type;
-      var label = {photo:'foto',video:'video',interview:'intervista',article:'articolo'}[item.type]||item.type;
-      itemsHtml += '<div class="item-row">'
-        + '<span class="item-badge '+badge+'">'+label+'</span>'
-        + '<span class="item-name">'+esc(item.title||item.file||'—')+'</span>'
-        + '<button class="btn btn-red btn-sm" onclick="deleteItem('+i+')">✕</button>'
-        + '</div>';
-    });
-    itemsHtml += '</div>';
+function showNewPostForm(){
+  var today=new Date();
+  var y=today.getFullYear(),m=today.getMonth()+1,d=today.getDate();
+  document.getElementById('npDate').value=y+'-'+(m<10?'0':'')+m+'-'+(d<10?'0':'')+d;
+  document.getElementById('npTitle').value='';
+  document.getElementById('npChamp').value='';
+  document.getElementById('newPostOverlay').classList.add('open');
+  document.getElementById('npTitle').focus();
+}
+function hideNewPostForm(){document.getElementById('newPostOverlay').classList.remove('open');}
+
+async function createPost(){
+  var title=document.getElementById('npTitle').value.trim();
+  var date=document.getElementById('npDate').value;
+  var champ=document.getElementById('npChamp').value;
+  if(!title){toast('Inserisci un titolo','err');return;}
+  var slug=title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  if(socialIndex.some(function(p){return p.slug===slug;})) slug+='-'+Date.now();
+  var year=date?parseInt(date.split('-')[0],10):new Date().getFullYear();
+  var post={title:title,slug:slug,date:date,year:year,campionato:champ,blockTypes:[],created:new Date().toISOString()};
+  socialIndex.unshift(post);
+  await saveIndex();
+  hideNewPostForm();
+  currentPost=post;
+  blocks=[];blockIdCounter=0;selectedBlock=null;
+  renderPostList();
+  showCanvas();
+  toast('Post creato \u2713','ok');
+}
+
+async function deletePost(idx){
+  if(!confirm('Eliminare questo post?')) return;
+  var p=socialIndex[idx];
+  try{await ghDelete('social/posts/'+p.slug+'.json','Delete post data');}catch(e){}
+  try{await ghDelete('social/posts/'+p.slug+'.html','Delete post html');}catch(e){}
+  socialIndex.splice(idx,1);
+  await saveIndex();
+  if(currentPost&&currentPost.slug===p.slug){currentPost=null;blocks=[];selectedBlock=null;hideCanvas();}
+  renderPostList();
+  toast('Post eliminato','ok');
+}
+
+async function selectPost(idx){
+  currentPost=socialIndex[idx];
+  renderPostList();
+  try{
+    var data=await ghReadJson('social/posts/'+currentPost.slug+'.json');
+    blocks=data.blocks||[];
+    blockIdCounter=blocks.length?Math.max.apply(null,blocks.map(function(b){return parseInt(b.id.replace('b',''),10)||0;}))+1:0;
+  }catch(e){blocks=[];blockIdCounter=0;}
+  selectedBlock=null;
+  showCanvas();
+  renderBlocks();
+  closeEditPanel();
+}
+
+function showCanvas(){
+  document.getElementById('toolbar').style.display='';
+  document.getElementById('canvasWrap').style.display='';
+  document.getElementById('hintArea').style.display='none';
+}
+function hideCanvas(){
+  document.getElementById('toolbar').style.display='none';
+  document.getElementById('canvasWrap').style.display='none';
+  document.getElementById('hintArea').style.display='';
+}
+
+function addBlock(type){
+  if(!currentPost) return;
+  var id='b'+blockIdCounter++;
+  var w=type==='title'?40:type==='photo'||type==='video'?25:22;
+  var h=type==='title'?8:type==='photo'||type==='video'?28:15;
+  var content={};
+  if(type==='title') content={text:'Nuovo Titolo',size:'medium'};
+  else if(type==='photo') content={src:'',caption:'',pending:null};
+  else if(type==='video') content={url:'',caption:''};
+  else if(type==='text') content={html:'Scrivi qui...'};
+  else if(type==='audio') content={src:'',label:'Audio',pending:null};
+  else if(type==='notes') content={text:'Aggiungi nota...'};
+  else if(type==='embed') content={url:''};
+  blocks.push({id:id,type:type,x:10+Math.random()*20,y:10+Math.random()*20,w:w,h:h,content:content});
+  renderBlocks();
+  selectBlockById(id);
+}
+
+function renderBlocks(){
+  var cv=document.getElementById('canvas');
+  cv.innerHTML='';
+  blocks.forEach(function(b){cv.appendChild(createBlockEl(b));});
+}
+
+function createBlockEl(b){
+  var el=document.createElement('div');
+  el.className='block btype-'+b.type;
+  el.id='blk-'+b.id;
+  el.dataset.bid=b.id;
+  el.style.left=b.x+'%';el.style.top=b.y+'%';el.style.width=b.w+'%';
+  if(b.h) el.style.height=b.h+'%';
+  if(selectedBlock&&selectedBlock.id===b.id) el.classList.add('selected');
+
+  var labels={title:'\u2733 Titolo',photo:'\uD83D\uDCF7 Foto',video:'\uD83C\uDFA5 Video',text:'\uD83D\uDCDD Testo',audio:'\uD83C\uDFB5 Audio',notes:'\uD83D\uDCCC Note',embed:'\uD83D\uDD17 Embed'};
+  var hdr=document.createElement('div');
+  hdr.className='block-hdr';
+  hdr.textContent=labels[b.type]||b.type;
+  el.appendChild(hdr);
+
+  var body=document.createElement('div');
+  body.className='block-body';
+  renderBlockContent(body,b);
+  el.appendChild(body);
+
+  var del=document.createElement('button');
+  del.className='block-del';del.textContent='\u2715';
+  del.onclick=function(e){e.stopPropagation();removeBlock(b.id);};
+  el.appendChild(del);
+
+  var rsz=document.createElement('div');
+  rsz.className='block-resize';
+  rsz.onmousedown=function(e){startResize(e,b);};
+  el.appendChild(rsz);
+
+  el.onmousedown=function(e){
+    if(e.target===del||e.target===rsz) return;
+    startDrag(e,b,el);
+  };
+  el.ondblclick=function(e){
+    if(e.target===del) return;
+    selectBlockById(b.id);
+    openInlineEdit(b);
+  };
+  return el;
+}
+
+function renderBlockContent(body,b){
+  var c=b.content||{};
+  if(b.type==='title'){
+    body.innerHTML='<div class="bc-title">'+esc(c.text||'')+'</div>';
+  }else if(b.type==='photo'){
+    if(c.src) body.innerHTML='<div class="bc-photo"><img src="'+escAttr(c.src)+'" alt=""></div>';
+    else body.innerHTML='<div class="bc-photo">\uD83D\uDCC1 Doppio click per caricare</div>';
+  }else if(b.type==='video'){
+    var vid=extractYTId(c.url);
+    if(vid) body.innerHTML='<div style="position:relative;padding-bottom:56%;height:0;overflow:hidden;border-radius:4px"><iframe src="https://www.youtube.com/embed/'+vid+'" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe></div>';
+    else body.innerHTML='<div class="bc-video">\u25B6 Doppio click</div>';
+  }else if(b.type==='text'){
+    body.innerHTML='<div class="bc-text">'+(c.html||'')+'</div>';
+  }else if(b.type==='audio'){
+    if(c.src) body.innerHTML='<div class="bc-audio">\uD83C\uDFB5 <span>'+esc(c.label||'Audio')+'</span></div>';
+    else body.innerHTML='<div class="bc-audio">\uD83C\uDFB5 Doppio click per caricare</div>';
+  }else if(b.type==='notes'){
+    body.innerHTML='<div class="bc-notes">'+esc(c.text||'')+'</div>';
+  }else if(b.type==='embed'){
+    if(c.url) body.innerHTML='<div class="bc-embed">\uD83D\uDD17 '+esc(c.url)+'</div>';
+    else body.innerHTML='<div class="bc-embed">\uD83D\uDD17 Doppio click</div>';
   }
-  itemPanel.innerHTML = itemsHtml;
-  main.appendChild(itemPanel);
-
-  // store items in DOM for delete access
-  main.dataset.items = JSON.stringify(items);
 }
 
-function renderTypeFields(type){
-  pendingUploads = [];
-  var c = document.getElementById('typeFields');
-  if(!c) return;
+function removeBlock(bid){
+  blocks=blocks.filter(function(b){return b.id!==bid;});
+  if(selectedBlock&&selectedBlock.id===bid){selectedBlock=null;closeEditPanel();}
+  renderBlocks();
+}
 
-  if(type === 'photo'){
-    c.innerHTML = '<div class="field"><label>Carica Immagini o URL</label>'
-      + '<div class="upload-zone" id="uploadZone" onclick="document.getElementById(\'fileInput\').click()">'
-      + '<input type="file" id="fileInput" accept="image/*" multiple onchange="handleFiles(this.files)">'
-      + '<div class="upload-icon">📁</div>'
-      + '<div class="upload-text">Clicca o trascina immagini</div>'
-      + '<div class="upload-sub">JPG · PNG · WebP · max 5MB</div>'
-      + '</div>'
-      + '<div class="upload-preview" id="uploadPreview"></div>'
-      + '</div>'
-      + '<div class="field"><label>— oppure — URL Esterno</label><input type="text" id="photoUrl" placeholder="https://..."></div>'
-      + '<div class="field"><label>Didascalia (opzionale)</label><input type="text" id="itemTitle" placeholder="es. Partenza Gara 1"></div>';
-  } else if(type === 'video' || type === 'interview'){
-    c.innerHTML = '<div class="field"><label>URL YouTube</label><input type="url" id="videoUrl" placeholder="https://www.youtube.com/watch?v=..."></div>'
-      + '<div class="field"><label>Titolo</label><input type="text" id="itemTitle" placeholder="es. Highlights Gara 1"></div>'
-      + '<div class="field"><label>Descrizione (opzionale)</label><input type="text" id="itemDesc" placeholder=""></div>'
-      + '<div style="margin:6px 0 2px;font-family:\'Teko\',sans-serif;font-size:11px;letter-spacing:2px;color:var(--dim);text-transform:uppercase">— oppure — Upload Diretto</div>'
-      + '<div class="upload-zone" onclick="document.getElementById(\'vidFileInput\').click()">'
-      + '<input type="file" id="vidFileInput" accept="video/*" style="display:none" onchange="handleVideoFile(this.files[0])">'
-      + '<div class="upload-icon">🎬</div>'
-      + '<div class="upload-text">Carica video file</div>'
-      + '<div class="upload-sub">MP4 · max 50MB</div>'
-      + '</div>'
-      + '<div id="vidFileName" style="font-size:12px;color:var(--gold);margin-top:6px"></div>';
-  } else if(type === 'article'){
-    c.innerHTML = '<div class="field"><label>Titolo</label><input type="text" id="itemTitle" placeholder="Titolo articolo"></div>'
-      + '<div class="field"><label>Testo</label>'
-      + '<div class="rtoolbar">'
-      + '<button class="rtbtn" onclick="fmt(\'bold\')" title="Grassetto"><b>B</b></button>'
-      + '<button class="rtbtn" onclick="fmt(\'italic\')" title="Corsivo"><i>I</i></button>'
-      + '<button class="rtbtn" onclick="fmtLink()" title="Link">🔗</button>'
-      + '</div>'
-      + '<div class="rich-editor" id="richEditor" contenteditable="true" spellcheck="false"></div>'
-      + '</div>'
-      + '<div class="field"><label>Data (opzionale)</label><input type="text" id="itemDate" placeholder="es. 20 giugno 2026"></div>';
+function startDrag(e,b,el){
+  e.preventDefault();
+  var cv=document.getElementById('canvas');
+  var cvR=cv.getBoundingClientRect();
+  var elR=el.getBoundingClientRect();
+  var moved=false;
+  var offX=e.clientX-elR.left,offY=e.clientY-elR.top;
+  el.classList.add('dragging');
+  function onMove(ev){
+    moved=true;
+    var x=ev.clientX-cvR.left-offX;
+    var y=ev.clientY-cvR.top-offY;
+    x=Math.max(0,Math.min(x,cvR.width-el.offsetWidth));
+    y=Math.max(0,Math.min(y,cvR.height-el.offsetHeight));
+    el.style.left=(x/cvR.width*100)+'%';
+    el.style.top=(y/cvR.height*100)+'%';
+    b.x=Math.round(x/cvR.width*10000)/100;
+    b.y=Math.round(y/cvR.height*10000)/100;
   }
+  function onUp(){
+    document.removeEventListener('mousemove',onMove);
+    document.removeEventListener('mouseup',onUp);
+    el.classList.remove('dragging');
+    if(!moved) selectBlockById(b.id);
+  }
+  document.addEventListener('mousemove',onMove);
+  document.addEventListener('mouseup',onUp);
 }
 
-function fmt(cmd){ document.execCommand(cmd,false,null); document.getElementById('richEditor').focus(); }
-function fmtLink(){
-  var url = prompt('URL link:');
-  if(url) document.execCommand('createLink',false,url);
+function startResize(e,b){
+  e.preventDefault();e.stopPropagation();
+  var cv=document.getElementById('canvas');
+  var cvR=cv.getBoundingClientRect();
+  var el=document.getElementById('blk-'+b.id);
+  var startX=e.clientX,startY=e.clientY;
+  var startW=el.offsetWidth,startH=el.offsetHeight;
+  function onMove(ev){
+    var nw=Math.max(80,startW+(ev.clientX-startX));
+    var nh=Math.max(40,startH+(ev.clientY-startY));
+    el.style.width=(nw/cvR.width*100)+'%';
+    el.style.height=(nh/cvR.height*100)+'%';
+    b.w=Math.round(nw/cvR.width*10000)/100;
+    b.h=Math.round(nh/cvR.height*10000)/100;
+  }
+  function onUp(){document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',onUp);}
+  document.addEventListener('mousemove',onMove);
+  document.addEventListener('mouseup',onUp);
 }
 
-function handleFiles(files){
-  Array.from(files).forEach(function(file){
-    if(file.size > 5*1024*1024){ toast('File troppo grande: '+file.name+' (max 5MB)','err'); return; }
-    var reader = new FileReader();
-    reader.onload = function(e){
-      var b64 = e.target.result.split(',')[1];
-      pendingUploads.push({ name: file.name, b64: b64, mimeType: file.type });
-      var prev = document.getElementById('uploadPreview');
-      if(prev){
-        var thumb = document.createElement('div');
-        thumb.className = 'upload-thumb';
-        thumb.innerHTML = '<img src="'+e.target.result+'" alt=""><button class="upload-thumb-del" onclick="removeUpload('+( pendingUploads.length-1)+',this)">✕</button>';
-        prev.appendChild(thumb);
-      }
-    };
-    reader.readAsDataURL(file);
-  });
+function selectBlockById(bid){
+  selectedBlock=null;
+  for(var i=0;i<blocks.length;i++){if(blocks[i].id===bid){selectedBlock=blocks[i];break;}}
+  document.querySelectorAll('.block').forEach(function(el){el.classList.remove('selected');});
+  if(selectedBlock){
+    var el=document.getElementById('blk-'+bid);
+    if(el) el.classList.add('selected');
+    openEditPanel(selectedBlock);
+  }else closeEditPanel();
 }
 
-var pendingVideoFile = null;
-function handleVideoFile(file){
-  if(!file) return;
-  if(file.size > 50*1024*1024){ toast('File troppo grande (max 50MB)','err'); return; }
-  var reader = new FileReader();
-  reader.onload = function(e){
-    pendingVideoFile = { name: file.name, b64: e.target.result.split(',')[1], mimeType: file.type };
-    var el = document.getElementById('vidFileName');
-    if(el) el.textContent = '✓ ' + file.name;
+function openEditPanel(b){
+  var panel=document.getElementById('editPanel');
+  var fields=document.getElementById('epFields');
+  var tl={title:'Titolo',photo:'Foto',video:'Video',text:'Testo',audio:'Audio',notes:'Note',embed:'Embed'};
+  document.getElementById('epTitle').textContent='Modifica '+(tl[b.type]||b.type);
+  panel.classList.add('open');
+  var c=b.content||{};
+  var html='';
+  if(b.type==='title'){
+    html+='<div class="field"><label>Testo</label><input type="text" id="epV" value="'+escAttr(c.text||'')+'" oninput="updProp(\'text\',this.value)"></div>';
+    html+='<div class="field"><label>Dimensione</label><select onchange="updProp(\'size\',this.value)">';
+    html+='<option value="small"'+(c.size==='small'?' selected':'')+'>Piccolo</option>';
+    html+='<option value="medium"'+(c.size==='medium'||!c.size?' selected':'')+'>Medio</option>';
+    html+='<option value="large"'+(c.size==='large'?' selected':'')+'>Grande</option></select></div>';
+  }else if(b.type==='photo'){
+    html+='<div class="field"><label>Carica Immagine</label>';
+    html+='<div class="upload-zone" onclick="document.getElementById(\'epFile\').click()">';
+    html+='<input type="file" id="epFile" accept="image/*" onchange="handlePhotoUpload(this.files[0])">';
+    html+='<div class="upload-hint">\uD83D\uDCC1 Clicca per caricare</div></div></div>';
+    html+='<div class="field"><label>oppure URL</label><input type="url" value="'+escAttr(c.url||'')+'" oninput="updProp(\'url\',this.value);updProp(\'src\',this.value)" placeholder="https://..."></div>';
+    html+='<div class="field"><label>Didascalia</label><input type="text" value="'+escAttr(c.caption||'')+'" oninput="updProp(\'caption\',this.value)"></div>';
+  }else if(b.type==='video'){
+    html+='<div class="field"><label>URL YouTube</label><input type="url" value="'+escAttr(c.url||'')+'" oninput="updProp(\'url\',this.value)" placeholder="https://youtube.com/watch?v=..."></div>';
+    html+='<div class="field"><label>Didascalia</label><input type="text" value="'+escAttr(c.caption||'')+'" oninput="updProp(\'caption\',this.value)"></div>';
+  }else if(b.type==='text'){
+    html+='<div class="field"><label>Contenuto</label><textarea rows="6" oninput="updProp(\'html\',this.value)">'+esc(c.html||'')+'</textarea></div>';
+  }else if(b.type==='audio'){
+    html+='<div class="field"><label>Carica Audio</label>';
+    html+='<div class="upload-zone" onclick="document.getElementById(\'epFile\').click()">';
+    html+='<input type="file" id="epFile" accept="audio/*" onchange="handleAudioUpload(this.files[0])">';
+    html+='<div class="upload-hint">\uD83C\uDFB5 Clicca per caricare</div></div></div>';
+    html+='<div class="field"><label>oppure URL</label><input type="url" value="'+escAttr(c.url||'')+'" oninput="updProp(\'url\',this.value);updProp(\'src\',this.value)" placeholder="https://..."></div>';
+    html+='<div class="field"><label>Etichetta</label><input type="text" value="'+escAttr(c.label||'')+'" oninput="updProp(\'label\',this.value)"></div>';
+  }else if(b.type==='notes'){
+    html+='<div class="field"><label>Nota</label><textarea rows="4" oninput="updProp(\'text\',this.value)">'+esc(c.text||'')+'</textarea></div>';
+  }else if(b.type==='embed'){
+    html+='<div class="field"><label>URL Embed</label><textarea rows="3" oninput="updProp(\'url\',this.value)">'+esc(c.url||'')+'</textarea></div>';
+  }
+  html+='<div style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px">';
+  html+='<button class="btn btn-red btn-sm" style="width:100%;justify-content:center" onclick="removeBlock(\''+b.id+'\')">Elimina Blocco</button></div>';
+  fields.innerHTML=html;
+}
+function closeEditPanel(){document.getElementById('editPanel').classList.remove('open');}
+
+function updProp(prop,val){
+  if(!selectedBlock) return;
+  if(!selectedBlock.content) selectedBlock.content={};
+  selectedBlock.content[prop]=val;
+  refreshBlock(selectedBlock);
+}
+
+function openInlineEdit(b){
+  if(b.type!=='title'&&b.type!=='notes'&&b.type!=='text') return;
+  var el=document.getElementById('blk-'+b.id);
+  if(!el) return;
+  var ce=el.querySelector('.bc-title,.bc-notes,.bc-text');
+  if(!ce) return;
+  ce.contentEditable='true';ce.focus();
+  ce.onblur=function(){
+    ce.contentEditable='false';
+    if(b.type==='title') b.content.text=ce.textContent;
+    else if(b.type==='notes') b.content.text=ce.textContent;
+    else if(b.type==='text') b.content.html=ce.innerHTML;
+    openEditPanel(b);
+  };
+}
+
+function handlePhotoUpload(file){
+  if(!file||!selectedBlock) return;
+  if(file.size>5*1024*1024){toast('Max 5MB','err');return;}
+  var reader=new FileReader();
+  reader.onload=function(e){
+    selectedBlock.content.src=e.target.result;
+    selectedBlock.content.pending={name:file.name,b64:e.target.result.split(',')[1],mime:file.type};
+    selectedBlock.content.url='';
+    refreshBlock(selectedBlock);openEditPanel(selectedBlock);
   };
   reader.readAsDataURL(file);
 }
-
-function removeUpload(idx, btn){
-  pendingUploads.splice(idx, 1);
-  btn.parentElement.remove();
+function handleAudioUpload(file){
+  if(!file||!selectedBlock) return;
+  if(file.size>10*1024*1024){toast('Max 10MB','err');return;}
+  var reader=new FileReader();
+  reader.onload=function(e){
+    selectedBlock.content.src=e.target.result;
+    selectedBlock.content.pending={name:file.name,b64:e.target.result.split(',')[1],mime:file.type};
+    selectedBlock.content.label=selectedBlock.content.label||file.name;
+    refreshBlock(selectedBlock);openEditPanel(selectedBlock);
+  };
+  reader.readAsDataURL(file);
+}
+function refreshBlock(b){
+  var el=document.getElementById('blk-'+b.id);
+  if(!el) return;
+  var body=el.querySelector('.block-body');
+  if(body) renderBlockContent(body,b);
 }
 
-async function publishItem(){
-  var activePill = document.querySelector('#typePills .tpill.active');
-  if(!activePill) return;
-  var type = activePill.dataset.t;
-  var basePath = SOCIAL_FOLDER + '/' + sel.champ.year + '/' + sel.champ.slug + '/' + sel.race.slug;
+document.addEventListener('mousedown',function(e){
+  if(e.target===document.getElementById('canvas')){
+    selectedBlock=null;
+    document.querySelectorAll('.block.selected').forEach(function(el){el.classList.remove('selected');});
+    closeEditPanel();
+  }
+});
 
-  try {
-    toast('Pubblicazione…', '');
-    var itemsPath = basePath + '/index.json';
-    var items = [];
-    try { items = await ghReadJson(itemsPath); } catch(e){ items = []; }
-
-    if(type === 'photo'){
-      var photoUrl = (document.getElementById('photoUrl')||{}).value || '';
-      var title = (document.getElementById('itemTitle')||{}).value || '';
-
-      if(photoUrl){
-        items.push({ type:'photo', url: photoUrl.trim(), title: title.trim() });
-      }
-      if(pendingUploads.length){
-        for(var i=0; i<pendingUploads.length; i++){
-          var up = pendingUploads[i];
-          var fname = Date.now() + '-' + up.name.replace(/[^a-zA-Z0-9._-]/g,'-');
-          await ghPutBinary(basePath+'/'+fname, up.b64, 'Add photo: '+fname);
-          items.push({ type:'photo', file: fname, title: title||up.name });
-        }
-      }
-    } else if(type === 'video' || type === 'interview'){
-      var videoUrl = (document.getElementById('videoUrl')||{}).value || '';
-      var title = (document.getElementById('itemTitle')||{}).value || '';
-      var desc  = (document.getElementById('itemDesc')||{}).value || '';
-      if(pendingVideoFile){
-        var fname = Date.now() + '-' + pendingVideoFile.name.replace(/[^a-zA-Z0-9._-]/g,'-');
-        await ghPutBinary(basePath+'/'+fname, pendingVideoFile.b64, 'Add video: '+fname);
-        items.push({ type: type, file: fname, title: title||pendingVideoFile.name, desc: desc });
-        pendingVideoFile = null;
-      } else if(videoUrl){
-        items.push({ type: type, url: videoUrl.trim(), title: title, desc: desc });
-      }
-    } else if(type === 'article'){
-      var title = (document.getElementById('itemTitle')||{}).value || '';
-      var body  = document.getElementById('richEditor') ? document.getElementById('richEditor').innerHTML : '';
-      var date  = (document.getElementById('itemDate')||{}).value || '';
-      if(!title && !body){ toast('Inserisci titolo o testo','err'); return; }
-      items.push({ type:'article', title: title.trim(), body: body, date: date.trim() });
-    }
-
-    await ghPut(itemsPath, JSON.stringify(items, null, 2), 'Update social items: '+sel.race.slug);
-    toast('Pubblicato ✓', 'ok');
-    renderMain();
-  } catch(e){ toast('Errore: '+e.message, 'err'); }
-}
-
-async function deleteItem(idx){
-  if(!confirm('Eliminare questo contenuto?')) return;
-  var main = document.getElementById('mainArea');
-  var items = JSON.parse(main.dataset.items||'[]');
-  var item = items[idx];
-  var basePath = SOCIAL_FOLDER+'/'+sel.champ.year+'/'+sel.champ.slug+'/'+sel.race.slug;
-
-  try {
-    // If it's a file stored in repo, delete the file too
-    if(item.file){
-      try { await ghDelete(basePath+'/'+item.file, 'Delete media: '+item.file); } catch(e){}
-    }
-    items.splice(idx,1);
-    await ghPut(basePath+'/index.json', JSON.stringify(items,null,2), 'Remove item from '+sel.race.slug);
-    toast('Eliminato','ok');
-    renderMain();
-  } catch(e){ toast('Errore: '+e.message,'err'); }
-}
-
-// ── ADD YEAR / CHAMP / RACE ──
-function showAddYear(){
-  var y = prompt('Anno (es. 2027):');
-  if(!y||!y.trim()) return;
-  sel.year = y.trim();
-  renderYears();
-}
-
-async function showAddChamp(){
-  if(!token){ toast('Connetti prima GitHub','err'); return; }
-  // Load from calendario.json
-  try {
-    var cal = await ghReadJson('calendario.json');
-    var yearCal = cal.filter(function(c){ return String(c.year)===String(sel.year); });
-    if(!yearCal.length){ toast('Nessun campionato per il '+sel.year+' in calendario.json','err'); return; }
-    var opts = yearCal.map(function(c,i){ return i+': '+c.name+' ('+c.id+')'; }).join('\n');
-    var choice = prompt('Scegli campionato:\n'+opts+'\n\nInserisci il numero:');
-    if(choice===null) return;
-    var idx = parseInt(choice);
-    if(isNaN(idx)||!yearCal[idx]){ toast('Scelta non valida','err'); return; }
-    var c = yearCal[idx];
-    // Check not already added
-    if(socialIndex.find(function(x){ return x.id===c.id; })){ toast('Già presente','err'); return; }
-    socialIndex.push({ id:c.id, name:c.name, year:c.year, slug:c.slug||c.id, races:[] });
+async function savePostData(){
+  if(!currentPost||!token){toast('Connetti e seleziona un post','err');return;}
+  toast('Salvataggio...','');
+  try{
+    var data={title:currentPost.title,slug:currentPost.slug,date:currentPost.date,year:currentPost.year,campionato:currentPost.campionato,
+      blocks:blocks.map(function(b){var bc=Object.assign({},b.content||{});if(bc.pending) delete bc.pending;if(bc.src&&bc.src.indexOf('data:')===0) bc.src='';return{id:b.id,type:b.type,x:b.x,y:b.y,w:b.w,h:b.h,content:bc};})
+    };
+    await ghPut('social/posts/'+currentPost.slug+'.json',JSON.stringify(data,null,2),'Save draft: '+currentPost.slug);
+    currentPost.blockTypes=blocks.map(function(b){return b.type;});
     await saveIndex();
-    renderChamps();
-    toast('Campionato aggiunto ✓','ok');
-  } catch(e){ toast('Errore: '+e.message,'err'); }
+    toast('Bozza salvata \u2713','ok');
+  }catch(e){toast('Errore: '+e.message,'err');}
 }
 
-async function showAddRace(){
-  if(!sel.champ){ return; }
-  var label = prompt('Nome gara (es. R1 · Dragon Trail):');
-  if(!label||!label.trim()) return;
-  var slug = label.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-  if(!sel.champ.races) sel.champ.races = [];
-  sel.champ.races.push({ label: label.trim(), slug: slug });
-  // Update in socialIndex
-  var ci = socialIndex.findIndex(function(c){ return c.id===sel.champ.id; });
-  if(ci>=0) socialIndex[ci].races = sel.champ.races;
-  await saveIndex();
-  renderRaces();
-  toast('Gara aggiunta ✓','ok');
+async function publishPost(){
+  if(!currentPost||!token){toast('Connetti e seleziona un post','err');return;}
+  if(!blocks.length){toast('Aggiungi almeno un blocco','err');return;}
+  toast('Pubblicazione...','');
+  try{
+    for(var i=0;i<blocks.length;i++){
+      var b=blocks[i];
+      var pend=b.content?b.content.pending:null;
+      if(pend){
+        var ext=pend.name.split('.').pop().toLowerCase();
+        var fname=currentPost.slug+'-'+b.id+'.'+ext;
+        await ghPutBinary('social/media/'+fname,pend.b64,'Upload: '+fname);
+        b.content.src='social/media/'+fname;
+        b.content.pending=null;
+      }
+    }
+    var data={title:currentPost.title,slug:currentPost.slug,date:currentPost.date,year:currentPost.year,campionato:currentPost.campionato,
+      blocks:blocks.map(function(b){var bc=Object.assign({},b.content||{});if(bc.pending) delete bc.pending;return{id:b.id,type:b.type,x:b.x,y:b.y,w:b.w,h:b.h,content:bc};})
+    };
+    await ghPut('social/posts/'+currentPost.slug+'.json',JSON.stringify(data,null,2),'Save: '+currentPost.slug);
+    var html=generatePostHTML(currentPost,blocks);
+    await ghPut('social/posts/'+currentPost.slug+'.html',html,'Publish: '+currentPost.slug);
+    currentPost.blockTypes=blocks.map(function(b){return b.type;});
+    await saveIndex();
+    toast('Pubblicato \u2713','ok');
+  }catch(e){toast('Errore: '+e.message,'err');}
 }
 
-async function deleteChamp(id){
-  if(!confirm('Eliminare questo campionato dal Social?')) return;
-  socialIndex = socialIndex.filter(function(c){ return c.id!==id; });
-  await saveIndex();
-  sel.champ = null; sel.race = null;
-  renderChamps();
-  toast('Eliminato','ok');
+function generatePostHTML(post,bks){
+  var months=['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+  var dd='';
+  if(post.date){var dp=post.date.split('-');if(dp.length===3) dd=parseInt(dp[2],10)+' '+months[parseInt(dp[1],10)-1]+' '+dp[0];}
+  var sorted=bks.slice().sort(function(a,b){return a.y===b.y?a.x-b.x:a.y-b.y;});
+  var maxB=0;
+  bks.forEach(function(b){var bot=b.y+(b.h||10);if(bot>maxB) maxB=bot;});
+  var cvH=Math.max(500,Math.round(maxB/100*700)+60);
+
+  var o='';
+  o+='<!DOCTYPE html>\n<html lang="it">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width,initial-scale=1.0">\n';
+  o+='<title>'+esc(post.title)+' \u2014 Etna Racing Club<'+'/title>\n';
+  o+='<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@400;500;600&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">\n';
+  o+='<style>\n';
+  o+=':root{--bg:#07070f;--card:#0e0e1c;--gold:#c9a227;--gold-hi:#e8c547;--text:#e8e0d0;--muted:#c9b8a3;--dim:#5a5470}\n';
+  o+='*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}\n';
+  o+='body{background:var(--bg);color:var(--text);font-family:"Barlow Condensed",sans-serif;min-height:100vh}\n';
+  o+='.top{background:#050510;border-bottom:1px solid rgba(201,184,163,0.1);padding:12px 20px;display:flex;align-items:center;justify-content:space-between}\n';
+  o+='.logo{display:flex;align-items:center;gap:8px;font-family:"Teko",sans-serif;font-size:16px;letter-spacing:2px;color:var(--gold-hi);text-decoration:none}\n';
+  o+='.back{font-family:"Teko",sans-serif;font-size:12px;letter-spacing:2px;color:var(--gold);text-decoration:none;border:1px solid rgba(201,162,39,0.25);padding:5px 14px;border-radius:6px;text-transform:uppercase}\n';
+  o+='.back:hover{background:rgba(201,162,39,0.1)}\n';
+  o+='.hdr{max-width:1000px;margin:28px auto 0;padding:0 20px}\n';
+  o+='.hdr h1{font-family:"Russo One",sans-serif;font-size:clamp(22px,4vw,36px);color:var(--gold);letter-spacing:2px;text-transform:uppercase;text-shadow:0 0 20px rgba(201,162,39,0.3)}\n';
+  o+='.hdr .meta{font-family:"Teko",sans-serif;font-size:13px;letter-spacing:2px;color:var(--dim);margin-top:6px;text-transform:uppercase;display:flex;gap:16px}\n';
+  o+='.cv{max-width:1000px;margin:24px auto 60px;padding:0 20px;position:relative;min-height:500px;height:'+cvH+'px}\n';
+  o+='.cb{position:absolute;border-radius:8px;overflow:hidden}\n';
+  o+='.cb-t{font-family:"Russo One",sans-serif;color:var(--gold-hi);letter-spacing:1px;padding:10px;text-shadow:0 0 12px rgba(201,162,39,0.2)}\n';
+  o+='.cb-t.s{font-size:16px}.cb-t.m{font-size:22px}.cb-t.l{font-size:30px}\n';
+  o+='.cb-p{background:var(--card);border:1px solid rgba(52,152,219,0.2)}\n';
+  o+='.cb-p img{width:100%;height:100%;object-fit:cover;display:block}\n';
+  o+='.cb-v{background:var(--card);border:1px solid rgba(231,76,60,0.2)}\n';
+  o+='.cb-v iframe{width:100%;height:100%;border:none}\n';
+  o+='.cb-x{background:rgba(39,174,96,0.04);border:1px solid rgba(39,174,96,0.12);border-radius:8px;padding:14px;color:var(--muted);font-size:14px;line-height:1.7}\n';
+  o+='.cb-a{background:rgba(155,89,182,0.05);border:1px solid rgba(155,89,182,0.15);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:8px}\n';
+  o+='.cb-a span{font-family:"Teko",sans-serif;font-size:13px;letter-spacing:1px;color:#9b59b6}\n';
+  o+='.cb-a audio{width:100%}\n';
+  o+='.cb-n{background:rgba(255,140,66,0.04);border:1px solid rgba(255,140,66,0.12);border-radius:8px;padding:14px;color:#ff8c42;font-style:italic;font-size:13px;line-height:1.6}\n';
+  o+='.cb-e{background:var(--card);border:1px solid rgba(26,188,156,0.15);border-radius:8px;overflow:hidden}\n';
+  o+='.cb-e iframe{width:100%;height:100%;border:none}\n';
+  o+='@media(max-width:768px){.cv{min-height:auto;height:auto!important}\n';
+  o+='.cb{position:relative!important;left:auto!important;top:auto!important;width:100%!important;height:auto!important;margin-bottom:12px}\n';
+  o+='.cb-p img{height:auto;max-height:400px;object-fit:contain}\n';
+  o+='.cb-v{padding-bottom:56.25%;position:relative;height:0!important}.cb-v iframe{position:absolute;top:0;left:0}}\n';
+  o+='<'+'/style>\n<'+'/head>\n<body>\n';
+  o+='<div class="top"><a href="../../social.html" class="logo">\u25C0 ERC Social</a><a href="../../social.html" class="back">\u2190 Tutti i Post</a></div>\n';
+  o+='<div class="hdr"><h1>'+esc(post.title)+'</h1><div class="meta">';
+  if(post.campionato) o+='<span>'+esc(post.campionato)+'</span>';
+  if(dd) o+='<span>'+esc(dd)+'</span>';
+  o+='</div></div>\n';
+  o+='<div class="cv">\n';
+  sorted.forEach(function(b){
+    var c=b.content||{};
+    var st='left:'+b.x+'%;top:'+b.y+'%;width:'+b.w+'%';
+    if(b.h) st+=';height:'+b.h+'%';
+    if(b.type==='title'){
+      var sz={small:'s',medium:'m',large:'l'}[c.size||'medium']||'m';
+      o+='<div class="cb" style="'+st+'"><div class="cb-t '+sz+'">'+esc(c.text||'')+'</div></div>\n';
+    }else if(b.type==='photo'){
+      var src=resolveSrc(c.src||c.url||'');
+      o+='<div class="cb cb-p" style="'+st+'">';
+      if(src) o+='<img src="'+escAttr(src)+'" alt="'+escAttr(c.caption||'')+'" loading="lazy">';
+      o+='</div>\n';
+    }else if(b.type==='video'){
+      var vid=extractYTId(c.url||'');
+      o+='<div class="cb cb-v" style="'+st+'">';
+      if(vid) o+='<iframe src="https://www.youtube.com/embed/'+vid+'" allowfullscreen loading="lazy"></iframe>';
+      o+='</div>\n';
+    }else if(b.type==='text'){
+      o+='<div class="cb cb-x" style="'+st+'">'+(c.html||'')+'</div>\n';
+    }else if(b.type==='audio'){
+      var asrc=resolveSrc(c.src||c.url||'');
+      o+='<div class="cb cb-a" style="'+st+'"><span>'+esc(c.label||'Audio')+'</span>';
+      if(asrc) o+='<audio controls src="'+escAttr(asrc)+'"></audio>';
+      o+='</div>\n';
+    }else if(b.type==='notes'){
+      o+='<div class="cb cb-n" style="'+st+'">'+esc(c.text||'')+'</div>\n';
+    }else if(b.type==='embed'){
+      o+='<div class="cb cb-e" style="'+st+'">';
+      if(c.url) o+='<iframe src="'+escAttr(c.url)+'" allowfullscreen loading="lazy"></iframe>';
+      o+='</div>\n';
+    }
+  });
+  o+='</div>\n<'+'/body>\n<'+'/html>';
+  return o;
 }
 
-async function deleteRace(slug){
-  if(!confirm('Eliminare questa gara?')) return;
-  sel.champ.races = (sel.champ.races||[]).filter(function(r){ return r.slug!==slug; });
-  var ci = socialIndex.findIndex(function(c){ return c.id===sel.champ.id; });
-  if(ci>=0) socialIndex[ci].races = sel.champ.races;
-  await saveIndex();
-  sel.race = null;
-  renderRaces();
-  toast('Eliminato','ok');
+function resolveSrc(src){
+  if(!src) return '';
+  if(src.indexOf('social/media/')===0) return '../media/'+src.replace('social/media/','');
+  if(src.indexOf('data:')===0) return '';
+  return src;
 }
-
-// ── TOAST ──
-function toast(msg, type){
-  var t = document.getElementById('toast');
-  t.textContent = msg; t.className = 'show '+(type||'');
-  clearTimeout(t._t); t._t = setTimeout(function(){ t.className=''; }, 3000);
+function extractYTId(url){
+  if(!url) return null;
+  var m=url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  return m?m[1]:null;
 }
-
-function esc(s){ return String(s||'').replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+function toast(msg,type){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.className='show '+(type||'');
+  clearTimeout(t._t);t._t=setTimeout(function(){t.className='';},3500);
+}
+function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function escAttr(s){return String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 </script>
 <script src="copyright.js"></script>
 </body>
