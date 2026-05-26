@@ -57,7 +57,7 @@
     .block.selected{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 0 16px rgba(201,162,39,0.15)}
     .block.dragging{z-index:200;cursor:grabbing;box-shadow:0 6px 24px rgba(0,0,0,0.5);border-color:var(--gold-hi)}
     .block-hdr{display:flex;align-items:center;gap:5px;padding:4px 8px;border-bottom:1px solid rgba(201,184,163,0.06);font-family:'Teko',sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase}
-    .block-body{padding:6px 8px;overflow:hidden}
+    .block-body{padding:6px 8px;overflow:auto;height:calc(100% - 28px)}
     .block-del{position:absolute;top:3px;right:5px;background:none;border:none;color:rgba(192,57,43,.4);cursor:pointer;font-size:11px;display:none;z-index:10;padding:0}
     .block.selected .block-del,.block:hover .block-del{display:block}
     .block-del:hover{color:var(--del)}
@@ -423,9 +423,13 @@ function renderBlockContent(body,b){
     if(c.src) body.innerHTML='<div class="bc-photo"><img src="'+escAttr(c.src)+'" alt=""></div>';
     else body.innerHTML='<div class="bc-photo">\uD83D\uDCC1 Doppio click per caricare</div>';
   }else if(b.type==='video'){
-    var vid=extractYTId(c.url);
-    if(vid) body.innerHTML='<div style="position:relative;padding-bottom:56%;height:0;overflow:hidden;border-radius:4px"><iframe src="https://www.youtube.com/embed/'+vid+'" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe></div>';
-    else body.innerHTML='<div class="bc-video">\u25B6 Doppio click</div>';
+    if(c.src){
+      body.innerHTML='<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:4px;overflow:hidden"><video src="'+escAttr(c.src)+'" style="max-width:100%;max-height:100%" controls></video></div>';
+    }else{
+      var vid=extractYTId(c.url);
+      if(vid) body.innerHTML='<div style="position:relative;padding-bottom:56%;height:0;overflow:hidden;border-radius:4px"><iframe src="https://www.youtube.com/embed/'+vid+'" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe></div>';
+      else body.innerHTML='<div class="bc-video">\u25B6 Doppio click</div>';
+    }
   }else if(b.type==='text'){
     body.innerHTML='<div class="bc-text">'+(c.html||'')+'</div>';
   }else if(b.type==='audio'){
@@ -522,19 +526,23 @@ function openEditPanel(b){
   }else if(b.type==='photo'){
     html+='<div class="field"><label>Carica Immagine</label>';
     html+='<div class="upload-zone" onclick="document.getElementById(\'epFile\').click()">';
-    html+='<input type="file" id="epFile" accept="image/*" onchange="handlePhotoUpload(this.files[0])">';
+    html+='<input type="file" id="epFile" accept=".jpg,.jpeg,.png,.gif,.webp,.bmp,.svg" onchange="handlePhotoUpload(this.files[0])">';
     html+='<div class="upload-hint">\uD83D\uDCC1 Clicca per caricare</div></div></div>';
     html+='<div class="field"><label>oppure URL</label><input type="url" value="'+escAttr(c.url||'')+'" oninput="updProp(\'url\',this.value);updProp(\'src\',this.value)" placeholder="https://..."></div>';
     html+='<div class="field"><label>Didascalia</label><input type="text" value="'+escAttr(c.caption||'')+'" oninput="updProp(\'caption\',this.value)"></div>';
   }else if(b.type==='video'){
-    html+='<div class="field"><label>URL YouTube</label><input type="url" value="'+escAttr(c.url||'')+'" oninput="updProp(\'url\',this.value)" placeholder="https://youtube.com/watch?v=..."></div>';
+    html+='<div class="field"><label>Carica Video</label>';
+    html+='<div class="upload-zone" onclick="document.getElementById(\'epFile\').click()">';
+    html+='<input type="file" id="epFile" accept=".mp4,.webm,.mov,.avi,.mkv" onchange="handleVideoUpload(this.files[0])">';
+    html+='<div class="upload-hint">\uD83C\uDFA5 Clicca per caricare</div></div></div>';
+    html+='<div class="field"><label>oppure URL YouTube</label><input type="url" value="'+escAttr(c.url||'')+'" oninput="updProp(\'url\',this.value)" placeholder="https://youtube.com/watch?v=..."></div>';
     html+='<div class="field"><label>Didascalia</label><input type="text" value="'+escAttr(c.caption||'')+'" oninput="updProp(\'caption\',this.value)"></div>';
   }else if(b.type==='text'){
     html+='<div class="field"><label>Contenuto</label><textarea rows="6" oninput="updProp(\'html\',this.value)">'+esc(c.html||'')+'</textarea></div>';
   }else if(b.type==='audio'){
     html+='<div class="field"><label>Carica Audio</label>';
     html+='<div class="upload-zone" onclick="document.getElementById(\'epFile\').click()">';
-    html+='<input type="file" id="epFile" accept="audio/*" onchange="handleAudioUpload(this.files[0])">';
+    html+='<input type="file" id="epFile" accept=".mp3,.wav,.ogg,.m4a,.aac,.flac" onchange="handleAudioUpload(this.files[0])">';
     html+='<div class="upload-hint">\uD83C\uDFB5 Clicca per caricare</div></div></div>';
     html+='<div class="field"><label>oppure URL</label><input type="url" value="'+escAttr(c.url||'')+'" oninput="updProp(\'url\',this.value);updProp(\'src\',this.value)" placeholder="https://..."></div>';
     html+='<div class="field"><label>Etichetta</label><input type="text" value="'+escAttr(c.label||'')+'" oninput="updProp(\'label\',this.value)"></div>';
@@ -557,6 +565,12 @@ function updProp(prop,val){
 }
 
 function openInlineEdit(b){
+  // Photo/video/audio: trigger file picker directly
+  if(b.type==='photo'||b.type==='video'||b.type==='audio'){
+    var fi=document.getElementById('epFile');
+    if(fi) fi.click();
+    return;
+  }
   if(b.type!=='title'&&b.type!=='notes'&&b.type!=='text') return;
   var el=document.getElementById('blk-'+b.id);
   if(!el) return;
@@ -575,6 +589,18 @@ function openInlineEdit(b){
 function handlePhotoUpload(file){
   if(!file||!selectedBlock) return;
   if(file.size>5*1024*1024){toast('Max 5MB','err');return;}
+  var reader=new FileReader();
+  reader.onload=function(e){
+    selectedBlock.content.src=e.target.result;
+    selectedBlock.content.pending={name:file.name,b64:e.target.result.split(',')[1],mime:file.type};
+    selectedBlock.content.url='';
+    refreshBlock(selectedBlock);openEditPanel(selectedBlock);
+  };
+  reader.readAsDataURL(file);
+}
+function handleVideoUpload(file){
+  if(!file||!selectedBlock) return;
+  if(file.size>25*1024*1024){toast('Max 25MB','err');return;}
   var reader=new FileReader();
   reader.onload=function(e){
     selectedBlock.content.src=e.target.result;
@@ -684,7 +710,7 @@ function generatePostHTML(post,bks){
   o+='.cb-p{background:var(--card);border:1px solid rgba(52,152,219,0.2)}\n';
   o+='.cb-p img{width:100%;height:100%;object-fit:cover;display:block}\n';
   o+='.cb-v{background:var(--card);border:1px solid rgba(231,76,60,0.2)}\n';
-  o+='.cb-v iframe{width:100%;height:100%;border:none}\n';
+  o+='.cb-v iframe,.cb-v video{width:100%;height:100%;border:none}\n';
   o+='.cb-x{background:rgba(39,174,96,0.04);border:1px solid rgba(39,174,96,0.12);border-radius:8px;padding:14px;color:var(--muted);font-size:14px;line-height:1.7}\n';
   o+='.cb-a{background:rgba(155,89,182,0.05);border:1px solid rgba(155,89,182,0.15);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:8px}\n';
   o+='.cb-a span{font-family:"Teko",sans-serif;font-size:13px;letter-spacing:1px;color:#9b59b6}\n';
@@ -695,7 +721,7 @@ function generatePostHTML(post,bks){
   o+='@media(max-width:768px){.cv{min-height:auto;height:auto!important}\n';
   o+='.cb{position:relative!important;left:auto!important;top:auto!important;width:100%!important;height:auto!important;margin-bottom:12px}\n';
   o+='.cb-p img{height:auto;max-height:400px;object-fit:contain}\n';
-  o+='.cb-v{padding-bottom:56.25%;position:relative;height:0!important}.cb-v iframe{position:absolute;top:0;left:0}}\n';
+  o+='.cb-v{padding-bottom:56.25%;position:relative;height:0!important}.cb-v iframe,.cb-v video{position:absolute;top:0;left:0}}\n';
   o+='<'+'/style>\n<'+'/head>\n<body>\n';
   o+='<div class="top"><a href="../../social.html" class="logo">\u25C0 ERC Social</a><a href="../../social.html" class="back">\u2190 Tutti i Post</a></div>\n';
   o+='<div class="hdr"><h1>'+esc(post.title)+'</h1><div class="meta">';
@@ -716,9 +742,11 @@ function generatePostHTML(post,bks){
       if(src) o+='<img src="'+escAttr(src)+'" alt="'+escAttr(c.caption||'')+'" loading="lazy">';
       o+='</div>\n';
     }else if(b.type==='video'){
+      var vsrc=resolveSrc(c.src||'');
       var vid=extractYTId(c.url||'');
       o+='<div class="cb cb-v" style="'+st+'">';
-      if(vid) o+='<iframe src="https://www.youtube.com/embed/'+vid+'" allowfullscreen loading="lazy"></iframe>';
+      if(vsrc) o+='<video src="'+escAttr(vsrc)+'" controls style="width:100%;height:100%;object-fit:contain"></video>';
+      else if(vid) o+='<iframe src="https://www.youtube.com/embed/'+vid+'" allowfullscreen loading="lazy"></iframe>';
       o+='</div>\n';
     }else if(b.type==='text'){
       o+='<div class="cb cb-x" style="'+st+'">'+(c.html||'')+'</div>\n';
