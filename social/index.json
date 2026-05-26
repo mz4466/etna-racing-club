@@ -20,7 +20,8 @@
     "campionato": "",
     "blockTypes": [
       "title",
-      "text"
+      "text",
+      "photo"
     ],
     "created": "2026-05-26T19:58:24.037Z"
   }
