@@ -5,7 +5,11 @@
     "date": "2026-05-26",
     "year": 2026,
     "campionato": "",
-    "blockTypes": [],
+    "blockTypes": [
+      "video",
+      "title",
+      "text"
+    ],
     "created": "2026-05-26T20:05:52.638Z"
   },
   {
