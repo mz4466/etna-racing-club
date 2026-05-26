@@ -1,0 +1,46 @@
+{
+  "title": "Stagione in Arrivo - Estate 2026",
+  "slug": "stagione-in-arrivo-estate-2026",
+  "date": "2026-05-26",
+  "year": 2026,
+  "campionato": "",
+  "blocks": [
+    {
+      "id": "b0",
+      "type": "video",
+      "x": 12.918983295807987,
+      "y": 23.002401588717625,
+      "w": 50.19,
+      "h": 65.76,
+      "content": {
+        "url": "",
+        "caption": "",
+        "src": "social/media/stagione-in-arrivo-estate-2026-b0.mp4",
+        "pending": null
+      }
+    },
+    {
+      "id": "b1",
+      "type": "title",
+      "x": 12.78,
+      "y": 5.32,
+      "w": 24.23,
+      "h": 12.12,
+      "content": {
+        "text": "Sorprese di Stagione",
+        "size": "medium"
+      }
+    },
+    {
+      "id": "b3",
+      "type": "text",
+      "x": 42.03,
+      "y": 7.41,
+      "w": 20.75,
+      "h": 9.63,
+      "content": {
+        "html": "La Nuove Stagione Estate 2026 sta per Arrivare"
+      }
+    }
+  ]
+}
