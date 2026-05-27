@@ -8,7 +8,8 @@
     "blockTypes": [
       "video",
       "title",
-      "text"
+      "text",
+      "title"
     ],
     "created": "2026-05-26T20:05:52.638Z"
   },
