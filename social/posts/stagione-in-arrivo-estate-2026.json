@@ -22,10 +22,10 @@
     {
       "id": "b1",
       "type": "title",
-      "x": 12.78,
-      "y": 5.32,
-      "w": 24.23,
-      "h": 12.12,
+      "x": 13.17,
+      "y": 6.48,
+      "w": 27.32,
+      "h": 15.61,
       "content": {
         "text": "Sorprese di Stagione",
         "size": "medium"
@@ -34,12 +34,24 @@
     {
       "id": "b3",
       "type": "text",
-      "x": 42.03,
-      "y": 7.41,
-      "w": 20.75,
-      "h": 9.63,
+      "x": 41.06,
+      "y": 6.91,
+      "w": 21.04,
+      "h": 14.45,
       "content": {
-        "html": "La Nuove Stagione Estate 2026 sta per Arrivare"
+        "html": "<div><br></div>La Nuove Stagione 2026/27 sta per Arrivare"
+      }
+    },
+    {
+      "id": "b4",
+      "type": "title",
+      "x": 63.43,
+      "y": 8.12,
+      "w": 21.04,
+      "h": 18.43,
+      "content": {
+        "text": "Nuovo Titolo",
+        "size": "medium"
       }
     }
   ]
