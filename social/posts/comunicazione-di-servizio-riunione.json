@@ -1,0 +1,32 @@
+{
+  "title": "Comunicazione di servizio - Riunione",
+  "slug": "comunicazione-di-servizio-riunione",
+  "date": "2026-05-25",
+  "year": 2026,
+  "campionato": "",
+  "blocks": [
+    {
+      "id": "b0",
+      "type": "title",
+      "x": 14.8390415089899,
+      "y": 24.986048433469257,
+      "w": 68.34,
+      "h": 13.95,
+      "content": {
+        "text": "Riunione Etna Racing Club",
+        "size": "medium"
+      }
+    },
+    {
+      "id": "b1",
+      "type": "text",
+      "x": 14.78,
+      "y": 40.58,
+      "w": 68.44,
+      "h": 24.08,
+      "content": {
+        "html": "Domenica 21 giugno alle 10:00 ci sarà una riunione di fine stagione/inizio seconda stagione \nA cui siete TUTTI invitati\nCercate di essere presenti per favore perché verranno fatte tante comunicazioni importanti \nGrazie "
+      }
+    }
+  ]
+}
