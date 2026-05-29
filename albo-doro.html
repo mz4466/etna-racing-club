@@ -46,9 +46,10 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 .season-group{margin-bottom:32px}
 
 .champ-card{background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border-hi);border-radius:12px;padding:20px;display:flex;align-items:center;gap:20px;margin-bottom:12px}
-.champ-icon{flex-shrink:0;width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px}
+.champ-icon{flex-shrink:0;width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;overflow:hidden}
 .champ-icon-camp{background:linear-gradient(135deg,rgba(201,162,39,0.25),rgba(232,197,71,0.10));border:2px solid rgba(201,162,39,0.4)}
 .champ-icon-trof{background:rgba(201,162,39,0.08);border:1px solid rgba(201,162,39,0.2)}
+.champ-icon img{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(201,162,39,0.3))}
 .champ-info{flex:1;min-width:0}
 .champ-cat{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:2px}
 .champ-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--text);letter-spacing:1px;margin-bottom:6px}
@@ -65,7 +66,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
 .trofei-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .trofeo-mini{background:var(--card);border:1px solid rgba(201,162,39,0.08);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px}
-.trofeo-mini-icon{font-size:18px;flex-shrink:0}
+.trofeo-mini-icon{flex-shrink:0;width:36px;height:36px;display:flex;align-items:center;justify-content:center}
+.trofeo-mini-icon img{width:32px;height:32px;object-fit:contain}
 .trofeo-mini-info{flex:1;min-width:0}
 .trofeo-mini-cat{font-family:'Teko',sans-serif;font-size:10px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
 .trofeo-mini-name{font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -112,6 +114,19 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 (function(){
 
   var BASE = '';
+  var calMap = {};
+
+  function fetchCalendario(){
+    return fetch(BASE + 'calendario.json?_=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(list){
+        for(var i=0;i<list.length;i++){
+          var e = list[i];
+          if(e.id) calMap[e.id] = { name: e.name || '', trophy: e.trophy || '' };
+        }
+      })
+      .catch(function(){});
+  }
 
   function fetchIndex(){
     return fetch(BASE + 'risultati/index.json?_=' + Date.now())
@@ -147,7 +162,9 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   }
 
   function loadAll(){
-    fetchIndex().then(function(files){
+    fetchCalendario().then(function(){
+      return fetchIndex();
+    }).then(function(files){
       var total = files.length;
       var done = 0;
       var promises = [];
@@ -184,12 +201,16 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       var yr = (race.data || '').substring(0,4) || (race._file || '').substring(0,4) || '????';
       var top3 = race.standings.slice(0, 3);
       var trof = isTrofeo(champId);
+      var calEntry = calMap[champId] || {};
+      var displayName = calEntry.name || prettifyName(champId);
+      var trophyFile = calEntry.trophy || '';
 
       titles.push({
         champId: champId,
         year: yr,
         isTrofeo: trof,
-        name: prettifyName(champId),
+        name: displayName,
+        trophy: trophyFile,
         numRaces: race.garaTot || '?',
         first:  top3[0] ? top3[0].nome : '-',
         second: top3[1] ? top3[1].nome : '-',
@@ -288,9 +309,15 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
   function buildFullCard(t, isTrof){
     var iconCls = isTrof ? 'champ-icon-trof' : 'champ-icon-camp';
-    var emoji = isTrof ? '&#127941;' : '&#127942;';
     var catLabel = isTrof ? 'Trofeo' : 'Campionato';
     var racesLabel = parseInt(t.numRaces) === 1 ? '1 gara' : t.numRaces + ' gare';
+
+    var iconInner = '';
+    if(t.trophy){
+      iconInner = '<img src="trophy_png/' + t.trophy + '" alt="' + t.name + '">';
+    } else {
+      iconInner = isTrof ? '&#127941;' : '&#127942;';
+    }
 
     var podiumHTML =
       '<div class="podium-row"><div class="podium-dot podium-dot-gold"></div><span class="podium-name-gold">' + t.first + '</span></div>';
@@ -302,7 +329,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     }
 
     return '<div class="champ-card">' +
-      '<div class="champ-icon ' + iconCls + '">' + emoji + '</div>' +
+      '<div class="champ-icon ' + iconCls + '">' + iconInner + '</div>' +
       '<div class="champ-info">' +
         '<div class="champ-cat">' + catLabel + '</div>' +
         '<div class="champ-name">' + t.name + '</div>' +
@@ -313,8 +340,14 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   }
 
   function buildMiniCard(t){
+    var iconInner = '';
+    if(t.trophy){
+      iconInner = '<img src="trophy_png/' + t.trophy + '" alt="' + t.name + '">';
+    } else {
+      iconInner = '<span style="font-size:18px">&#127941;</span>';
+    }
     return '<div class="trofeo-mini">' +
-      '<span class="trofeo-mini-icon">&#127941;</span>' +
+      '<div class="trofeo-mini-icon">' + iconInner + '</div>' +
       '<div class="trofeo-mini-info">' +
         '<div class="trofeo-mini-cat">Trofeo</div>' +
         '<div class="trofeo-mini-name">' + t.name + '</div>' +
