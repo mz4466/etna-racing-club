@@ -22,6 +22,7 @@
     if (file === 'piloti_gt7.html')   return pg === 'piloti_gt7.html';
     if (file === 'social.html')       return pg === 'social.html';
     if (file === 'statistiche.html')  return pg === 'statistiche.html';
+    if (file === 'albo-doro.html')    return pg === 'albo-doro.html';
     if (file === 'regolamento_etna_racing_club.html') return pg === 'regolamento_etna_racing_club.html';
     return false;
   }
@@ -34,6 +35,7 @@
     { label: 'Piloti',      href: 'piloti_gt7.html' },
     { label: 'Social',       href: 'social.html' },
     { label: 'Statistiche', href: 'statistiche.html' },
+    { label: "Albo d'Oro", href: 'albo-doro.html' },
     { label: 'Regolamento', href: 'regolamento_etna_racing_club.html' }
   ];
 

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Albo d'Oro — Etna Racing Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@300;400;500;600;700&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07070f;--card:#0e0e1c;--card2:#131320;
+  --border:rgba(201,162,39,0.12);--border-hi:rgba(201,162,39,0.18);
+  --gold:#c9a227;--gold-hi:#e8c547;--gold-dim:rgba(201,162,39,0.10);
+  --text:#e8e0d0;--muted:#8a8098;--dim:#5a5470;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh}
+
+.page-header{
+  background:linear-gradient(180deg,rgba(10,10,24,0.98),var(--bg));
+  border-bottom:2px solid var(--gold);
+  padding:36px 24px 28px;text-align:center;
+}
+.page-header img{width:64px;height:64px;object-fit:contain;margin-bottom:14px;filter:drop-shadow(0 0 12px rgba(201,162,39,0.3));border-radius:8px}
+.page-season{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
+.page-title{font-family:'Russo One',sans-serif;font-size:clamp(24px,5vw,36px);color:var(--text);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px}
+.page-sub{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:3px;color:var(--dim);text-transform:uppercase}
+
+.wrap{max-width:900px;margin:0 auto;padding:24px 20px 60px}
+
+.loading{text-align:center;padding:60px 20px}
+.loading-bar{width:240px;height:6px;background:rgba(201,162,39,0.10);border-radius:3px;margin:16px auto 0;overflow:hidden}
+.loading-fill{height:100%;background:var(--gold);border-radius:3px;width:0%;transition:width 0.3s}
+.loading-text{font-family:'Teko',sans-serif;font-size:16px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-top:10px}
+
+.overview-strip{display:flex;gap:16px;justify-content:center;margin-bottom:28px;flex-wrap:wrap}
+.ov-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 28px;text-align:center}
+.ov-num{font-family:'Russo One',sans-serif;font-size:28px;color:var(--gold-hi);line-height:1}
+.ov-label{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-top:4px}
+
+.year-divider{display:flex;align-items:center;gap:12px;margin-bottom:20px;margin-top:8px}
+.year-divider .line{height:1px;flex:1}
+.year-divider .line-l{background:linear-gradient(90deg,transparent,rgba(201,162,39,0.3))}
+.year-divider .line-r{background:linear-gradient(90deg,rgba(201,162,39,0.3),transparent)}
+.year-label{font-family:'Russo One',sans-serif;font-size:18px;letter-spacing:4px;color:var(--gold);text-transform:uppercase}
+
+.season-group{margin-bottom:32px}
+
+.champ-card{background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border-hi);border-radius:12px;padding:20px;display:flex;align-items:center;gap:20px;margin-bottom:12px}
+.champ-icon{flex-shrink:0;width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px}
+.champ-icon-camp{background:linear-gradient(135deg,rgba(201,162,39,0.25),rgba(232,197,71,0.10));border:2px solid rgba(201,162,39,0.4)}
+.champ-icon-trof{background:rgba(201,162,39,0.08);border:1px solid rgba(201,162,39,0.2)}
+.champ-info{flex:1;min-width:0}
+.champ-cat{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:2px}
+.champ-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--text);letter-spacing:1px;margin-bottom:6px}
+.champ-races{font-family:'Teko',sans-serif;font-size:13px;color:var(--dim);letter-spacing:1px}
+.champ-podium{text-align:right;flex-shrink:0}
+.podium-row{display:flex;align-items:center;gap:6px;justify-content:flex-end}
+.podium-row+.podium-row{margin-top:4px}
+.podium-dot{border-radius:50%;flex-shrink:0}
+.podium-dot-gold{width:8px;height:8px;background:#FFD700}
+.podium-dot-silver{width:6px;height:6px;background:#C0C0C0}
+.podium-dot-bronze{width:6px;height:6px;background:#CD7F32}
+.podium-name-gold{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--gold-hi);letter-spacing:1px}
+.podium-name-sub{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted)}
+
+.trofei-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.trofeo-mini{background:var(--card);border:1px solid rgba(201,162,39,0.08);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px}
+.trofeo-mini-icon{font-size:18px;flex-shrink:0}
+.trofeo-mini-info{flex:1;min-width:0}
+.trofeo-mini-cat{font-family:'Teko',sans-serif;font-size:10px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
+.trofeo-mini-name{font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trofeo-mini-winner{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--gold-hi);flex-shrink:0}
+
+.footer-note{text-align:center;font-size:12px;letter-spacing:2px;color:rgba(201,184,163,0.3);margin-top:20px}
+
+@media(max-width:700px){
+  .champ-card{flex-direction:column;text-align:center;gap:12px}
+  .champ-podium{text-align:center}
+  .podium-row{justify-content:center}
+  .trofei-grid{grid-template-columns:1fr}
+  .overview-strip{gap:10px}
+  .ov-card{padding:12px 20px}
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <a href="index.html"><img src="etna-logo.jpg" alt="Etna Racing Club"></a>
+  <div class="page-season">Etna Racing Club</div>
+  <h1 class="page-title">Albo d'Oro</h1>
+  <div class="page-sub">Tutti i campioni nella storia del club</div>
+</header>
+
+<div class="wrap">
+
+  <div class="loading" id="loadingBox">
+    <div style="font-family:'Russo One',sans-serif;font-size:18px;color:var(--gold);letter-spacing:2px">Caricamento dati...</div>
+    <div class="loading-bar"><div class="loading-fill" id="loadingFill"></div></div>
+    <div class="loading-text" id="loadingText">Recupero risultati...</div>
+  </div>
+
+  <div id="dashboard" style="display:none">
+    <div class="overview-strip" id="overviewStrip"></div>
+    <div id="seasonsContainer"></div>
+    <div class="footer-note" id="footerNote"></div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+
+  var BASE = '';
+
+  function fetchIndex(){
+    return fetch(BASE + 'risultati/index.json?_=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(list){
+        var files = [];
+        for(var i=0;i<list.length;i++){
+          if(list[i] !== 'index.json') files.push(list[i]);
+        }
+        return files;
+      });
+  }
+
+  function fetchRace(file){
+    return fetch(BASE + 'risultati/' + file + '?_=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(d){ d._file = file; return d; });
+  }
+
+  function prettifyName(champId){
+    var s = champId
+      .replace(/-\d{4}(-\d{4})?$/, '')
+      .replace(/-/g, ' ')
+      .replace(/\b\d+\b/g, function(m){ return m + '°'; })
+      .trim();
+    if(!s) return champId;
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  function isTrofeo(champId){
+    var low = (champId || '').toLowerCase();
+    return low.indexOf('trofeo') !== -1 || (low.indexOf('crono') !== -1 && low.indexOf('campionato') === -1);
+  }
+
+  function loadAll(){
+    fetchIndex().then(function(files){
+      var total = files.length;
+      var done = 0;
+      var promises = [];
+      for(var i=0;i<files.length;i++){
+        (function(f){
+          var p = fetchRace(f).then(function(d){
+            done++;
+            var pctDone = Math.round(done/total*100);
+            document.getElementById('loadingFill').style.width = pctDone + '%';
+            document.getElementById('loadingText').textContent = done + ' / ' + total + ' risultati';
+            return d;
+          });
+          promises.push(p);
+        })(files[i]);
+      }
+      Promise.all(promises).then(function(results){
+        processAndRender(results);
+      });
+    }).catch(function(){
+      document.getElementById('loadingText').textContent = 'Errore nel caricamento';
+    });
+  }
+
+  function processAndRender(races){
+    var titles = [];
+    var winners = {};
+
+    for(var i=0;i<races.length;i++){
+      var race = races[i];
+      var isFinal = String(race.garaNum) === String(race.garaTot) && race.standings && race.standings.length;
+      if(!isFinal) continue;
+
+      var champId = race.champId || race.champIdx || '';
+      var yr = (race.data || '').substring(0,4) || (race._file || '').substring(0,4) || '????';
+      var top3 = race.standings.slice(0, 3);
+      var trof = isTrofeo(champId);
+
+      titles.push({
+        champId: champId,
+        year: yr,
+        isTrofeo: trof,
+        name: prettifyName(champId),
+        numRaces: race.garaTot || '?',
+        first:  top3[0] ? top3[0].nome : '-',
+        second: top3[1] ? top3[1].nome : '-',
+        third:  top3[2] ? top3[2].nome : '-'
+      });
+
+      if(top3[0]){
+        winners[top3[0].nome] = (winners[top3[0].nome] || 0) + 1;
+      }
+    }
+
+    /* group by year desc */
+    var yearMap = {};
+    for(var j=0;j<titles.length;j++){
+      var t = titles[j];
+      if(!yearMap[t.year]) yearMap[t.year] = [];
+      yearMap[t.year].push(t);
+    }
+    var years = Object.keys(yearMap).sort(function(a,b){ return b.localeCompare(a); });
+
+    /* sort within each year: campionati first (by numRaces desc), then trofei */
+    for(var yi=0;yi<years.length;yi++){
+      yearMap[years[yi]].sort(function(a,b){
+        if(a.isTrofeo !== b.isTrofeo) return a.isTrofeo ? 1 : -1;
+        var ra = parseInt(a.numRaces) || 0;
+        var rb = parseInt(b.numRaces) || 0;
+        return rb - ra;
+      });
+    }
+
+    render(titles.length, Object.keys(winners).length, years, yearMap);
+  }
+
+  function render(totalTitles, uniqueWinners, years, yearMap){
+    document.getElementById('loadingBox').style.display = 'none';
+    document.getElementById('dashboard').style.display = '';
+
+    /* overview */
+    document.getElementById('overviewStrip').innerHTML =
+      '<div class="ov-card"><div class="ov-num">' + totalTitles + '</div><div class="ov-label">Titoli assegnati</div></div>' +
+      '<div class="ov-card"><div class="ov-num">' + uniqueWinners + '</div><div class="ov-label">Campioni diversi</div></div>';
+
+    /* seasons */
+    var html = '';
+    for(var yi=0;yi<years.length;yi++){
+      var yr = years[yi];
+      var items = yearMap[yr];
+
+      html += '<div class="season-group">';
+      html += '<div class="year-divider">' +
+        '<div class="line line-l"></div>' +
+        '<span class="year-label">' + yr + '</span>' +
+        '<div class="line line-r"></div>' +
+      '</div>';
+
+      var campionati = [];
+      var trofei = [];
+      for(var i=0;i<items.length;i++){
+        if(items[i].isTrofeo) trofei.push(items[i]);
+        else campionati.push(items[i]);
+      }
+
+      /* campionati - full cards */
+      for(var ci=0;ci<campionati.length;ci++){
+        html += buildFullCard(campionati[ci], false);
+      }
+
+      /* trofei with 3+ races - full cards */
+      var bigTrofei = [];
+      var smallTrofei = [];
+      for(var ti=0;ti<trofei.length;ti++){
+        var numR = parseInt(trofei[ti].numRaces) || 0;
+        if(numR >= 3) bigTrofei.push(trofei[ti]);
+        else smallTrofei.push(trofei[ti]);
+      }
+      for(var bt=0;bt<bigTrofei.length;bt++){
+        html += buildFullCard(bigTrofei[bt], true);
+      }
+
+      /* small trofei - compact grid */
+      if(smallTrofei.length > 0){
+        html += '<div class="trofei-grid">';
+        for(var st=0;st<smallTrofei.length;st++){
+          html += buildMiniCard(smallTrofei[st]);
+        }
+        html += '</div>';
+      }
+
+      html += '</div>';
+    }
+
+    document.getElementById('seasonsContainer').innerHTML = html;
+    document.getElementById('footerNote').textContent =
+      'Dati calcolati automaticamente da ' + totalTitles + ' titoli completati';
+  }
+
+  function buildFullCard(t, isTrof){
+    var iconCls = isTrof ? 'champ-icon-trof' : 'champ-icon-camp';
+    var emoji = isTrof ? '&#127941;' : '&#127942;';
+    var catLabel = isTrof ? 'Trofeo' : 'Campionato';
+    var racesLabel = parseInt(t.numRaces) === 1 ? '1 gara' : t.numRaces + ' gare';
+
+    var podiumHTML =
+      '<div class="podium-row"><div class="podium-dot podium-dot-gold"></div><span class="podium-name-gold">' + t.first + '</span></div>';
+    if(t.second && t.second !== '-'){
+      podiumHTML += '<div class="podium-row"><div class="podium-dot podium-dot-silver"></div><span class="podium-name-sub">' + t.second + '</span></div>';
+    }
+    if(t.third && t.third !== '-'){
+      podiumHTML += '<div class="podium-row"><div class="podium-dot podium-dot-bronze"></div><span class="podium-name-sub">' + t.third + '</span></div>';
+    }
+
+    return '<div class="champ-card">' +
+      '<div class="champ-icon ' + iconCls + '">' + emoji + '</div>' +
+      '<div class="champ-info">' +
+        '<div class="champ-cat">' + catLabel + '</div>' +
+        '<div class="champ-name">' + t.name + '</div>' +
+        '<div class="champ-races">' + racesLabel + '</div>' +
+      '</div>' +
+      '<div class="champ-podium">' + podiumHTML + '</div>' +
+    '</div>';
+  }
+
+  function buildMiniCard(t){
+    return '<div class="trofeo-mini">' +
+      '<span class="trofeo-mini-icon">&#127941;</span>' +
+      '<div class="trofeo-mini-info">' +
+        '<div class="trofeo-mini-cat">Trofeo</div>' +
+        '<div class="trofeo-mini-name">' + t.name + '</div>' +
+      '</div>' +
+      '<span class="trofeo-mini-winner">' + t.first + '</span>' +
+    '</div>';
+  }
+
+  loadAll();
+
+})();
+</script>
+<script src="copyright.js"></script>
+<script src="nav.js"></script>
+</body>
+</html>
