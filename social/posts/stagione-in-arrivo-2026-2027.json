@@ -1,0 +1,35 @@
+{
+  "title": "Stagione in Arrivo - 2026/2027",
+  "slug": "stagione-in-arrivo-2026-2027",
+  "date": "2026-05-25",
+  "year": 2026,
+  "campionato": "",
+  "blocks": [
+    {
+      "id": "b0",
+      "type": "title",
+      "x": 7.18,
+      "y": 10.6,
+      "w": 73.75,
+      "h": 12.62,
+      "content": {
+        "text": "Stagione 2026/2027",
+        "size": "large"
+      }
+    },
+    {
+      "id": "b1",
+      "type": "video",
+      "x": 7.26,
+      "y": 25.76,
+      "w": 73.69,
+      "h": 81.37,
+      "content": {
+        "url": "",
+        "caption": "",
+        "src": "social/media/stagione-in-arrivo-2026-2027-b1.mp4",
+        "pending": null
+      }
+    }
+  ]
+}
