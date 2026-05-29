@@ -1,0 +1,35 @@
+{
+  "title": "Anniversario",
+  "slug": "anniversario",
+  "date": "2026-05-27",
+  "year": 2026,
+  "campionato": "",
+  "blocks": [
+    {
+      "id": "b0",
+      "type": "title",
+      "x": 13.6,
+      "y": 3.65,
+      "w": 43.53,
+      "h": 12.62,
+      "content": {
+        "text": "Primo Anniversario - Etna Racing Club",
+        "size": "large"
+      }
+    },
+    {
+      "id": "b1",
+      "type": "photo",
+      "x": 13.27,
+      "y": 17.79,
+      "w": 43.92,
+      "h": 77.88,
+      "content": {
+        "src": "social/media/anniversario-b1.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    }
+  ]
+}
