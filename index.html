@@ -352,6 +352,99 @@
         .calendario-button .cal-icon { font-size: 1.1em; }
 
         .calendario-badge {
+
+        /* ── UPCOMING EVENTS ── */
+        .upcoming-wrap {
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            animation: fadeIn 2s ease-out 2.4s both;
+        }
+        .upcoming-card {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            text-decoration: none;
+            color: inherit;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, rgba(14,14,28,0.95), rgba(19,19,32,0.95));
+            border: 1px solid rgba(201,162,39,0.15);
+            border-radius: 14px;
+            transition: all 0.3s;
+        }
+        .upcoming-card:hover {
+            border-color: rgba(201,162,39,0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(201,162,39,0.12);
+        }
+        .upcoming-countdown {
+            flex-shrink: 0;
+            text-align: center;
+            min-width: 64px;
+        }
+        .upcoming-days {
+            font-family: 'Russo One', sans-serif;
+            font-size: 28px;
+            color: #e8c547;
+            line-height: 1;
+        }
+        .upcoming-days-label {
+            font-family: 'Teko', sans-serif;
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: rgba(201,162,39,0.6);
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+        .upcoming-today .upcoming-days { color: #ff5014; }
+        .upcoming-today { border-color: rgba(255,80,20,0.3); }
+        .upcoming-divider {
+            width: 1px;
+            height: 40px;
+            background: rgba(201,162,39,0.15);
+            flex-shrink: 0;
+        }
+        .upcoming-info { flex: 1; min-width: 0; }
+        .upcoming-champ {
+            font-family: 'Teko', sans-serif;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--gold, #c9a227);
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+        .upcoming-circuit {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            color: #e8e0d0;
+            letter-spacing: 0.5px;
+        }
+        .upcoming-date {
+            font-family: 'Teko', sans-serif;
+            font-size: 12px;
+            color: #5a5470;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+        .upcoming-round {
+            flex-shrink: 0;
+            font-family: 'Teko', sans-serif;
+            font-size: 13px;
+            letter-spacing: 2px;
+            color: rgba(201,162,39,0.5);
+            text-transform: uppercase;
+        }
+        @media(max-width:600px){
+            .upcoming-card { padding: 14px 16px; gap: 12px; }
+            .upcoming-days { font-size: 22px; }
+            .upcoming-countdown { min-width: 50px; }
+            .upcoming-circuit { font-size: 14px; }
+        }
+
+        .calendario-badge {
             font-family: 'Teko', sans-serif;
             font-size: 13px;
             letter-spacing: 3px;
@@ -607,6 +700,8 @@
                 </a>
             </div>
 
+            <div class="upcoming-wrap" id="upcomingEvents"></div>
+
             <div class="championship-grid">
                 <a href="archivio.html" class="info-card" role="button" aria-label="Archivio gare">
                     <img class="info-card-image" src="archive.png" alt="Archivio gare">
@@ -672,6 +767,101 @@
           set('cfg-copyright',    cfg.copyright);
         } catch(e){}
       })();
+
+      // ── Upcoming events ──
+      (function(){
+        var MONTHS = ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
+
+        function parseDate(s){
+          if(!s) return null;
+          var p = s.split('-');
+          if(p.length < 3) return null;
+          return new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2]));
+        }
+
+        function daysBetween(a, b){
+          var ms = b.getTime() - a.getTime();
+          return Math.ceil(ms / 86400000);
+        }
+
+        function formatDate(d){
+          return d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear();
+        }
+
+        fetch('calendario.json?_=' + Date.now())
+          .then(function(r){ return r.json(); })
+          .then(function(cal){
+            var today = new Date();
+            today.setHours(0,0,0,0);
+
+            var upcoming = [];
+            for(var i=0;i<cal.length;i++){
+              var c = cal[i];
+              var st = (c.status || '').toLowerCase().replace(/-/g,' ').trim();
+              if(st === 'concluso' || st === 'annullato') continue;
+
+              var rounds = c.rounds || [];
+              var completed = parseInt(c.completedRounds) || 0;
+
+              for(var ri=0;ri<rounds.length;ri++){
+                var rd = parseDate(rounds[ri].date);
+                if(!rd) continue;
+                if(daysBetween(today, rd) < 0) continue;
+
+                /* skip already-completed rounds */
+                if(ri < completed) continue;
+
+                upcoming.push({
+                  champName: c.name || '',
+                  cat: c.cat || '',
+                  circuit: rounds[ri].circuit || '',
+                  date: rd,
+                  dateStr: formatDate(rd),
+                  days: daysBetween(today, rd),
+                  roundNum: ri + 1,
+                  totalRounds: rounds.length,
+                  file: c.file || ''
+                });
+              }
+            }
+
+            /* sort by date, take first few */
+            upcoming.sort(function(a,b){ return a.days - b.days; });
+            var show = upcoming.slice(0, 4);
+
+            if(!show.length) return;
+
+            var html = '';
+            for(var j=0;j<show.length;j++){
+              var ev = show[j];
+              var isToday = ev.days === 0;
+              var daysText = isToday ? 'OGGI' : ev.days.toString();
+              var daysLabel = isToday ? '' : (ev.days === 1 ? 'giorno' : 'giorni');
+              var todayCls = isToday ? ' upcoming-today' : '';
+              var href = ev.file ? ' href="' + ev.file + '"' : '';
+              var tag = ev.file ? 'a' : 'div';
+              var roundLabel = 'R' + ev.roundNum + '/' + ev.totalRounds;
+
+              html += '<' + tag + todayCls + ' class="upcoming-card"' + href + '>'
+                + '<div class="upcoming-countdown">'
+                + '<div class="upcoming-days">' + daysText + '</div>'
+                + (daysLabel ? '<div class="upcoming-days-label">' + daysLabel + '</div>' : '')
+                + '</div>'
+                + '<div class="upcoming-divider"></div>'
+                + '<div class="upcoming-info">'
+                + '<div class="upcoming-champ">' + ev.cat + ' · ' + ev.champName + '</div>'
+                + '<div class="upcoming-circuit">' + ev.circuit + '</div>'
+                + '<div class="upcoming-date">' + ev.dateStr + '</div>'
+                + '</div>'
+                + '<div class="upcoming-round">' + roundLabel + '</div>'
+                + '</' + tag + '>';
+            }
+
+            document.getElementById('upcomingEvents').innerHTML = html;
+          })
+          .catch(function(e){ console.warn('Upcoming events:', e.message); });
+      })();
+
       let _sc = 0, _st;
       function secretClick() {
         clearTimeout(_st);
