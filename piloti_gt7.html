@@ -37,11 +37,6 @@
     backdrop-filter:blur(10px);
 }
         .pilot-filter-btn{font-family:'Russo One',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 16px;border-radius:20px;border:1px solid rgba(201,184,163,0.15);background:transparent;color:rgba(201,184,163,0.4);cursor:pointer;transition:all .2s;}
-        .number-roster{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;padding:12px 16px;background:rgba(14,14,28,0.6);border:1px solid rgba(201,162,39,0.08);border-radius:12px;align-items:center;}
-        .number-roster-title{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:3px;color:rgba(201,162,39,0.4);text-transform:uppercase;margin-right:8px;white-space:nowrap;}
-        .number-roster-item{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;padding:3px 10px;border-radius:6px;background:rgba(201,162,39,0.06);border:1px solid rgba(201,162,39,0.10);color:rgba(201,184,163,0.6);white-space:nowrap;}
-        .number-roster-num{font-family:'Russo One',sans-serif;font-size:13px;color:#e8c547;margin-right:4px;}
-        .number-roster-tbd{font-style:italic;color:rgba(201,184,163,0.3);border-style:dashed;}
         .pilot-filter-btn:hover{border-color:rgba(255,80,20,0.4);color:var(--cream);}
         .pilot-filter-btn.active{background:rgba(255,80,20,0.12);border-color:rgba(255,80,20,0.4);color:var(--cream);}
         .btn { background: linear-gradient(90deg,var(--accent),var(--accent2)); color:#fff; border:none; padding:12px 18px; border-radius:12px; cursor:pointer; font-family:'Russo One',sans-serif; letter-spacing:1px; box-shadow:0 10px 30px rgba(255,80,20,0.25); }
@@ -306,6 +301,9 @@
 <main class="container">
     <div class="controls">
         <input id="search" type="search" placeholder="Cerca pilota, PSN, auto..." style="flex:1;padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.06);background:#0f1014;color:var(--cream);transition:.25s ease">
+        <select id="numberRoster" style="padding:12px 14px;border-radius:10px;border:1px solid rgba(201,162,39,0.2);background:#0b0b0d;color:var(--cream);font-family:'Russo One',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;outline:none;min-width:190px;">
+            <option value=""># Numeri Piloti</option>
+        </select>
         <select id="sortSelect" style="padding:12px 14px;border-radius:10px;border:1px solid rgba(255,80,20,0.3);background:#0b0b0d;color:var(--cream);font-family:'Russo One',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;outline:none;min-width:190px;">
             <option value="trofei">🏆 Trofei vinti</option>
             <option value="nome">🔤 Nome</option>
@@ -313,7 +311,6 @@
             <option value="gare">🏎️ Gare</option>
         </select>
     </div>
-    <div class="number-roster" id="numberRoster" style="display:none"></div>
     <div style="display:flex;gap:8px;margin-bottom:16px;">
       <button class="pilot-filter-btn" onclick="setPilotFilter('tutti',this)">Tutti</button>
       <button class="pilot-filter-btn active" onclick="setPilotFilter('attivi',this)">🟢 Attivi</button>
@@ -934,8 +931,8 @@ function renderPilot(p, calendario) {
 function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 
 function buildNumberRoster(pilots){
-  var roster = document.getElementById('numberRoster');
-  if(!roster) return;
+  var sel = document.getElementById('numberRoster');
+  if(!sel) return;
   var items = [];
   for(var i=0;i<pilots.length;i++){
     var p = pilots[i];
@@ -945,19 +942,18 @@ function buildNumberRoster(pilots){
     items.push({ nome: nome, numero: num, numVal: num ? parseInt(num) || 9999 : 99999 });
   }
   items.sort(function(a,b){ return a.numVal - b.numVal; });
-  if(!items.length){ roster.style.display='none'; return; }
+  if(!items.length) return;
 
-  var html = '<span class="number-roster-title">Numeri Piloti</span>';
+  var html = '<option value=""># Numeri Piloti</option>';
   for(var j=0;j<items.length;j++){
     var it = items[j];
     if(it.numero){
-      html += '<span class="number-roster-item"><span class="number-roster-num">#' + esc(it.numero) + '</span>' + esc(it.nome) + '</span>';
+      html += '<option value="">#' + esc(it.numero) + ' — ' + esc(it.nome) + '</option>';
     } else {
-      html += '<span class="number-roster-item number-roster-tbd">' + esc(it.nome) + ' — da assegnare</span>';
+      html += '<option value="">' + esc(it.nome) + ' — da assegnare</option>';
     }
   }
-  roster.innerHTML = html;
-  roster.style.display = 'flex';
+  sel.innerHTML = html;
 }
 
 function sortPilots(key) {
