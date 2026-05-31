@@ -82,6 +82,10 @@
         0 0 30px rgba(255,80,20,0.08);
 }
         .pilot-photos { display:flex; flex-direction:column; gap:10px; flex-shrink:0; }
+        .pilot-photos-row { display:flex; gap:10px; }
+        .pilot-number-box { width:140px; height:175px; border-radius:12px; border:1px solid rgba(201,162,39,0.2); background:linear-gradient(135deg,#0d0d1a,#1a1a2e); display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow:0 0 0 4px rgba(201,162,39,0.08); }
+        .pilot-number { font-family:'Russo One',sans-serif; font-size:64px; color:#e8c547; line-height:1; text-shadow:0 0 20px rgba(201,162,39,0.3); }
+        .pilot-number-label { font-family:'Teko',sans-serif; font-size:12px; letter-spacing:3px; color:rgba(201,162,39,0.4); text-transform:uppercase; margin-top:6px; }
         .pilot-photo-racing { width:140px; min-width:140px; height:175px; object-fit:cover; border-radius:12px; display:block; border:1px solid rgba(255,255,255,0.06); box-shadow:0 0 0 4px rgba(201,162,39,0.08); transition:transform .3s ease; }
         .pilot-card:hover .pilot-photo-racing { transform:scale(1.02); }
         .pilot-photo {
@@ -274,7 +278,9 @@
             header{flex-direction:column;text-align:center}
             .pilot-card { flex-direction:column; }
             .pilot-photo { width:100%; min-width:100%; height:300px; }
-            .pilot-photo-racing { width:50%; min-width:50%; height:175px; }
+            .pilot-photo-racing { width:50%; min-width:auto; height:150px; }
+            .pilot-number-box { width:50%; height:150px; }
+            .pilot-number { font-size:48px; }
         }
     </style>
 </head>
@@ -671,6 +677,7 @@ function renderPilot(p, calendario) {
   var pistaOdia= p.pistaOdia|| p.hatedTrack || '';
   var foto     = p.foto   || p.photo || null;  // old format: photo is filename in root; new format: foto is base64
   var foto2    = p.foto2  || null;
+  var numero   = p.numero || '';
   var locationStr = nazione ? '🌍 <span style="opacity:0.5;font-size:11px">Da:</span> ' + esc(nazione) : '';
   if (p.location) locationStr += ' • 📍 ' + esc(p.location);
 
@@ -858,8 +865,16 @@ function renderPilot(p, calendario) {
   }
 
   var foto2Html = '';
-  if(foto2){
-    foto2Html = '<img class="pilot-photo-racing" src="' + esc(foto2) + '" alt="' + esc(nome) + ' racing" onerror="this.style.display=\'none\'">';
+  var hasRow = foto2 || numero;
+  if(hasRow){
+    foto2Html = '<div class="pilot-photos-row">';
+    if(foto2){
+      foto2Html += '<img class="pilot-photo-racing" src="' + esc(foto2) + '" alt="' + esc(nome) + ' racing" onerror="this.style.display=\'none\'">';
+    }
+    if(numero){
+      foto2Html += '<div class="pilot-number-box"><div class="pilot-number">' + esc(numero) + '</div><div class="pilot-number-label">Numero</div></div>';
+    }
+    foto2Html += '</div>';
   }
 
   el.innerHTML = ''
