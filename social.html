@@ -14,289 +14,295 @@
   --text:#e8e0d0;--muted:#8a8098;--dim:#5a5470;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh;padding-top:54px}
-/* HERO */
-.page-hero{padding:28px 28px 16px;text-align:center}
+body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh}
+/* HEADER */
+.site-header{background:linear-gradient(180deg,rgba(10,10,24,0.98),var(--bg));border-bottom:2px solid var(--gold);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:14px}
+.brand img{width:52px;height:52px;object-fit:contain;border-radius:8px;filter:drop-shadow(0 0 10px rgba(201,162,39,0.3))}
+.brand-name{font-family:'Russo One',sans-serif;font-size:20px;color:var(--gold);letter-spacing:2px}
+.brand-sub{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:3px;color:var(--dim);text-transform:uppercase}
+.back-btn{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;border:1px solid var(--border-hi);padding:7px 14px;border-radius:7px;transition:all .2s}
+.back-btn:hover{border-color:var(--gold);color:var(--gold)}
+/* PAGE TITLE */
+.page-hero{padding:28px 28px 20px;text-align:center}
 .page-title{font-family:'Russo One',sans-serif;font-size:clamp(28px,5vw,46px);color:var(--gold);letter-spacing:4px;text-transform:uppercase;text-shadow:0 0 30px rgba(201,162,39,0.4)}
 .page-sub{font-family:'Teko',sans-serif;font-size:15px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-top:4px}
-/* LAYOUT */
-.social-layout{max-width:1200px;margin:0 auto;padding:0 20px 60px;display:grid;grid-template-columns:1fr 280px;gap:24px}
-.main-col{display:flex;flex-direction:column;gap:16px}
-.side-col{display:flex;flex-direction:column;gap:0}
-/* BADGES */
-.badge-latest{display:inline-flex;align-items:center;gap:4px;font-family:'Teko',sans-serif;font-size:10px;letter-spacing:2px;padding:3px 10px;border-radius:10px;background:var(--gold-dim);border:1px solid rgba(201,162,39,0.25);color:var(--gold-hi);text-transform:uppercase;margin-bottom:8px}
-.section-label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:10px}
-/* POST CARDS */
-.post-card{background:var(--card);border:1px solid var(--border-hi);border-radius:10px;overflow:hidden;position:relative;cursor:pointer;transition:border-color .2s}
-.post-card:hover{border-color:rgba(201,162,39,0.35)}
-.post-card-body{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.post-card-info{flex:1;min-width:0}
-.post-card-title{font-family:'Teko',sans-serif;font-size:18px;letter-spacing:0.5px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.post-card-title.big{font-size:22px}
-.post-card-meta{font-size:11px;color:var(--dim);margin-top:3px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.post-card-meta span{display:flex;align-items:center;gap:3px}
-.post-badges{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap}
-.post-badge{font-family:'Teko',sans-serif;font-size:9px;letter-spacing:1px;padding:2px 7px;border-radius:8px;text-transform:uppercase}
-.pb-title{background:rgba(201,162,39,0.1);color:var(--gold)}
-.pb-photo{background:rgba(52,152,219,0.1);color:#3498db}
-.pb-video{background:rgba(231,76,60,0.1);color:#e74c3c}
-.pb-text{background:rgba(39,174,96,0.1);color:#27ae60}
-.pb-audio{background:rgba(155,89,182,0.1);color:#9b59b6}
-.pb-notes{background:rgba(255,140,66,0.1);color:#ff8c42}
-/* EXPAND BUTTON */
-.expand-btn{width:34px;height:34px;border-radius:8px;background:rgba(7,7,15,0.6);border:1px solid rgba(201,162,39,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gold-hi);font-size:16px;transition:all .2s;flex-shrink:0;text-decoration:none}
-.expand-btn:hover{background:rgba(201,162,39,0.15);border-color:var(--gold)}
-/* 2-UP ROW */
-.recent-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-/* ARCHIVE */
-.archive-section{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px;position:sticky;top:70px}
-.year-group{margin-bottom:14px}
-.year-label{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:var(--gold);margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid rgba(201,184,163,0.06);cursor:pointer;display:flex;align-items:center;justify-content:space-between}
-.year-label:hover{color:var(--gold-hi)}
-.year-arrow{font-size:10px;transition:transform .2s}
-.year-arrow.collapsed{transform:rotate(-90deg)}
-.champ-tag{font-family:'Teko',sans-serif;font-size:9px;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase;margin:6px 0 3px 2px}
-.archive-item{padding:7px 10px;border-radius:6px;cursor:pointer;display:flex;gap:8px;align-items:center;margin-bottom:2px;border:1px solid transparent;transition:all .15s;text-decoration:none;color:var(--text)}
-.archive-item:hover{background:rgba(201,162,39,0.04);border-color:rgba(201,162,39,0.12)}
-.ai-info{flex:1;min-width:0}
-.ai-title{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:0.3px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ai-date{font-size:9px;color:var(--dim);margin-top:1px}
-.ai-badges{display:flex;gap:2px;margin-top:2px}
-.ai-badges span{font-size:7px;padding:1px 5px;border-radius:6px}
-.ai-expand{width:22px;height:22px;border-radius:4px;background:rgba(7,7,15,0.5);border:1px solid rgba(201,162,39,0.15);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:10px;opacity:0;transition:opacity .15s;flex-shrink:0}
-.archive-item:hover .ai-expand{opacity:1}
-/* EMPTY */
+/* NAV BARS */
+.nav-strip{padding:0 20px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.nav-strip::-webkit-scrollbar{display:none}
+.nav-inner{display:inline-flex;gap:6px;padding:10px 0}
+.nav-pill{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;padding:5px 18px;border-radius:20px;border:1px solid var(--border-hi);color:var(--dim);cursor:pointer;text-transform:uppercase;transition:all .15s;white-space:nowrap;user-select:none}
+.nav-pill:hover{border-color:var(--gold);color:var(--muted)}
+.nav-pill.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold)}
+.nav-pill.race-pill.active{background:rgba(255,80,20,0.08);border-color:rgba(255,80,20,0.4);color:var(--orange)}
+.nav-divider{height:1px;background:var(--border);margin:0 20px}
+/* MEDIA TYPE TABS */
+.type-bar{display:flex;gap:8px;padding:14px 20px;flex-wrap:wrap}
+.type-tab{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:2px;padding:5px 16px;border-radius:20px;border:1px solid var(--border-hi);color:var(--dim);cursor:pointer;text-transform:uppercase;transition:all .15s}
+.type-tab.active{background:var(--card);border-color:var(--border-hi);color:var(--text)}
+/* CONTENT AREA */
+.content{max-width:1200px;margin:0 auto;padding:16px 20px 60px}
+/* PHOTO GRID */
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.photo-item{border-radius:8px;overflow:hidden;cursor:pointer;border:1px solid var(--border);transition:border-color .2s,transform .15s;background:var(--card)}
+.photo-item:hover{border-color:var(--gold);transform:scale(1.02)}
+.photo-item img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
+.photo-caption{padding:7px 10px;font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;color:var(--muted)}
+/* VIDEO LIST */
+.video-list{display:flex;flex-direction:column;gap:10px}
+.video-card{background:var(--card);border:1px solid var(--border-hi);border-radius:10px;overflow:hidden;transition:border-color .2s}
+.video-card:hover{border-color:var(--gold)}
+.video-embed{width:100%;aspect-ratio:16/9}
+.video-embed iframe{width:100%;height:100%;border:none;display:block}
+.video-meta{padding:12px 16px}
+.video-title{font-family:'Teko',sans-serif;font-size:18px;letter-spacing:1px;color:var(--text);margin-bottom:3px}
+.video-sub{font-size:13px;color:var(--dim)}
+/* ARTICLE LIST */
+.article-list{display:flex;flex-direction:column;gap:12px}
+.article-card{background:var(--card);border:1px solid var(--border-hi);border-radius:10px;padding:20px 22px;transition:border-color .2s}
+.article-card:hover{border-color:var(--gold)}
+.article-title{font-family:'Teko',sans-serif;font-size:22px;letter-spacing:1px;color:var(--gold);margin-bottom:10px}
+.article-body{font-size:15px;color:var(--muted);line-height:1.7}
+.article-body a{color:var(--gold);text-decoration:none}
+.article-body a:hover{text-decoration:underline}
+.article-body strong,.article-body b{color:var(--text)}
+.article-body em,.article-body i{color:var(--muted)}
+.article-date{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:2px;color:var(--dim);margin-top:10px;text-transform:uppercase}
+/* LIGHTBOX */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:999;align-items:center;justify-content:center;padding:20px}
+.lightbox.open{display:flex}
+.lightbox-img{max-width:90vw;max-height:88vh;object-fit:contain;border-radius:6px}
+.lightbox-close{position:absolute;top:16px;right:20px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer;opacity:0.6;transition:opacity .2s}
+.lightbox-close:hover{opacity:1}
+.lightbox-caption{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-family:'Teko',sans-serif;font-size:15px;letter-spacing:2px;color:rgba(255,255,255,0.6);white-space:nowrap}
+/* EMPTY STATE */
 .empty{text-align:center;padding:60px 20px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:3px;color:var(--dim);text-transform:uppercase}
 .empty-icon{font-size:40px;margin-bottom:12px;display:block}
+/* LOADING */
 .loading{text-align:center;padding:40px;color:var(--dim);font-family:'Teko',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase}
-/* RESPONSIVE */
-@media(max-width:880px){
-  .social-layout{grid-template-columns:1fr}
-  .side-col{order:-1}
-  .archive-section{position:static}
-}
-@media(max-width:550px){
-  .recent-row{grid-template-columns:1fr}
-}
 </style>
 </head>
 <body>
 
-<div class="page-hero">
+<header class="site-header">
+  <div class="brand">
+    <a href="index.html"><img src="etna-logo.jpg" alt="ERC" onerror="this.style.display='none'"></a>
+    <div>
+      <div class="brand-name">Etna Racing Club</div>
+      <div class="brand-sub">Social</div>
+    </div>
+  </div>
+  <a href="index.html" class="back-btn">← Home</a>
+</header>
+
+<div class="page-hero" style="position:relative">
+  <a href="https://www.facebook.com/groups/1397528451448907?locale=en_GB" target="_blank" rel="noopener" style="position:absolute;top:0;right:20px;width:44px;height:44px;border-radius:50%;background:rgba(201,162,39,0.08);border:1px solid rgba(201,162,39,0.2);display:flex;align-items:center;justify-content:center;transition:all 0.2s;text-decoration:none" onmouseover="this.style.background='rgba(24,119,242,0.15)';this.style.borderColor='rgba(24,119,242,0.4)'" onmouseout="this.style.background='rgba(201,162,39,0.08)';this.style.borderColor='rgba(201,162,39,0.2)'">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+  </a>
   <h1 class="page-title">Social</h1>
-  <p class="page-sub">Post &middot; Foto &middot; Video &middot; Storie</p>
+  <p class="page-sub">Foto · Video · Interviste · Articoli</p>
 </div>
 
-<div class="social-layout">
-  <div class="main-col" id="mainCol">
-    <div class="loading" id="loadingMsg">Caricamento...</div>
-  </div>
-  <div class="side-col" id="sideCol"></div>
+<!-- YEAR NAV -->
+<div class="nav-strip" id="yearNav"><div class="nav-inner" id="yearInner"></div></div>
+<div class="nav-divider"></div>
+<!-- CHAMPIONSHIP NAV -->
+<div class="nav-strip" id="champNav" style="display:none"><div class="nav-inner" id="champInner"></div></div>
+<div class="nav-divider" id="champDivider" style="display:none"></div>
+<!-- RACE NAV -->
+<div class="nav-strip" id="raceNav" style="display:none"><div class="nav-inner" id="raceInner"></div></div>
+<div class="nav-divider" id="raceDivider" style="display:none"></div>
+
+<!-- MEDIA TYPE TABS -->
+<div class="type-bar" id="typeBar" style="display:none">
+  <div class="type-tab" data-type="photos">📷 Foto</div>
+  <div class="type-tab" data-type="videos">🎥 Video</div>
+  <div class="type-tab" data-type="interviews">🎤 Interviste</div>
+  <div class="type-tab" data-type="articles">📝 Articoli</div>
+</div>
+
+<div class="content" id="mainContent">
+  <div class="loading" id="loadingMsg">Caricamento...</div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="">
+  <div class="lightbox-caption" id="lightboxCaption"></div>
 </div>
 
 <script>
-var RAW='https://raw.githubusercontent.com/mz4466/etna-racing-club/main';
-var socialIndex=[];
+const RAW = 'https://raw.githubusercontent.com/mz4466/etna-racing-club/main';
+const SOCIAL_BASE = RAW + '/social';
 
-function fetchJSON(url){
-  return fetch(url+'?_='+Date.now()).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});
+var state = { year: null, champ: null, race: null, type: 'photos' };
+var socialIndex = [];
+
+async function fetchJSON(url) {
+  var r = await fetch(url + '?_=' + Date.now());
+  if (!r.ok) return null;
+  return await r.json();
 }
 
-// Fallback: try GitHub API if raw is blocked
-function fetchJSONWithFallback(path){
-  var rawUrl=RAW+'/'+path;
-  return fetch(rawUrl+'?_='+Date.now()).then(function(r){
-    if(!r.ok) throw new Error('raw failed');
-    return r.json();
-  }).catch(function(){
-    var apiUrl='https://api.github.com/repos/mz4466/etna-racing-club/contents/'+path+'?ref=main';
-    return fetch(apiUrl).then(function(r){return r.json();}).then(function(meta){
-      return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
-    });
-  });
-}
-
-function countTypes(types){
-  if(!types||!types.length) return[];
-  var counts={};
-  types.forEach(function(t){counts[t]=(counts[t]||0)+1;});
-  var result=[];
-  var labels={title:'titolo',photo:'foto',video:'video',text:'testo',audio:'audio',notes:'note'};
-  var order=['photo','video','text','audio','notes'];
-  order.forEach(function(t){
-    if(counts[t]){
-      var label=labels[t]||t;
-      if(counts[t]>1) label=counts[t]+' '+label;
-      result.push({type:t,label:label});
-    }
-  });
-  return result;
-}
-
-function badgeClass(type){
-  return{title:'pb-title',photo:'pb-photo',video:'pb-video',text:'pb-text',audio:'pb-audio',notes:'pb-notes'}[type]||'pb-text';
-}
-
-function formatDate(dateStr){
-  if(!dateStr) return '';
-  var parts=dateStr.split('-');
-  if(parts.length<3) return dateStr;
-  var months=['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'];
-  var d=parseInt(parts[2],10);
-  var m=parseInt(parts[1],10)-1;
-  return d+' '+months[m]+' '+parts[0];
-}
-
-function postUrl(slug){
-  return 'social/posts/'+slug+'.html';
-}
-
-async function init(){
-  var idx=await fetchJSONWithFallback('social/index.json');
-  if(!idx||!Array.isArray(idx)||!idx.length){
-    document.getElementById('loadingMsg').innerHTML='<span class="empty-icon">&#128237;</span>Nessun post disponibile';
+async function init() {
+  var idx = await fetchJSON(SOCIAL_BASE + '/index.json');
+  if (!idx || !idx.length) {
+    document.getElementById('loadingMsg').innerHTML = '<span class="empty-icon">📭</span>Nessun contenuto disponibile';
     return;
   }
-  socialIndex=idx.slice().sort(function(a,b){return(b.date||'').localeCompare(a.date||'');});
-  document.getElementById('loadingMsg').style.display='none';
-  renderMain();
-  renderArchive();
-}
+  socialIndex = idx;
+  document.getElementById('loadingMsg').style.display = 'none';
 
-function renderMain(){
-  var col=document.getElementById('mainCol');
-  var html='';
-
-  // Latest post (featured)
-  if(socialIndex.length>0){
-    var p=socialIndex[0];
-    var types=countTypes(p.blockTypes);
-    html+='<div><div class="badge-latest">&#10024; Ultimo Post</div>';
-    html+='<a href="'+postUrl(p.slug)+'" class="post-card" style="text-decoration:none;color:inherit;display:block">';
-    html+='<div class="post-card-body">';
-    html+='<div class="post-card-info">';
-    html+='<div class="post-card-title big">'+esc(p.title)+'</div>';
-    html+='<div class="post-card-meta">';
-    if(p.campionato) html+='<span>'+esc(p.campionato)+'</span>';
-    html+='<span>'+formatDate(p.date)+'</span></div>';
-    html+='<div class="post-badges">';
-    types.forEach(function(t){html+='<span class="post-badge '+badgeClass(t.type)+'">'+esc(t.label)+'</span>';});
-    html+='</div></div>';
-    html+='<div class="expand-btn">&#8599;</div>';
-    html+='</div></a></div>';
-  }
-
-  // Next 2 recent posts
-  if(socialIndex.length>1){
-    html+='<div><div class="section-label">Post Recenti</div>';
-    html+='<div class="recent-row">';
-    var limit=Math.min(3,socialIndex.length);
-    for(var i=1;i<limit;i++){
-      var p=socialIndex[i];
-      var types=countTypes(p.blockTypes);
-      html+='<a href="'+postUrl(p.slug)+'" class="post-card" style="text-decoration:none;color:inherit;display:block">';
-      html+='<div class="post-card-body">';
-      html+='<div class="post-card-info">';
-      html+='<div class="post-card-title">'+esc(p.title)+'</div>';
-      html+='<div class="post-card-meta"><span>'+formatDate(p.date)+'</span></div>';
-      html+='<div class="post-badges">';
-      types.forEach(function(t){html+='<span class="post-badge '+badgeClass(t.type)+'">'+esc(t.label)+'</span>';});
-      html+='</div></div>';
-      html+='<div class="expand-btn" style="width:28px;height:28px;font-size:13px">&#8599;</div>';
-      html+='</div></a>';
-    }
-    html+='</div></div>';
-  }
-
-  // Remaining posts (if more than 3)
-  if(socialIndex.length>3){
-    html+='<div><div class="section-label">Tutti i Post</div>';
-    for(var i=3;i<socialIndex.length;i++){
-      var p=socialIndex[i];
-      var types=countTypes(p.blockTypes);
-      html+='<a href="'+postUrl(p.slug)+'" class="post-card" style="text-decoration:none;color:inherit;display:block;margin-bottom:8px">';
-      html+='<div class="post-card-body" style="padding:10px 14px">';
-      html+='<div class="post-card-info">';
-      html+='<div class="post-card-title" style="font-size:15px">'+esc(p.title)+'</div>';
-      html+='<div class="post-card-meta"><span>'+formatDate(p.date)+'</span>';
-      if(p.campionato) html+='<span>'+esc(p.campionato)+'</span>';
-      html+='</div>';
-      html+='<div class="post-badges">';
-      types.forEach(function(t){html+='<span class="post-badge '+badgeClass(t.type)+'">'+esc(t.label)+'</span>';});
-      html+='</div></div>';
-      html+='<div class="expand-btn" style="width:26px;height:26px;font-size:12px">&#8599;</div>';
-      html+='</div></a>';
-    }
-    html+='</div>';
-  }
-
-  col.innerHTML=html;
-}
-
-function renderArchive(){
-  var side=document.getElementById('sideCol');
-  var byYear={};
-  socialIndex.forEach(function(p){
-    var y=p.year||'Altro';
-    if(!byYear[y]) byYear[y]=[];
-    byYear[y].push(p);
-  });
-  var years=Object.keys(byYear).sort(function(a,b){return b-a;});
-
-  var html='<div class="archive-section">';
-  html+='<div class="section-label">Archivio</div>';
-
-  years.forEach(function(y){
-    html+='<div class="year-group">';
-    html+='<div class="year-label" onclick="toggleYear(this)">'+esc(y)+'<span class="year-arrow">&#9660;</span></div>';
-    html+='<div class="year-content">';
-
-    // Group by campionato within year
-    var byChamp={};
-    byYear[y].forEach(function(p){
-      var c=p.campionato||'';
-      if(!byChamp[c]) byChamp[c]=[];
-      byChamp[c].push(p);
-    });
-
-    Object.keys(byChamp).forEach(function(c){
-      if(c) html+='<div class="champ-tag">'+esc(c)+'</div>';
-      byChamp[c].forEach(function(p){
-        var types=countTypes(p.blockTypes);
-        html+='<a href="'+postUrl(p.slug)+'" class="archive-item">';
-        html+='<div class="ai-info">';
-        html+='<div class="ai-title">'+esc(p.title)+'</div>';
-        html+='<div class="ai-date">'+formatDate(p.date)+'</div>';
-        html+='<div class="ai-badges">';
-        types.forEach(function(t){
-          html+='<span class="post-badge '+badgeClass(t.type)+'" style="font-size:7px;padding:1px 4px">'+esc(t.label)+'</span>';
-        });
-        html+='</div></div>';
-        html+='<div class="ai-expand">&#8599;</div>';
-        html+='</a>';
-      });
-    });
-
-    html+='</div></div>';
+  // Build year tabs
+  var years = [...new Set(idx.map(function(c){ return c.year; }))].sort(function(a,b){ return b-a; });
+  var yearInner = document.getElementById('yearInner');
+  years.forEach(function(y, i) {
+    var pill = document.createElement('div');
+    pill.className = 'nav-pill' + (i===0?' active':'');
+    pill.textContent = y;
+    pill.onclick = function() { selectYear(y); };
+    yearInner.appendChild(pill);
   });
 
-  html+='</div>';
-  side.innerHTML=html;
+  selectYear(years[0]);
 }
 
-function toggleYear(el){
-  var content=el.nextElementSibling;
-  var arrow=el.querySelector('.year-arrow');
-  if(content.style.display==='none'){
-    content.style.display='';
-    arrow.classList.remove('collapsed');
-  } else {
-    content.style.display='none';
-    arrow.classList.add('collapsed');
+function selectYear(year) {
+  state.year = year; state.champ = null; state.race = null;
+  document.querySelectorAll('#yearInner .nav-pill').forEach(function(p){ p.classList.toggle('active', p.textContent==year); });
+
+  var yearChamps = socialIndex.filter(function(c){ return String(c.year)===String(year); });
+  var champInner = document.getElementById('champInner');
+  champInner.innerHTML = '';
+  yearChamps.forEach(function(c, i) {
+    var pill = document.createElement('div');
+    pill.className = 'nav-pill' + (i===0?' active':'');
+    pill.textContent = c.name;
+    pill.onclick = function() { selectChamp(c); };
+    champInner.appendChild(pill);
+  });
+  document.getElementById('champNav').style.display = 'block';
+  document.getElementById('champDivider').style.display = 'block';
+
+  if (yearChamps.length) selectChamp(yearChamps[0]);
+}
+
+function selectChamp(champ) {
+  state.champ = champ; state.race = null;
+  document.querySelectorAll('#champInner .nav-pill').forEach(function(p){ p.classList.toggle('active', p.textContent===champ.name); });
+
+  var raceInner = document.getElementById('raceInner');
+  raceInner.innerHTML = '';
+  (champ.races||[]).forEach(function(race, i) {
+    var pill = document.createElement('div');
+    pill.className = 'nav-pill race-pill' + (i===0?' active':'');
+    pill.textContent = race.label;
+    pill.onclick = function() { selectRace(champ, race); };
+    raceInner.appendChild(pill);
+  });
+  document.getElementById('raceNav').style.display = 'block';
+  document.getElementById('raceDivider').style.display = 'block';
+  document.getElementById('typeBar').style.display = 'flex';
+  setActiveType(state.type);
+
+  if ((champ.races||[]).length) selectRace(champ, champ.races[0]);
+  else { document.getElementById('mainContent').innerHTML = '<div class="empty"><span class="empty-icon">🏁</span>Nessuna gara disponibile</div>'; }
+}
+
+function selectRace(champ, race) {
+  state.race = race;
+  document.querySelectorAll('#raceInner .nav-pill').forEach(function(p){ p.classList.toggle('active', p.textContent===race.label); });
+  loadContent(champ, race, state.type);
+}
+
+function setActiveType(type) {
+  state.type = type;
+  document.querySelectorAll('.type-tab').forEach(function(t){ t.classList.toggle('active', t.dataset.type===type); });
+  if (state.champ && state.race) loadContent(state.champ, state.race, type);
+}
+
+document.querySelectorAll('.type-tab').forEach(function(t){ t.onclick = function(){ setActiveType(t.dataset.type); }; });
+
+async function loadContent(champ, race, type) {
+  var content = document.getElementById('mainContent');
+  content.innerHTML = '<div class="loading">Caricamento...</div>';
+
+  var path = SOCIAL_BASE + '/' + champ.year + '/' + champ.slug + '/' + race.slug + '/index.json';
+  var items = await fetchJSON(path);
+  if (!items || !items.length) {
+    content.innerHTML = '<div class="empty"><span class="empty-icon">📂</span>Nessun contenuto per questa gara</div>';
+    return;
+  }
+
+  var filtered = items.filter(function(item){ return item.type === type || (type==='photos' && item.type==='photo') || (type==='videos' && item.type==='video') || (type==='interviews' && item.type==='interview') || (type==='articles' && item.type==='article'); });
+
+  if (!filtered.length) {
+    content.innerHTML = '<div class="empty"><span class="empty-icon">📂</span>Nessun contenuto in questa categoria</div>';
+    return;
+  }
+
+  if (type === 'photos') {
+    var grid = '<div class="photo-grid">';
+    filtered.forEach(function(item) {
+      var src = item.url || (SOCIAL_BASE + '/' + champ.year + '/' + champ.slug + '/' + race.slug + '/' + item.file);
+      grid += '<div class="photo-item" onclick="openLightbox(\'' + src.replace(/'/g,'%27') + '\',\'' + esc(item.title||'') + '\')">'
+        + '<img src="' + src + '" alt="' + esc(item.title||'') + '" loading="lazy" onerror="this.parentElement.style.display=\'none\'">'
+        + (item.title ? '<div class="photo-caption">' + esc(item.title) + '</div>' : '')
+        + '</div>';
+    });
+    grid += '</div>';
+    content.innerHTML = grid;
+  }
+  else if (type === 'videos' || type === 'interviews') {
+    var list = '<div class="video-list">';
+    filtered.forEach(function(item) {
+      var embedUrl = item.url ? youtubeEmbed(item.url) : null;
+      list += '<div class="video-card">';
+      if (embedUrl) {
+        list += '<div class="video-embed"><iframe src="' + embedUrl + '" allowfullscreen loading="lazy"></iframe></div>';
+      }
+      list += '<div class="video-meta"><div class="video-title">' + esc(item.title||'Video') + '</div>';
+      if (item.desc) list += '<div class="video-sub">' + esc(item.desc) + '</div>';
+      list += '</div></div>';
+    });
+    list += '</div>';
+    content.innerHTML = list;
+  }
+  else if (type === 'articles') {
+    var art = '<div class="article-list">';
+    filtered.forEach(function(item) {
+      art += '<div class="article-card">'
+        + '<div class="article-title">' + esc(item.title||'Articolo') + '</div>'
+        + '<div class="article-body">' + (item.body||'') + '</div>'
+        + (item.date ? '<div class="article-date">' + esc(item.date) + '</div>' : '')
+        + '</div>';
+    });
+    art += '</div>';
+    content.innerHTML = art;
   }
 }
 
-function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function youtubeEmbed(url) {
+  var match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([^&?/\s]{11})/);
+  return match ? 'https://www.youtube.com/embed/' + match[1] : null;
+}
+
+function openLightbox(src, caption) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightboxCaption').textContent = caption;
+  document.getElementById('lightbox').classList.add('open');
+}
+
+function closeLightbox(e) {
+  if (!e || e.target === document.getElementById('lightbox') || e.target.classList.contains('lightbox-close')) {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+}
+
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') document.getElementById('lightbox').classList.remove('open'); });
+
+function esc(s){ return String(s||'').replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
 
 init();
 </script>
