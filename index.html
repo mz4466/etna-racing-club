@@ -800,15 +800,16 @@
 
               var rounds = c.rounds || [];
               var completed = parseInt(c.completedRounds) || 0;
+              var found = false;
 
               for(var ri=0;ri<rounds.length;ri++){
+                if(found) break;
                 var rd = parseDate(rounds[ri].date);
                 if(!rd) continue;
                 if(daysBetween(today, rd) < 0) continue;
-
-                /* skip already-completed rounds */
                 if(ri < completed) continue;
 
+                found = true;
                 upcoming.push({
                   champName: c.name || '',
                   cat: c.cat || '',
@@ -823,15 +824,14 @@
               }
             }
 
-            /* sort by date, take first few */
+            /* sort by date */
             upcoming.sort(function(a,b){ return a.days - b.days; });
-            var show = upcoming.slice(0, 4);
 
-            if(!show.length) return;
+            if(!upcoming.length) return;
 
             var html = '';
-            for(var j=0;j<show.length;j++){
-              var ev = show[j];
+            for(var j=0;j<upcoming.length;j++){
+              var ev = upcoming[j];
               var isToday = ev.days === 0;
               var daysText = isToday ? 'OGGI' : ev.days.toString();
               var daysLabel = isToday ? '' : (ev.days === 1 ? 'giorno' : 'giorni');
