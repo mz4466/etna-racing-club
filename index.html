@@ -1000,7 +1000,7 @@
             var show = races.slice(0, 3);
             if(!show.length) return;
 
-            var html = '<div class="recent-label">Ultimi risultati</div>';
+            var html = '<div class="recent-label">Ultimi 3 risultati</div>';
             for(var j=0;j<show.length;j++){
               var ev = show[j];
               var agoText = ev.ago === 0 ? 'Oggi' : ev.ago + 'g fa';
