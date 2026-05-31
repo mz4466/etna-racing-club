@@ -314,6 +314,16 @@
           <img id="photoPreview" class="photo-preview" alt="Anteprima foto">
           <input type="hidden" id="fFoto">
         </div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Foto Racing (tuta e casco)</label>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <label class="upload-btn" for="fFoto2File">📁 Carica Immagine</label>
+            <input type="file" id="fFoto2File" accept="image/*" style="display:none" onchange="handlePhoto2Upload(this)">
+            <span id="foto2Status" style="font-family:'Teko',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:1px;"></span>
+          </div>
+          <img id="photo2Preview" class="photo-preview" alt="Anteprima foto racing">
+          <input type="hidden" id="fFoto2">
+        </div>
 
         <div class="form-section">File</div>
         <div class="field" style="grid-column:1/-1">
@@ -709,6 +719,7 @@ function openModal(slug){
     document.getElementById('fBio').value     = d.catchphrase || d.bio || '';
     document.getElementById('fBadges').value  = (d.badges||[]).join(', ');
     document.getElementById('fFoto').value    = d.foto    || '';
+    document.getElementById('fFoto2').value   = d.foto2   || '';
     document.getElementById('fSlug').value    = slug;
     document.getElementById('fSlug').readOnly = true;
     if(d.foto){
@@ -716,6 +727,12 @@ function openModal(slug){
       prev.src = d.foto; prev.style.display='block';
       document.getElementById('fotoStatus').textContent = '✓ Foto presente';
       document.getElementById('fotoStatus').style.color = 'var(--green)';
+    }
+    if(d.foto2){
+      const prev2 = document.getElementById('photo2Preview');
+      prev2.src = d.foto2; prev2.style.display='block';
+      document.getElementById('foto2Status').textContent = '✓ Foto racing presente';
+      document.getElementById('foto2Status').style.color = 'var(--green)';
     }
     updateSlugPreview();
     // Build selectedCarsMap ONLY for currently active championships.
@@ -765,7 +782,7 @@ function closeModal(){
 }
 
 function clearForm(){
-  ['fNome','fPsn','fRegione','fAuto','fStile','fPistaAma','fPistaOdia','fBio','fBadges','fFoto','fSlug'].forEach(id=>{
+  ['fNome','fPsn','fRegione','fAuto','fStile','fPistaAma','fPistaOdia','fBio','fBadges','fFoto','fFoto2','fSlug'].forEach(id=>{
     document.getElementById(id).value='';
   });
   document.getElementById('fFotoFile').value = '';
@@ -773,6 +790,11 @@ function clearForm(){
   document.getElementById('fotoStatus').style.color = '';
   document.getElementById('photoPreview').style.display='none';
   document.getElementById('photoPreview').src='';
+  document.getElementById('fFoto2File').value = '';
+  document.getElementById('foto2Status').textContent = '';
+  document.getElementById('foto2Status').style.color = '';
+  document.getElementById('photo2Preview').style.display='none';
+  document.getElementById('photo2Preview').src='';
   updateSlugPreview();
 }
 
@@ -786,6 +808,27 @@ async function handlePhotoUpload(input){
   try {
     const base64 = await compressImage(file, 500 * 1024); // 500KB max
     document.getElementById('fFoto').value = base64;
+    preview.src = base64;
+    preview.style.display = 'block';
+    const kb = Math.round(base64.length * 0.75 / 1024);
+    status.textContent = `✓ ${file.name} (${kb} KB)`;
+    status.style.color = 'var(--green)';
+  } catch(e) {
+    status.textContent = 'Errore: ' + e.message;
+    status.style.color = 'var(--red)';
+  }
+}
+
+async function handlePhoto2Upload(input){
+  const file = input.files[0];
+  if(!file) return;
+  const status = document.getElementById('foto2Status');
+  const preview = document.getElementById('photo2Preview');
+  status.textContent = 'Elaborazione...';
+
+  try {
+    const base64 = await compressImage(file, 500 * 1024);
+    document.getElementById('fFoto2').value = base64;
     preview.src = base64;
     preview.style.display = 'block';
     const kb = Math.round(base64.length * 0.75 / 1024);
@@ -880,6 +923,7 @@ async function savePilot(){
     catchphrase: document.getElementById('fBio').value.trim(),
     badges:    document.getElementById('fBadges').value.split(',').map(s=>s.trim()).filter(Boolean),
     foto:      document.getElementById('fFoto').value.trim(),
+    foto2:     document.getElementById('fFoto2').value.trim(),
     campionati: campionatiPayload,
     attivo: editingSlug ? (allPilots.find(p=>p.slug===editingSlug)?.data?.attivo !== false) : true,
   };
