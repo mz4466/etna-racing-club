@@ -1,0 +1,123 @@
+{
+  "circuito": "Suzuka",
+  "data": "2026-05-31",
+  "garaNum": "7",
+  "garaTot": "8",
+  "champId": "1-campionato-f1-2026",
+  "champIdx": "1-campionato-f1-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Stefano",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "130'03''704",
+      "bestLap": "01'37''049",
+      "fl": true,
+      "pole": true,
+      "punti": 25,
+      "extra": "1+1",
+      "totale": 27,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Pyer",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "a 59\"951",
+      "bestLap": "01'38''336",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Giovanni",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "a 2 Giri",
+      "bestLap": "01'38''601",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Claudio",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "a 5 Giri",
+      "bestLap": "01'42''693",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "William",
+      "auto": "SF19 Super Formula / Honda '19",
+      "tempo": "a 8 Giri",
+      "bestLap": "01'45''163",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Stefano",
+      "pts": 178,
+      "pos": 1
+    },
+    {
+      "nome": "Pyer",
+      "pts": 114,
+      "pos": 2
+    },
+    {
+      "nome": "Giovanni",
+      "pts": 94,
+      "pos": 3
+    },
+    {
+      "nome": "Claudio",
+      "pts": 71,
+      "pos": 4
+    },
+    {
+      "nome": "William",
+      "pts": 48,
+      "pos": 5
+    },
+    {
+      "nome": "Sandro",
+      "pts": 26,
+      "pos": 6
+    },
+    {
+      "nome": "Carmine",
+      "pts": 15,
+      "pos": 7
+    },
+    {
+      "nome": "Antonio",
+      "pts": 5,
+      "pos": 8
+    },
+    {
+      "nome": "Fabio",
+      "pts": 4,
+      "pos": 9
+    }
+  ],
+  "bestOf": 7
+}
