@@ -81,6 +81,7 @@
         0 18px 50px rgba(0,0,0,0.7),
         0 0 30px rgba(255,80,20,0.08);
 }
+        .pilot-photos { display:flex; flex-direction:column; gap:10px; flex-shrink:0; }
         .pilot-photo {
     width:280px;
     min-width:280px;
@@ -666,6 +667,7 @@ function renderPilot(p, calendario) {
   var pistaAma = p.pistaAma || p.favTrack || '';
   var pistaOdia= p.pistaOdia|| p.hatedTrack || '';
   var foto     = p.foto   || p.photo || null;  // old format: photo is filename in root; new format: foto is base64
+  var foto2    = p.foto2  || null;
   var locationStr = nazione ? '🌍 <span style="opacity:0.5;font-size:11px">Da:</span> ' + esc(nazione) : '';
   if (p.location) locationStr += ' • 📍 ' + esc(p.location);
 
@@ -852,11 +854,19 @@ function renderPilot(p, calendario) {
     }
   }
 
+  var foto2Html = '';
+  if(foto2){
+    foto2Html = '<img class="pilot-photo" src="' + esc(foto2) + '" alt="' + esc(nome) + ' racing" onerror="this.style.display=\'none\'">';
+  }
+
   el.innerHTML = ''
+    + '<div class="pilot-photos">'
     + (isActive
         ? '<img class="pilot-photo" src="' + esc(photoSrc) + '" alt="' + esc(nome) + '" onerror="this.src=\'https://via.placeholder.com/280x350?text=Pilota\'">'
         : '<div class="pilot-photo" style="background:linear-gradient(135deg,#0d0d1a,#1a1a2e);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-size:48px;opacity:.3;">🪖</span></div>'
       )
+    + foto2Html
+    + '</div>'
     + '<div class="pilot-content">'
     +   '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">'
     +     '<div class="pilot-name">' + esc(nome) + '</div>'
