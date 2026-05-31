@@ -324,6 +324,10 @@
           <img id="photo2Preview" class="photo-preview" alt="Anteprima foto racing">
           <input type="hidden" id="fFoto2">
         </div>
+        <div class="field">
+          <label>Numero Pilota</label>
+          <input type="text" id="fNumero" placeholder="es. 44" style="max-width:120px;">
+        </div>
 
         <div class="form-section">File</div>
         <div class="field" style="grid-column:1/-1">
@@ -720,6 +724,7 @@ function openModal(slug){
     document.getElementById('fBadges').value  = (d.badges||[]).join(', ');
     document.getElementById('fFoto').value    = d.foto    || '';
     document.getElementById('fFoto2').value   = d.foto2   || '';
+    document.getElementById('fNumero').value  = d.numero  || '';
     document.getElementById('fSlug').value    = slug;
     document.getElementById('fSlug').readOnly = true;
     if(d.foto){
@@ -782,7 +787,7 @@ function closeModal(){
 }
 
 function clearForm(){
-  ['fNome','fPsn','fRegione','fAuto','fStile','fPistaAma','fPistaOdia','fBio','fBadges','fFoto','fFoto2','fSlug'].forEach(id=>{
+  ['fNome','fPsn','fRegione','fAuto','fStile','fPistaAma','fPistaOdia','fBio','fBadges','fFoto','fFoto2','fNumero','fSlug'].forEach(id=>{
     document.getElementById(id).value='';
   });
   document.getElementById('fFotoFile').value = '';
@@ -924,6 +929,7 @@ async function savePilot(){
     badges:    document.getElementById('fBadges').value.split(',').map(s=>s.trim()).filter(Boolean),
     foto:      document.getElementById('fFoto').value.trim(),
     foto2:     document.getElementById('fFoto2').value.trim(),
+    numero:    document.getElementById('fNumero').value.trim(),
     campionati: campionatiPayload,
     attivo: editingSlug ? (allPilots.find(p=>p.slug===editingSlug)?.data?.attivo !== false) : true,
   };
