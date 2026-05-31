@@ -878,7 +878,7 @@ function renderPilot(p, calendario) {
     +   (isActive
           ? '<div class="info">'
           +   (locationStr ? locationStr + '<br>' : '')
-          +   (auto ? '🚗 <span style="opacity:0.5;font-size:11px">Auto:</span> ' + esc(auto) + '<br>' : '')
+          +   (auto ? '🚗 <span style="opacity:0.5;font-size:11px">Auto preferita:</span> ' + esc(auto) + '<br>' : '')
           +   (p.dr || p.sr ? '📊 <span style="opacity:0.5;font-size:11px">Rating:</span> DR: ' + esc(p.dr||'-') + ' • SR: ' + esc(p.sr||'-') + '<br>' : '')
           +   (stile ? '💪 <span style="opacity:0.5;font-size:11px">Stile:</span> ' + esc(stile) + '<br>' : '')
           +   (pistaAma ? '❤️ <span style="opacity:0.5;font-size:11px">Pista preferita:</span> ' + esc(pistaAma) + (pistaOdia ? ' • 💀 <span style="opacity:0.5;font-size:11px">Pista odiata:</span> ' + esc(pistaOdia) : '') : '')
