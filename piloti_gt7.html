@@ -299,8 +299,8 @@
         </select>
     </div>
     <div style="display:flex;gap:8px;margin-bottom:16px;">
-      <button class="pilot-filter-btn active" onclick="setPilotFilter('tutti',this)">Tutti</button>
-      <button class="pilot-filter-btn" onclick="setPilotFilter('attivi',this)">🟢 Attivi</button>
+      <button class="pilot-filter-btn" onclick="setPilotFilter('tutti',this)">Tutti</button>
+      <button class="pilot-filter-btn active" onclick="setPilotFilter('attivi',this)">🟢 Attivi</button>
       <button class="pilot-filter-btn" onclick="setPilotFilter('inattivi',this)">⚫ Non Attivi</button>
     </div>
     <div id="grid" class="grid"></div>
@@ -401,7 +401,7 @@ function carImageUrl(carId) {
   if (!carId) return '';
   return 'https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car' + carId + '.png';
 }
-var activePilotFilter = 'tutti';
+var activePilotFilter = 'attivi';
 
 function setPilotFilter(f, btn) {
   activePilotFilter = f;
@@ -665,7 +665,7 @@ function renderPilot(p, calendario) {
   var pistaAma = p.pistaAma || p.favTrack || '';
   var pistaOdia= p.pistaOdia|| p.hatedTrack || '';
   var foto     = p.foto   || p.photo || null;  // old format: photo is filename in root; new format: foto is base64
-  var locationStr = nazione ? '🌍 ' + esc(nazione) : '';
+  var locationStr = nazione ? '🌍 <span style="opacity:0.5;font-size:11px">Nazionalità:</span> ' + esc(nazione) : '';
   if (p.location) locationStr += ' • 📍 ' + esc(p.location);
 
   // Find trophies for this pilot
@@ -861,7 +861,7 @@ function renderPilot(p, calendario) {
     +     '<div class="pilot-name">' + esc(nome) + '</div>'
     +     (!isActive ? '<span style="display:inline-block;background:rgba(192,57,43,.18);border:1px solid rgba(192,57,43,.4);border-radius:20px;padding:2px 10px;font-family:Teko,sans-serif;font-size:11px;letter-spacing:1.5px;color:#e05a4a;text-transform:uppercase;">Non Attivo</span>' : '')
     +   '</div>'
-    +   (isActive ? '<div class="psn">🎮 ' + esc(psn) + '</div>' : '')
+    +   (isActive ? '<div class="psn">🎮 <span style="opacity:0.5;font-size:11px">PSN:</span> ' + esc(psn) + '</div>' : '')
     +   (function(){
           var st = null;
           names.forEach(function(n){ if(pilotStats[n] && !st) st = pilotStats[n]; });
@@ -877,10 +877,10 @@ function renderPilot(p, calendario) {
     +   (isActive
           ? '<div class="info">'
           +   (locationStr ? locationStr + '<br>' : '')
-          +   (auto ? '🚗 ' + esc(auto) + '<br>' : '')
-          +   (p.dr || p.sr ? '📊 DR: ' + esc(p.dr||'-') + ' • SR: ' + esc(p.sr||'-') + '<br>' : '')
-          +   (stile ? '💪 ' + esc(stile) + '<br>' : '')
-          +   (pistaAma ? '❤️ ' + esc(pistaAma) + (pistaOdia ? ' • 💀 ' + esc(pistaOdia) : '') : '')
+          +   (auto ? '🚗 <span style="opacity:0.5;font-size:11px">Auto:</span> ' + esc(auto) + '<br>' : '')
+          +   (p.dr || p.sr ? '📊 <span style="opacity:0.5;font-size:11px">Rating:</span> DR: ' + esc(p.dr||'-') + ' • SR: ' + esc(p.sr||'-') + '<br>' : '')
+          +   (stile ? '💪 <span style="opacity:0.5;font-size:11px">Stile:</span> ' + esc(stile) + '<br>' : '')
+          +   (pistaAma ? '❤️ <span style="opacity:0.5;font-size:11px">Pista preferita:</span> ' + esc(pistaAma) + (pistaOdia ? ' • 💀 ' + esc(pistaOdia) : '') : '')
           + '</div>'
           + ((p.catchphrase||p.bio) ? '<div class="catchphrase">💬 "' + esc(p.catchphrase||p.bio) + '"</div>' : '')
           : ''
