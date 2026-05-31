@@ -446,6 +446,56 @@
             color: rgba(201,162,39,0.5);
             text-transform: uppercase;
         }
+
+        .recent-wrap {
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            animation: fadeIn 2s ease-out 2.6s both;
+        }
+        .recent-label {
+            font-family: 'Teko', sans-serif;
+            font-size: 12px;
+            letter-spacing: 4px;
+            color: rgba(201,162,39,0.4);
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 2px;
+        }
+        .recent-card {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            text-decoration: none;
+            color: inherit;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, rgba(14,14,28,0.7), rgba(19,19,32,0.7));
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 14px;
+            transition: all 0.3s;
+            opacity: 0.7;
+        }
+        .recent-card:hover {
+            opacity: 1;
+            border-color: rgba(201,162,39,0.25);
+            transform: translateY(-2px);
+        }
+        .recent-winner {
+            flex-shrink: 0;
+            font-family: 'Teko', sans-serif;
+            font-size: 13px;
+            letter-spacing: 1px;
+            color: var(--gold, #c9a227);
+        }
+        .recent-winner-icon {
+            font-size: 11px;
+            margin-right: 2px;
+        }
+        @media(max-width:600px){
+            .recent-card { padding: 12px 16px; gap: 12px; }
+        }
         @media(max-width:600px){
             .upcoming-card { padding: 14px 16px; gap: 12px; }
             .upcoming-days { font-size: 22px; }
@@ -700,6 +750,8 @@
 
             <div class="upcoming-wrap" id="upcomingEvents"></div>
 
+            <div class="recent-wrap" id="recentResults"></div>
+
             <div class="championship-grid">
                 <a href="archivio.html" class="info-card" role="button" aria-label="Archivio gare">
                     <img class="info-card-image" src="archive.png" alt="Archivio gare">
@@ -858,6 +910,120 @@
             document.getElementById('upcomingEvents').innerHTML = html;
           })
           .catch(function(e){ console.warn('Upcoming events:', e.message); });
+      })();
+
+      // ── Recent results ──
+      (function(){
+        var MONTHS = ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
+
+        function formatDate(s){
+          if(!s) return '';
+          var p = s.split('-');
+          if(p.length < 3) return s;
+          var d = parseInt(p[2]);
+          var m = parseInt(p[1]) - 1;
+          return d + ' ' + MONTHS[m] + ' ' + p[0];
+        }
+
+        function daysAgo(dateStr){
+          if(!dateStr) return 999;
+          var p = dateStr.split('-');
+          var rd = new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2]));
+          var today = new Date();
+          today.setHours(0,0,0,0);
+          return Math.floor((today.getTime() - rd.getTime()) / 86400000);
+        }
+
+        var calMap = {};
+
+        fetch('calendario.json?_=' + Date.now())
+          .then(function(r){ return r.json(); })
+          .then(function(cal){
+            for(var i=0;i<cal.length;i++){
+              if(cal[i].id) calMap[cal[i].id] = { name: cal[i].name || '', cat: cal[i].cat || '', file: cal[i].file || '' };
+            }
+            return fetch('risultati/index.json?_=' + Date.now());
+          })
+          .then(function(r){ return r.json(); })
+          .then(function(list){
+            var jsonFiles = [];
+            for(var i=0;i<list.length;i++){
+              if(list[i] !== 'index.json') jsonFiles.push(list[i]);
+            }
+            var promises = [];
+            for(var j=0;j<jsonFiles.length;j++){
+              (function(f){
+                promises.push(
+                  fetch('risultati/' + f + '?_=' + Date.now())
+                    .then(function(r){ return r.json(); })
+                    .then(function(d){ d._file = f; return d; })
+                    .catch(function(){ return null; })
+                );
+              })(jsonFiles[j]);
+            }
+            return Promise.all(promises);
+          })
+          .then(function(results){
+            var races = [];
+            for(var i=0;i<results.length;i++){
+              var race = results[i];
+              if(!race) continue;
+              var dateStr = race.data || '';
+              if(!dateStr) dateStr = (race._file || '').substring(0,10);
+              if(!dateStr || daysAgo(dateStr) < 0) continue;
+
+              var winner = '';
+              var rows = race.rows || [];
+              for(var ri=0;ri<rows.length;ri++){
+                if(rows[ri].pos === 1){ winner = rows[ri].nome || ''; break; }
+              }
+
+              var champId = race.champId || race.champIdx || '';
+              var calEntry = calMap[champId] || {};
+              var htmlFile = (race._file || '').replace('.json', '.html');
+
+              races.push({
+                dateStr: dateStr,
+                dateFmt: formatDate(dateStr),
+                ago: daysAgo(dateStr),
+                circuit: (race.circuito || '').replace(/\s*\(.*\)/, ''),
+                champName: calEntry.name || champId,
+                cat: calEntry.cat || '',
+                roundNum: race.garaNum || '',
+                totalRounds: race.garaTot || '',
+                winner: winner,
+                link: 'risultati/' + htmlFile
+              });
+            }
+
+            races.sort(function(a,b){ return a.ago - b.ago; });
+            var show = races.slice(0, 3);
+            if(!show.length) return;
+
+            var html = '<div class="recent-label">Ultimi risultati</div>';
+            for(var j=0;j<show.length;j++){
+              var ev = show[j];
+              var agoText = ev.ago === 0 ? 'Oggi' : ev.ago + 'g fa';
+              var roundLabel = ev.roundNum ? 'R' + ev.roundNum + '/' + ev.totalRounds : '';
+
+              html += '<a class="recent-card" href="' + ev.link + '">'
+                + '<div class="upcoming-countdown">'
+                + '<div class="upcoming-days" style="color:var(--muted,#8a8098);font-size:18px">' + agoText + '</div>'
+                + '</div>'
+                + '<div class="upcoming-divider"></div>'
+                + '<div class="upcoming-info">'
+                + '<div class="upcoming-champ">' + ev.cat + ' · ' + ev.champName + '</div>'
+                + '<div class="upcoming-circuit">' + ev.circuit + '</div>'
+                + '<div class="upcoming-date">' + ev.dateFmt + '</div>'
+                + '</div>'
+                + '<div class="recent-winner"><span class="recent-winner-icon">🏆</span> ' + ev.winner + '</div>'
+                + (roundLabel ? '<div class="upcoming-round">' + roundLabel + '</div>' : '')
+                + '</a>';
+            }
+
+            document.getElementById('recentResults').innerHTML = html;
+          })
+          .catch(function(e){ console.warn('Recent results:', e.message); });
       })();
 
       let _sc = 0, _st;
