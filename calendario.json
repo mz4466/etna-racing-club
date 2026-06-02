@@ -493,7 +493,7 @@
         "notes": "Tutte e tre le mescole"
       },
       {
-        "circuit": "Montreal",
+        "circuit": "Circuit Gilles-Villeneuve (4.4 km)",
         "date": "",
         "laps": "70",
         "weather": "",
@@ -503,7 +503,7 @@
         "notes": "Tutte e tre le mescole"
       },
       {
-        "circuit": "Barcellona",
+        "circuit": "Circuit de Barcelona-Catalunya — Grand Prix Layout (4.7 km)",
         "date": "2026-03-22",
         "laps": "65",
         "weather": "",
@@ -513,7 +513,7 @@
         "notes": "Tutte e tre le mescole"
       },
       {
-        "circuit": "Monza",
+        "circuit": "Autodromo Nazionale Monza — Full Course (5.8 km)",
         "date": "2026-04-19",
         "laps": "53",
         "weather": "",
@@ -523,7 +523,7 @@
         "notes": "Tutte e tre le mescole"
       },
       {
-        "circuit": "Red Bull Ring",
+        "circuit": "Red Bull Ring — Full Course (4.3 km)",
         "date": "2026-05-03",
         "laps": "71",
         "weather": "",
@@ -533,7 +533,7 @@
         "notes": "Tutte e tre le mescole"
       },
       {
-        "circuit": "SPA",
+        "circuit": "Circuit de Spa-Francorchamps — Full Course (7.004 km)",
         "date": "2026-05-17",
         "laps": "44",
         "weather": "",
@@ -553,7 +553,7 @@
         "notes": ""
       },
       {
-        "circuit": "Interlagos",
+        "circuit": "Autódromo de Interlagos (4.309 km)",
         "date": "2026-06-14",
         "laps": "60",
         "weather": "",
