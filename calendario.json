@@ -365,7 +365,7 @@
     "bestOf": 4,
     "rounds": [
       {
-        "circuit": "Sainte Croix - Layout B (7.062 m)",
+        "circuit": "Circuit de Sainte-Croix — Layout B (7.1 km)",
         "date": "2026-03-29",
         "laps": "11",
         "weather": "🌑 Overcast",
@@ -375,7 +375,7 @@
         "notes": ""
       },
       {
-        "circuit": "Fuji Intern. Speedway (4.563 m)",
+        "circuit": "Fuji International Speedway — Short Course (4.5 km)",
         "date": "2026-04-12",
         "laps": "17",
         "weather": "🌑 Overcast + 🌧️ Pioggia battente + ⛈️ Pioggia intensa + 🌊 Nubifragio",
@@ -385,7 +385,7 @@
         "notes": ""
       },
       {
-        "circuit": "Barcellona GP (4.655 m)",
+        "circuit": "Circuit de Barcelona-Catalunya — Grand Prix Layout (4.7 km)",
         "date": "2026-04-26",
         "laps": "17",
         "weather": "🌤️ Sereno con foschia leggera",
@@ -395,7 +395,7 @@
         "notes": ""
       },
       {
-        "circuit": "Monza (5.793 m)",
+        "circuit": "Autodromo Nazionale Monza — Full Course (5.8 km)",
         "date": "2026-05-24",
         "laps": "14",
         "weather": "🌆 Tramonto alto",
@@ -405,7 +405,7 @@
         "notes": ""
       },
       {
-        "circuit": "Nurburgring - Nordschleife (20.832 m)",
+        "circuit": "Nürburgring — Nordschleife (20.832 km)",
         "date": "2026-06-07",
         "laps": "4",
         "weather": "🌅 Soleggiato pomeridiano",
