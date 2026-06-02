@@ -1,0 +1,1154 @@
+[
+  {
+    "id": "alsace",
+    "name": "Alsace",
+    "country": "France",
+    "region": "Europe",
+    "type": "original",
+    "surface": "circuit",
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "alsace-village",
+        "name": "Village",
+        "lap_distance_km": 5.423,
+        "corners": 17,
+        "elevation_m": 57,
+        "reversible": true
+      },
+      {
+        "id": "alsace-test-course",
+        "name": "Test Course",
+        "lap_distance_km": 2.1,
+        "corners": 7,
+        "elevation_m": 35,
+        "reversible": true
+      }
+    ]
+  },
+  {
+    "id": "autodrome-lago-maggiore",
+    "name": "Autodrome Lago Maggiore",
+    "country": "Italy",
+    "region": "Europe",
+    "type": "original",
+    "surface": "circuit",
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "lago-maggiore-full",
+        "name": "Full Course",
+        "lap_distance_km": 5.8,
+        "corners": 17,
+        "elevation_m": 74,
+        "reversible": true
+      },
+      {
+        "id": "lago-maggiore-centre",
+        "name": "Centre",
+        "lap_distance_km": 1.7,
+        "corners": 8,
+        "elevation_m": 12,
+        "reversible": true
+      },
+      {
+        "id": "lago-maggiore-east-end",
+        "name": "East End",
+        "lap_distance_km": 2.0,
+        "corners": 8,
+        "elevation_m": 42,
+        "reversible": true
+      },
+      {
+        "id": "lago-maggiore-west-end",
+        "name": "West End",
+        "lap_distance_km": 2.4,
+        "corners": 10,
+        "elevation_m": 48,
+        "reversible": true
+      },
+      {
+        "id": "lago-maggiore-east",
+        "name": "East",
+        "lap_distance_km": 3.6,
+        "corners": 11,
+        "elevation_m": 43,
+        "reversible": true
+      },
+      {
+        "id": "lago-maggiore-west",
+        "name": "West",
+        "lap_distance_km": 4.2,
+        "corners": 13,
+        "elevation_m": 49,
+        "reversible": true
+      }
+    ]
+  },
+  {
+    "id": "autodromo-nazionale-monza",
+    "name": "Autodromo Nazionale Monza",
+    "country": "Italy",
+    "region": "Europe",
+    "type": "real",
+    "surface": "circuit",
+    "built": 1922,
+    "altitude_m": 184,
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "monza-full",
+        "name": "Full Course",
+        "lap_distance_km": 5.8,
+        "corners": 11,
+        "elevation_m": 14,
+        "reversible": false
+      },
+      {
+        "id": "monza-no-chicane",
+        "name": "No Chicane",
+        "lap_distance_km": 5.8,
+        "corners": 9,
+        "elevation_m": 14,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "autopolis",
+    "name": "Autopolis International Racing Course",
+    "country": "Japan",
+    "region": "Asia",
+    "type": "real",
+    "surface": "circuit",
+    "altitude_m": 820,
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "autopolis-full",
+        "name": "Full Course",
+        "lap_distance_km": 4.674,
+        "corners": 18,
+        "elevation_m": 52,
+        "reversible": false
+      },
+      {
+        "id": "autopolis-shortcut",
+        "name": "Shortcut Course",
+        "lap_distance_km": 3.022,
+        "corners": 11,
+        "elevation_m": 30,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "autodromo-interlagos",
+    "name": "Autódromo de Interlagos",
+    "country": "Brazil",
+    "region": "America",
+    "type": "real",
+    "surface": "circuit",
+    "altitude_m": 788,
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "interlagos-full",
+        "name": "Full Course",
+        "lap_distance_km": 4.309,
+        "corners": 15,
+        "elevation_m": 43,
+        "reversible": false
+      }
+    ],
+    "built": 1940
+  },
+  {
+    "id": "blue-moon-bay",
+    "name": "Blue Moon Bay Speedway",
+    "country": "United States",
+    "region": "America",
+    "type": "original",
+    "surface": "circuit",
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "blue-moon-full",
+        "name": "Full Course",
+        "lap_distance_km": 3.2,
+        "corners": 3,
+        "elevation_m": 0,
+        "reversible": true
+      },
+      {
+        "id": "blue-moon-infield-a",
+        "name": "Infield A",
+        "lap_distance_km": 3.35,
+        "corners": 10,
+        "elevation_m": 0,
+        "reversible": true
+      },
+      {
+        "id": "blue-moon-infield-b",
+        "name": "Infield B",
+        "lap_distance_km": 2.86,
+        "corners": 5,
+        "elevation_m": 0,
+        "reversible": true
+      }
+    ]
+  },
+  {
+    "id": "brands-hatch",
+    "name": "Brands Hatch",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "type": "real",
+    "surface": "circuit",
+    "altitude_m": 130,
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "brands-hatch-gp",
+        "name": "Grand Prix Circuit",
+        "lap_distance_km": 3.946,
+        "corners": 9,
+        "elevation_m": 35,
+        "reversible": false
+      },
+      {
+        "id": "brands-hatch-indy",
+        "name": "Indy Circuit",
+        "lap_distance_km": 1.944,
+        "corners": 5,
+        "elevation_m": 24,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "broad-bean-raceway",
+    "name": "Broad Bean Raceway",
+    "country": "Japan",
+    "region": "Asia",
+    "type": "original",
+    "surface": "circuit",
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "broad-bean-full",
+        "name": "Full Course",
+        "lap_distance_km": 1.665,
+        "corners": 5,
+        "elevation_m": 0,
+        "reversible": true
+      }
+    ]
+  },
+  {
+    "id": "circuit-barcelona-catalunya",
+    "name": "Circuit de Barcelona-Catalunya",
+    "country": "Spain",
+    "region": "Europe",
+    "type": "real",
+    "surface": "circuit",
+    "built": 1991,
+    "altitude_m": 124,
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "barcelona-gp",
+        "name": "Grand Prix Layout",
+        "lap_distance_km": 4.7,
+        "corners": 16,
+        "elevation_m": 30,
+        "reversible": false
+      },
+      {
+        "id": "barcelona-gp-no-chicane",
+        "name": "Grand Prix Layout No Chicane",
+        "lap_distance_km": 4.7,
+        "corners": 14,
+        "elevation_m": 30,
+        "reversible": false
+      },
+      {
+        "id": "barcelona-national",
+        "name": "National Layout",
+        "lap_distance_km": 3.0,
+        "corners": 11,
+        "elevation_m": 28,
+        "reversible": false
+      },
+      {
+        "id": "barcelona-rallycross",
+        "name": "Rallycross Layout",
+        "lap_distance_km": 1.1,
+        "corners": 11,
+        "elevation_m": 11,
+        "surface": "dirt",
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "circuit-gilles-villeneuve",
+    "name": "Circuit Gilles-Villeneuve",
+    "country": "Canada",
+    "region": "America",
+    "type": "real",
+    "surface": "circuit",
+    "altitude_m": 13,
+    "added": "v1.65",
+    "layouts": [
+      {
+        "id": "gilles-villeneuve-full",
+        "name": "Full Course",
+        "lap_distance_km": 4.4,
+        "corners": 14,
+        "elevation_m": 5,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "circuit-de-la-sarthe",
+    "name": "Circuit de la Sarthe",
+    "country": "France",
+    "region": "Europe",
+    "type": "real",
+    "surface": "circuit",
+    "altitude_m": 55,
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "sarthe-full",
+        "name": "Full Course",
+        "lap_distance_km": 13.6,
+        "corners": 38,
+        "elevation_m": 37,
+        "reversible": false
+      },
+      {
+        "id": "sarthe-no-chicane",
+        "name": "No Chicane",
+        "lap_distance_km": 13.6,
+        "corners": 32,
+        "elevation_m": 37,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "circuit-de-sainte-croix",
+    "name": "Circuit de Sainte-Croix",
+    "country": "France",
+    "region": "Europe",
+    "type": "original",
+    "surface": "circuit",
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "sainte-croix-a",
+        "name": "Layout A",
+        "lap_distance_km": 9.5,
+        "corners": 19,
+        "elevation_m": 44,
+        "reversible": true
+      },
+      {
+        "id": "sainte-croix-b",
+        "name": "Layout B",
+        "lap_distance_km": 7.1,
+        "corners": 14,
+        "elevation_m": 44,
+        "reversible": true
+      },
+      {
+        "id": "sainte-croix-c",
+        "name": "Layout C",
+        "lap_distance_km": 10.8,
+        "corners": 24,
+        "elevation_m": 44,
+        "reversible": true
+      }
+    ]
+  },
+  {
+    "id": "circuit-de-spa-francorchamps",
+    "name": "Circuit de Spa-Francorchamps",
+    "country": "Belgium",
+    "region": "Europe",
+    "type": "real",
+    "surface": "circuit",
+    "altitude_m": 411,
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "spa-full",
+        "name": "Full Course",
+        "lap_distance_km": 7.004,
+        "corners": 21,
+        "elevation_m": 104,
+        "reversible": false
+      },
+      {
+        "id": "spa-24h",
+        "name": "24h Layout",
+        "lap_distance_km": 7.004,
+        "corners": 21,
+        "elevation_m": 104,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "colorado-springs",
+    "name": "Colorado Springs",
+    "country": "United States",
+    "region": "America",
+    "type": "original",
+    "surface": "dirt",
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "colorado-springs-lake",
+        "name": "Lake",
+        "lap_distance_km": 2.99,
+        "corners": 15,
+        "elevation_m": 15,
+        "reversible": true
+      }
+    ]
+  },
+  {
+    "id": "daytona",
+    "name": "Daytona International Speedway",
+    "country": "United States",
+    "region": "America",
+    "type": "real",
+    "surface": "circuit",
+    "altitude_m": 10,
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "daytona-tri-oval",
+        "name": "Tri-Oval",
+        "lap_distance_km": 4.023,
+        "corners": 4,
+        "elevation_m": 10,
+        "reversible": false
+      },
+      {
+        "id": "daytona-road-course",
+        "name": "Road Course",
+        "lap_distance_km": 5.729,
+        "corners": 12,
+        "elevation_m": 8,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "deep-forest-raceway",
+    "name": "Deep Forest Raceway",
+    "country": "Switzerland",
+    "region": "Europe",
+    "type": "original",
+    "surface": "circuit",
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "deep-forest-full",
+        "name": "Full Course",
+        "lap_distance_km": 4.253,
+        "corners": 18,
+        "elevation_m": 50,
+        "reversible": true
+      }
+    ]
+  },
+  {
+    "id": "dragon-trail",
+    "name": "Dragon Trail",
+    "country": "Croatia",
+    "region": "Europe",
+    "type": "original",
+    "surface": "circuit",
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "dragon-trail-seaside",
+        "name": "Seaside",
+        "lap_distance_km": 5.2,
+        "corners": 18,
+        "elevation_m": 38,
+        "reversible": true
+      },
+      {
+        "id": "dragon-trail-gardens",
+        "name": "Gardens",
+        "lap_distance_km": 4.4,
+        "corners": 17,
+        "elevation_m": 27,
+        "reversible": true
+      }
+    ]
+  },
+  {
+    "id": "eiger-nordwand",
+    "name": "Eiger Nordwand",
+    "country": "Switzerland",
+    "region": "Europe",
+    "type": "original",
+    "surface": "circuit",
+    "altitude_m": 2016,
+    "added": "v1.49",
+    "layouts": [
+      {
+        "id": "eiger-full",
+        "name": "Full Course",
+        "lap_distance_km": 2.436,
+        "corners": 11,
+        "elevation_m": 90,
+        "reversible": true
+      }
+    ]
+  },
+  {
+    "id": "fishermans-ranch",
+    "name": "Fishermans Ranch",
+    "country": "United States",
+    "region": "America",
+    "type": "original",
+    "surface": "dirt",
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "fishermans-ranch-full",
+        "name": "Full Course",
+        "lap_distance_km": 6.893,
+        "corners": 40,
+        "elevation_m": 145,
+        "reversible": true
+      }
+    ]
+  },
+  {
+    "id": "fuji",
+    "name": "Fuji International Speedway",
+    "country": "Japan",
+    "region": "Asia",
+    "type": "real",
+    "surface": "circuit",
+    "altitude_m": 591,
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "fuji-full",
+        "name": "Full Course",
+        "lap_distance_km": 4.6,
+        "corners": 16,
+        "elevation_m": 40,
+        "reversible": false
+      },
+      {
+        "id": "fuji-short",
+        "name": "Short Course",
+        "lap_distance_km": 4.5,
+        "corners": 14,
+        "elevation_m": 40,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "goodwood",
+    "name": "Goodwood Motor Circuit",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "type": "real",
+    "surface": "circuit",
+    "altitude_m": 29,
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "goodwood-full",
+        "name": "Full Course",
+        "lap_distance_km": 3.809,
+        "corners": 7,
+        "elevation_m": 10,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "grand-valley",
+    "name": "Grand Valley",
+    "country": "United States",
+    "region": "America",
+    "type": "original",
+    "surface": "circuit",
+    "added": "v1.29",
+    "layouts": [
+      {
+        "id": "grand-valley-highway1",
+        "name": "Highway 1",
+        "lap_distance_km": 5.1,
+        "corners": 18,
+        "elevation_m": 97,
+        "reversible": true
+      },
+      {
+        "id": "grand-valley-south",
+        "name": "South",
+        "lap_distance_km": 3.1,
+        "corners": 10,
+        "elevation_m": 85,
+        "reversible": true
+      }
+    ]
+  },
+  {
+    "id": "high-speed-ring",
+    "name": "High Speed Ring",
+    "country": "Japan",
+    "region": "Asia",
+    "type": "original",
+    "surface": "circuit",
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "high-speed-ring-full",
+        "name": "Full Course",
+        "lap_distance_km": 4.345,
+        "corners": 6,
+        "elevation_m": 9,
+        "reversible": true
+      }
+    ]
+  },
+  {
+    "id": "kyoto-driving-park",
+    "name": "Kyoto Driving Park",
+    "country": "Japan",
+    "region": "Asia",
+    "type": "original",
+    "surface": "circuit",
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "kyoto-yamagiwa",
+        "name": "Yamagiwa",
+        "lap_distance_km": 4.9,
+        "corners": 15,
+        "elevation_m": 39,
+        "reversible": true
+      },
+      {
+        "id": "kyoto-miyabi",
+        "name": "Miyabi",
+        "lap_distance_km": 2.0,
+        "corners": 7,
+        "elevation_m": 18,
+        "reversible": false
+      },
+      {
+        "id": "kyoto-yamagiwa-miyabi",
+        "name": "Yamagiwa + Miyabi",
+        "lap_distance_km": 6.8,
+        "corners": 19,
+        "elevation_m": 39,
+        "reversible": true
+      }
+    ]
+  },
+  {
+    "id": "lake-louise",
+    "name": "Lake Louise",
+    "country": "Canada",
+    "region": "America",
+    "type": "original",
+    "surface": "snow",
+    "added": "v1.40",
+    "layouts": [
+      {
+        "id": "lake-louise-tri-oval",
+        "name": "Tri-Oval",
+        "lap_distance_km": 3.1,
+        "corners": 3,
+        "elevation_m": 78,
+        "reversible": true
+      },
+      {
+        "id": "lake-louise-short",
+        "name": "Short Track",
+        "lap_distance_km": 2.6,
+        "corners": 7,
+        "elevation_m": 63,
+        "reversible": true
+      },
+      {
+        "id": "lake-louise-long",
+        "name": "Long Track",
+        "lap_distance_km": 3.7,
+        "corners": 11,
+        "elevation_m": 78,
+        "reversible": true
+      }
+    ]
+  },
+  {
+    "id": "laguna-seca",
+    "name": "WeatherTech Raceway Laguna Seca",
+    "country": "United States",
+    "region": "America",
+    "type": "real",
+    "surface": "circuit",
+    "altitude_m": 230,
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "laguna-seca-full",
+        "name": "Full Course",
+        "lap_distance_km": 3.602,
+        "corners": 11,
+        "elevation_m": 55,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "michelin-road-atlanta",
+    "name": "Michelin Raceway Road Atlanta",
+    "country": "United States",
+    "region": "America",
+    "type": "real",
+    "surface": "circuit",
+    "built": 1970,
+    "altitude_m": 283,
+    "added": "v1.26",
+    "layouts": [
+      {
+        "id": "road-atlanta-full",
+        "name": "Full Course",
+        "lap_distance_km": 4.1,
+        "corners": 12,
+        "elevation_m": 38,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "mount-panorama",
+    "name": "Mount Panorama Circuit",
+    "country": "Australia",
+    "region": "Asia",
+    "type": "real",
+    "surface": "circuit",
+    "altitude_m": 708,
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "mount-panorama-full",
+        "name": "Full Course",
+        "lap_distance_km": 6.2,
+        "corners": 23,
+        "elevation_m": 174,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "northern-isle-speedway",
+    "name": "Northern Isle Speedway",
+    "country": "United States",
+    "region": "America",
+    "type": "original",
+    "surface": "circuit",
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "northern-isle-full",
+        "name": "Full Course",
+        "lap_distance_km": 0.9,
+        "corners": 4,
+        "elevation_m": 0,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "nurburgring",
+    "name": "Nürburgring",
+    "country": "Germany",
+    "region": "Europe",
+    "type": "real",
+    "surface": "circuit",
+    "altitude_m": 622,
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "nurburgring-nordschleife",
+        "name": "Nordschleife",
+        "lap_distance_km": 20.832,
+        "corners": 73,
+        "elevation_m": 300,
+        "reversible": false
+      },
+      {
+        "id": "nurburgring-nordschleife-tourist",
+        "name": "Nordschleife Tourist",
+        "lap_distance_km": 20.832,
+        "corners": 73,
+        "elevation_m": 300,
+        "reversible": false
+      },
+      {
+        "id": "nurburgring-24h",
+        "name": "24h",
+        "lap_distance_km": 25.378,
+        "corners": 89,
+        "elevation_m": 300,
+        "reversible": false
+      },
+      {
+        "id": "nurburgring-gp",
+        "name": "Grand Prix",
+        "lap_distance_km": 5.148,
+        "corners": 17,
+        "elevation_m": 57,
+        "reversible": false
+      },
+      {
+        "id": "nurburgring-endurance",
+        "name": "Endurance",
+        "lap_distance_km": 23.864,
+        "corners": 85,
+        "elevation_m": 300,
+        "reversible": true
+      },
+      {
+        "id": "nurburgring-sprint",
+        "name": "Sprint",
+        "lap_distance_km": 3.629,
+        "corners": 12,
+        "elevation_m": 33,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "red-bull-ring",
+    "name": "Red Bull Ring",
+    "country": "Austria",
+    "region": "Europe",
+    "type": "real",
+    "surface": "circuit",
+    "built": 1969,
+    "altitude_m": 679,
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "red-bull-ring-full",
+        "name": "Full Course",
+        "lap_distance_km": 4.3,
+        "corners": 10,
+        "elevation_m": 66,
+        "reversible": false
+      },
+      {
+        "id": "red-bull-ring-short",
+        "name": "Short Track",
+        "lap_distance_km": 2.3,
+        "corners": 6,
+        "elevation_m": 32,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "sardegna-road-track",
+    "name": "Sardegna - Road Track",
+    "country": "Italy",
+    "region": "Europe",
+    "type": "original",
+    "surface": "circuit",
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "sardegna-a",
+        "name": "Layout A",
+        "lap_distance_km": 5.1,
+        "corners": 15,
+        "elevation_m": 38,
+        "reversible": true
+      },
+      {
+        "id": "sardegna-b",
+        "name": "Layout B",
+        "lap_distance_km": 3.9,
+        "corners": 13,
+        "elevation_m": 56,
+        "reversible": true
+      },
+      {
+        "id": "sardegna-c",
+        "name": "Layout C",
+        "lap_distance_km": 2.7,
+        "corners": 10,
+        "elevation_m": 54,
+        "reversible": true
+      }
+    ]
+  },
+  {
+    "id": "sardegna-windmills",
+    "name": "Sardegna - Windmills",
+    "country": "Italy",
+    "region": "Europe",
+    "type": "original",
+    "surface": "dirt",
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "sardegna-windmills-full",
+        "name": "Full Course",
+        "lap_distance_km": 3.3,
+        "corners": 14,
+        "elevation_m": 75,
+        "reversible": true
+      }
+    ]
+  },
+  {
+    "id": "special-stage-route-x",
+    "name": "Special Stage Route X",
+    "country": "United States",
+    "region": "America",
+    "type": "original",
+    "surface": "circuit",
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "ssrx-full",
+        "name": "Full Course",
+        "lap_distance_km": 30.283,
+        "corners": 2,
+        "elevation_m": 65,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "suzuka",
+    "name": "Suzuka Circuit",
+    "country": "Japan",
+    "region": "Asia",
+    "type": "real",
+    "surface": "circuit",
+    "altitude_m": 32,
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "suzuka-full",
+        "name": "Full Course",
+        "lap_distance_km": 5.8,
+        "corners": 20,
+        "elevation_m": 40,
+        "reversible": false
+      },
+      {
+        "id": "suzuka-east",
+        "name": "East Course",
+        "lap_distance_km": 2.2,
+        "corners": 9,
+        "elevation_m": 34,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "tokyo-expressway",
+    "name": "Tokyo Expressway",
+    "country": "Japan",
+    "region": "Asia",
+    "type": "original",
+    "surface": "city",
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "tokyo-central-cw",
+        "name": "Central Clockwise",
+        "lap_distance_km": 4.405,
+        "corners": 13,
+        "elevation_m": 8,
+        "reversible": false
+      },
+      {
+        "id": "tokyo-central-ccw",
+        "name": "Central Counterclockwise",
+        "lap_distance_km": 4.4,
+        "corners": 14,
+        "elevation_m": 16,
+        "reversible": false
+      },
+      {
+        "id": "tokyo-east-cw",
+        "name": "East Clockwise",
+        "lap_distance_km": 7.301,
+        "corners": 13,
+        "elevation_m": 32,
+        "reversible": false
+      },
+      {
+        "id": "tokyo-east-ccw",
+        "name": "East Counterclockwise",
+        "lap_distance_km": 7.2,
+        "corners": 13,
+        "elevation_m": 32,
+        "reversible": false
+      },
+      {
+        "id": "tokyo-south-cw",
+        "name": "South Clockwise",
+        "lap_distance_km": 5.2,
+        "corners": 17,
+        "elevation_m": 24,
+        "reversible": false
+      },
+      {
+        "id": "tokyo-south-ccw",
+        "name": "South Counterclockwise",
+        "lap_distance_km": 6.56,
+        "corners": 16,
+        "elevation_m": 24,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "trial-mountain",
+    "name": "Trial Mountain Circuit",
+    "country": "United States",
+    "region": "America",
+    "type": "original",
+    "surface": "circuit",
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "trial-mountain-full",
+        "name": "Full Course",
+        "lap_distance_km": 5.4,
+        "corners": 15,
+        "elevation_m": 58,
+        "reversible": true
+      }
+    ]
+  },
+  {
+    "id": "tsukuba",
+    "name": "Tsukuba Circuit",
+    "country": "Japan",
+    "region": "Asia",
+    "type": "real",
+    "surface": "circuit",
+    "altitude_m": 26,
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "tsukuba-full",
+        "name": "Full Course",
+        "lap_distance_km": 2.045,
+        "corners": 8,
+        "elevation_m": 5,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "watkins-glen",
+    "name": "Watkins Glen International",
+    "country": "United States",
+    "region": "America",
+    "type": "real",
+    "surface": "circuit",
+    "altitude_m": 480,
+    "added": "v1.17",
+    "layouts": [
+      {
+        "id": "watkins-glen-long",
+        "name": "Long Course",
+        "lap_distance_km": 5.423,
+        "corners": 11,
+        "elevation_m": 41,
+        "reversible": false
+      },
+      {
+        "id": "watkins-glen-short",
+        "name": "Short Course",
+        "lap_distance_km": 3.9,
+        "corners": 7,
+        "elevation_m": 11,
+        "reversible": false
+      }
+    ],
+    "built": 1956
+  },
+  {
+    "id": "willow-springs",
+    "name": "Willow Springs International Raceway",
+    "country": "United States",
+    "region": "America",
+    "type": "real",
+    "surface": "circuit",
+    "altitude_m": 737,
+    "added": "launch",
+    "layouts": [
+      {
+        "id": "willow-springs-big-willow",
+        "name": "Big Willow",
+        "lap_distance_km": 4.0,
+        "corners": 10,
+        "elevation_m": 50,
+        "reversible": true
+      },
+      {
+        "id": "willow-springs-streets",
+        "name": "Streets of Willow Springs",
+        "lap_distance_km": 2.7,
+        "corners": 14,
+        "elevation_m": 20,
+        "reversible": true
+      },
+      {
+        "id": "willow-springs-horse-thief",
+        "name": "Horse Thief Mile",
+        "lap_distance_km": 1.6,
+        "corners": 11,
+        "elevation_m": 42,
+        "reversible": false
+      }
+    ]
+  },
+  {
+    "id": "yas-marina",
+    "name": "Yas Marina Circuit",
+    "country": "United Arab Emirates",
+    "region": "Asia",
+    "type": "real",
+    "surface": "circuit",
+    "altitude_m": 2,
+    "added": "v1.50",
+    "layouts": [
+      {
+        "id": "yas-marina-full",
+        "name": "Full Course",
+        "lap_distance_km": 5.281,
+        "corners": 21,
+        "elevation_m": 7,
+        "reversible": false
+      }
+    ]
+  }
+]
