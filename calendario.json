@@ -434,7 +434,7 @@
     "bestOf": 2,
     "rounds": [
       {
-        "circuit": "Sardegna - Stradale (conf. A) (5.113 m)",
+        "circuit": "Sardegna - Road Track — Layout A (5.1 km)",
         "date": "2025-12-07",
         "laps": "17",
         "weather": "",
@@ -444,7 +444,7 @@
         "notes": ""
       },
       {
-        "circuit": "Lago Maggiore (5.809 m)",
+        "circuit": "Autodrome Lago Maggiore — Full Course (5.8 km)",
         "date": "2026-01-18",
         "laps": "17",
         "weather": "",
@@ -454,7 +454,7 @@
         "notes": ""
       },
       {
-        "circuit": "Monza (5.793 m)",
+        "circuit": "Autodromo Nazionale Monza — Full Course (5.8 km)",
         "date": "2026-02-08",
         "laps": "17",
         "weather": "",
