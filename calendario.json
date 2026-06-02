@@ -82,50 +82,50 @@
     "bestOf": 4,
     "rounds": [
       {
-        "circuit": "Mount Panorama (6.213 m)",
+        "circuit": "Mount Panorama Circuit (6.2 km)",
         "date": "2025-09-28",
         "laps": "13",
-        "weather": "ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ Poco nuvoloso (cumuli sparsi)",
+        "weather": "⛅ Poco nuvoloso (cumuli sparsi)",
         "tire": "x1",
         "fuel": "x3",
         "types": "Dure/Medie",
         "notes": "1 Pit - 15 min Qualifiche"
       },
       {
-        "circuit": "Trial Mountain (5.434 m)",
+        "circuit": "Trial Mountain Circuit (5.4 km)",
         "date": "2025-10-18",
         "laps": "14",
-        "weather": "ÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ«ÃÂÃÂÃÂÃÂ¯ÃÂÃÂÃÂÃÂ¸ÃÂÃÂÃÂÃÂ Coperto cupo",
+        "weather": "🌫️ Coperto cupo",
         "tire": "x2",
         "fuel": "x1",
         "types": "Medie/Morbide",
         "notes": "1 Pit - 15 min Qualifiche"
       },
       {
-        "circuit": "Spa (7.004 m)",
+        "circuit": "Circuit de Spa-Francorchamps — Full Course (7.004 km)",
         "date": "2025-11-02",
         "laps": "11",
-        "weather": "ÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ Crepuscolo civile + ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¯ÃÂÃÂÃÂÃÂ¸ÃÂÃÂÃÂÃÂ Nuvoloso compatto + ÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ«ÃÂÃÂÃÂÃÂ¯ÃÂÃÂÃÂÃÂ¸ÃÂÃÂÃÂÃÂ Coperto cupo + ÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ§ÃÂÃÂÃÂÃÂ¯ÃÂÃÂÃÂÃÂ¸ÃÂÃÂÃÂÃÂ Pioggia moderata",
+        "weather": "🌆 Crepuscolo civile + ☁️ Nuvoloso compatto + 🌫️ Coperto cupo + 🌧️ Pioggia moderata",
         "tire": "x4",
         "fuel": "x2",
         "types": "Medie",
         "notes": "1 Pit - 15 min Qualifiche"
       },
       {
-        "circuit": "Sardegna - Stradale (conf. A) (5.113 m)",
+        "circuit": "Sardegna - Road Track — Layout A (5.1 km)",
         "date": "2025-11-16",
         "laps": "15",
-        "weather": "ÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¯ÃÂÃÂÃÂÃÂ¸ÃÂÃÂÃÂÃÂ Sereno",
+        "weather": "☀️ Sereno",
         "tire": "x4",
         "fuel": "x3",
         "types": "Dure/Medie/Morbide",
         "notes": "1 Pit - 15 min Qualifiche"
       },
       {
-        "circuit": "Laguna Seca (3.602 m)",
+        "circuit": "WeatherTech Raceway Laguna Seca (3.602 km)",
         "date": "2025-11-30",
         "laps": "22",
-        "weather": "ÃÂÃÂÃÂÃÂ°ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ Alba",
+        "weather": "🌄 Alba",
         "tire": "x3",
         "fuel": "x3",
         "types": "Medie/Morbide",
