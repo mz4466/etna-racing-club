@@ -236,6 +236,31 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       .then(function(d){ d._file = file; return d; });
   }
 
+  function fetchCalendario(){
+    return fetch(BASE + 'calendario.json?_=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(champs){
+        circuitMap = {};
+        for(var ci=0; ci<champs.length; ci++){
+          var champ = champs[ci];
+          var rounds = champ.rounds || champ.calendar || [];
+          /* only count completed rounds using completedRounds counter */
+          var completed = typeof champ.completedRounds === 'number' ? champ.completedRounds : rounds.length;
+          for(var ri=0; ri<rounds.length && ri<completed; ri++){
+            var round = rounds[ri];
+            var circuit = round.circuit || round.circuito || '';
+            if(!circuit) continue;
+            /* strip km suffix for grouping: "Suzuka Circuit — Full Course (5.8 km)" -> "Suzuka Circuit — Full Course" */
+            var cKey = circuit.replace(/\s*\([\d.]+ km\)\s*$/i, '').trim();
+            /* also strip old-style metre suffix: "Monza (5.793 m)" -> "Monza" */
+            cKey = cKey.replace(/\s*\([\d.]+ m\)\s*$/i, '').trim();
+            circuitMap[cKey] = (circuitMap[cKey] || 0) + 1;
+          }
+        }
+      })
+      .catch(function(){ circuitMap = {}; });
+  }
+
   function loadAll(){
     fetchIndex().then(function(files){
       var total = files.length;
@@ -258,6 +283,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
         processData();
         return fetchPilotStatus();
       }).then(function(){
+        return fetchCalendario();
+      }).then(function(){
         renderAll();
       });
     }).catch(function(e){
@@ -274,10 +301,6 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       var rows = race.rows || [];
       var isFinal = String(race.garaNum) === String(race.garaTot) && race.standings && race.standings.length;
       var champId = race.champId || race.champIdx || '';
-
-      /* circuit count */
-      var cKey = circuit.replace(/\s*\(.*\)/, '').trim();
-      circuitMap[cKey] = (circuitMap[cKey] || 0) + 1;
 
       /* season */
       if(!seasonMap[yr]) seasonMap[yr] = {races:0, pilots:{}, gridSizes:[]};
