@@ -16,10 +16,10 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh}
 
-.header-action{position:absolute;top:20px;right:20px}
+.header-action{position:absolute;top:16px;right:20px;z-index:2}
 .btn-ufficiose{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;border:1px solid var(--gold);color:var(--gold);background:transparent;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s}
 .btn-ufficiose:hover{background:var(--gold);color:#07070f}
-.page-header{position:relative}
+.page-header{position:relative;text-align:center}
 .page-header img{width:64px;height:64px;object-fit:contain;margin-bottom:14px;filter:drop-shadow(0 0 12px rgba(201,162,39,0.3));border-radius:8px}
 .page-season{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
 .page-title{font-family:'Russo One',sans-serif;font-size:clamp(24px,5vw,36px);color:var(--text);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px}
@@ -195,6 +195,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   var pilotStatus = {};
   var currentFilter = 'attivi';
   var ufficioseIds = {};  /* champIds to exclude from stats */
+  var countedRaces = 0;  /* races actually counted after ufficiose filter */
 
   function fetchPilotStatus(){
     return fetch(BASE + 'piloti_schede/index.json?_=' + Date.now())
@@ -287,10 +288,10 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       }
       Promise.all(promises).then(function(results){
         races = results;
+        return fetchCalendario();
+      }).then(function(){
         processData();
         return fetchPilotStatus();
-      }).then(function(){
-        return fetchCalendario();
       }).then(function(){
         renderAll();
       });
@@ -311,6 +312,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
       /* skip ufficiose championships entirely */
       if(champId && ufficioseIds[champId]) continue;
+      countedRaces++;
 
       /* season */
       if(!seasonMap[yr]) seasonMap[yr] = {races:0, pilots:{}, gridSizes:[]};
@@ -434,7 +436,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     var uniqueCircuits = Object.keys(circuitMap).length;
     var completedChamps = Object.keys(champWinners).length;
     document.getElementById('overviewGrid').innerHTML =
-      ovCard(races.length, 'Gare disputate') +
+      ovCard(countedRaces, 'Gare disputate') +
       ovCard(completedChamps, 'Campionati conclusi') +
       ovCard(filtered.length, 'Piloti') +
       ovCard(uniqueCircuits, 'Circuiti diversi');
@@ -461,7 +463,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
     /* overview */
     document.getElementById('overviewGrid').innerHTML =
-      ovCard(races.length, 'Gare disputate') +
+      ovCard(countedRaces, 'Gare disputate') +
       ovCard(completedChamps, 'Campionati conclusi') +
       ovCard(filtered.length, 'Piloti') +
       ovCard(uniqueCircuits, 'Circuiti diversi');
@@ -475,7 +477,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     renderSeasons();
 
     document.getElementById('footerNote').textContent =
-      'Dati calcolati automaticamente da ' + races.length + ' risultati pubblicati';
+      'Dati calcolati automaticamente da ' + countedRaces + ' risultati pubblicati';
   }
 
   function ovCard(num, label){
