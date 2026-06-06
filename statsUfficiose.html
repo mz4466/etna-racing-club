@@ -693,7 +693,10 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   function renderCars(){
     var filteredCarWins = {};
     for(var ri=0;ri<races.length;ri++){
-      var rows = races[ri].rows || [];
+      var race = races[ri];
+      var champId = race.champId || race.champIdx || '';
+      if(!champId || !ufficioseIds[champId]) continue;
+      var rows = race.rows || [];
       for(var pi=0;pi<rows.length;pi++){
         var r = rows[pi];
         if(r.pos === 1 && r.auto && r.nome && isPilotVisible(r.nome)){
