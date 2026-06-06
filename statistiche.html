@@ -194,6 +194,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   var champWinners = {};
   var pilotStatus = {};
   var currentFilter = 'attivi';
+  var ufficioseIds = {};  /* champIds to exclude from stats */
 
   function fetchPilotStatus(){
     return fetch(BASE + 'piloti_schede/index.json?_=' + Date.now())
@@ -241,8 +242,14 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       .then(function(r){ return r.json(); })
       .then(function(champs){
         circuitMap = {};
+        ufficioseIds = {};
         for(var ci=0; ci<champs.length; ci++){
           var champ = champs[ci];
+          /* mark ufficiose championships so processData can skip them */
+          if(champ.cat === 'Gara/e Ufficiosa/e'){
+            if(champ.id) ufficioseIds[champ.id] = true;
+            continue; /* skip circuit counting for ufficiose */
+          }
           var rounds = champ.rounds || champ.calendar || [];
           /* only count completed rounds using completedRounds counter */
           var completed = typeof champ.completedRounds === 'number' ? champ.completedRounds : rounds.length;
@@ -301,6 +308,9 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       var rows = race.rows || [];
       var isFinal = String(race.garaNum) === String(race.garaTot) && race.standings && race.standings.length;
       var champId = race.champId || race.champIdx || '';
+
+      /* skip ufficiose championships entirely */
+      if(champId && ufficioseIds[champId]) continue;
 
       /* season */
       if(!seasonMap[yr]) seasonMap[yr] = {races:0, pilots:{}, gridSizes:[]};
