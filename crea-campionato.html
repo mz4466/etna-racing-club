@@ -1198,7 +1198,7 @@ function roundHTML(id, pos) {
           <label>Manifesto Gara (opzionale)</label>
           <div class="manifesto-upload" id="manifesto-wrap-${id}">
             <input type="file" accept="image/*" id="rmanifesto-${id}" style="display:none" onchange="handleManifesto(${id}, this)">
-            <button type="button" class="btn btn-sm" onclick="document.getElementById('rmanifesto-'+${id}).click()">📷 Carica immagine</button>
+            <button type="button" class="btn btn-sm" data-mid="${id}" onclick="document.getElementById('rmanifesto-'+this.dataset.mid).click()">📷 Carica immagine</button>
             <span id="rmanifesto-name-${id}" style="font-size:12px;color:var(--text-dim);margin-left:8px;"></span>
             <button type="button" class="btn btn-sm" id="rmanifesto-clear-${id}" style="display:none;margin-left:6px;color:var(--red)" onclick="clearManifesto(${id})">✕ Rimuovi</button>
           </div>
