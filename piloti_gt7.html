@@ -476,9 +476,16 @@ async function loadAll() {
           } catch(e) { return null; }
         }, 4, 300);
 
-        // Scan ALL races to count participations per pilot
+        // Build set of ufficiose champIds to exclude from stats
+        var ufficioseIds = {};
+        calendario.forEach(function(c) {
+          if (c.cat === 'Gara/e Ufficiosa/e' && c.id) ufficioseIds[c.id] = true;
+        });
+
+        // Scan ALL races to count participations per pilot (skip ufficiose)
         results.filter(Boolean).forEach(function(race) {
           var champId = race.champId || '';
+          if (champId && ufficioseIds[champId]) return;
           var rows = race.rows || [];
           rows.forEach(function(row) {
             if (!row.nome) return;
@@ -494,6 +501,10 @@ async function loadAll() {
           var garaNum = parseInt(race.garaNum) || 0;
           var garaTot = parseInt(race.garaTot) || 0;
           if (garaNum !== garaTot || garaTot === 0) return;
+
+          // Skip ufficiose
+          var champId = race.champId || '';
+          if (champId && ufficioseIds[champId]) return;
 
           var standings = race.standings || [];
 
