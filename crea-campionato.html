@@ -1576,8 +1576,23 @@ function buildHTML() {
   <a href="index.html" class="back-link">← Torna alla Home</a>
 </div>
 
-<'+'script src="copyright.js"><'+'/script>
-<'+'script src="../nav.js"><'+'/script>
+<div class="manifesto-lightbox" id="manifestoLightbox" onclick="closeManifesto()">
+  <span class="manifesto-lightbox-close" onclick="closeManifesto()">&#10005;</span>
+  <img id="manifestoLightboxImg" src="" alt="Manifesto">
+</div>
+<${'script'}>
+function openManifesto(el){
+  var img=el.querySelector("img");
+  document.getElementById("manifestoLightboxImg").src=img.src;
+  document.getElementById("manifestoLightbox").classList.add("open");
+}
+function closeManifesto(){
+  document.getElementById("manifestoLightbox").classList.remove("open");
+}
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeManifesto();});
+</${'script'}>
+<${'script'} src="copyright.js"></${'script'}>
+<${'script'} src="../nav.js"></${'script'}>
 </body>
 </html>`;
 }
