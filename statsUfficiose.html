@@ -194,7 +194,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   var champWinners = {};
   var pilotStatus = {};
   var currentFilter = 'attivi';
-  var ufficioseIds = {};  /* champIds to exclude from stats */
+  var ufficioseIds = {};  /* champIds to include in stats (ufficiose only) */
+  var countedRaces = 0;
 
   function fetchPilotStatus(){
     return fetch(BASE + 'piloti_schede/index.json?_=' + Date.now())
@@ -284,10 +285,10 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       }
       Promise.all(promises).then(function(results){
         races = results;
+        return fetchCalendario();
+      }).then(function(){
         processData();
         return fetchPilotStatus();
-      }).then(function(){
-        return fetchCalendario();
       }).then(function(){
         renderAll();
       });
@@ -308,6 +309,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
       /* only process ufficiose championships */
       if(!champId || !ufficioseIds[champId]) continue;
+      countedRaces++;
 
       /* season */
       if(!seasonMap[yr]) seasonMap[yr] = {races:0, pilots:{}, gridSizes:[]};
@@ -431,7 +433,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     var uniqueCircuits = Object.keys(circuitMap).length;
     var completedChamps = Object.keys(champWinners).length;
     document.getElementById('overviewGrid').innerHTML =
-      ovCard(races.length, 'Gare disputate') +
+      ovCard(countedRaces, 'Gare disputate') +
       ovCard(completedChamps, 'Campionati conclusi') +
       ovCard(filtered.length, 'Piloti') +
       ovCard(uniqueCircuits, 'Circuiti diversi');
@@ -458,7 +460,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
     /* overview */
     document.getElementById('overviewGrid').innerHTML =
-      ovCard(races.length, 'Gare disputate') +
+      ovCard(countedRaces, 'Gare disputate') +
       ovCard(completedChamps, 'Campionati conclusi') +
       ovCard(filtered.length, 'Piloti') +
       ovCard(uniqueCircuits, 'Circuiti diversi');
@@ -472,7 +474,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     renderSeasons();
 
     document.getElementById('footerNote').textContent =
-      'Gare ufficiose: ' + races.length + ' risultati';
+      'Gare ufficiose: ' + countedRaces + ' risultati';
   }
 
   function ovCard(num, label){
