@@ -125,7 +125,7 @@ a.trofeo-mini:hover{border-color:rgba(201,162,39,0.25);background:rgba(201,162,3
       .then(function(list){
         for(var i=0;i<list.length;i++){
           var e = list[i];
-          if(e.id) calMap[e.id] = { name: e.name || '', trophy: e.trophy || '', file: e.file || '' };
+          if(e.id) calMap[e.id] = { name: e.name || '', trophy: e.trophy || '', file: e.file || '', cat: e.cat || '' };
         }
       })
       .catch(function(){});
@@ -197,6 +197,9 @@ a.trofeo-mini:hover{border-color:rgba(201,162,39,0.25);background:rgba(201,162,3
 
     for(var i=0;i<races.length;i++){
       var race = races[i];
+      /* skip ufficiose championships */
+      var champEntry = calMap[race.champId || ''] || calMap[race.champIdx || ''] || null;
+      if(champEntry && champEntry.cat === 'Gara/e Ufficiosa/e') continue;
       var isFinal = String(race.garaNum) === String(race.garaTot) && race.standings && race.standings.length;
       if(!isFinal) continue;
 
