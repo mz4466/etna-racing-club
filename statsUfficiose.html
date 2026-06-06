@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gare Ufficiose — Etna Racing Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@300;400;500;600;700&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07070f;--card:#0e0e1c;--card2:#0a0a16;
+  --border:rgba(201,162,39,0.12);--border-hi:rgba(201,162,39,0.25);
+  --gold:#c9a227;--gold-hi:#e8c547;--gold-dim:rgba(201,162,39,0.10);
+  --text:#e8e0d0;--muted:#8a8098;--dim:#5a5470;
+  --red:#ff5014;--orange:#ff8c42;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh}
+
+.header-action{position:absolute;top:20px;right:20px}
+.btn-ufficiose{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;border:1px solid var(--gold);color:var(--gold);background:transparent;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s}
+.btn-ufficiose:hover{background:var(--gold);color:#07070f}
+.page-header{position:relative}
+.page-header img{width:64px;height:64px;object-fit:contain;margin-bottom:14px;filter:drop-shadow(0 0 12px rgba(201,162,39,0.3));border-radius:8px}
+.page-season{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
+.page-title{font-family:'Russo One',sans-serif;font-size:clamp(24px,5vw,36px);color:var(--text);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px}
+.page-sub{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:3px;color:var(--dim);text-transform:uppercase}
+
+.wrap{max-width:900px;margin:0 auto;padding:24px 20px 60px}
+
+.loading{text-align:center;padding:60px 20px}
+.loading-bar{width:240px;height:6px;background:rgba(201,162,39,0.10);border-radius:3px;margin:16px auto 0;overflow:hidden}
+.loading-fill{height:100%;background:var(--gold);border-radius:3px;width:0%;transition:width 0.3s}
+.loading-text{font-family:'Teko',sans-serif;font-size:16px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-top:10px}
+
+.overview-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
+.ov-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 14px;text-align:center}
+.ov-num{font-family:'Russo One',sans-serif;font-size:clamp(24px,5vw,32px);color:var(--gold-hi);line-height:1}
+.ov-label{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-top:6px}
+
+.section-title{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:4px;color:var(--dim);text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:14px}
+
+.sort-pills{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.sort-pill{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.06);color:var(--dim);cursor:pointer;transition:all 0.15s;background:transparent}
+.sort-pill:hover{border-color:rgba(201,162,39,0.3);color:var(--muted)}
+.sort-pill.active{background:var(--gold-dim);border-color:rgba(201,162,39,0.3);color:var(--gold-hi)}
+
+.status-filter{display:flex;gap:8px;margin-bottom:20px;align-items:center}
+.status-label{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-right:4px}
+.status-pill{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:6px 18px;border-radius:20px;border:1px solid rgba(255,255,255,0.06);color:var(--dim);cursor:pointer;transition:all 0.15s;background:transparent}
+.status-pill:hover{border-color:rgba(201,162,39,0.3);color:var(--muted)}
+.status-pill.active{background:var(--gold-dim);border-color:rgba(201,162,39,0.3);color:var(--gold-hi)}
+.status-count{font-size:11px;color:var(--dim);margin-left:4px;opacity:0.6}
+
+.stats-table-wrap{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow-x:auto;margin-bottom:32px}
+.stats-table{width:100%;border-collapse:collapse;min-width:600px}
+.stats-table thead{background:rgba(201,162,39,0.06)}
+.stats-table th{font-family:'Teko',sans-serif;font-size:13px;font-weight:500;letter-spacing:2px;color:var(--gold);text-transform:uppercase;padding:10px 12px;text-align:center;border-bottom:1px solid var(--border-hi);white-space:nowrap}
+.stats-table th:nth-child(2){text-align:left}
+.stats-table td{padding:10px 12px;font-size:14px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.03);color:var(--muted);white-space:nowrap}
+.stats-table td:nth-child(2){text-align:left;color:var(--text);font-weight:500}
+.stats-table tbody tr:hover{background:rgba(201,162,39,0.04)}
+.stats-table .pos-gold{color:var(--gold);font-family:'Russo One',sans-serif;font-weight:700}
+.stats-table .pos-dim{color:var(--dim)}
+.stats-table .val-hi{color:var(--gold-hi);font-weight:700}
+
+.h2h-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:32px}
+.h2h-selectors{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.h2h-select{background:var(--card2);border:1px solid rgba(201,162,39,0.2);border-radius:8px;padding:8px 14px;font-family:'Teko',sans-serif;font-size:16px;letter-spacing:1px;color:var(--gold-hi);cursor:pointer;outline:none;min-width:140px;text-align:center;appearance:auto}
+.h2h-select option{background:var(--card);color:var(--text)}
+.h2h-vs{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:3px;color:var(--dim)}
+.h2h-result{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center}
+.h2h-side{text-align:center}
+.h2h-big{font-family:'Russo One',sans-serif;font-size:28px;line-height:1}
+.h2h-small{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-top:4px}
+.h2h-center{text-align:center;font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--dim);line-height:1.6}
+.h2h-bar-wrap{margin:14px 0 6px;height:8px;border-radius:4px;background:rgba(255,255,255,0.05);overflow:hidden;display:flex}
+.h2h-bar{height:100%;border-radius:4px;transition:width 0.5s}
+.h2h-pct{display:flex;justify-content:space-between;font-family:'Teko',sans-serif;font-size:12px;color:var(--dim);letter-spacing:1px}
+.h2h-details{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.h2h-detail-card{background:var(--card2);border-radius:8px;padding:10px 12px}
+.h2h-detail-card table{width:100%;font-size:13px;border-collapse:collapse}
+.h2h-detail-card td{padding:3px 0}
+.h2h-detail-card td:first-child{color:var(--dim)}
+.h2h-detail-card td:last-child{text-align:right;color:var(--text)}
+.h2h-empty{text-align:center;padding:30px;color:var(--dim);font-family:'Teko',sans-serif;font-size:16px;letter-spacing:2px}
+
+.circuit-bars{display:flex;flex-direction:column;gap:8px;margin-bottom:32px}
+.circuit-row{display:flex;align-items:center;gap:12px}
+.circuit-name{font-size:13px;color:var(--text);width:220px;min-width:220px;text-align:right;flex-shrink:0;word-break:break-word;line-height:1.3}
+.circuit-bar-bg{flex:1;height:22px;background:rgba(255,255,255,0.03);border-radius:4px;overflow:hidden}
+.circuit-bar{height:100%;background:linear-gradient(90deg,rgba(201,162,39,0.4),rgba(232,197,71,0.65));border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-family:'Russo One',sans-serif;font-size:12px;color:var(--bg);min-width:28px;transition:width 0.5s}
+
+.car-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:32px}
+.car-card{background:var(--card);border:1px solid rgba(201,162,39,0.08);border-radius:8px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
+.car-name{font-size:14px;color:var(--text)}
+.car-maker{font-size:11px;color:var(--dim);letter-spacing:1px;margin-top:2px}
+.car-wins{font-family:'Russo One',sans-serif;font-size:18px;flex-shrink:0;margin-left:10px}
+
+.season-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:32px}
+.season-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;text-align:center}
+.season-year{font-family:'Russo One',sans-serif;font-size:14px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:12px}
+.season-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.season-num{font-family:'Russo One',sans-serif;font-size:20px;color:var(--text)}
+.season-label{font-size:11px;color:var(--dim);letter-spacing:1px}
+
+.footer-note{text-align:center;font-size:12px;letter-spacing:2px;color:rgba(201,184,163,0.3);margin-top:20px}
+
+@media(max-width:700px){
+  .overview-grid{grid-template-columns:repeat(2,1fr)}
+  .car-grid{grid-template-columns:1fr}
+  .h2h-result{grid-template-columns:1fr;gap:8px}
+  .h2h-details{grid-template-columns:1fr}
+  .circuit-name{width:120px;min-width:120px;font-size:11px}
+  .h2h-selectors{flex-direction:column;gap:6px}
+}
+@media(max-width:480px){
+  .overview-grid{grid-template-columns:1fr 1fr}
+  .sort-pills{gap:4px}
+  .sort-pill{padding:4px 10px;font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="header-action"><a href="statistiche.html" class="btn-ufficiose">← Statistiche Club</a></div>
+  <a href="index.html"><img src="etna-logo.jpg" alt="Etna Racing Club"></a>
+  <div class="page-season">Etna Racing Club</div>
+  <h1 class="page-title">Gare Ufficiose</h1>
+  <div class="page-sub">Statistiche delle gare amichevoli e ufficiose</div>
+</header>
+
+<div class="wrap">
+
+  <div class="loading" id="loadingBox">
+    <div style="font-family:'Russo One',sans-serif;font-size:18px;color:var(--gold);letter-spacing:2px">Caricamento dati...</div>
+    <div class="loading-bar"><div class="loading-fill" id="loadingFill"></div></div>
+    <div class="loading-text" id="loadingText">Recupero risultati...</div>
+  </div>
+
+  <div id="dashboard" style="display:none">
+
+    <div class="overview-grid" id="overviewGrid"></div>
+
+    <div class="section-title">Classifica piloti all-time</div>
+    <div class="status-filter" id="statusFilter"></div>
+    <div class="sort-pills" id="sortPills"></div>
+    <div class="stats-table-wrap">
+      <table class="stats-table">
+        <thead id="tableHead"></thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+
+    <div class="section-title">Testa a testa</div>
+    <div class="h2h-card">
+      <div class="h2h-selectors">
+        <select class="h2h-select" id="h2hA"></select>
+        <span class="h2h-vs">VS</span>
+        <select class="h2h-select" id="h2hB"></select>
+      </div>
+      <div id="h2hContent"><div class="h2h-empty">Seleziona due piloti diversi</div></div>
+    </div>
+
+    <div class="section-title">Circuiti piu frequentati</div>
+    <div class="circuit-bars" id="circuitBars"></div>
+
+    <div class="section-title">Auto piu vincenti</div>
+    <div class="car-grid" id="carGrid"></div>
+
+    <div class="section-title">Trend per stagione</div>
+    <div class="season-grid" id="seasonGrid"></div>
+
+    <div class="footer-note" id="footerNote"></div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+
+  /* ── helpers ── */
+  function norm(s){ return (s || '').toLowerCase().replace(/-/g,' ').trim(); }
+  function pct(a,b){ return b ? Math.round(a / b * 100) : 0; }
+  function avg(arr){ if(!arr.length) return 0; var s=0; for(var i=0;i<arr.length;i++) s+=arr[i]; return Math.round(s/arr.length*10)/10; }
+
+  /* ── fetch all race JSONs ── */
+  var BASE = '';
+  var races = [];
+  var pilotMap = {};
+  var circuitMap = {};
+  var carWins = {};
+  var seasonMap = {};
+  var champWinners = {};
+  var pilotStatus = {};
+  var currentFilter = 'attivi';
+  var ufficioseIds = {};  /* champIds to exclude from stats */
+
+  function fetchPilotStatus(){
+    return fetch(BASE + 'piloti_schede/index.json?_=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(list){
+        var promises = [];
+        for(var i=0;i<list.length;i++){
+          if(list[i] === 'index.json') continue;
+          (function(file){
+            var p = fetch(BASE + 'piloti_schede/' + file + '?_=' + Date.now())
+              .then(function(r){ return r.json(); })
+              .then(function(d){
+                var nome = d.nome || file.replace('.json','');
+                pilotStatus[nome] = d.attivo !== false;
+              })
+              .catch(function(){});
+            promises.push(p);
+          })(list[i]);
+        }
+        return Promise.all(promises);
+      })
+      .catch(function(){});
+  }
+
+  function fetchIndex(){
+    return fetch(BASE + 'risultati/index.json?_=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(list){
+        var files = [];
+        for(var i=0;i<list.length;i++){
+          if(list[i] !== 'index.json') files.push(list[i]);
+        }
+        return files;
+      });
+  }
+
+  function fetchRace(file){
+    return fetch(BASE + 'risultati/' + file + '?_=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(d){ d._file = file; return d; });
+  }
+
+  function fetchCalendario(){
+    return fetch(BASE + 'calendario.json?_=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(champs){
+        circuitMap = {};
+        ufficioseIds = {};
+        for(var ci=0; ci<champs.length; ci++){
+          var champ = champs[ci];
+          /* ONLY process ufficiose championships */
+          if(champ.cat !== 'Gara/e Ufficiosa/e') continue;
+          if(champ.id) ufficioseIds[champ.id] = true;
+          var rounds = champ.rounds || champ.calendar || [];
+          /* only count completed rounds using completedRounds counter */
+          var completed = typeof champ.completedRounds === 'number' ? champ.completedRounds : rounds.length;
+          for(var ri=0; ri<rounds.length && ri<completed; ri++){
+            var round = rounds[ri];
+            var circuit = round.circuit || round.circuito || '';
+            if(!circuit) continue;
+            /* strip km suffix for grouping */
+            var cKey = circuit.replace(/\s*\([\d.]+ km\)\s*$/i, '').trim();
+            cKey = cKey.replace(/\s*\([\d.]+ m\)\s*$/i, '').trim();
+            circuitMap[cKey] = (circuitMap[cKey] || 0) + 1;
+          }
+        }
+      })
+      .catch(function(){ circuitMap = {}; });
+  }
+
+  function loadAll(){
+    fetchIndex().then(function(files){
+      var total = files.length;
+      var done = 0;
+      var promises = [];
+      for(var i=0;i<files.length;i++){
+        (function(f){
+          var p = fetchRace(f).then(function(d){
+            done++;
+            var pctDone = Math.round(done/total*100);
+            document.getElementById('loadingFill').style.width = pctDone + '%';
+            document.getElementById('loadingText').textContent = done + ' / ' + total + ' risultati';
+            return d;
+          });
+          promises.push(p);
+        })(files[i]);
+      }
+      Promise.all(promises).then(function(results){
+        races = results;
+        processData();
+        return fetchPilotStatus();
+      }).then(function(){
+        return fetchCalendario();
+      }).then(function(){
+        renderAll();
+      });
+    }).catch(function(e){
+      document.getElementById('loadingText').textContent = 'Errore nel caricamento';
+    });
+  }
+
+  /* ── process data ── */
+  function processData(){
+    for(var ri=0;ri<races.length;ri++){
+      var race = races[ri];
+      var yr = (race.data || '').substring(0,4) || (race._file || '').substring(0,4) || 'N/A';
+      var circuit = race.circuito || 'Sconosciuto';
+      var rows = race.rows || [];
+      var isFinal = String(race.garaNum) === String(race.garaTot) && race.standings && race.standings.length;
+      var champId = race.champId || race.champIdx || '';
+
+      /* only process ufficiose championships */
+      if(!champId || !ufficioseIds[champId]) continue;
+
+      /* season */
+      if(!seasonMap[yr]) seasonMap[yr] = {races:0, pilots:{}, gridSizes:[]};
+      seasonMap[yr].races++;
+      seasonMap[yr].gridSizes.push(rows.length);
+
+      /* championship winners */
+      if(isFinal && champId){
+        var winner = race.standings[0];
+        if(winner && winner.nome){
+          champWinners[champId] = winner.nome;
+        }
+      }
+
+      /* per-pilot stats */
+      for(var pi=0;pi<rows.length;pi++){
+        var r = rows[pi];
+        var name = r.nome || '';
+        if(!name) continue;
+
+        seasonMap[yr].pilots[name] = true;
+
+        if(!pilotMap[name]) pilotMap[name] = {
+          nome: name,
+          races: 0,
+          wins: 0,
+          podiums: 0,
+          poles: 0,
+          fastLaps: 0,
+          dnfs: 0,
+          dsqs: 0,
+          positions: [],
+          champsWon: 0,
+          raceList: []
+        };
+        var p = pilotMap[name];
+        p.races++;
+        var stato = norm(r.stato);
+        if(stato === 'dnf') p.dnfs++;
+        if(stato === 'dsq') p.dsqs++;
+
+        if(r.pos === 1) p.wins++;
+        if(r.pos <= 3) p.podiums++;
+        if(r.pole) p.poles++;
+        if(r.fl) p.fastLaps++;
+        if(typeof r.pos === 'number') p.positions.push(r.pos);
+
+        /* winning car */
+        if(r.pos === 1 && r.auto){
+          carWins[r.auto] = (carWins[r.auto] || 0) + 1;
+        }
+
+        /* for head-to-head */
+        p.raceList.push({file: race._file, pos: r.pos, stato: stato});
+      }
+    }
+
+    /* count championship wins per pilot */
+    var cw = {};
+    for(var cid in champWinners){
+      if(!champWinners.hasOwnProperty(cid)) continue;
+      var n = champWinners[cid];
+      cw[n] = (cw[n] || 0) + 1;
+    }
+    for(var pn in pilotMap){
+      if(!pilotMap.hasOwnProperty(pn)) continue;
+      pilotMap[pn].champsWon = cw[pn] || 0;
+    }
+  }
+
+  /* ── render ── */
+  var currentSort = 'wins';
+  var allPilots = [];
+
+  function isPilotVisible(nome){
+    if(currentFilter === 'tutti') return true;
+    var isActive = pilotStatus.hasOwnProperty(nome) ? pilotStatus[nome] : true;
+    if(currentFilter === 'attivi') return isActive;
+    return !isActive;
+  }
+
+  function getFilteredPilots(){
+    var out = [];
+    for(var i=0;i<allPilots.length;i++){
+      if(isPilotVisible(allPilots[i].nome)) out.push(allPilots[i]);
+    }
+    return out;
+  }
+
+  function renderStatusFilter(){
+    var activeCount = 0, inactiveCount = 0;
+    for(var i=0;i<allPilots.length;i++){
+      var isAct = pilotStatus.hasOwnProperty(allPilots[i].nome) ? pilotStatus[allPilots[i].nome] : true;
+      if(isAct) activeCount++; else inactiveCount++;
+    }
+    var filters = [
+      {key:'attivi',   label:'Attivi',   count:activeCount},
+      {key:'inattivi', label:'Inattivi', count:inactiveCount},
+      {key:'tutti',    label:'Tutti',    count:allPilots.length}
+    ];
+    var html = '<span class="status-label">Filtra:</span>';
+    for(var j=0;j<filters.length;j++){
+      var f = filters[j];
+      var cls = f.key === currentFilter ? ' active' : '';
+      html += '<button class="status-pill' + cls + '" data-filter="' + f.key + '">' + f.label + '<span class="status-count">(' + f.count + ')</span></button>';
+    }
+    var el = document.getElementById('statusFilter');
+    el.innerHTML = html;
+    var btns = el.querySelectorAll('.status-pill');
+    for(var k=0;k<btns.length;k++){
+      btns[k].addEventListener('click', function(){
+        currentFilter = this.getAttribute('data-filter');
+        renderStatusFilter();
+        renderFilteredSections();
+      });
+    }
+  }
+
+  function renderFilteredSections(){
+    var filtered = getFilteredPilots();
+    var uniqueCircuits = Object.keys(circuitMap).length;
+    var completedChamps = Object.keys(champWinners).length;
+    document.getElementById('overviewGrid').innerHTML =
+      ovCard(races.length, 'Gare disputate') +
+      ovCard(completedChamps, 'Campionati conclusi') +
+      ovCard(filtered.length, 'Piloti') +
+      ovCard(uniqueCircuits, 'Circuiti diversi');
+
+    renderPilotTable();
+    renderH2HSelectors();
+    renderCars();
+    renderSeasons();
+  }
+
+  function renderAll(){
+    document.getElementById('loadingBox').style.display = 'none';
+    document.getElementById('dashboard').style.display = '';
+
+    allPilots = [];
+    for(var n in pilotMap){
+      if(!pilotMap.hasOwnProperty(n)) continue;
+      allPilots.push(pilotMap[n]);
+    }
+
+    var filtered = getFilteredPilots();
+    var uniqueCircuits = Object.keys(circuitMap).length;
+    var completedChamps = Object.keys(champWinners).length;
+
+    /* overview */
+    document.getElementById('overviewGrid').innerHTML =
+      ovCard(races.length, 'Gare disputate') +
+      ovCard(completedChamps, 'Campionati conclusi') +
+      ovCard(filtered.length, 'Piloti') +
+      ovCard(uniqueCircuits, 'Circuiti diversi');
+
+    renderStatusFilter();
+    renderPilotTable();
+    renderSortPills();
+    renderH2HSelectors();
+    renderCircuits();
+    renderCars();
+    renderSeasons();
+
+    document.getElementById('footerNote').textContent =
+      'Gare ufficiose: ' + races.length + ' risultati';
+  }
+
+  function ovCard(num, label){
+    return '<div class="ov-card"><div class="ov-num">' + num + '</div><div class="ov-label">' + label + '</div></div>';
+  }
+
+  /* ── sort pills ── */
+  var sortOptions = [
+    {key:'wins', label:'Vittorie'},
+    {key:'podiums', label:'Podi'},
+    {key:'winPct', label:'% Vittorie'},
+    {key:'avgPos', label:'Pos. Media'},
+    {key:'champsWon', label:'Titoli'},
+    {key:'poles', label:'Pole'},
+    {key:'fastLaps', label:'Giri veloci'},
+    {key:'races', label:'Gare'}
+  ];
+
+  function renderSortPills(){
+    var html = '';
+    for(var i=0;i<sortOptions.length;i++){
+      var o = sortOptions[i];
+      var cls = o.key === currentSort ? ' active' : '';
+      html += '<button class="sort-pill' + cls + '" data-sort="' + o.key + '">' + o.label + '</button>';
+    }
+    var el = document.getElementById('sortPills');
+    el.innerHTML = html;
+    var btns = el.querySelectorAll('.sort-pill');
+    for(var j=0;j<btns.length;j++){
+      btns[j].addEventListener('click', function(){
+        currentSort = this.getAttribute('data-sort');
+        renderSortPills();
+        renderPilotTable();
+      });
+    }
+  }
+
+  /* ── pilot table ── */
+  function renderPilotTable(){
+    var filtered = getFilteredPilots();
+    var sorted = filtered.slice();
+    sorted.sort(function(a,b){
+      var va, vb;
+      if(currentSort === 'avgPos'){
+        va = a.positions.length ? avg(a.positions) : 999;
+        vb = b.positions.length ? avg(b.positions) : 999;
+        return va - vb;
+      }
+      if(currentSort === 'winPct'){
+        va = a.races ? a.wins / a.races : 0;
+        vb = b.races ? b.wins / b.races : 0;
+        return vb - va;
+      }
+      va = a[currentSort] || 0;
+      vb = b[currentSort] || 0;
+      if(vb !== va) return vb - va;
+      return (b.wins || 0) - (a.wins || 0);
+    });
+
+    document.getElementById('tableHead').innerHTML =
+      '<tr><th>#</th><th>Pilota</th><th>Gare</th><th>Vitt.</th><th>Podi</th><th>Pole</th><th>FL</th><th>DNF</th><th>Titoli</th><th>% Vitt.</th><th>Pos. Media</th></tr>';
+
+    var html = '';
+    for(var i=0;i<sorted.length;i++){
+      var p = sorted[i];
+      var posCls = i < 3 ? 'pos-gold' : 'pos-dim';
+      var wp = pct(p.wins, p.races);
+      var ap = p.positions.length ? avg(p.positions) : '-';
+      html += '<tr>' +
+        '<td class="' + posCls + '">' + (i+1) + '</td>' +
+        '<td>' + p.nome + '</td>' +
+        '<td>' + p.races + '</td>' +
+        '<td class="val-hi">' + p.wins + '</td>' +
+        '<td>' + p.podiums + '</td>' +
+        '<td>' + p.poles + '</td>' +
+        '<td>' + p.fastLaps + '</td>' +
+        '<td>' + (p.dnfs + p.dsqs) + '</td>' +
+        '<td>' + (p.champsWon > 0 ? '<span class="val-hi">' + p.champsWon + '</span>' : '0') + '</td>' +
+        '<td>' + wp + '%</td>' +
+        '<td>' + ap + '</td>' +
+        '</tr>';
+    }
+    document.getElementById('tableBody').innerHTML = html;
+  }
+
+  /* ── head to head ── */
+  function renderH2HSelectors(){
+    var filtered = getFilteredPilots();
+    var names = [];
+    for(var i=0;i<filtered.length;i++) names.push(filtered[i].nome);
+    names.sort();
+
+    var optA = '<option value="">Scegli pilota</option>';
+    var optB = '<option value="">Scegli pilota</option>';
+    for(var j=0;j<names.length;j++){
+      optA += '<option value="' + names[j] + '">' + names[j] + '</option>';
+      optB += '<option value="' + names[j] + '">' + names[j] + '</option>';
+    }
+    document.getElementById('h2hA').innerHTML = optA;
+    document.getElementById('h2hB').innerHTML = optB;
+
+    /* default selection: first two most winning */
+    var byWins = filtered.slice().sort(function(a,b){ return b.wins - a.wins; });
+    if(byWins.length >= 2){
+      document.getElementById('h2hA').value = byWins[0].nome;
+      document.getElementById('h2hB').value = byWins[1].nome;
+      computeH2H();
+    }
+
+    document.getElementById('h2hA').addEventListener('change', computeH2H);
+    document.getElementById('h2hB').addEventListener('change', computeH2H);
+  }
+
+  function computeH2H(){
+    var nameA = document.getElementById('h2hA').value;
+    var nameB = document.getElementById('h2hB').value;
+    var box = document.getElementById('h2hContent');
+
+    if(!nameA || !nameB || nameA === nameB){
+      box.innerHTML = '<div class="h2h-empty">Seleziona due piloti diversi</div>';
+      return;
+    }
+
+    var pA = pilotMap[nameA];
+    var pB = pilotMap[nameB];
+    if(!pA || !pB){
+      box.innerHTML = '<div class="h2h-empty">Pilota non trovato</div>';
+      return;
+    }
+
+    /* build file lookup */
+    var filesA = {};
+    for(var i=0;i<pA.raceList.length;i++){
+      filesA[pA.raceList[i].file] = pA.raceList[i];
+    }
+
+    var shared = 0, aheadA = 0, aheadB = 0;
+    var winsA = 0, winsB = 0, podsA = 0, podsB = 0;
+    var positionsA = [], positionsB = [];
+
+    for(var j=0;j<pB.raceList.length;j++){
+      var rb = pB.raceList[j];
+      var ra = filesA[rb.file];
+      if(!ra) continue;
+      shared++;
+
+      if(typeof ra.pos === 'number') positionsA.push(ra.pos);
+      if(typeof rb.pos === 'number') positionsB.push(rb.pos);
+
+      if(ra.pos < rb.pos) aheadA++;
+      else if(rb.pos < ra.pos) aheadB++;
+
+      if(ra.pos === 1) winsA++;
+      if(rb.pos === 1) winsB++;
+      if(ra.pos <= 3) podsA++;
+      if(rb.pos <= 3) podsB++;
+    }
+
+    if(shared === 0){
+      box.innerHTML = '<div class="h2h-empty">Nessuna gara in comune</div>';
+      return;
+    }
+
+    var pctA = pct(aheadA, shared);
+    var pctB = 100 - pctA;
+    var barW = Math.max(5, pctA);
+
+    var colA = aheadA >= aheadB ? 'var(--gold-hi)' : 'var(--muted)';
+    var colB = aheadB > aheadA ? 'var(--gold-hi)' : 'var(--muted)';
+
+    box.innerHTML =
+      '<div class="h2h-result">' +
+        '<div class="h2h-side"><div class="h2h-big" style="color:' + colA + '">' + aheadA + '</div><div class="h2h-small">Davanti</div></div>' +
+        '<div class="h2h-center">' + shared + ' gare<br>in comune</div>' +
+        '<div class="h2h-side"><div class="h2h-big" style="color:' + colB + '">' + aheadB + '</div><div class="h2h-small">Davanti</div></div>' +
+      '</div>' +
+      '<div class="h2h-bar-wrap"><div class="h2h-bar" style="width:' + barW + '%;background:linear-gradient(90deg,var(--gold),var(--gold-hi))"></div></div>' +
+      '<div class="h2h-pct"><span>' + pctA + '%</span><span>' + pctB + '%</span></div>' +
+      '<div class="h2h-details">' +
+        '<div class="h2h-detail-card"><table>' +
+          '<tr><td>Vittorie</td><td style="color:' + colA + ';font-weight:500">' + winsA + '</td></tr>' +
+          '<tr><td>Podi</td><td>' + podsA + '</td></tr>' +
+          '<tr><td>Pos. media</td><td>' + avg(positionsA) + '</td></tr>' +
+        '</table></div>' +
+        '<div class="h2h-detail-card"><table>' +
+          '<tr><td>Vittorie</td><td style="color:' + colB + ';font-weight:500">' + winsB + '</td></tr>' +
+          '<tr><td>Podi</td><td>' + podsB + '</td></tr>' +
+          '<tr><td>Pos. media</td><td>' + avg(positionsB) + '</td></tr>' +
+        '</table></div>' +
+      '</div>';
+  }
+
+  /* ── circuits ── */
+  function renderCircuits(){
+    var arr = [];
+    for(var c in circuitMap){
+      if(!circuitMap.hasOwnProperty(c)) continue;
+      arr.push({name:c, count:circuitMap[c]});
+    }
+    arr.sort(function(a,b){ return b.count - a.count; });
+
+    var max = arr.length ? arr[0].count : 1;
+    var show = arr.slice(0, 10);
+    var html = '';
+    for(var i=0;i<show.length;i++){
+      var w = Math.round(show[i].count / max * 100);
+      html += '<div class="circuit-row">' +
+        '<span class="circuit-name">' + show[i].name + '</span>' +
+        '<div class="circuit-bar-bg"><div class="circuit-bar" style="width:' + w + '%">' + show[i].count + '</div></div>' +
+      '</div>';
+    }
+    document.getElementById('circuitBars').innerHTML = html;
+  }
+
+  /* ── cars ── */
+  function renderCars(){
+    var filteredCarWins = {};
+    for(var ri=0;ri<races.length;ri++){
+      var rows = races[ri].rows || [];
+      for(var pi=0;pi<rows.length;pi++){
+        var r = rows[pi];
+        if(r.pos === 1 && r.auto && r.nome && isPilotVisible(r.nome)){
+          filteredCarWins[r.auto] = (filteredCarWins[r.auto] || 0) + 1;
+        }
+      }
+    }
+    var arr = [];
+    for(var c in filteredCarWins){
+      if(!filteredCarWins.hasOwnProperty(c)) continue;
+      arr.push({name:c, count:filteredCarWins[c]});
+    }
+    arr.sort(function(a,b){ return b.count - a.count; });
+
+    var show = arr.slice(0, 8);
+    var html = '';
+    for(var i=0;i<show.length;i++){
+      var parts = show[i].name.split(' ');
+      var maker = parts[0] || '';
+      var col = i < 2 ? 'var(--gold-hi)' : 'var(--muted)';
+      html += '<div class="car-card">' +
+        '<div><div class="car-name">' + show[i].name + '</div><div class="car-maker">' + maker + '</div></div>' +
+        '<div class="car-wins" style="color:' + col + '">' + show[i].count + '</div>' +
+      '</div>';
+    }
+    document.getElementById('carGrid').innerHTML = html;
+  }
+
+  /* ── seasons ── */
+  function renderSeasons(){
+    var years = Object.keys(seasonMap).sort();
+    var html = '';
+    for(var i=0;i<years.length;i++){
+      var yr = years[i];
+      var s = seasonMap[yr];
+      var pilotCount = 0;
+      var names = Object.keys(s.pilots);
+      for(var j=0;j<names.length;j++){
+        if(isPilotVisible(names[j])) pilotCount++;
+      }
+      var avgGrid = avg(s.gridSizes);
+      html += '<div class="season-card">' +
+        '<div class="season-year">' + yr + '</div>' +
+        '<div class="season-stats">' +
+          '<div><div class="season-num">' + s.races + '</div><div class="season-label">Gare</div></div>' +
+          '<div><div class="season-num">' + pilotCount + '</div><div class="season-label">Piloti</div></div>' +
+          '<div><div class="season-num">' + avgGrid + '</div><div class="season-label">Media griglia</div></div>' +
+        '</div>' +
+      '</div>';
+    }
+    document.getElementById('seasonGrid').innerHTML = html;
+  }
+
+  /* ── go ── */
+  loadAll();
+
+})();
+</script>
+<script src="copyright.js"></script>
+<script src="nav.js"></script>
+</body>
+</html>
