@@ -1251,7 +1251,7 @@ async function updateCalendarioEntry(token, fname) {
           fuel:    val('rfuel-'+rid),
           types:   val('rtypes-'+rid),
           notes:   val('rnotes-'+rid),
-          manifesto: manifestoData[rid] || null,
+          // manifesto intentionally excluded — stored only in HTML, not calendario.json
         });
       });
       list[idx].rounds = roundsDetail;

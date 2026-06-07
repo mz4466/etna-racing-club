@@ -1795,6 +1795,7 @@ async function updateCalendario(token, fname, champPath) {
       fuel:    fuelEl    ? fuelEl.value            : '',
       types:   typesEl   ? typesEl.value.trim()    : '',
       notes:   notesEl   ? notesEl.value.trim()    : '',
+      // manifesto intentionally excluded — stored only in HTML, not calendario.json
     });
   });
 
