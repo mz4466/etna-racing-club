@@ -1,0 +1,190 @@
+{
+  "circuito": "Nürburgring — Nordschleife (20.832 km)",
+  "data": "2026-06-07",
+  "garaNum": "5",
+  "garaTot": "5",
+  "champId": "risveglio-dei-motori-2026",
+  "champIdx": "risveglio-dei-motori-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Carmine",
+      "auto": "Volkswagen Beetle Gr.3",
+      "tempo": "",
+      "bestLap": "",
+      "fl": true,
+      "pole": true,
+      "punti": 25,
+      "extra": "1+1",
+      "totale": 27,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Stefano",
+      "auto": "Mercedes-AMG GT Black Series '20",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Giovanni",
+      "auto": "Lexus RC F GT3 '17",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Pyer",
+      "auto": "Peugeot RCZ Gr.3",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Claudio",
+      "auto": "BMW M6 GT3 Endurance Model '16",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok"
+    },
+    {
+      "pos": 6,
+      "nome": "Fabio",
+      "auto": "Subaru WRX Gr.3",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "ok"
+    },
+    {
+      "pos": 7,
+      "nome": "William",
+      "auto": "Ford GT Race Car '18",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 6,
+      "extra": "-",
+      "totale": 6,
+      "stato": "ok"
+    },
+    {
+      "pos": 8,
+      "nome": "SPINOTTO",
+      "auto": "",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 5,
+      "extra": "-",
+      "totale": 5,
+      "stato": "ok"
+    },
+    {
+      "pos": 9,
+      "nome": "Alessandro",
+      "auto": "911 GT3 R (992) '22",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 4,
+      "extra": "-",
+      "totale": 4,
+      "stato": "dnf"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Carmine",
+      "pts": 95,
+      "pos": 1
+    },
+    {
+      "nome": "Pyer",
+      "pts": 75,
+      "pos": 2
+    },
+    {
+      "nome": "Giovanni",
+      "pts": 52,
+      "pos": 3
+    },
+    {
+      "nome": "Claudio",
+      "pts": 42,
+      "pos": 4
+    },
+    {
+      "nome": "Sandro",
+      "pts": 42,
+      "pos": 4
+    },
+    {
+      "nome": "Stefano",
+      "pts": 38,
+      "pos": 6
+    },
+    {
+      "nome": "Alessandro",
+      "pts": 34,
+      "pos": 7
+    },
+    {
+      "nome": "Alessandro H",
+      "pts": 29,
+      "pos": 8
+    },
+    {
+      "nome": "William",
+      "pts": 27,
+      "pos": 9
+    },
+    {
+      "nome": "Daniele",
+      "pts": 20,
+      "pos": 10
+    },
+    {
+      "nome": "Fabio",
+      "pts": 18,
+      "pos": 11
+    },
+    {
+      "nome": "SPINOTTO",
+      "pts": 5,
+      "pos": 12
+    }
+  ],
+  "bestOf": 4
+}
