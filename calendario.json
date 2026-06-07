@@ -684,34 +684,6 @@
     ],
     "costruttori": false,
     "teams": []
-  },
-  {
-    "id": "summer-trophy-2026",
-    "name": "Summer Trophy",
-    "year": "2026",
-    "cat": "Gara/e Ufficiosa/e",
-    "slug": "summer-trophy",
-    "trophy": null,
-    "cars": "Gr.4",
-    "desc": "",
-    "status": "prossimo",
-    "file": "campionati/summer-trophy-2026-gara/e ufficiosa/e-summer-trophy.html",
-    "totalRounds": 1,
-    "completedRounds": 0,
-    "bestOf": null,
-    "rounds": [
-      {
-        "circuit": "Sardegna - Road Track — Layout A (5.1 km)",
-        "date": "2026-06-05",
-        "laps": "15",
-        "weather": "",
-        "tire": "x2",
-        "fuel": "x2",
-        "types": "Medie/Morbide",
-        "notes": "1 Pit - 10 min Qualifiche"
-      }
-    ],
-    "costruttori": false,
-    "teams": []
   }
+  =
 ]
