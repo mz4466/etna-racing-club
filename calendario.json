@@ -358,10 +358,10 @@
     "trophy": "GR3_Championship_Winner.png",
     "cars": "Gr.3",
     "desc": "",
-    "status": "in-corso",
+    "status": "concluso",
     "file": "campionati/risveglio-dei-motori-2026-campionato-risveglio-dei-motori.html",
     "totalRounds": 5,
-    "completedRounds": 4,
+    "completedRounds": 5,
     "bestOf": 4,
     "rounds": [
       {
