@@ -479,7 +479,7 @@ async function loadAll() {
         // Build set of ufficiose champIds to exclude from stats
         var ufficioseIds = {};
         calendario.forEach(function(c) {
-          if (c.cat === 'Gara/e Ufficiosa/e' && c.id) ufficioseIds[c.id] = true;
+          if (c.cat === 'Gara Ufficiosa' && c.id) ufficioseIds[c.id] = true;
         });
 
         // Scan ALL races to count participations per pilot (skip ufficiose)

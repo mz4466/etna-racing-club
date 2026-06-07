@@ -199,7 +199,7 @@ a.trofeo-mini:hover{border-color:rgba(201,162,39,0.25);background:rgba(201,162,3
       var race = races[i];
       /* skip ufficiose championships */
       var champEntry = calMap[race.champId || ''] || calMap[race.champIdx || ''] || null;
-      if(champEntry && champEntry.cat === 'Gara/e Ufficiosa/e') continue;
+      if(champEntry && champEntry.cat === 'Gara Ufficiosa') continue;
       var isFinal = String(race.garaNum) === String(race.garaTot) && race.standings && race.standings.length;
       if(!isFinal) continue;
 
