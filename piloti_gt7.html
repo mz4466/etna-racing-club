@@ -154,12 +154,17 @@
           padding:10px 14px; min-width:180px; max-width:280px; z-index:999;
           box-shadow:0 8px 24px rgba(0,0,0,0.7);
           pointer-events:none;
+          max-height:260px; overflow-y:auto;
         }
         .stat-pill-tooltip::after {
           content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%);
           border:6px solid transparent; border-top-color:rgba(201,162,39,0.4);
         }
         .stat-pill:hover .stat-pill-tooltip { display:block; }
+        .stat-pill-tooltip::-webkit-scrollbar { width:4px; }
+        .stat-pill-tooltip::-webkit-scrollbar-track { background:transparent; }
+        .stat-pill-tooltip::-webkit-scrollbar-thumb { background:rgba(201,162,39,0.4); border-radius:4px; }
+        .stat-pill-tooltip::-webkit-scrollbar-thumb:hover { background:rgba(201,162,39,0.7); }
         .stat-pill-tooltip-title {
           font-family:'Teko',sans-serif; font-size:11px; letter-spacing:2px;
           color:rgba(201,162,39,0.6); text-transform:uppercase; margin-bottom:6px;
