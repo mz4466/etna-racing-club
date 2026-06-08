@@ -1052,17 +1052,15 @@ loadGT7Cars();
 loadAll();
 </script>
 <script src="copyright.js"></script>
-<script src="nav.js">
+<script src="nav.js"></script>
+<script>
 // ── STAT PILL CLICK TOGGLE ──
 function toggleStatPill(e, pill) {
-  // If clicking inside the tooltip scroll area, do nothing
   if (e.target.closest('.stat-pill-tooltip')) return;
   var isOpen = pill.classList.contains('open');
-  // Close all open pills first
   document.querySelectorAll('.stat-pill.open').forEach(function(p){ p.classList.remove('open'); });
   if (!isOpen) pill.classList.add('open');
 }
-// Click outside closes all
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.stat-pill')) {
     document.querySelectorAll('.stat-pill.open').forEach(function(p){ p.classList.remove('open'); });
