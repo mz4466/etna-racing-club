@@ -1,0 +1,22 @@
+{
+  "nome": "Matteo Spinotto",
+  "psn": "",
+  "nazione": "",
+  "auto": "",
+  "stile": "",
+  "pistaAma": "",
+  "pistaOdia": "",
+  "catchphrase": "",
+  "badges": [],
+  "foto": "",
+  "foto2": "",
+  "numero": "",
+  "campionati": {
+    "1-campionato-f1-2026": {
+      "cars": [
+        "Audi R8 LMS '15"
+      ]
+    }
+  },
+  "attivo": true
+}
