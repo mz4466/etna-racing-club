@@ -10,8 +10,8 @@
       "pos": 1,
       "nome": "Carmine",
       "auto": "Volkswagen Beetle Gr.3",
-      "tempo": "",
-      "bestLap": "",
+      "tempo": "28'05''807",
+      "bestLap": "06'51''298",
       "fl": true,
       "pole": true,
       "punti": 25,
@@ -23,8 +23,8 @@
       "pos": 2,
       "nome": "Stefano",
       "auto": "Mercedes-AMG GT Black Series '20",
-      "tempo": "",
-      "bestLap": "",
+      "tempo": "a 14\"105",
+      "bestLap": "06'53''191",
       "fl": false,
       "pole": false,
       "punti": 18,
@@ -36,8 +36,8 @@
       "pos": 3,
       "nome": "Giovanni",
       "auto": "Lexus RC F GT3 '17",
-      "tempo": "",
-      "bestLap": "",
+      "tempo": "a 25\"305",
+      "bestLap": "06'54''707",
       "fl": false,
       "pole": false,
       "punti": 15,
@@ -49,8 +49,8 @@
       "pos": 4,
       "nome": "Pyer",
       "auto": "Peugeot RCZ Gr.3",
-      "tempo": "",
-      "bestLap": "",
+      "tempo": "a 25\"598",
+      "bestLap": "06'58''299",
       "fl": false,
       "pole": false,
       "punti": 12,
@@ -60,23 +60,23 @@
     },
     {
       "pos": 5,
-      "nome": "Claudio",
-      "auto": "BMW M6 GT3 Endurance Model '16",
+      "nome": "Alessandro",
+      "auto": "",
       "tempo": "",
-      "bestLap": "",
+      "bestLap": "06'57''533",
       "fl": false,
       "pole": false,
       "punti": 10,
       "extra": "-",
       "totale": 10,
-      "stato": "ok"
+      "stato": "dsq"
     },
     {
       "pos": 6,
-      "nome": "Fabio",
-      "auto": "Subaru WRX Gr.3",
-      "tempo": "",
-      "bestLap": "",
+      "nome": "Claudio",
+      "auto": "BMW M6 GT3 Endurance Model '16",
+      "tempo": "a 56\"437",
+      "bestLap": "07'07''254",
       "fl": false,
       "pole": false,
       "punti": 8,
@@ -86,10 +86,10 @@
     },
     {
       "pos": 7,
-      "nome": "William",
-      "auto": "Ford GT Race Car '18",
-      "tempo": "",
-      "bestLap": "",
+      "nome": "Fabio",
+      "auto": "Subaru WRX Gr.3",
+      "tempo": "a 1'14\"387",
+      "bestLap": "07'14''116",
       "fl": false,
       "pole": false,
       "punti": 6,
@@ -99,10 +99,10 @@
     },
     {
       "pos": 8,
-      "nome": "SPINOTTO",
-      "auto": "",
-      "tempo": "",
-      "bestLap": "",
+      "nome": "William",
+      "auto": "Ford GT Race Car '18",
+      "tempo": "a 1'34\"482",
+      "bestLap": "07'08''018",
       "fl": false,
       "pole": false,
       "punti": 5,
@@ -112,16 +112,16 @@
     },
     {
       "pos": 9,
-      "nome": "Alessandro",
-      "auto": "911 GT3 R (992) '22",
-      "tempo": "",
-      "bestLap": "",
+      "nome": "Matteo Spinotto",
+      "auto": "",
+      "tempo": "a 1'50|\"939",
+      "bestLap": "07'13''708",
       "fl": false,
       "pole": false,
       "punti": 4,
       "extra": "-",
       "totale": 4,
-      "stato": "dnf"
+      "stato": "ok"
     }
   ],
   "standings": [
@@ -141,23 +141,23 @@
       "pos": 3
     },
     {
-      "nome": "Claudio",
-      "pts": 42,
-      "pos": 4
-    },
-    {
       "nome": "Sandro",
       "pts": 42,
       "pos": 4
     },
     {
-      "nome": "Stefano",
-      "pts": 38,
-      "pos": 6
+      "nome": "Claudio",
+      "pts": 40,
+      "pos": 5
     },
     {
       "nome": "Alessandro",
-      "pts": 34,
+      "pts": 39,
+      "pos": 6
+    },
+    {
+      "nome": "Stefano",
+      "pts": 38,
       "pos": 7
     },
     {
@@ -167,7 +167,7 @@
     },
     {
       "nome": "William",
-      "pts": 27,
+      "pts": 26,
       "pos": 9
     },
     {
@@ -177,12 +177,12 @@
     },
     {
       "nome": "Fabio",
-      "pts": 18,
+      "pts": 16,
       "pos": 11
     },
     {
-      "nome": "SPINOTTO",
-      "pts": 5,
+      "nome": "Matteo Spinotto",
+      "pts": 4,
       "pos": 12
     }
   ],
