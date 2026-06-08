@@ -962,7 +962,7 @@ function renderPilot(p, calendario) {
               + '<div class="stat-pill-tooltip-title">Campionati e Trofei</div>'
               + champList.map(function(c){ return '<div class="stat-pill-tooltip-item">🏆 ' + c.name + (c.year ? ' <span style="opacity:0.5;font-size:11px">'+c.year+'</span>' : '') + '</div>'; }).join('')
               + '</div>';
-            pills += '<span class="stat-pill"><strong>' + champCount + '</strong>&nbsp;campionati e trofei' + champTooltip + '</span>';
+            pills += '<span class="stat-pill" onclick="toggleStatPill(event,this)"><strong>' + champCount + '</strong>&nbsp;campionati e trofei' + champTooltip + '</span>';
           }
 
           if(raceCount) {
@@ -972,7 +972,7 @@ function renderPilot(p, calendario) {
               + '<div class="stat-pill-tooltip-title">Gare disputate</div>'
               + raceList.map(function(r){ return '<div class="stat-pill-tooltip-item">🏁 ' + r.label + '</div>'; }).join('')
               + '</div>';
-            pills += '<span class="stat-pill"><strong>' + raceCount + '</strong>&nbsp;gar' + (raceCount===1?'a':'e') + raceTooltip + '</span>';
+            pills += '<span class="stat-pill" onclick="toggleStatPill(event,this)"><strong>' + raceCount + '</strong>&nbsp;gar' + (raceCount===1?'a':'e') + raceTooltip + '</span>';
           }
 
           return '<div class="pilot-stats">' + pills + '</div>';
@@ -1054,18 +1054,17 @@ loadAll();
 <script src="copyright.js"></script>
 <script src="nav.js">
 // ── STAT PILL CLICK TOGGLE ──
-document.addEventListener('click', function(e) {
-  // If clicking inside an open tooltip, do nothing (allow scrolling)
+function toggleStatPill(e, pill) {
+  // If clicking inside the tooltip scroll area, do nothing
   if (e.target.closest('.stat-pill-tooltip')) return;
-
-  var pill = e.target.closest('.stat-pill');
-  if (pill) {
-    var isOpen = pill.classList.contains('open');
-    // Close all open pills first
-    document.querySelectorAll('.stat-pill.open').forEach(function(p){ p.classList.remove('open'); });
-    if (!isOpen) pill.classList.add('open');
-  } else {
-    // Click outside — close all
+  var isOpen = pill.classList.contains('open');
+  // Close all open pills first
+  document.querySelectorAll('.stat-pill.open').forEach(function(p){ p.classList.remove('open'); });
+  if (!isOpen) pill.classList.add('open');
+}
+// Click outside closes all
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.stat-pill')) {
     document.querySelectorAll('.stat-pill.open').forEach(function(p){ p.classList.remove('open'); });
   }
 });
