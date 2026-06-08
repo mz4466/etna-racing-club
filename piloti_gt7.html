@@ -147,20 +147,20 @@
 
     backdrop-filter:blur(10px);
 }        .stat-pill strong { color:#c9a227; font-size:14px; font-weight:600; }
-        .stat-pill { position:relative; cursor:default; }
+        .stat-pill { position:relative; cursor:pointer; }
         .stat-pill-tooltip {
           display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
           background:#0e0e1c; border:1px solid rgba(201,162,39,0.4); border-radius:8px;
           padding:10px 14px; min-width:180px; max-width:280px; z-index:999;
           box-shadow:0 8px 24px rgba(0,0,0,0.7);
-          pointer-events:none;
+          pointer-events:auto;
           max-height:260px; overflow-y:auto;
         }
         .stat-pill-tooltip::after {
           content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%);
           border:6px solid transparent; border-top-color:rgba(201,162,39,0.4);
         }
-        .stat-pill:hover .stat-pill-tooltip { display:block; }
+        .stat-pill.open .stat-pill-tooltip { display:block; }
         .stat-pill-tooltip::-webkit-scrollbar { width:4px; }
         .stat-pill-tooltip::-webkit-scrollbar-track { background:transparent; }
         .stat-pill-tooltip::-webkit-scrollbar-thumb { background:rgba(201,162,39,0.4); border-radius:4px; }
@@ -1049,6 +1049,22 @@ loadGT7Cars();
 loadAll();
 </script>
 <script src="copyright.js"></script>
-<script src="nav.js"></script>
+<script src="nav.js">
+// ── STAT PILL CLICK TOGGLE ──
+document.addEventListener('click', function(e) {
+  var pill = e.target.closest('.stat-pill');
+  if (pill) {
+    // Stop click from bubbling to document close handler
+    e.stopPropagation();
+    var isOpen = pill.classList.contains('open');
+    // Close all open pills first
+    document.querySelectorAll('.stat-pill.open').forEach(function(p){ p.classList.remove('open'); });
+    if (!isOpen) pill.classList.add('open');
+  } else {
+    // Click outside — close all
+    document.querySelectorAll('.stat-pill.open').forEach(function(p){ p.classList.remove('open'); });
+  }
+});
+</script>
 </body>
 </html>
