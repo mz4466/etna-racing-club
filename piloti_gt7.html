@@ -161,6 +161,8 @@
           border:6px solid transparent; border-top-color:rgba(201,162,39,0.4);
         }
         .stat-pill.open .stat-pill-tooltip { display:block; }
+        .stat-pill.open { background:rgba(201,162,39,0.18); border-color:rgba(201,162,39,0.6); }
+        .stat-pill:hover { opacity:0.85; }
         .stat-pill-tooltip::-webkit-scrollbar { width:4px; }
         .stat-pill-tooltip::-webkit-scrollbar-track { background:transparent; }
         .stat-pill-tooltip::-webkit-scrollbar-thumb { background:rgba(201,162,39,0.4); border-radius:4px; }
@@ -1053,10 +1055,11 @@ loadAll();
 <script src="nav.js">
 // ── STAT PILL CLICK TOGGLE ──
 document.addEventListener('click', function(e) {
+  // If clicking inside an open tooltip, do nothing (allow scrolling)
+  if (e.target.closest('.stat-pill-tooltip')) return;
+
   var pill = e.target.closest('.stat-pill');
   if (pill) {
-    // Stop click from bubbling to document close handler
-    e.stopPropagation();
     var isOpen = pill.classList.contains('open');
     // Close all open pills first
     document.querySelectorAll('.stat-pill.open').forEach(function(p){ p.classList.remove('open'); });
