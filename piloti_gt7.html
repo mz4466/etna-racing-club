@@ -473,6 +473,7 @@ var pilotCostrutTrophies = {};
 var pilotCostrutMedals = {};
 // Map: pilotName (lowercase) → { races: N, champs: Set of champId }
 var pilotStats = {};
+  var PILOT_FALLBACK_IMG = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22280%22%20height%3D%22350%22%3E%3Crect%20width%3D%22280%22%20height%3D%22350%22%20fill%3D%22%230e0e1c%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%22120%22%20r%3D%2255%22%20fill%3D%22%231e1e30%22%2F%3E%3Cellipse%20cx%3D%22140%22%20cy%3D%22290%22%20rx%3D%2290%22%20ry%3D%2270%22%20fill%3D%22%231e1e30%22%2F%3E%3C%2Fsvg%3E";
         pilotMedals = {};
 // Map: pilotName (lowercase) → array of { champName, year, pos (2 or 3) }
 var pilotMedals = {};
@@ -880,7 +881,7 @@ function renderPilot(p, calendario) {
     costrutHTML = '<div class="costrutt-section">' + costrutParts.join('') + '</div>';
   }
 
-  var photoSrc = foto || 'data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='350' viewBox='0 0 280 350'%3E%3Crect width='280' height='350' fill='%230e0e1c'/%3E%3Ccircle cx='140' cy='120' r='55' fill='%231e1e30'/%3E%3Cellipse cx='140' cy='290' rx='90' ry='70' fill='%231e1e30'/%3E%3C/svg%3E';
+  var photoSrc = foto || PILOT_FALLBACK_IMG;
   var isActive = p.attivo !== false;
 
   // Build campionati cars display (active championships only)
