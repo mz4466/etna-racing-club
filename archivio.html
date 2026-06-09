@@ -211,7 +211,7 @@
     <a href="index.html" class="back-link">← Torna alla Home</a>
 
     <h1 class="page-title">Archivio</h1>
-    <p class="lead">Seleziona l'anno e il campionato per vedere i risultati.</p>
+    <p class="lead">Seleziona la stagione e la categoria per vedere i risultati.</p>
 
     <div class="archive-card" id="archiveCard">
       <div class="state-msg"><span class="ei">⏳</span>Caricamento archivio...</div>
@@ -284,121 +284,133 @@ async function loadArchive(){
       } catch {}
     }
 
-    // 3. Group championships by year
-    const byYear = {};
-    campionati.forEach(c=>{
-      const y = c.year||'?';
-      if(!byYear[y]) byYear[y]=[];
-      byYear[y].push(c);
+    // 3. Group by stagione, then categoria
+    const byStagione = {};
+    campionati.forEach(c => {
+      const key = c.stagione ? c.stagione : (c.year ? String(c.year) : 'Archivio');
+      if (!byStagione[key]) byStagione[key] = { label: key, year: parseInt(c.year)||0, champs: [] };
+      byStagione[key].champs.push(c);
     });
+
+    // Sort stagioni: most recent first
+    const stagioni = Object.values(byStagione).sort((a,b) => b.year - a.year);
 
     // 4. Build HTML
     const card = document.getElementById('archiveCard');
     card.innerHTML = '';
 
-    const years = Object.keys(byYear).sort((a,b)=>b-a);
+    stagioni.forEach((stagione, si) => {
+      const stDiv = document.createElement('div');
+      stDiv.className = 'year';
 
-    years.forEach((year,yi)=>{
-      const champs = byYear[year];
-      const yearDiv = document.createElement('div');
-      yearDiv.className='year';
-
-      const listId = `year-list-${year}`;
-      yearDiv.innerHTML=`
+      const listId = `stagione-list-${si}`;
+      stDiv.innerHTML = `
         <button class="year-button" data-target="${listId}">
-          <span>${year}</span>
-          <span class="arrow">▶</span>
+          <span>${stagione.label}</span>
+          <span class="arrow ${si===0?'open':''}">▶</span>
         </button>
-        <ul id="${listId}" class="year-list ${yi===0?'show':''}" role="list"></ul>
+        <div id="${listId}" class="year-list ${si===0?'show':''}" role="list"></div>
       `;
-      if(yi===0) yearDiv.querySelector('.year-button').querySelector('.arrow').classList.add('open');
 
-      const ul = yearDiv.querySelector(`#${listId}`);
+      const listEl = stDiv.querySelector('#' + listId);
 
-      champs.forEach((c,ci)=>{
-        const champDomId   = `champ-${year}-${ci}`;
-        const totalRounds  = c.totalRounds||0;
+      // Group champs by categoria
+      const byCat = {};
+      stagione.champs.forEach(c => {
+        const cat = c.cat || 'Altro';
+        if (!byCat[cat]) byCat[cat] = [];
+        byCat[cat].push(c);
+      });
 
-        // Status pill
-        const statusNorm  = (c.status||'').toLowerCase().replace(/-/g,' ').trim();
-        const statusClass = statusNorm==='in corso'?'pill-incorso':statusNorm==='concluso'?'pill-concluso':'pill-prossimo';
-        const statusLabel = statusNorm==='in corso'?'🔥 In Corso':statusNorm==='concluso'?'✅ Concluso':'⏳ Prossimamente';
+      Object.keys(byCat).forEach((cat, cati) => {
+        const catHeader = document.createElement('div');
+        catHeader.style.cssText = 'font-family:Teko,sans-serif;font-size:11px;letter-spacing:3px;color:rgba(201,162,39,0.5);text-transform:uppercase;padding:10px 4px 4px;border-bottom:1px solid rgba(201,162,39,0.1);margin-bottom:6px;margin-top:4px;';
+        catHeader.textContent = cat;
+        listEl.appendChild(catHeader);
 
-        // Build rounds list
-        let roundsHTML = '';
-        for(let r=1;r<=totalRounds;r++){
-          let matchEntry = null;
+        const catUl = document.createElement('ul');
+        catUl.style.cssText = 'list-style:none;margin-bottom:8px;';
+        listEl.appendChild(catUl);
 
-          if(raceIndex.length){
-            // Primary: match by champId + garaNum (fully reliable)
-            matchEntry = raceIndex.find(e=>e.garaNum===r&&(
-              e.champId===c.id ||
-              e.champId===(c.slug||'') ||
-              e.champId===String(campionati.indexOf(c))
-            ));
+        byCat[cat].forEach((c, ci) => {
+          const champDomId  = 'champ-' + si + '-' + cati + '-' + ci;
+          const totalRounds = c.totalRounds || 0;
+
+          const statusNorm  = (c.status||'').toLowerCase().replace(/-/g,' ').trim();
+          const statusClass = statusNorm==='in corso'?'pill-incorso':statusNorm==='concluso'?'pill-concluso':'pill-prossimo';
+          const statusLabel = statusNorm==='in corso'?'🔥 In Corso':statusNorm==='concluso'?'✅ Concluso':'⏳ Prossimamente';
+
+          let roundsHTML = '';
+          for (let r = 1; r <= totalRounds; r++) {
+            let matchEntry = null;
+
+            if (raceIndex.length) {
+              matchEntry = raceIndex.find(e => e.garaNum===r && (
+                e.champId===c.id ||
+                e.champId===(c.slug||'') ||
+                e.champId===String(campionati.indexOf(c))
+              ));
+            }
+
+            if (!matchEntry && legacyFiles.length) {
+              const pattern = new RegExp(
+                (c.year||'') + '.*('+
+                (c.slug||'').replace(/[^a-z0-9]/gi,'.?') + '|' +
+                (c.name||'').replace(/[^a-z0-9]/gi,'.?') + ').*r' + r + '\.json','i'
+              );
+              const mf = legacyFiles.find(f => pattern.test(f));
+              if (mf) {
+                const parts = mf.replace('.json','').split('-');
+                const rIdx  = parts.findIndex(p => /^r\d+$/i.test(p));
+                const circuit = rIdx>=0 && parts.length>rIdx+1
+                  ? parts.slice(rIdx+1).map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join(' ')
+                  : 'Round ' + r;
+                matchEntry = { json: mf, html: mf.replace('.json','.html'), circuit };
+              }
+            }
+
+            const hasResult    = !!matchEntry;
+            const circuitLabel = hasResult && matchEntry.circuit ? matchEntry.circuit : 'Round ' + r;
+            const htmlFile     = hasResult ? 'risultati/' + matchEntry.html : null;
+            const tick         = hasResult ? '<span class="round-tick">✅</span>' : '<span class="round-pending">—</span>';
+            const itemClass    = hasResult ? 'child-item' : 'child-item no-results';
+            const tag          = hasResult ? '<a href="' + htmlFile + '" class="' + itemClass + '">' : '<div class="' + itemClass + '">';
+            const endTag       = hasResult ? '</a>' : '</div>';
+
+            roundsHTML += '<li>' + tag +
+              '<span class="round-num">R' + r + '</span>' +
+              '<span class="round-circuit">' + circuitLabel + '</span>' +
+              tick + endTag + '</li>';
           }
 
-          if(!matchEntry && legacyFiles.length){
-            // Fallback: legacy filename regex
-            const pattern = new RegExp(`${(c.year||'')}.*(${(c.slug||'').replace(/[^a-z0-9]/gi,'.?')}|${(c.name||'').replace(/[^a-z0-9]/gi,'.?')}).*r${r}.*\\.json`,'i');
-            const mf = legacyFiles.find(f=>pattern.test(f));
-            if(mf){
-              const parts = mf.replace('.json','').split('-');
-              const rIdx  = parts.findIndex(p=>/^r\d+$/i.test(p));
-              const circuit = rIdx>=0&&parts.length>rIdx+1
-                ? parts.slice(rIdx+1).map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join(' ')
-                : `Round ${r}`;
-              matchEntry = { json: mf, html: mf.replace('.json','.html'), circuit };
+          if (statusNorm === 'concluso') {
+            const classFname    = 'classifica-' + (c.slug||c.year+'-'+ci) + '.html';
+            const hasClassifica = raceIndex.some(e => e.json===classFname.replace('.html','.json'))
+                               || legacyFiles.includes(classFname.replace('.html','.json'));
+            if (hasClassifica) {
+              roundsHTML += '<li><a href="' + classFname + '" class="child-item classifica-finale">🏆 Classifica Finale ' + esc(c.name) + ' ' + esc(String(c.year||'')) + '</a></li>';
             }
           }
 
-          const hasResult   = !!matchEntry;
-          const circuitLabel= hasResult&&matchEntry.circuit ? matchEntry.circuit : `Round ${r}`;
-          const htmlFile    = hasResult ? 'risultati/' + matchEntry.html : null;
-
-          const tick      = hasResult ? '<span class="round-tick">✅</span>' : '<span class="round-pending">—</span>';
-          const itemClass = hasResult ? 'child-item' : 'child-item no-results';
-          const tag       = hasResult ? `<a href="${htmlFile}" class="${itemClass}">` : `<div class="${itemClass}">`;
-          const endTag    = hasResult ? '</a>' : '</div>';
-
-          roundsHTML += `<li>
-            ${tag}
-              <span class="round-num">R${r}</span>
-              <span class="round-circuit">${circuitLabel}</span>
-              ${tick}
-            ${endTag}
-          </li>`;
-        }
-
-        // Classifica finale — only if concluso
-        if(statusNorm==='concluso'){
-          const classFname    = `classifica-${c.slug||c.year+'-'+ci}.html`;
-          const hasClassifica = raceIndex.some(e=>e.json===classFname.replace('.html','.json'))
-                             || legacyFiles.includes(classFname.replace('.html','.json'));
-          if(hasClassifica){
-            roundsHTML += `<li><a href="${classFname}" class="child-item classifica-finale">🏆 Classifica Finale ${c.name} ${c.year}</a></li>`;
-          }
-        }
-
-        const li = document.createElement('li');
-        li.innerHTML=`
-          <button class="item-toggle" data-target="${champDomId}">
-            <span class="champ-label">
-              <span class="champ-cat-pill">${esc(c.cat||'')}</span>
-              ${esc(c.name||'?')} ${esc(String(c.year||''))}
-              ${c.cars?`<span style="font-size:12px;color:var(--smoke);">· ${esc(c.cars)}</span>`:''}
-            </span>
-            <span style="display:flex;align-items:center;gap:8px;">
-              <span class="champ-status-pill ${statusClass}">${statusLabel}</span>
-              <span class="arrow">▶</span>
-            </span>
-          </button>
-          <ul id="${champDomId}" class="child-list" role="list">${roundsHTML}</ul>
-        `;
-        ul.appendChild(li);
+          const li = document.createElement('li');
+          li.style.marginBottom = '6px';
+          li.innerHTML =
+            '<button class="item-toggle" data-target="' + champDomId + '">' +
+              '<span class="champ-label">' +
+                esc(c.name||'?') +
+                (c.cars ? '<span style="font-size:12px;color:var(--smoke);margin-left:6px;">· ' + esc(c.cars) + '</span>' : '') +
+              '</span>' +
+              '<span style="display:flex;align-items:center;gap:8px;">' +
+                '<span class="champ-status-pill ' + statusClass + '">' + statusLabel + '</span>' +
+                '<span class="arrow">▶</span>' +
+              '</span>' +
+            '</button>' +
+            '<ul id="' + champDomId + '" class="child-list" role="list">' + roundsHTML + '</ul>';
+          catUl.appendChild(li);
+        });
       });
 
-      card.appendChild(yearDiv);
+      card.appendChild(stDiv);
     });
 
     // Add note
