@@ -216,7 +216,7 @@
         "circuit": "Nurburgring - 24 Ore",
         "date": "2025-11-09",
         "laps": "4",
-        "weather": "Ã°ÂÂÂ Tardo pomeriggio",
+        "weather": "🌅 Tardo pomeriggio",
         "tire": "x4",
         "fuel": "x2",
         "types": "Dure/Morbide",
@@ -224,7 +224,8 @@
       }
     ],
     "costruttori": false,
-    "teams": []
+    "teams": [],
+    "stagione": "Stagione 1"
   },
   {
     "id": "trofeo-cronoscalata-autunno-2025",
