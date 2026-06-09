@@ -442,7 +442,7 @@
     "bestOf": 2,
     "rounds": [
       {
-        "circuit": "Sardegna - Road Track — Layout A (5.1 km)",
+        "circuit": "Sardegna - Stradale (conf. A) (5.113 m)",
         "date": "2025-12-07",
         "laps": "17",
         "weather": "",
@@ -452,7 +452,7 @@
         "notes": ""
       },
       {
-        "circuit": "Autodrome Lago Maggiore — Full Course (5.8 km)",
+        "circuit": "Lago Maggiore (5.809 m)",
         "date": "2026-01-18",
         "laps": "17",
         "weather": "",
@@ -462,7 +462,7 @@
         "notes": ""
       },
       {
-        "circuit": "Autodromo Nazionale Monza — Full Course (5.8 km)",
+        "circuit": "Monza (5.793 m)",
         "date": "2026-02-08",
         "laps": "17",
         "weather": "",
@@ -473,7 +473,8 @@
       }
     ],
     "costruttori": false,
-    "teams": []
+    "teams": [],
+    "stagione": "Stagione 1"
   },
   {
     "id": "1-campionato-f1-2026",
