@@ -323,6 +323,12 @@ async function loadArchive(){
       });
 
       Object.keys(byCat).forEach((cat, cati) => {
+        // Sort champs within categoria: oldest first by first round date
+        byCat[cat].sort((a, b) => {
+          var aDate = (a.rounds && a.rounds[0] && a.rounds[0].date) ? a.rounds[0].date : (String(a.year||'9999'));
+          var bDate = (b.rounds && b.rounds[0] && b.rounds[0].date) ? b.rounds[0].date : (String(b.year||'9999'));
+          return aDate.localeCompare(bDate);
+        });
         const catHeader = document.createElement('div');
         catHeader.style.cssText = 'font-family:Teko,sans-serif;font-size:11px;letter-spacing:3px;color:rgba(201,162,39,0.5);text-transform:uppercase;padding:10px 4px 4px;border-bottom:1px solid rgba(201,162,39,0.1);margin-bottom:6px;margin-top:4px;';
         catHeader.textContent = cat;
