@@ -183,7 +183,7 @@
     "bestOf": null,
     "rounds": [
       {
-        "circuit": "Tsukuba Circuit (2.045 km)",
+        "circuit": "Tsukuba Circuit",
         "date": "2025-10-25",
         "laps": "30",
         "weather": "",
@@ -194,7 +194,8 @@
       }
     ],
     "costruttori": false,
-    "teams": []
+    "teams": [],
+    "stagione": "Stagione 1"
   },
   {
     "id": "trofeo-formula-autunno-2025",
