@@ -754,6 +754,10 @@
     <div class="card">
       <div class="card-title">⚙️ Informazioni Campionato</div>
       <div class="form-row col3">
+        <div class="field" style="grid-column:1/-1">
+          <label>Stagione Ufficiale</label>
+          <input type="text" id="champStagione" placeholder="es. Stagione 1 · Primavera 2026" oninput="updateAll()">
+        </div>
         <div class="field">
           <label>Nome Campionato</label>
           <input type="text" id="champName" placeholder="es. Traiettorie Gelate" oninput="autoFillSlug(); updateAll()">
@@ -1802,6 +1806,7 @@ async function updateCalendario(token, fname, champPath) {
   const newEntry = {
     id: null, // will be set below — stable unique ID, never changes after creation
     name, year, cat,
+    stagione: document.getElementById('champStagione').value.trim() || null,
     slug: slug || cat,
     trophy: document.getElementById('champTrophy').value || null,
     cars, desc,
