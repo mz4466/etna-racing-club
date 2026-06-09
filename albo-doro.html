@@ -125,7 +125,7 @@ a.trofeo-mini:hover{border-color:rgba(201,162,39,0.25);background:rgba(201,162,3
       .then(function(list){
         for(var i=0;i<list.length;i++){
           var e = list[i];
-          if(e.id) calMap[e.id] = { name: e.name || '', trophy: e.trophy || '', file: e.file || '', cat: e.cat || '' };
+          if(e.id) calMap[e.id] = { name: e.name || '', trophy: e.trophy || '', file: e.file || '', cat: e.cat || '', stagione: e.stagione || null };
         }
       })
       .catch(function(){});
