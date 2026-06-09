@@ -153,7 +153,7 @@
     "bestOf": null,
     "rounds": [
       {
-        "circuit": "Autodromo Nazionale Monza — Full Course (5.8 km)",
+        "circuit": "Monza (5.793 m)",
         "date": "2025-10-05",
         "laps": "14",
         "weather": "🌆 Tramonto alto",
@@ -164,7 +164,8 @@
       }
     ],
     "costruttori": false,
-    "teams": []
+    "teams": [],
+    "stagione": "Stagione 1"
   },
   {
     "id": "trofeo-kart-autunno-2025",
