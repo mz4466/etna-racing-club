@@ -83,7 +83,7 @@
     "bestOf": 4,
     "rounds": [
       {
-        "circuit": "Mount Panorama Circuit (6.2 km)",
+        "circuit": "Mount Panorama (6.213 m)",
         "date": "2025-09-28",
         "laps": "13",
         "weather": "⛅ Poco nuvoloso (cumuli sparsi)",
@@ -93,7 +93,7 @@
         "notes": "1 Pit - 15 min Qualifiche"
       },
       {
-        "circuit": "Trial Mountain Circuit (5.4 km)",
+        "circuit": "Trial Mountain (5.434 m)",
         "date": "2025-10-18",
         "laps": "14",
         "weather": "🌫️ Coperto cupo",
@@ -103,7 +103,7 @@
         "notes": "1 Pit - 15 min Qualifiche"
       },
       {
-        "circuit": "Circuit de Spa-Francorchamps — Full Course (7.004 km)",
+        "circuit": "Spa (7.004 m)",
         "date": "2025-11-02",
         "laps": "11",
         "weather": "🌆 Crepuscolo civile + ☁️ Nuvoloso compatto + 🌫️ Coperto cupo + 🌧️ Pioggia moderata",
@@ -113,7 +113,7 @@
         "notes": "1 Pit - 15 min Qualifiche"
       },
       {
-        "circuit": "Sardegna - Road Track — Layout A (5.1 km)",
+        "circuit": "Sardegna - Stradale (conf. A) (5.113 m)",
         "date": "2025-11-16",
         "laps": "15",
         "weather": "☀️ Sereno",
@@ -123,7 +123,7 @@
         "notes": "1 Pit - 15 min Qualifiche"
       },
       {
-        "circuit": "WeatherTech Raceway Laguna Seca (3.602 km)",
+        "circuit": "Laguna Seca (3.602 m)",
         "date": "2025-11-30",
         "laps": "22",
         "weather": "🌄 Alba",
@@ -134,7 +134,8 @@
       }
     ],
     "costruttori": false,
-    "teams": []
+    "teams": [],
+    "stagione": "Stagione 1"
   },
   {
     "id": "trofeo-abarth-2025",
