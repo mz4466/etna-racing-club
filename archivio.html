@@ -124,11 +124,11 @@
       padding:10px 13px; color:var(--cream); border-radius:8px; cursor:pointer;
       font-family:'Barlow Condensed',sans-serif; font-size:15px;
       transition:background .12s,transform .08s;
-      display:flex; align-items:center; justify-content:space-between;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
     }
     .item-toggle:hover { background:linear-gradient(90deg,rgba(255,80,20,0.11),rgba(0,0,0,0)); transform:translateY(-1px); }
 
-    .champ-label { display:flex; align-items:center; gap:10px; }
+    .champ-label { display:flex; align-items:center; gap:10px; flex:1; min-width:0; flex-wrap:wrap; }
     .champ-cat-pill {
       font-family:'Teko',sans-serif; font-size:11px; letter-spacing:2px;
       background:rgba(201,162,39,0.15); border:1px solid rgba(201,162,39,0.3);
@@ -406,7 +406,7 @@ async function loadArchive(){
                 esc(c.name||'?') +
                 (c.cars ? '<span style="font-size:12px;color:var(--smoke);margin-left:6px;">· ' + esc(c.cars) + '</span>' : '') +
               '</span>' +
-              '<span style="display:flex;align-items:center;gap:8px;">' +
+              '<span style="display:flex;align-items:center;gap:8px;flex-shrink:0;">' +
                 '<span class="champ-status-pill ' + statusClass + '">' + statusLabel + '</span>' +
                 '<span class="arrow">▶</span>' +
               '</span>' +
