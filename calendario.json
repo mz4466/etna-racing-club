@@ -492,7 +492,7 @@
     "bestOf": 7,
     "rounds": [
       {
-        "circuit": "Yas Marina Circuit (5.281 km)",
+        "circuit": "Yas Marina",
         "date": "",
         "laps": "58",
         "weather": "",
@@ -502,7 +502,7 @@
         "notes": "Tutte e tre le mescole"
       },
       {
-        "circuit": "Circuit Gilles-Villeneuve (4.4 km)",
+        "circuit": "Montreal",
         "date": "",
         "laps": "70",
         "weather": "",
@@ -512,7 +512,7 @@
         "notes": "Tutte e tre le mescole"
       },
       {
-        "circuit": "Circuit de Barcelona-Catalunya — Grand Prix Layout (4.7 km)",
+        "circuit": "Barcellona",
         "date": "2026-03-22",
         "laps": "65",
         "weather": "",
@@ -522,7 +522,7 @@
         "notes": "Tutte e tre le mescole"
       },
       {
-        "circuit": "Autodromo Nazionale Monza — Full Course (5.8 km)",
+        "circuit": "Monza",
         "date": "2026-04-19",
         "laps": "53",
         "weather": "",
@@ -532,7 +532,7 @@
         "notes": "Tutte e tre le mescole"
       },
       {
-        "circuit": "Red Bull Ring — Full Course (4.3 km)",
+        "circuit": "Red Bull Ring",
         "date": "2026-05-03",
         "laps": "71",
         "weather": "",
@@ -542,7 +542,7 @@
         "notes": "Tutte e tre le mescole"
       },
       {
-        "circuit": "Circuit de Spa-Francorchamps — Full Course (7.004 km)",
+        "circuit": "SPA",
         "date": "2026-05-17",
         "laps": "44",
         "weather": "",
@@ -552,7 +552,7 @@
         "notes": "Tutte e tre le mescole"
       },
       {
-        "circuit": "Suzuka Circuit — Full Course (5.8 km)",
+        "circuit": "Suzuka",
         "date": "2026-05-31",
         "laps": "70",
         "weather": "",
@@ -562,7 +562,7 @@
         "notes": ""
       },
       {
-        "circuit": "Autódromo de Interlagos (4.309 km)",
+        "circuit": "Interlagos",
         "date": "2026-06-14",
         "laps": "60",
         "weather": "",
@@ -614,7 +614,8 @@
           "Giovanni"
         ]
       }
-    ]
+    ],
+    "stagione": "Stagione 1"
   },
   {
     "id": "1-trofeo-cronoscalata-2025-2025",
