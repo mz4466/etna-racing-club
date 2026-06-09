@@ -522,13 +522,19 @@ async function loadAll() {
             var key = row.nome.toLowerCase().trim();
             if (!pilotStats[key]) pilotStats[key] = { races: 0, champs: {}, raceList: [] };
             pilotStats[key].races++;
-            if (champId) pilotStats[key].champs[champId] = true;
+            if (champId) {
+              var raceDate = race.data || '';
+              // Store champ with its earliest known race date
+              if (!pilotStats[key].champs[champId] || (raceDate && raceDate < pilotStats[key].champs[champId])) {
+                pilotStats[key].champs[champId] = raceDate || '9999';
+              }
+            }
             // Store race detail for tooltip: "Circuit — ChampName"
             var calEntry = calendario.find(function(c){ return c.id === champId; });
             var champName = calEntry ? (calEntry.name || champId) : champId;
             var circuit = race.circuito || race.circuit || race.track || '';
             var raceLabel = champName + (circuit ? ' — ' + circuit : '') + (race.garaNum ? ' (R'+race.garaNum+')' : '');
-            pilotStats[key].raceList.push({ label: raceLabel, year: calEntry ? (calEntry.year||0) : 0, garaNum: parseInt(race.garaNum)||0 });
+            pilotStats[key].raceList.push({ label: raceLabel, year: calEntry ? (calEntry.year||0) : 0, garaNum: parseInt(race.garaNum)||0, date: race.data || '' });
           });
         });
 
@@ -955,8 +961,12 @@ function renderPilot(p, calendario) {
             // Build sorted champ list: oldest first (by year, then name)
             var champList = Object.keys(st.champs).map(function(cid){
               var cal = calendario.find(function(c){ return c.id === cid; });
-              return { name: cal ? (cal.name||cid) : cid, year: cal ? (cal.year||0) : 0 };
-            }).sort(function(a,b){ return a.year - b.year || a.name.localeCompare(b.name); });
+              var firstDate = st.champs[cid] !== '9999' ? st.champs[cid] : '';
+              return { name: cal ? (cal.name||cid) : cid, year: cal ? (cal.year||0) : 0, firstDate: firstDate };
+            }).sort(function(a,b){
+              if (a.firstDate && b.firstDate) return a.firstDate.localeCompare(b.firstDate);
+              return a.year - b.year || a.name.localeCompare(b.name);
+            });
             var champTooltip = '<div class="stat-pill-tooltip">'
               + '<div class="stat-pill-tooltip-title">Campionati e Trofei</div>'
               + champList.map(function(c){ return '<div class="stat-pill-tooltip-item">🏆 ' + c.name + (c.year ? ' <span style="opacity:0.5;font-size:11px">'+c.year+'</span>' : '') + '</div>'; }).join('')
@@ -966,7 +976,11 @@ function renderPilot(p, calendario) {
 
           if(raceCount) {
             // Build sorted race list: oldest first
-            var raceList = (st.raceList || []).slice().sort(function(a,b){ return a.year - b.year || a.garaNum - b.garaNum || a.label.localeCompare(b.label); });
+            var raceList = (st.raceList || []).slice().sort(function(a,b){
+              // Sort by date if available, then year, then garaNum
+              if (a.date && b.date) return a.date.localeCompare(b.date);
+              return a.year - b.year || a.garaNum - b.garaNum;
+            });
             var raceTooltip = '<div class="stat-pill-tooltip">'
               + '<div class="stat-pill-tooltip-title">Gare disputate</div>'
               + raceList.map(function(r){ return '<div class="stat-pill-tooltip-item">🏁 ' + r.label + '</div>'; }).join('')
