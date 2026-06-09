@@ -347,6 +347,31 @@
     text-transform: uppercase;
   }
 
+  /* ── STAGIONE GROUP (conclusi only) ── */
+  .stagione-group { margin-bottom: 28px; }
+
+  .stagione-toggle {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    background: rgba(255,80,20,0.06); border: 1px solid rgba(255,80,20,0.2);
+    border-radius: 12px; padding: 14px 20px; cursor: pointer;
+    font-family: 'Russo One', sans-serif; font-size: 15px; letter-spacing: 3px;
+    color: var(--smoke); text-transform: uppercase;
+    transition: background 0.2s, border-color 0.2s;
+    margin-bottom: 0;
+  }
+  .stagione-toggle:hover { background: rgba(255,80,20,0.12); border-color: rgba(255,80,20,0.4); color: var(--cream); }
+  .stagione-toggle .st-arrow { font-size: 12px; transition: transform 0.2s; color: var(--smoke); }
+  .stagione-toggle.open { border-radius: 12px 12px 0 0; border-color: rgba(255,80,20,0.4); }
+  .stagione-toggle.open .st-arrow { transform: rotate(90deg); color: var(--fire-yellow); }
+
+  .stagione-cards {
+    display: none; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px; padding: 16px; background: rgba(255,80,20,0.03);
+    border: 1px solid rgba(255,80,20,0.2); border-top: none;
+    border-radius: 0 0 12px 12px;
+  }
+  .stagione-cards.open { display: grid; }
+
   /* ── BACK LINK ── */
   .back-link {
     display: block;
@@ -419,78 +444,129 @@ async function loadCalendario() {
   renderCards(championships);
 }
 
+function buildCard(c, i) {
+  const statusLabel = c.status === 'in-corso'
+    ? '<span class="status-pill pill-in-corso">🔥 In Corso</span>'
+    : c.status === 'concluso'
+      ? '<span class="status-pill pill-concluso">✅ Concluso</span>'
+      : '<span class="status-pill pill-prossimo">⏳ Prossimamente</span>';
+
+  let dots = '';
+  for (let r = 0; r < (c.totalRounds || 0); r++) {
+    const cls = r < (c.completedRounds || 0)
+      ? 'done'
+      : r === (c.completedRounds || 0) && c.status === 'in-corso'
+        ? 'current' : '';
+    dots += `<div class="round-dot ${cls}" title="Round ${r+1}"></div>`;
+  }
+
+  const roundsLabel = c.totalRounds ? `${c.totalRounds} round${c.totalRounds > 1 ? 's' : ''}` : '';
+  const card = document.createElement(c.file ? 'a' : 'div');
+  card.className = `champ-card status-${c.status}`;
+  card.dataset.status = c.status;
+  if (c.file) card.href = c.file;
+  card.style.animationDelay = `${i * 0.07}s`;
+  card.innerHTML = `
+    <div class="card-top">
+      <div class="card-top-pills">
+        <div class="cat-badge" title="${c.slug || c.cat}">${c.slug || c.cat}</div>
+        ${statusLabel}
+      </div>
+      <div class="card-name-wrap">
+        <div class="card-name">${c.name}</div>
+        <div class="card-season">${c.year} · ${c.cat}</div>
+      </div>
+    </div>
+    <div class="card-body">
+      ${c.cars ? `<div class="card-cars">${c.cars}</div>` : ''}
+      ${roundsLabel ? `<div class="card-rounds">📅 ${roundsLabel}</div>` : ''}
+      ${c.desc ? `<div class="card-desc">${c.desc}</div>` : ''}
+    </div>
+    <div class="card-footer">
+      <div class="card-rounds-dots">${dots}</div>
+      ${c.file ? `<a href="${c.file}" class="view-btn">Risultati →</a>` : `<span class="view-btn" style="opacity:0.3">Risultati →</span>`}
+    </div>`;
+  return card;
+}
+
 function renderCards(data) {
   const grid = document.getElementById('champGrid');
   grid.innerHTML = '';
 
   if (!data.length) {
-    grid.innerHTML = `
-      <div class="empty-state" style="grid-column:1/-1">
-        <div class="empty-icon">🏁</div>
-        <p>Nessun campionato registrato</p>
-      </div>`;
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+      <div class="empty-icon">🏁</div><p>Nessun campionato registrato</p></div>`;
     return;
   }
 
-  data.forEach((c, i) => {
-    const statusLabel = c.status === 'in-corso'
-      ? '<span class="status-pill pill-in-corso">🔥 In Corso</span>'
-      : c.status === 'concluso'
-        ? '<span class="status-pill pill-concluso">✅ Concluso</span>'
-        : '<span class="status-pill pill-prossimo">⏳ Prossimamente</span>';
+  // Split: active (in-corso / prossimo) vs conclusi
+  const active   = data.filter(c => c.status !== 'concluso');
+  const conclusi = data.filter(c => c.status === 'concluso');
 
-    // Round dots
-    let dots = '';
-    for (let r = 0; r < (c.totalRounds || 0); r++) {
-      const cls = r < (c.completedRounds || 0)
-        ? 'done'
-        : r === (c.completedRounds || 0) && c.status === 'in-corso'
-          ? 'current'
-          : '';
-      dots += `<div class="round-dot ${cls}" title="Round ${r+1}"></div>`;
-    }
+  // Active cards — flat grid
+  active.forEach((c, i) => grid.appendChild(buildCard(c, i)));
 
-    const roundsLabel = c.totalRounds
-      ? `${c.totalRounds} round${c.totalRounds > 1 ? 's' : ''}`
-      : '';
+  // Conclusi — grouped by stagione, hidden by default
+  if (conclusi.length) {
+    const byStagione = {};
+    conclusi.forEach(c => {
+      const key = c.stagione || c.year || '?';
+      if (!byStagione[key]) byStagione[key] = { label: key, year: c.year || '0', items: [] };
+      byStagione[key].items.push(c);
+    });
 
-    const card = document.createElement(c.file ? 'a' : 'div');
-    card.className = `champ-card status-${c.status}`;
-    card.dataset.status = c.status;
-    if (c.file) { card.href = c.file; }
-    card.style.animationDelay = `${i * 0.07}s`;
+    // Sort stagioni newest first
+    const stagioni = Object.values(byStagione).sort((a, b) => b.year.localeCompare(a.year));
 
-    card.innerHTML = `
-      <div class="card-top">
-        <div class="card-top-pills">
-          <div class="cat-badge" title="${c.slug || c.cat}">${c.slug || c.cat}</div>
-          ${statusLabel}
-        </div>
-        <div class="card-name-wrap">
-          <div class="card-name">${c.name}</div>
-          <div class="card-season">${c.year} · ${c.cat}</div>
-        </div>
-      </div>
-      <div class="card-body">
-        ${c.cars ? `<div class="card-cars">${c.cars}</div>` : ''}
-        ${roundsLabel ? `<div class="card-rounds">📅 ${roundsLabel}</div>` : ''}
-        ${c.desc ? `<div class="card-desc">${c.desc}</div>` : ''}
-      </div>
-      <div class="card-footer">
-        <div class="card-rounds-dots">${dots}</div>
-        ${c.file ? `<a href="${c.file}" class="view-btn">Risultati →</a>` : `<a href="${c.file || '#'}" class="view-btn">Risultati →</a>`}
-      </div>`;
+    const conclusiWrap = document.createElement('div');
+    conclusiWrap.id = 'conclusiWrap';
+    conclusiWrap.style.cssText = 'grid-column:1/-1;display:none;';
 
-    grid.appendChild(card);
-  });
+    stagioni.forEach((stagione, si) => {
+      const grp = document.createElement('div');
+      grp.className = 'stagione-group';
+
+      const btn = document.createElement('button');
+      btn.className = 'stagione-toggle';
+      btn.innerHTML = `<span>${stagione.label}</span><span class="st-arrow">▶</span>`;
+
+      const cardsEl = document.createElement('div');
+      cardsEl.className = 'stagione-cards';
+
+      stagione.items.forEach((c, i) => cardsEl.appendChild(buildCard(c, i)));
+
+      btn.addEventListener('click', function() {
+        const isOpen = cardsEl.classList.contains('open');
+        cardsEl.classList.toggle('open', !isOpen);
+        btn.classList.toggle('open', !isOpen);
+      });
+
+      grp.appendChild(btn);
+      grp.appendChild(cardsEl);
+      conclusiWrap.appendChild(grp);
+    });
+
+    grid.appendChild(conclusiWrap);
+  }
 }
 
 function filterCards(status, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 
+  const conclusiWrap = document.getElementById('conclusiWrap');
+
   document.querySelectorAll('.champ-card').forEach(card => {
     card.style.display = (status === 'all' || card.dataset.status === status) ? '' : 'none';
+  });
+
+  if (conclusiWrap) {
+    conclusiWrap.style.display = (status === 'concluso' || status === 'all') ? '' : 'none';
+  }
+
+  // Hide active cards when filter is 'concluso'
+  document.querySelectorAll('.champ-card:not([class*="status-concluso"])').forEach(card => {
+    if (status === 'concluso') card.style.display = 'none';
   });
 }
 
