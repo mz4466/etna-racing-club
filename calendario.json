@@ -273,7 +273,7 @@
     "bestOf": null,
     "rounds": [
       {
-        "circuit": "Autodrome Lago Maggiore — West (4.2 km)",
+        "circuit": "Lago Maggiore - Ovest",
         "date": "2025-11-01",
         "laps": "20",
         "weather": "",
@@ -284,7 +284,8 @@
       }
     ],
     "costruttori": false,
-    "teams": []
+    "teams": [],
+    "stagione": "Stagione 1"
   },
   {
     "id": "traiettorie-gelate-2026",
