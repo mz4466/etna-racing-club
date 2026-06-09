@@ -33,6 +33,18 @@
   .round-note{margin-top:10px;font-size:14px;color:var(--text-dim);font-style:italic;}
   .back-link{display:block;text-align:center;margin-top:28px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:var(--text-dim);text-decoration:none;text-transform:uppercase;transition:color 0.2s;}
   .back-link:hover{color:var(--text);}
+
+  .round-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+  .round-row .round-card{flex:1;margin-bottom:0;}
+  .round-manifesto{width:120px;flex-shrink:0;border-radius:10px;overflow:hidden;border:1px solid var(--border-hi);cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;}
+  .round-manifesto:hover{border-color:var(--gold);box-shadow:0 4px 20px rgba(201,162,39,0.15);}
+  .round-manifesto img{width:100%;height:100%;object-fit:cover;display:block;}
+
+  .manifesto-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out;}
+  .manifesto-lightbox.open{display:flex;}
+  .manifesto-lightbox img{max-width:90vw;max-height:90vh;border-radius:10px;box-shadow:0 0 60px rgba(0,0,0,0.8);}
+  .manifesto-lightbox-close{position:absolute;top:20px;right:24px;font-size:28px;color:#fff;cursor:pointer;line-height:1;opacity:0.7;}
+  .manifesto-lightbox-close:hover{opacity:1;}
 </style>
 </head>
 <body>
@@ -47,152 +59,192 @@
 <div class="wrap">
   <div class="section-title">📅 Calendario — 8 rounds</div>
   
-    <div class="round-card">
-      <div class="round-header">
-        <div class="round-num">R1</div>
-        <div class="round-info">
-          <div class="round-circuit">Yas Marina</div>
-          <div class="round-date">Data TBD</div>
+    <div class="round-row">
+      <div class="round-card">
+        <div class="round-header">
+          <div class="round-num">R1</div>
+          <div class="round-info">
+            <div class="round-circuit">Yas Marina</div>
+            <div class="round-date">Data TBD</div>
+          </div>
+          <a href="../risultati/2026-1-campionato-f1-r1-yas-marina.html" class="results-btn">📋 Risultati</a>
         </div>
-        <a href="../risultati/2026-1-campionato-f1-r1-yas-marina.html" class="results-btn">📋 Risultati</a>
+        <div class="round-details">
+          
+          <div class="detail-pill">🔄 58 giri</div>
+          <div class="detail-pill">🏎️ Gomme x1</div>
+          <div class="detail-pill">⛽ Carb. x1</div>
+          <div class="detail-pill">🔵 Dure/Medie/Morbite</div>
+        </div>
+        <div class="round-note">📌 Tutte e tre le mescole</div>
       </div>
-      <div class="round-details">
-        
-        <div class="detail-pill">🔄 58 giri</div>
-        <div class="detail-pill">🏎️ Gomme x1</div>
-        <div class="detail-pill">⛽ Carb. x1</div>
-        <div class="detail-pill">🔵 Dure/Medie/Morbite</div>
-      </div>
-      <div class="round-note">📌 Tutte e tre le mescole</div>
+      
     </div>
-    <div class="round-card">
-      <div class="round-header">
-        <div class="round-num">R2</div>
-        <div class="round-info">
-          <div class="round-circuit">Montreal</div>
-          <div class="round-date">Data TBD</div>
+    <div class="round-row">
+      <div class="round-card">
+        <div class="round-header">
+          <div class="round-num">R2</div>
+          <div class="round-info">
+            <div class="round-circuit">Montreal</div>
+            <div class="round-date">Data TBD</div>
+          </div>
+          <a href="../risultati/2026-1-campionato-f1-r2-montreal.html" class="results-btn">📋 Risultati</a>
         </div>
-        <a href="../risultati/2026-1-campionato-f1-r2-montreal.html" class="results-btn">📋 Risultati</a>
+        <div class="round-details">
+          
+          <div class="detail-pill">🔄 70 giri</div>
+          <div class="detail-pill">🏎️ Gomme x1</div>
+          <div class="detail-pill">⛽ Carb. x1</div>
+          <div class="detail-pill">🔵 Dure/Medie/Morbite</div>
+        </div>
+        <div class="round-note">📌 Tutte e tre le mescole</div>
       </div>
-      <div class="round-details">
-        
-        <div class="detail-pill">🔄 70 giri</div>
-        <div class="detail-pill">🏎️ Gomme x1</div>
-        <div class="detail-pill">⛽ Carb. x1</div>
-        <div class="detail-pill">🔵 Dure/Medie/Morbite</div>
-      </div>
-      <div class="round-note">📌 Tutte e tre le mescole</div>
+      
     </div>
-    <div class="round-card">
-      <div class="round-header">
-        <div class="round-num">R3</div>
-        <div class="round-info">
-          <div class="round-circuit">Barcellona</div>
-          <div class="round-date">22 marzo 2026</div>
+    <div class="round-row">
+      <div class="round-card">
+        <div class="round-header">
+          <div class="round-num">R3</div>
+          <div class="round-info">
+            <div class="round-circuit">Barcellona</div>
+            <div class="round-date">22 marzo 2026</div>
+          </div>
+          <a href="../risultati/2026-1-campionato-f1-r3-barcellona.html" class="results-btn">📋 Risultati</a>
         </div>
-        <a href="../risultati/2026-1-campionato-f1-r3-barcellona.html" class="results-btn">📋 Risultati</a>
+        <div class="round-details">
+          
+          <div class="detail-pill">🔄 65 giri</div>
+          <div class="detail-pill">🏎️ Gomme x1</div>
+          <div class="detail-pill">⛽ Carb. x1</div>
+          <div class="detail-pill">🔵 Dure/Medie/Morbite</div>
+        </div>
+        <div class="round-note">📌 Tutte e tre le mescole</div>
       </div>
-      <div class="round-details">
-        
-        <div class="detail-pill">🔄 65 giri</div>
-        <div class="detail-pill">🏎️ Gomme x1</div>
-        <div class="detail-pill">⛽ Carb. x1</div>
-        <div class="detail-pill">🔵 Dure/Medie/Morbite</div>
-      </div>
-      <div class="round-note">📌 Tutte e tre le mescole</div>
+      
     </div>
-    <div class="round-card">
-      <div class="round-header">
-        <div class="round-num">R4</div>
-        <div class="round-info">
-          <div class="round-circuit">Monza</div>
-          <div class="round-date">19 aprile 2026</div>
+    <div class="round-row">
+      <div class="round-card">
+        <div class="round-header">
+          <div class="round-num">R4</div>
+          <div class="round-info">
+            <div class="round-circuit">Monza</div>
+            <div class="round-date">19 aprile 2026</div>
+          </div>
+          <a href="../risultati/2026-1-campionato-f1-r4-monza.html" class="results-btn">📋 Risultati</a>
         </div>
-        <a href="../risultati/2026-1-campionato-f1-r4-monza.html" class="results-btn">📋 Risultati</a>
+        <div class="round-details">
+          
+          <div class="detail-pill">🔄 53 giri</div>
+          <div class="detail-pill">🏎️ Gomme x1</div>
+          <div class="detail-pill">⛽ Carb. x1</div>
+          <div class="detail-pill">🔵 Dure/Medie/Morbide</div>
+        </div>
+        <div class="round-note">📌 Tutte e tre le mescole</div>
       </div>
-      <div class="round-details">
-        
-        <div class="detail-pill">🔄 53 giri</div>
-        <div class="detail-pill">🏎️ Gomme x1</div>
-        <div class="detail-pill">⛽ Carb. x1</div>
-        <div class="detail-pill">🔵 Dure/Medie/Morbide</div>
-      </div>
-      <div class="round-note">📌 Tutte e tre le mescole</div>
+      
     </div>
-    <div class="round-card">
-      <div class="round-header">
-        <div class="round-num">R5</div>
-        <div class="round-info">
-          <div class="round-circuit">Red Bull Ring</div>
-          <div class="round-date">03 maggio 2026</div>
+    <div class="round-row">
+      <div class="round-card">
+        <div class="round-header">
+          <div class="round-num">R5</div>
+          <div class="round-info">
+            <div class="round-circuit">Red Bull Ring</div>
+            <div class="round-date">03 maggio 2026</div>
+          </div>
+          <a href="../risultati/2026-1-campionato-f1-r5-red-bull-ring.html" class="results-btn">📋 Risultati</a>
         </div>
-        <a href="../risultati/2026-1-campionato-f1-r5-red-bull-ring.html" class="results-btn">📋 Risultati</a>
+        <div class="round-details">
+          
+          <div class="detail-pill">🔄 71 giri</div>
+          <div class="detail-pill">🏎️ Gomme x3</div>
+          <div class="detail-pill">⛽ Carb. x4</div>
+          <div class="detail-pill">🔵 Dure/Medie/morbide</div>
+        </div>
+        <div class="round-note">📌 Tutte e tre le mescole</div>
       </div>
-      <div class="round-details">
-        
-        <div class="detail-pill">🔄 71 giri</div>
-        <div class="detail-pill">🏎️ Gomme x3</div>
-        <div class="detail-pill">⛽ Carb. x4</div>
-        <div class="detail-pill">🔵 Dure/Medie/morbide</div>
-      </div>
-      <div class="round-note">📌 Tutte e tre le mescole</div>
+      
     </div>
-    <div class="round-card">
-      <div class="round-header">
-        <div class="round-num">R6</div>
-        <div class="round-info">
-          <div class="round-circuit">SPA</div>
-          <div class="round-date">17 maggio 2026</div>
+    <div class="round-row">
+      <div class="round-card">
+        <div class="round-header">
+          <div class="round-num">R6</div>
+          <div class="round-info">
+            <div class="round-circuit">SPA</div>
+            <div class="round-date">17 maggio 2026</div>
+          </div>
+          <a href="../risultati/2026-1-campionato-f1-r6-spa.html" class="results-btn">📋 Risultati</a>
         </div>
-        <a href="../risultati/2026-1-campionato-f1-r6-spa.html" class="results-btn">📋 Risultati</a>
+        <div class="round-details">
+          
+          <div class="detail-pill">🔄 44 giri</div>
+          <div class="detail-pill">🏎️ Gomme x3</div>
+          <div class="detail-pill">⛽ Carb. x5</div>
+          <div class="detail-pill">🔵 Dure/Medie/morbide</div>
+        </div>
+        <div class="round-note">📌 Tutte e tre le mescole</div>
       </div>
-      <div class="round-details">
-        
-        <div class="detail-pill">🔄 44 giri</div>
-        <div class="detail-pill">🏎️ Gomme x3</div>
-        <div class="detail-pill">⛽ Carb. x5</div>
-        <div class="detail-pill">🔵 Dure/Medie/morbide</div>
-      </div>
-      <div class="round-note">📌 Tutte e tre le mescole</div>
+      
     </div>
-    <div class="round-card">
-      <div class="round-header">
-        <div class="round-num">R7</div>
-        <div class="round-info">
-          <div class="round-circuit">Suzuka</div>
-          <div class="round-date">31 maggio 2026</div>
+    <div class="round-row">
+      <div class="round-card">
+        <div class="round-header">
+          <div class="round-num">R7</div>
+          <div class="round-info">
+            <div class="round-circuit">Suzuka</div>
+            <div class="round-date">31 maggio 2026</div>
+          </div>
+          <a href="../risultati/2026-1-campionato-f1-r7-suzuka.html" class="results-btn">📋 Risultati</a>
         </div>
-        <a href="../risultati/2026-1-campionato-f1-r7-suzuka.html" class="results-btn">📋 Risultati</a>
-      </div>
-      <div class="round-details">
-        
-        <div class="detail-pill">🔄 70 giri</div>
-        <div class="detail-pill">🏎️ Gomme x3</div>
-        <div class="detail-pill">⛽ Carb. x4</div>
+        <div class="round-details">
+          
+          <div class="detail-pill">🔄 70 giri</div>
+          <div class="detail-pill">🏎️ Gomme x3</div>
+          <div class="detail-pill">⛽ Carb. x4</div>
+          
+        </div>
         
       </div>
       
     </div>
-    <div class="round-card">
-      <div class="round-header">
-        <div class="round-num">R8</div>
-        <div class="round-info">
-          <div class="round-circuit">Interlagos</div>
-          <div class="round-date">14 giugno 2026</div>
+    <div class="round-row">
+      <div class="round-card">
+        <div class="round-header">
+          <div class="round-num">R8</div>
+          <div class="round-info">
+            <div class="round-circuit">Interlagos</div>
+            <div class="round-date">14 giugno 2026</div>
+          </div>
+          <span class="results-btn upcoming">In arrivo</span>
         </div>
-        <span class="results-btn upcoming">In arrivo</span>
-      </div>
-      <div class="round-details">
-        
-        <div class="detail-pill">🔄 60 giri</div>
-        <div class="detail-pill">🏎️ Gomme x3</div>
-        <div class="detail-pill">⛽ Carb. x4</div>
+        <div class="round-details">
+          
+          <div class="detail-pill">🔄 60 giri</div>
+          <div class="detail-pill">🏎️ Gomme x3</div>
+          <div class="detail-pill">⛽ Carb. x4</div>
+          
+        </div>
         
       </div>
       
     </div>
   <a href="index.html" class="back-link">← Torna alla Home</a>
 </div>
-<'+'script src="copyright.js"><'+'/script>
+<div class="manifesto-lightbox" id="manifestoLightbox" onclick="closeManifesto()">
+  <span class="manifesto-lightbox-close" onclick="closeManifesto()">&#10005;</span>
+  <img id="manifestoLightboxImg" src="" alt="Manifesto">
+</div>
+<script>
+function openManifesto(el){
+  var img=el.querySelector("img");
+  document.getElementById("manifestoLightboxImg").src=img.src;
+  document.getElementById("manifestoLightbox").classList.add("open");
+}
+function closeManifesto(){
+  document.getElementById("manifestoLightbox").classList.remove("open");
+}
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeManifesto();});
+</script>
+<script src="copyright.js"></script>
+<script src="../nav.js"></script>
 </body>
 </html>
