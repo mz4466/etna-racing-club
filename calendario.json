@@ -243,7 +243,7 @@
     "bestOf": null,
     "rounds": [
       {
-        "circuit": "Mount Panorama Circuit (6.2 km)",
+        "circuit": "Mount Panorama (6.213 m)",
         "date": "2025-11-25",
         "laps": "3",
         "weather": "",
@@ -254,7 +254,8 @@
       }
     ],
     "costruttori": false,
-    "teams": []
+    "teams": [],
+    "stagione": "Stagione 1"
   },
   {
     "id": "trofeo-kart-2-0-2025",
