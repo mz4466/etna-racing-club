@@ -1554,13 +1554,27 @@ async function tryLoadExistingResults(){
     const idxMeta = await idxR.json();
     const fileList = JSON.parse(decodeURIComponent(escape(atob(idxMeta.content.replace(/\s/g,'')))));
 
-    // 2. Fetch each JSON and find the one matching champId + garaNum
-    let matchedData = null;
-    let matchedFilename = null;
+    // 2. Filter filenames to likely candidates using champId slug + round number
+    // This avoids fetching all 40+ files — only fetch ones that could match
+    const champ = getChampBySelectValue(champIdx);
+    const champSlug = champ ? (champ.id || '').toLowerCase() : champIdx.toLowerCase();
+    // Extract the year prefix from champId e.g. "risveglio-dei-motori-2026" -> "2026"
+    const yearMatch = champSlug.match(/(\d{4})$/);
+    const yearPrefix = yearMatch ? yearMatch[1] : '';
 
-    // Fetch in parallel for speed
-    const results = await Promise.all(fileList.map(async function(fname){
-      if(!fname.endsWith('.json') || fname === 'index.json') return null;
+    // A file matches if it contains the round number AND either the champId slug or year
+    const candidates = fileList.filter(function(fname){
+      if(!fname.endsWith('.json') || fname === 'index.json') return false;
+      const hasRound = fname.includes('-r' + garaNum + '-') || fname.endsWith('-r' + garaNum + '.json');
+      const hasYear  = yearPrefix ? fname.startsWith(yearPrefix) : true;
+      return hasRound && hasYear;
+    });
+
+    // If no candidates found by filename pattern, fall back to fetching all
+    const toFetch = candidates.length > 0 ? candidates : fileList.filter(function(f){ return f.endsWith('.json') && f !== 'index.json'; });
+
+    // Fetch candidates in parallel
+    const results = await Promise.all(toFetch.map(async function(fname){
       try {
         const r = await fetch('https://api.github.com/repos/' + REPO + '/contents/risultati/' + fname + '?ref=' + BRANCH, {
           headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json' }
@@ -1570,7 +1584,7 @@ async function tryLoadExistingResults(){
         const data = JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
         const matchesChamp = data.champId === champIdx || data.champIdx === champIdx;
         const matchesRound = parseInt(data.garaNum) === garaNum;
-        if(matchesChamp && matchesRound) return { data, fname };
+        if(matchesChamp && matchesRound) return { data: data, fname: fname };
         return null;
       } catch(e){ return null; }
     }));
