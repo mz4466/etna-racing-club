@@ -1537,55 +1537,69 @@ function resetResultsForm(){
 
 // ── LOAD EXISTING RESULTS ──
 async function tryLoadExistingResults(){
-  // Only attempt if connected
   if(!token) return;
 
-  const fname = document.getElementById('outputFilenameInput').value.trim();
-  if(!fname || fname === '—') return;
+  const champIdx  = document.getElementById('champSelect').value;
+  const garaNum   = parseInt(document.getElementById('roundSelect').value || document.getElementById('garaNum').value) || 0;
+  if(!champIdx || !garaNum) return;
 
-  const jsonFname = 'risultati/' + fname.replace('.html', '.json');
-  const htmlFname = 'risultati/' + fname;
+  document.getElementById('existingResultsBadge').style.display = 'none';
 
   try {
-    const r = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + jsonFname + '?ref=' + BRANCH, {
+    // 1. Fetch index.json to get list of all result files
+    const idxR = await fetch('https://api.github.com/repos/' + REPO + '/contents/risultati/index.json?ref=' + BRANCH, {
       headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json' }
     });
+    if(!idxR.ok) return;
+    const idxMeta = await idxR.json();
+    const fileList = JSON.parse(decodeURIComponent(escape(atob(idxMeta.content.replace(/\s/g,'')))));
 
-    // Hide badge by default
-    document.getElementById('existingResultsBadge').style.display = 'none';
+    // 2. Fetch each JSON and find the one matching champId + garaNum
+    let matchedData = null;
+    let matchedFilename = null;
 
-    if(!r.ok) {
-      // No existing results — form already reset by onRoundChange
-      return;
-    }
+    // Fetch in parallel for speed
+    const results = await Promise.all(fileList.map(async function(fname){
+      if(!fname.endsWith('.json') || fname === 'index.json') return null;
+      try {
+        const r = await fetch('https://api.github.com/repos/' + REPO + '/contents/risultati/' + fname + '?ref=' + BRANCH, {
+          headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json' }
+        });
+        if(!r.ok) return null;
+        const meta = await r.json();
+        const data = JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
+        const matchesChamp = data.champId === champIdx || data.champIdx === champIdx;
+        const matchesRound = parseInt(data.garaNum) === garaNum;
+        if(matchesChamp && matchesRound) return { data, fname };
+        return null;
+      } catch(e){ return null; }
+    }));
 
-    const d = await r.json();
-    const data = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\s/g,'')))));
+    const found = results.find(function(r){ return r !== null; });
+    if(!found) return; // no existing results for this round — fresh form
 
-    // Show "editing existing" badge
+    matchedData     = found.data;
+    matchedFilename = found.fname;
+
+    // 3. Populate form with found data
     document.getElementById('existingResultsBadge').style.display = 'block';
     toast('✓ Risultati esistenti caricati — puoi modificarli', 'ok');
 
-    // Populate race info fields
-    if(data.circuito) document.getElementById('circuitoInput').value = data.circuito;
-    if(data.data)     document.getElementById('dataInput').value = data.data;
-    // garaNum must NOT be restored from JSON — it is set by the round selector
-    // and the saved JSON may have a stale/wrong value
-    if(data.garaTot)  document.getElementById('garaTot').value = data.garaTot;
-    if(data.outputFilename) {
-      document.getElementById('outputFilenameInput').value = data.outputFilename;
-      document.getElementById('outputFilename').textContent = data.outputFilename;
-    }
+    if(matchedData.circuito) document.getElementById('circuitoInput').value = matchedData.circuito;
+    if(matchedData.data)     document.getElementById('dataInput').value = matchedData.data;
+    if(matchedData.garaTot)  document.getElementById('garaTot').value = matchedData.garaTot;
 
-    // Clear existing rows and repopulate
+    // Update the output filename to match the existing file (preserves original filename on re-publish)
+    const htmlFname = matchedFilename.replace('.json', '.html');
+    document.getElementById('outputFilenameInput').value = htmlFname;
+    document.getElementById('outputFilename').textContent = htmlFname;
+
+    // Repopulate rows
     document.getElementById('resultsBody').innerHTML = '';
     rowCounter = 0;
-
-    if(data.rows && data.rows.length){
-      data.rows.forEach(function(row){ addRow(row); });
+    if(matchedData.rows && matchedData.rows.length){
+      matchedData.rows.forEach(function(row){ addRow(row); });
     }
-
-    updateOutputFilename();
 
   } catch(e){
     console.warn('tryLoadExistingResults:', e.message);
