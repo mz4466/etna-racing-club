@@ -1054,7 +1054,6 @@ ${'<scr'+'ipt>'}
   var _costruttori=${champ && champ.costruttori ? 'true' : 'false'};
   var RAW="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/risultati/";
   var API="https://api.github.com/repos/mz4466/etna-racing-club/contents/risultati";
-  var SCHEDE="https://api.github.com/repos/mz4466/etna-racing-club/contents/piloti_schede";
   var _nameMap={}; // psn_lowercase -> current nome
 
   function addToStandings(nome,pts,rn,psn){
@@ -1110,23 +1109,14 @@ ${'<scr'+'ipt>'}
 
   // Load pilot schede to build PSN→nome map, then load race data
   function loadSchedeNames(){
-    return fetch(SCHEDE+"?ref=main")
-      .then(function(r){return r.ok?r.json():[];}).catch(function(){return[];})
-      .then(function(files){
-        return Promise.all((files||[]).filter(function(f){return f.name.endsWith(".json");}).map(function(f){
-          return fetch(f.url)
-            .then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
-            .then(function(m){
-              if(!m||!m.content)return;
-              try{
-                var clean=m.content.split("").filter(function(c){return c!=" "&&c!="\n"&&c!="\r"&&c!="\t";}).join("");
-                var p=JSON.parse(decodeURIComponent(escape(atob(clean))));
-                var psn=(p.psn||"").trim().toLowerCase();
-                var nome=(p.nome||p.name||"").trim();
-                if(psn&&psn!=="na"&&nome) _nameMap[psn]=nome;
-              }catch(e){}
-            });
-        }));
+    // Fetch single pre-built PSN map — no auth needed, no rate limits
+    var RAW_MAP="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/piloti_schede/psn-map.json";
+    return fetch(RAW_MAP+"?_="+Date.now())
+      .then(function(r){return r.ok?r.json():{};}).catch(function(){return{};})
+      .then(function(map){
+        Object.keys(map).forEach(function(psn){
+          if(psn) _nameMap[psn.toLowerCase()]=map[psn];
+        });
       });
   }
 

@@ -939,6 +939,7 @@ async function savePilot(){
   try {
     await putFile(`${FOLDER}/${slug}.json`, JSON.stringify(payload,null,2), `${editingSlug?'Update':'Add'} pilot: ${slug}`, token);
     await updatePilotIndex(token);
+    await updatePsnMap(token);
     toast(`✓ ${nome} salvato!`,'ok');
     closeModal();
     await loadPilots();
@@ -967,6 +968,7 @@ async function deletePilot(slug, nome){
     });
     if(!del.ok) throw new Error('ElimiRegione fallita');
     await updatePilotIndex(token);
+    await updatePsnMap(token);
     toast(`✓ ${nome} rimosso`,'ok');
     await loadPilots();
   } catch(e){
@@ -1023,6 +1025,39 @@ async function updatePilotIndex(token){
       .sort();
     await putFile(`${FOLDER}/index.json`, JSON.stringify(names, null, 0), 'Update pilot index', token);
   } catch(e){ console.warn('updatePilotIndex:', e.message); }
+}
+
+// ── UPDATE PSN MAP ──
+async function updatePsnMap(token){
+  try {
+    // Fetch all pilot schede and rebuild psn-map.json
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${FOLDER}?ref=${BRANCH}`,{
+      headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+    });
+    if(!r.ok) return;
+    const files = await r.json();
+    const jsonFiles = files.filter(f => f.name.endsWith('.json') && f.name !== 'index.json' && f.name !== 'psn-map.json');
+
+    const pilots = await Promise.all(jsonFiles.map(async function(f){
+      try {
+        const jr = await fetch(f.url, {headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
+        if(!jr.ok) return null;
+        const meta = await jr.json();
+        return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
+      } catch(e){ return null; }
+    }));
+
+    const psnMap = {};
+    pilots.filter(Boolean).forEach(function(p){
+      const psn  = (p.psn  || '').trim();
+      const nome = (p.nome || p.name || '').trim();
+      if(psn && psn.toUpperCase() !== 'NA' && nome){
+        psnMap[psn] = nome;
+      }
+    });
+
+    await putFile(`${FOLDER}/psn-map.json`, JSON.stringify(psnMap, null, 2), 'Update PSN map', token);
+  } catch(e){ console.warn('updatePsnMap:', e.message); }
 }
 
 // ── GITHUB HELPER ──
