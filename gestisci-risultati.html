@@ -334,6 +334,8 @@ let token = '';
 let calendarioData  = [];  // from calendario.json
 let champHtmlMap    = {};  // slug -> html string of championship file
 let pilotNames      = [];  // from piloti_schede/
+let pilotPsnMap     = {};  // nome_lowercase -> psn
+let psnNomeMap      = {};  // psn_lowercase -> nome (for display)
 let pilotCarsMap    = {};  // nome -> { champId: { cars: [...] } }
 let carNameToId     = {};  // gt7 displayName (lowercase) -> numeric id
 let previousResults = {};  // champIdx -> { pilotName -> [pts per round] }
@@ -504,7 +506,12 @@ async function loadPilots(){
     pilotNames = pilots.filter(Boolean).filter(p=>p.attivo !== false).map(p=>p.nome||p.name||p.psn||'').filter(Boolean);
     pilots.filter(Boolean).filter(p=>p.attivo !== false).forEach(function(p){
       var nome = p.nome||p.name||p.psn||'';
+      var psn  = (p.psn||'').trim();
       if(nome && p.campionati) pilotCarsMap[nome] = p.campionati;
+      if(nome && psn && psn !== 'NA') {
+        pilotPsnMap[nome.toLowerCase()] = psn;
+        psnNomeMap[psn.toLowerCase()]   = nome;
+      }
     });
     loadGT7Cars();
   } catch {}
@@ -787,6 +794,7 @@ function collectRows(){
     return {
       pos:     i+1,
       nome:    ( document.getElementById(`nome-${id}`) ? document.getElementById(`nome-${id}`).value.trim() : ''),
+      psn:     (function(){ var n=(document.getElementById('nome-'+id)?document.getElementById('nome-'+id).value.trim():'').toLowerCase(); return pilotPsnMap[n]||''; })(),
       auto:    ( document.getElementById(`car-sel-${id}`) ? document.getElementById(`car-sel-${id}`).value.trim() : ''),
       tempo:   ( document.getElementById(`tempo-${id}`) ? document.getElementById(`tempo-${id}`).value.trim() : ''),
       bestLap: ( document.getElementById(`bestlap-${id}`) ? document.getElementById(`bestlap-${id}`).value.trim() : ''),
@@ -836,17 +844,16 @@ function collectStandings(applyBestOf=false){
   const pilots = Object.entries(pilotScores).map(function([nome, scores]){
     var usedScores = scores;
     if(canDrop && scores.length > bestOf){
-      // Drop whenever pilot has more results than the bestOf limit
       usedScores = scores.slice().sort(function(a,b){return b-a;}).slice(0, bestOf);
     }
-    return { nome: nome, pts: usedScores.reduce(function(s,v){return s+v;},0) };
+    return { nome: nome, psn: pilotPsnMap[nome.toLowerCase()]||'', pts: usedScores.reduce(function(s,v){return s+v;},0) };
   });
 
   const sorted = pilots.sort(function(a,b){return b.pts-a.pts;});
   let tiePos = 1;
   return sorted.map(function(p,i){
     if(i>0&&sorted[i].pts<sorted[i-1].pts) tiePos=i+1;
-    return {nome:p.nome, pts:p.pts, pos:tiePos};
+    return {nome:p.nome, psn:p.psn, pts:p.pts, pos:tiePos};
   });
 }
 
@@ -889,7 +896,7 @@ function buildHTML(){
       : '';
     return `<tr class="${r.stato!=='ok'?'row-retired':''}">
       <td class="${posClass}">${r.pos}°${statoTag}</td>
-      <td class="${nameClass}">${esc(r.nome)}${carHtml}</td>
+      <td class="${nameClass}" ${r.psn ? `data-psn="${esc(r.psn)}"` : ''}>${esc(r.nome)}${carHtml}</td>
       <td>${esc(r.tempo)}</td>
       <td class="${flClass}">${esc(r.bestLap)}</td>
       <td>${r.punti}</td>
@@ -906,9 +913,10 @@ function buildHTML(){
 
   const standingsHTML = standings.map(s=>{
     const posClass = s.pos<=3?`pos-${s.pos}`:'';
+    const psnAttr  = s.psn ? ` data-psn="${esc(s.psn)}"` : '';
     return `<div class="standings-item">
       <span class="standings-position ${posClass}">${s.pos}°</span>
-      <span class="standings-driver">${esc(s.nome)}</span>
+      <span class="standings-driver"${psnAttr}>${esc(s.nome)}</span>
       <span class="standings-points">${s.pts}</span>
     </div>`;
   }).join('');
@@ -1046,12 +1054,16 @@ ${'<scr'+'ipt>'}
   var _costruttori=${champ && champ.costruttori ? 'true' : 'false'};
   var RAW="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/risultati/";
   var API="https://api.github.com/repos/mz4466/etna-racing-club/contents/risultati";
+  var SCHEDE="https://api.github.com/repos/mz4466/etna-racing-club/contents/piloti_schede";
+  var _nameMap={}; // psn_lowercase -> current nome
 
-  function addToStandings(nome,pts,rn){
+  function addToStandings(nome,pts,rn,psn){
     if(!nome)return;
-    if(!sc[nome])sc[nome]=[];
-    if(!sc[nome].find(function(e){return e.rn===rn;}))
-      sc[nome].push({pts:pts,rn:rn});
+    // Use PSN as key if available (resolves to current nome at render time)
+    var key=psn&&psn.toLowerCase&&_nameMap[psn.toLowerCase()]?_nameMap[psn.toLowerCase()]:nome;
+    if(!sc[key])sc[key]=[];
+    if(!sc[key].find(function(e){return e.rn===rn;}))
+      sc[key].push({pts:pts,rn:rn,psn:psn||''});
   }
 
   function processRace(d){
@@ -1062,11 +1074,11 @@ ${'<scr'+'ipt>'}
     allRaces[raceN]=true;
     if(raceN===_rn)return;
     if(raceN>_rn)return;
-    (d.rows||[]).forEach(function(r){addToStandings(r.nome,r.totale||0,raceN);});
+    (d.rows||[]).forEach(function(r){ var n=r.psn&&_nameMap[r.psn.toLowerCase()]?_nameMap[r.psn.toLowerCase()]:r.nome; addToStandings(n,r.totale||0,raceN,r.psn||''); });
   }
 
-  var rows=${JSON.stringify(rows.map(function(r){return{nome:r.nome,totale:r.totale};}))};
-  rows.forEach(function(r){addToStandings(r.nome,r.totale,_rn);});
+  var rows=${JSON.stringify(rows.map(function(r){return{nome:r.nome,psn:r.psn||'',totale:r.totale};}))};
+  rows.forEach(function(r){addToStandings(r.psn&&_nameMap[r.psn.toLowerCase()]?_nameMap[r.psn.toLowerCase()]:r.nome,r.totale,_rn,r.psn||'');});
   allRaces[_rn]=true;
 
   function loadViaRaw(){
@@ -1096,6 +1108,40 @@ ${'<scr'+'ipt>'}
       });
   }
 
+  // Load pilot schede to build PSN→nome map, then load race data
+  function loadSchedeNames(){
+    return fetch(SCHEDE+"?ref=main")
+      .then(function(r){return r.ok?r.json():[];}).catch(function(){return[];})
+      .then(function(files){
+        return Promise.all((files||[]).filter(function(f){return f.name.endsWith(".json");}).map(function(f){
+          return fetch(f.url)
+            .then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
+            .then(function(m){
+              if(!m||!m.content)return;
+              try{
+                var p=JSON.parse(decodeURIComponent(escape(atob(m.content.replace(/\s/g,"")))));
+                var psn=(p.psn||"").trim().toLowerCase();
+                var nome=(p.nome||p.name||"").trim();
+                if(psn&&psn!=="na"&&nome) _nameMap[psn]=nome;
+              }catch(e){}
+            });
+        }));
+      });
+  }
+
+  loadSchedeNames().catch(function(){}).then(function(){
+    // Now resolve names in the result table DOM
+    document.querySelectorAll("td[data-psn]").forEach(function(td){
+      var psn=td.getAttribute("data-psn").toLowerCase();
+      if(psn&&_nameMap[psn]) td.textContent=_nameMap[psn];
+    });
+    // Also resolve names in standings
+    document.querySelectorAll(".standings-driver[data-psn]").forEach(function(el){
+      var psn=el.getAttribute("data-psn").toLowerCase();
+      if(psn&&_nameMap[psn]) el.textContent=_nameMap[psn];
+    });
+  });
+
   loadViaRaw().catch(function(){return loadViaApi();})
   .catch(function(){}).then(function(){
     var allDone=Object.keys(allRaces).length>=_rt;
@@ -1111,7 +1157,8 @@ ${'<scr'+'ipt>'}
         dropped=byVal.slice(0,toDrop);
       }
       var total=entries.reduce(function(s,e){return s+(dropped.indexOf(e)>=0?0:e.pts);},0);
-      return{nome:nm,entries:entries,dropped:dropped,total:total};
+      var psn=entries.length?entries[0].psn||'':'';
+      return{nome:nm,psn:psn,entries:entries,dropped:dropped,total:total};
     }).sort(function(a,b){return b.total-a.total;});
 
     var cl=["#FFD700","#C0C0C0","#CD7F32"];
@@ -1136,7 +1183,7 @@ ${'<scr'+'ipt>'}
       }
       return "<div class='standings-item' style='flex-wrap:wrap;align-items:center;padding-bottom:"+(breakdown?"6px":"12px")+"'>"
         +"<span class='standings-position' style='color:"+col+"'>"+pos+"&deg;</span>"
-        +"<span class='standings-driver'>"+s.nome+"</span>"
+        +"<span class='standings-driver' "+(s.psn?"data-psn='"+s.psn+"'":"")+">"+(_nameMap[s.psn&&s.psn.toLowerCase()]||s.nome)+"</span>"
         +"<span class='standings-points'>"+s.total+"</span>"
         +breakdown
         +"</div>";
@@ -1554,27 +1601,13 @@ async function tryLoadExistingResults(){
     const idxMeta = await idxR.json();
     const fileList = JSON.parse(decodeURIComponent(escape(atob(idxMeta.content.replace(/\s/g,'')))));
 
-    // 2. Filter filenames to likely candidates using champId slug + round number
-    // This avoids fetching all 40+ files — only fetch ones that could match
-    const champ = getChampBySelectValue(champIdx);
-    const champSlug = champ ? (champ.id || '').toLowerCase() : champIdx.toLowerCase();
-    // Extract the year prefix from champId e.g. "risveglio-dei-motori-2026" -> "2026"
-    const yearMatch = champSlug.match(/(\d{4})$/);
-    const yearPrefix = yearMatch ? yearMatch[1] : '';
+    // 2. Fetch each JSON and find the one matching champId + garaNum
+    let matchedData = null;
+    let matchedFilename = null;
 
-    // A file matches if it contains the round number AND either the champId slug or year
-    const candidates = fileList.filter(function(fname){
-      if(!fname.endsWith('.json') || fname === 'index.json') return false;
-      const hasRound = fname.includes('-r' + garaNum + '-') || fname.endsWith('-r' + garaNum + '.json');
-      const hasYear  = yearPrefix ? fname.startsWith(yearPrefix) : true;
-      return hasRound && hasYear;
-    });
-
-    // If no candidates found by filename pattern, fall back to fetching all
-    const toFetch = candidates.length > 0 ? candidates : fileList.filter(function(f){ return f.endsWith('.json') && f !== 'index.json'; });
-
-    // Fetch candidates in parallel
-    const results = await Promise.all(toFetch.map(async function(fname){
+    // Fetch in parallel for speed
+    const results = await Promise.all(fileList.map(async function(fname){
+      if(!fname.endsWith('.json') || fname === 'index.json') return null;
       try {
         const r = await fetch('https://api.github.com/repos/' + REPO + '/contents/risultati/' + fname + '?ref=' + BRANCH, {
           headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json' }
@@ -1584,7 +1617,7 @@ async function tryLoadExistingResults(){
         const data = JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
         const matchesChamp = data.champId === champIdx || data.champIdx === champIdx;
         const matchesRound = parseInt(data.garaNum) === garaNum;
-        if(matchesChamp && matchesRound) return { data: data, fname: fname };
+        if(matchesChamp && matchesRound) return { data, fname };
         return null;
       } catch(e){ return null; }
     }));
