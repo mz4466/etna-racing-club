@@ -141,48 +141,48 @@
       "pos": 3
     },
     {
-      "nome": "Sandro",
-      "pts": 42,
-      "pos": 4
-    },
-    {
       "nome": "Claudio",
       "pts": 40,
-      "pos": 5
+      "pos": 4
     },
     {
       "nome": "Alessandro",
       "pts": 39,
-      "pos": 6
+      "pos": 5
     },
     {
       "nome": "Stefano",
       "pts": 38,
-      "pos": 7
+      "pos": 6
     },
     {
       "nome": "Alessandro H",
       "pts": 29,
-      "pos": 8
+      "pos": 7
     },
     {
       "nome": "William",
       "pts": 26,
-      "pos": 9
+      "pos": 8
     },
     {
       "nome": "Daniele",
       "pts": 20,
-      "pos": 10
+      "pos": 9
     },
     {
       "nome": "Fabio",
       "pts": 16,
-      "pos": 11
+      "pos": 10
     },
     {
       "nome": "Matteo Spinotto",
       "pts": 4,
+      "pos": 11
+    },
+    {
+      "nome": "Sandro",
+      "pts": 0,
       "pos": 12
     }
   ],
