@@ -1119,7 +1119,8 @@ ${'<scr'+'ipt>'}
             .then(function(m){
               if(!m||!m.content)return;
               try{
-                var p=JSON.parse(decodeURIComponent(escape(atob(m.content.replace(/\s/g,"")))));
+                var clean=m.content.split("").filter(function(c){return c!=" "&&c!="\n"&&c!="\r"&&c!="\t";}).join("");
+                var p=JSON.parse(decodeURIComponent(escape(atob(clean))));
                 var psn=(p.psn||"").trim().toLowerCase();
                 var nome=(p.nome||p.name||"").trim();
                 if(psn&&psn!=="na"&&nome) _nameMap[psn]=nome;
