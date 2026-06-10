@@ -147,7 +147,7 @@
       <td><strong>8</strong></td>
     </tr><tr class="">
       <td class="">7°</td>
-      <td class="pilot-name" data-psn="steward_andante">William</td>
+      <td class="pilot-name" >William</td>
       <td></td>
       <td class=""></td>
       <td>6</td>
@@ -194,7 +194,7 @@
       <span class="standings-points">8</span>
     </div><div class="standings-item">
       <span class="standings-position ">7°</span>
-      <span class="standings-driver" data-psn="steward_andante">William</span>
+      <span class="standings-driver">William</span>
       <span class="standings-points">6</span>
     </div><div class="standings-item">
       <span class="standings-position ">8°</span>
@@ -245,7 +245,7 @@
     (d.rows||[]).forEach(function(r){ var n=r.psn&&_nameMap[r.psn.toLowerCase()]?_nameMap[r.psn.toLowerCase()]:r.nome; addToStandings(n,r.totale||0,raceN,r.psn||''); });
   }
 
-  var rows=[{"nome":"Tiger","psn":"","totale":26},{"nome":"Claudio","psn":"SybeX26","totale":19},{"nome":"Carmine","psn":"CarmineRafa87","totale":15},{"nome":"Putyesz-HUN","psn":"","totale":12},{"nome":"Fabio","psn":"fabyus1983","totale":10},{"nome":"Pippojak87","psn":"","totale":8},{"nome":"William","psn":"steward_andante","totale":6},{"nome":"Beppe","psn":"","totale":4}];
+  var rows=[{"nome":"Tiger","psn":"","totale":26},{"nome":"Claudio","psn":"SybeX26","totale":19},{"nome":"Carmine","psn":"CarmineRafa87","totale":15},{"nome":"Putyesz-HUN","psn":"","totale":12},{"nome":"Fabio","psn":"fabyus1983","totale":10},{"nome":"Pippojak87","psn":"","totale":8},{"nome":"William","psn":"","totale":6},{"nome":"Beppe","psn":"","totale":4}];
   rows.forEach(function(r){addToStandings(r.psn&&_nameMap[r.psn.toLowerCase()]?_nameMap[r.psn.toLowerCase()]:r.nome,r.totale,_rn,r.psn||'');});
   allRaces[_rn]=true;
 
@@ -287,7 +287,9 @@
             .then(function(m){
               if(!m||!m.content)return;
               try{
-                var p=JSON.parse(decodeURIComponent(escape(atob(m.content.replace(/s/g,"")))));
+                var clean=m.content.split("").filter(function(c){return c!=" "&&c!="
+"&&c!=""&&c!="	";}).join("");
+                var p=JSON.parse(decodeURIComponent(escape(atob(clean))));
                 var psn=(p.psn||"").trim().toLowerCase();
                 var nome=(p.nome||p.name||"").trim();
                 if(psn&&psn!=="na"&&nome) _nameMap[psn]=nome;
