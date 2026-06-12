@@ -942,7 +942,7 @@ function buildHTML(){
       : '';
     return `<tr class="${r.stato!=='ok'?'row-retired':''}">
       <td class="${posClass}">${r.pos}°${statoTag}</td>
-      <td class="${nameClass}" ${r.psn ? `data-psn="${esc(r.psn)}"` : ''}>${esc(r.nome)}${carHtml}</td>
+      <td class="${nameClass}" ${r.psn ? `data-psn="${esc(r.psn)}"` : ''}><span class="pilot-name-text">${esc(r.nome)}</span>${carHtml}</td>
       <td>${esc(r.tempo)}</td>
       <td class="${flClass}">${esc(r.bestLap)}</td>
       <td>${r.punti}</td>
@@ -1174,10 +1174,14 @@ ${'<scr'+'ipt>'}
   }
 
   loadSchedeNames().catch(function(){}).then(function(){
-    // Now resolve names in the result table DOM
+    // Now resolve names in the result table DOM — only replace the name span, not the car HTML
     document.querySelectorAll("td[data-psn]").forEach(function(td){
       var psn=td.getAttribute("data-psn").toLowerCase();
-      if(psn&&_nameMap[psn]) td.textContent=_nameMap[psn];
+      if(psn&&_nameMap[psn]){
+        var span=td.querySelector(".pilot-name-text");
+        if(span) span.textContent=_nameMap[psn];
+        else td.childNodes[0]&&(td.childNodes[0].textContent=_nameMap[psn]);
+      }
     });
     // Also resolve names in standings
     document.querySelectorAll(".standings-driver[data-psn]").forEach(function(el){
