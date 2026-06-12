@@ -9,6 +9,7 @@
     {
       "pos": 1,
       "nome": "Pyer",
+      "psn": "PyerStark",
       "auto": "Lamborghini Huracan GT3 '15",
       "tempo": "27'16''266",
       "bestLap": "1'43''018",
@@ -22,6 +23,7 @@
     {
       "pos": 2,
       "nome": "Claudio",
+      "psn": "SybeX26",
       "auto": "Nissan GT-R NISMO GT3 '18",
       "tempo": "a 17\"438",
       "bestLap": "1'45''376",
@@ -35,6 +37,7 @@
     {
       "pos": 3,
       "nome": "Luca",
+      "psn": "",
       "auto": "SUZUKI Vision Gran Turismo (Gr.3 Version)",
       "tempo": "a 1 Giro",
       "bestLap": "1'50''720",
@@ -49,18 +52,39 @@
   "standings": [
     {
       "nome": "Pyer",
-      "pts": 27,
+      "psn": "PyerStark",
+      "pts": 90,
       "pos": 1
     },
     {
       "nome": "Claudio",
-      "pts": 18,
+      "psn": "SybeX26",
+      "pts": 78,
       "pos": 2
     },
     {
       "nome": "Luca",
-      "pts": 15,
+      "psn": "",
+      "pts": 57,
       "pos": 3
+    },
+    {
+      "nome": "Antonio",
+      "psn": "antonioleocataad",
+      "pts": 44,
+      "pos": 4
+    },
+    {
+      "nome": "Carmine",
+      "psn": "CarmineRafa87",
+      "pts": 27,
+      "pos": 5
+    },
+    {
+      "nome": "Fabio",
+      "psn": "fabyus1983",
+      "pts": 25,
+      "pos": 6
     }
   ],
   "bestOf": 4
