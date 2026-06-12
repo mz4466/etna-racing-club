@@ -939,7 +939,7 @@ async function savePilot(){
   try {
     await putFile(`${FOLDER}/${slug}.json`, JSON.stringify(payload,null,2), `${editingSlug?'Update':'Add'} pilot: ${slug}`, token);
     await updatePilotIndex(token);
-    await updatePsnMap(token);
+    await updatePsnMap(token, payload);
     toast(`✓ ${nome} salvato!`,'ok');
     closeModal();
     await loadPilots();
@@ -1028,35 +1028,34 @@ async function updatePilotIndex(token){
 }
 
 // ── UPDATE PSN MAP ──
-async function updatePsnMap(token){
+async function updatePsnMap(token, newPayload){
   try {
-    // Fetch all pilot schede and rebuild psn-map.json
-    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${FOLDER}?ref=${BRANCH}`,{
+    // Fetch current psn-map.json
+    let psnMap = {};
+    let existingSha = null;
+    const mapPath = `${FOLDER}/psn-map.json`;
+    const mr = await fetch(`https://api.github.com/repos/${REPO}/contents/${mapPath}?ref=${BRANCH}&_=${Date.now()}`,{
       headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
     });
-    if(!r.ok) return;
-    const files = await r.json();
-    const jsonFiles = files.filter(f => f.name.endsWith('.json') && f.name !== 'index.json' && f.name !== 'psn-map.json');
+    if(mr.ok){
+      const md = await mr.json();
+      existingSha = md.sha;
+      try { psnMap = JSON.parse(decodeURIComponent(escape(atob(md.content.replace(/\s/g,''))))); } catch(e){}
+    }
 
-    const pilots = await Promise.all(jsonFiles.map(async function(f){
-      try {
-        const jr = await fetch(f.url, {headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
-        if(!jr.ok) return null;
-        const meta = await jr.json();
-        return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
-      } catch(e){ return null; }
-    }));
-
-    const psnMap = {};
-    pilots.filter(Boolean).forEach(function(p){
-      const psn  = (p.psn  || '').trim();
-      const nome = (p.nome || p.name || '').trim();
+    // Update/add the entry for this pilot using the just-saved payload
+    if(newPayload){
+      const psn  = (newPayload.psn  || '').trim();
+      const nome = (newPayload.nome || newPayload.name || '').trim();
       if(psn && psn.toUpperCase() !== 'NA' && nome){
         psnMap[psn] = nome;
+      } else if(psn && psn.toUpperCase() !== 'NA'){
+        // If name is empty, remove the entry
+        delete psnMap[psn];
       }
-    });
+    }
 
-    await putFile(`${FOLDER}/psn-map.json`, JSON.stringify(psnMap, null, 2), 'Update PSN map', token);
+    await putFile(mapPath, JSON.stringify(psnMap, null, 2), 'Update PSN map', token);
   } catch(e){ console.warn('updatePsnMap:', e.message); }
 }
 
