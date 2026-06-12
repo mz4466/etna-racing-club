@@ -638,6 +638,7 @@ function addRow(data={}){
       <div class="autocomplete-wrap pilot-cell">
         <input type="text" placeholder="Nome pilota" value="${esc(data.nome||'')}" id="nome-${id}"
           oninput="onNomeInput(${id},this)" autocomplete="off">
+        <input type="hidden" id="psn-${id}" value="${esc(data.psn||'')}">
         <button class="btn-pick-pilot" onclick="openPilotPicker(${id})" title="Scegli dalla rosa" type="button">▼</button>
       </div>
       <div id="car-wrap-${id}" style="display:none;margin-top:4px;">
@@ -771,6 +772,8 @@ function onNomeInput(id, input){
     item.textContent=name;
     item.onmousedown=()=>{
       document.getElementById(`nome-${id}`).value=name;
+      var psnEl=document.getElementById('psn-'+id);
+      if(psnEl) psnEl.value=pilotPsnMap[name.toLowerCase()]||'';
       dropdown.classList.remove('open');
       populateCarSelect(id, name);
     };
@@ -794,7 +797,18 @@ function collectRows(){
     return {
       pos:     i+1,
       nome:    ( document.getElementById(`nome-${id}`) ? document.getElementById(`nome-${id}`).value.trim() : ''),
-      psn:     (function(){ var n=(document.getElementById('nome-'+id)?document.getElementById('nome-'+id).value.trim():'').toLowerCase(); return pilotPsnMap[n]||''; })(),
+      psn:     (function(){ 
+        // 1. Use hidden PSN field if set (preserved from existing JSON or picker selection)
+        var stored = document.getElementById('psn-'+id) ? document.getElementById('psn-'+id).value.trim() : '';
+        if(stored) return stored;
+        // 2. Try nome match in pilotPsnMap
+        var n=(document.getElementById('nome-'+id)?document.getElementById('nome-'+id).value.trim():'').toLowerCase(); 
+        if(pilotPsnMap[n]) return pilotPsnMap[n];
+        // 3. Try matching current nome against psnNomeMap values (handles renamed pilots)
+        var found='';
+        Object.keys(psnNomeMap).forEach(function(psn){ if(psnNomeMap[psn].toLowerCase()===n) found=psn; });
+        return found;
+      })(),
       auto:    ( document.getElementById(`car-sel-${id}`) ? document.getElementById(`car-sel-${id}`).value.trim() : ''),
       tempo:   ( document.getElementById(`tempo-${id}`) ? document.getElementById(`tempo-${id}`).value.trim() : ''),
       bestLap: ( document.getElementById(`bestlap-${id}`) ? document.getElementById(`bestlap-${id}`).value.trim() : ''),
@@ -1501,8 +1515,11 @@ function renderPilotPickerList(q){
 function selectPilotFromPicker(name){
   if(_pickerTargetId !== null){
     var input = document.getElementById('nome-' + _pickerTargetId);
+    var psnInput = document.getElementById('psn-' + _pickerTargetId);
     if(input){
       input.value = name;
+      // Set PSN hidden field
+      if(psnInput) psnInput.value = pilotPsnMap[name.toLowerCase()] || '';
       populateCarSelect(_pickerTargetId, name);
     }
   }
