@@ -9,7 +9,7 @@
     {
       "pos": 1,
       "nome": "Pyer",
-      "psn": "PyerStark",
+      "psn": "",
       "auto": "Lamborghini Huracan GT3 '15",
       "tempo": "27'16''266",
       "bestLap": "1'43''018",
@@ -52,7 +52,7 @@
   "standings": [
     {
       "nome": "Pyer",
-      "psn": "PyerStark",
+      "psn": "",
       "pts": 90,
       "pos": 1
     },
