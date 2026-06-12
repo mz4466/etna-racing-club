@@ -53,38 +53,20 @@
     {
       "nome": "Pyer",
       "psn": "",
-      "pts": 90,
+      "pts": 27,
       "pos": 1
     },
     {
       "nome": "Claudio",
-      "psn": "SybeX26",
-      "pts": 78,
+      "psn": "",
+      "pts": 18,
       "pos": 2
     },
     {
       "nome": "Luca",
       "psn": "",
-      "pts": 57,
+      "pts": 15,
       "pos": 3
-    },
-    {
-      "nome": "Antonio",
-      "psn": "antonioleocataad",
-      "pts": 44,
-      "pos": 4
-    },
-    {
-      "nome": "Carmine",
-      "psn": "CarmineRafa87",
-      "pts": 27,
-      "pos": 5
-    },
-    {
-      "nome": "Fabio",
-      "psn": "fabyus1983",
-      "pts": 25,
-      "pos": 6
     }
   ],
   "bestOf": 4
