@@ -667,11 +667,43 @@ function addRow(data={}){
   updateRowCount();
   if(data.punti!==undefined) calcTotal(id);
   if(data.nome) {
-    populateCarSelect(id, data.nome);
+    // ── Resolve current nome and PSN ──
+    var resolvedPsn  = data.psn || '';
+    var resolvedNome = data.nome;
+
+    if(resolvedPsn && psnNomeMap[resolvedPsn.toLowerCase()]) {
+      // PSN stored → use current nome from scheda
+      resolvedNome = psnNomeMap[resolvedPsn.toLowerCase()];
+    } else if(!resolvedPsn) {
+      // No PSN stored → try to find PSN by matching nome
+      var lowerNome = data.nome.toLowerCase();
+      // 1. Exact match
+      if(pilotPsnMap[lowerNome]) {
+        resolvedPsn  = pilotPsnMap[lowerNome];
+        resolvedNome = psnNomeMap[resolvedPsn.toLowerCase()] || data.nome;
+      } else {
+        // 2. First-word match (e.g. "Pyer" matches "Pyer Longo")
+        var firstWord = lowerNome.split(' ')[0];
+        Object.keys(psnNomeMap).forEach(function(psn){
+          var currentNome = psnNomeMap[psn];
+          if(currentNome.toLowerCase().split(' ')[0] === firstWord) {
+            resolvedPsn  = psn;
+            resolvedNome = currentNome;
+          }
+        });
+      }
+    }
+
+    // Update nome input and hidden PSN field with resolved values
+    var nomeEl = document.getElementById('nome-'+id);
+    var psnEl  = document.getElementById('psn-'+id);
+    if(nomeEl && resolvedNome !== data.nome) nomeEl.value = resolvedNome;
+    if(psnEl)  psnEl.value = resolvedPsn;
+
+    populateCarSelect(id, resolvedNome);
     if(data.auto){
       var carSel = document.getElementById('car-sel-'+id);
       if(carSel){
-        // add saved car as option if not already present, then select it
         if(!Array.from(carSel.options).some(function(o){return o.value===data.auto;})){
           var opt = document.createElement('option'); opt.value=data.auto; opt.textContent=data.auto;
           carSel.appendChild(opt);
