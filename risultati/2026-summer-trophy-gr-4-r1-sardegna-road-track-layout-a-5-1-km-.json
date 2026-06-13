@@ -17,7 +17,8 @@
       "punti": 25,
       "extra": "1",
       "totale": 26,
-      "stato": "ok"
+      "stato": "ok",
+      "psn": ""
     },
     {
       "pos": 2,
@@ -58,7 +59,8 @@
       "punti": 12,
       "extra": "-",
       "totale": 12,
-      "stato": "ok"
+      "stato": "ok",
+      "psn": ""
     },
     {
       "pos": 5,
@@ -85,7 +87,8 @@
       "punti": 8,
       "extra": "-",
       "totale": 8,
-      "stato": "ok"
+      "stato": "ok",
+      "psn": ""
     },
     {
       "pos": 7,
@@ -112,7 +115,8 @@
       "punti": 4,
       "extra": "-",
       "totale": 4,
-      "stato": "ok"
+      "stato": "ok",
+      "psn": ""
     }
   ],
   "standings": [
