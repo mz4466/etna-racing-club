@@ -936,6 +936,7 @@
         }
 
         var calMap = {};
+        var psnMap = {};   /* psnLower -> currentName */
 
         fetch('calendario.json?_=' + Date.now())
           .then(function(r){ return r.json(); })
@@ -943,6 +944,11 @@
             for(var i=0;i<cal.length;i++){
               if(cal[i].id) calMap[cal[i].id] = { name: cal[i].name || '', cat: cal[i].cat || '', file: cal[i].file || '' };
             }
+            return fetch('piloti_schede/psn-map.json?_=' + Date.now());
+          })
+          .then(function(r){ return r.ok ? r.json() : {}; })
+          .then(function(m){
+            for(var k in (m||{})){ if(m.hasOwnProperty(k)) psnMap[(''+k).toLowerCase().trim()] = m[k]; }
             return fetch('risultati/index.json?_=' + Date.now());
           })
           .then(function(r){ return r.json(); })
@@ -976,7 +982,11 @@
               var winner = '';
               var rows = race.rows || [];
               for(var ri=0;ri<rows.length;ri++){
-                if(rows[ri].pos === 1){ winner = rows[ri].nome || ''; break; }
+                if(rows[ri].pos === 1){
+                  var wp = (rows[ri].psn || '').toLowerCase().trim();
+                  winner = (wp && psnMap[wp]) ? psnMap[wp] : (rows[ri].nome || '');
+                  break;
+                }
               }
 
               var champId = race.champId || race.champIdx || '';
