@@ -1,7 +1,7 @@
 {
   "circuito": "Lago Maggiore (5.809 m)",
   "data": "2025-07-13",
-  "garaNum": "2",
+  "garaNum": "1",
   "garaTot": "5",
   "champId": "estate-2025",
   "champIdx": "estate-2025",
@@ -23,7 +23,7 @@
     {
       "pos": 2,
       "nome": "Pyer",
-      "psn": "",
+      "psn": "PyerStark",
       "auto": "Lamborghini Huracan GT3 '15",
       "tempo": "a 26\"584",
       "bestLap": "2'00''483",
@@ -86,7 +86,7 @@
     },
     {
       "nome": "Pyer",
-      "psn": "",
+      "psn": "PyerStark",
       "pts": 78,
       "pos": 1
     },
