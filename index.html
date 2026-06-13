@@ -881,8 +881,7 @@
 
             if(!upcoming.length) return;
 
-            upcoming = upcoming.slice(0, 3);
-            var html = '<div class="recent-label">Prossimi 3 eventi</div>';
+            var html = '<div class="recent-label">Prossimi eventi</div>';
             for(var j=0;j<upcoming.length;j++){
               var ev = upcoming[j];
               var isToday = ev.days === 0;

@@ -147,35 +147,6 @@
 
     backdrop-filter:blur(10px);
 }        .stat-pill strong { color:#c9a227; font-size:14px; font-weight:600; }
-        .stat-pill { position:relative; cursor:pointer; }
-        .stat-pill-tooltip {
-          display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
-          background:#0e0e1c; border:1px solid rgba(201,162,39,0.4); border-radius:8px;
-          padding:10px 14px; min-width:320px; max-width:480px; z-index:999;
-          box-shadow:0 8px 24px rgba(0,0,0,0.7);
-          pointer-events:auto;
-          max-height:260px; overflow-y:auto;
-        }
-        .stat-pill-tooltip::after {
-          content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%);
-          border:6px solid transparent; border-top-color:rgba(201,162,39,0.4);
-        }
-        .stat-pill.open .stat-pill-tooltip { display:block; }
-        .stat-pill.open { background:rgba(201,162,39,0.18); border-color:rgba(201,162,39,0.6); }
-        .stat-pill:hover { opacity:0.85; }
-        .stat-pill-tooltip::-webkit-scrollbar { width:4px; }
-        .stat-pill-tooltip::-webkit-scrollbar-track { background:transparent; }
-        .stat-pill-tooltip::-webkit-scrollbar-thumb { background:rgba(201,162,39,0.4); border-radius:4px; }
-        .stat-pill-tooltip::-webkit-scrollbar-thumb:hover { background:rgba(201,162,39,0.7); }
-        .stat-pill-tooltip-title {
-          font-family:'Teko',sans-serif; font-size:11px; letter-spacing:2px;
-          color:rgba(201,162,39,0.6); text-transform:uppercase; margin-bottom:6px;
-        }
-        .stat-pill-tooltip-item {
-          font-family:'Teko',sans-serif; font-size:14px; letter-spacing:0.5px;
-          color:#e8e0d0; padding:2px 0; border-bottom:1px solid rgba(255,255,255,0.05);
-        }
-        .stat-pill-tooltip-item:last-child { border-bottom:none; }
         .psn { color:var(--muted); font-size:0.85rem; margin-bottom:10px; }
         .info {
     color:var(--cream);
@@ -474,7 +445,6 @@ var pilotCostrutTrophies = {};
 var pilotCostrutMedals = {};
 // Map: pilotName (lowercase) → { races: N, champs: Set of champId }
 var pilotStats = {};
-  var PILOT_FALLBACK_IMG = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22280%22%20height%3D%22350%22%3E%3Crect%20width%3D%22280%22%20height%3D%22350%22%20fill%3D%22%230e0e1c%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%22120%22%20r%3D%2255%22%20fill%3D%22%231e1e30%22%2F%3E%3Cellipse%20cx%3D%22140%22%20cy%3D%22290%22%20rx%3D%2290%22%20ry%3D%2270%22%20fill%3D%22%231e1e30%22%2F%3E%3C%2Fsvg%3E";
         pilotMedals = {};
 // Map: pilotName (lowercase) → array of { champName, year, pos (2 or 3) }
 var pilotMedals = {};
@@ -509,7 +479,7 @@ async function loadAll() {
         // Build set of ufficiose champIds to exclude from stats
         var ufficioseIds = {};
         calendario.forEach(function(c) {
-          if (c.cat === 'Gara Ufficiosa' && c.id) ufficioseIds[c.id] = true;
+          if (c.cat === 'Gara/e Ufficiosa/e' && c.id) ufficioseIds[c.id] = true;
         });
 
         // Scan ALL races to count participations per pilot (skip ufficiose)
@@ -520,21 +490,9 @@ async function loadAll() {
           rows.forEach(function(row) {
             if (!row.nome) return;
             var key = row.nome.toLowerCase().trim();
-            if (!pilotStats[key]) pilotStats[key] = { races: 0, champs: {}, raceList: [] };
+            if (!pilotStats[key]) pilotStats[key] = { races: 0, champs: {} };
             pilotStats[key].races++;
-            if (champId) {
-              var raceDate = race.data || '';
-              // Store champ with its earliest known race date
-              if (!pilotStats[key].champs[champId] || (raceDate && raceDate < pilotStats[key].champs[champId])) {
-                pilotStats[key].champs[champId] = raceDate || '9999';
-              }
-            }
-            // Store race detail for tooltip: "Circuit — ChampName"
-            var calEntry = calendario.find(function(c){ return c.id === champId; });
-            var champName = calEntry ? (calEntry.name || champId) : champId;
-            var circuit = race.circuito || race.circuit || race.track || '';
-            var raceLabel = champName + (circuit ? ' — ' + circuit : '') + (race.garaNum ? ' (R'+race.garaNum+')' : '');
-            pilotStats[key].raceList.push({ label: raceLabel, year: calEntry ? (calEntry.year||0) : 0, garaNum: parseInt(race.garaNum)||0, date: race.data || '' });
+            if (champId) pilotStats[key].champs[champId] = true;
           });
         });
 
@@ -888,7 +846,7 @@ function renderPilot(p, calendario) {
     costrutHTML = '<div class="costrutt-section">' + costrutParts.join('') + '</div>';
   }
 
-  var photoSrc = foto || PILOT_FALLBACK_IMG;
+  var photoSrc = foto || 'https://via.placeholder.com/280x350?text=Pilota';
   var isActive = p.attivo !== false;
 
   // Build campionati cars display (active championships only)
@@ -937,7 +895,7 @@ function renderPilot(p, calendario) {
   el.innerHTML = ''
     + '<div class="pilot-photos">'
     + (isActive
-        ? '<img class="pilot-photo" src="' + esc(photoSrc) + '" alt="' + esc(nome) + '" onerror="this.onerror=null;this.src=\'data:image/svg+xml,%3Csvg xmlns=\'\'http://www.w3.org/2000/svg\'\' width=\'\'280\'\' height=\'\'350\'\'%3E%3Crect width=\'\'280\'\' height=\'\'350\'\' fill=\'\'%230e0e1c\'\'/%3E%3Ccircle cx=\'\'140\'\' cy=\'\'120\'\' r=\'\'55\'\' fill=\'\'%231e1e30\'\'/%3E%3Cellipse cx=\'\'140\'\' cy=\'\'290\'\' rx=\'\'90\'\' ry=\'\'70\'\' fill=\'\'%231e1e30\'\'/%3E%3C/svg%3E\'">'
+        ? '<img class="pilot-photo" src="' + esc(photoSrc) + '" alt="' + esc(nome) + '" onerror="this.src=\'https://via.placeholder.com/280x350?text=Pilota\'">'
         : '<div class="pilot-photo" style="background:linear-gradient(135deg,#0d0d1a,#1a1a2e);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-size:48px;opacity:.3;">🪖</span></div>'
       )
     + foto2Html
@@ -956,38 +914,8 @@ function renderPilot(p, calendario) {
           var champCount = Object.keys(st.champs).length;
           if(!raceCount && !champCount) return '';
           var pills = '';
-
-          if(champCount) {
-            // Build sorted champ list: oldest first (by year, then name)
-            var champList = Object.keys(st.champs).map(function(cid){
-              var cal = calendario.find(function(c){ return c.id === cid; });
-              var firstDate = st.champs[cid] !== '9999' ? st.champs[cid] : '';
-              return { name: cal ? (cal.name||cid) : cid, year: cal ? (cal.year||0) : 0, firstDate: firstDate };
-            }).sort(function(a,b){
-              if (a.firstDate && b.firstDate) return a.firstDate.localeCompare(b.firstDate);
-              return a.year - b.year || a.name.localeCompare(b.name);
-            });
-            var champTooltip = '<div class="stat-pill-tooltip">'
-              + '<div class="stat-pill-tooltip-title">Campionati e Trofei</div>'
-              + champList.map(function(c){ return '<div class="stat-pill-tooltip-item">🏆 ' + c.name + (c.year ? ' <span style="opacity:0.5;font-size:11px">'+c.year+'</span>' : '') + '</div>'; }).join('')
-              + '</div>';
-            pills += '<span class="stat-pill" onclick="toggleStatPill(event,this)"><strong>' + champCount + '</strong>&nbsp;campionati e trofei' + champTooltip + '</span>';
-          }
-
-          if(raceCount) {
-            // Build sorted race list: oldest first
-            var raceList = (st.raceList || []).slice().sort(function(a,b){
-              // Sort by date if available, then year, then garaNum
-              if (a.date && b.date) return a.date.localeCompare(b.date);
-              return a.year - b.year || a.garaNum - b.garaNum;
-            });
-            var raceTooltip = '<div class="stat-pill-tooltip">'
-              + '<div class="stat-pill-tooltip-title">Gare disputate</div>'
-              + raceList.map(function(r){ return '<div class="stat-pill-tooltip-item">🏁 ' + r.label + '</div>'; }).join('')
-              + '</div>';
-            pills += '<span class="stat-pill" onclick="toggleStatPill(event,this)"><strong>' + raceCount + '</strong>&nbsp;gar' + (raceCount===1?'a':'e') + raceTooltip + '</span>';
-          }
-
+          if(champCount) pills += '<span class="stat-pill"><strong>' + champCount + '</strong>&nbsp;campionati e trofei</span>';
+          if(raceCount)  pills += '<span class="stat-pill"><strong>' + raceCount + '</strong>&nbsp;gar' + (raceCount===1?'a':'e') + '</span>';
           return '<div class="pilot-stats">' + pills + '</div>';
         })()
     +   (isActive
@@ -1066,19 +994,5 @@ loadAll();
 </script>
 <script src="copyright.js"></script>
 <script src="nav.js"></script>
-<script>
-// ── STAT PILL CLICK TOGGLE ──
-function toggleStatPill(e, pill) {
-  if (e.target.closest('.stat-pill-tooltip')) return;
-  var isOpen = pill.classList.contains('open');
-  document.querySelectorAll('.stat-pill.open').forEach(function(p){ p.classList.remove('open'); });
-  if (!isOpen) pill.classList.add('open');
-}
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.stat-pill')) {
-    document.querySelectorAll('.stat-pill.open').forEach(function(p){ p.classList.remove('open'); });
-  }
-});
-</script>
 </body>
 </html>

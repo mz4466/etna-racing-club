@@ -247,7 +247,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
         for(var ci=0; ci<champs.length; ci++){
           var champ = champs[ci];
           /* ONLY process ufficiose championships */
-          if(champ.cat !== 'Gara Ufficiosa') continue;
+          if(champ.cat !== 'Gara/e Ufficiosa/e') continue;
           if(champ.id) ufficioseIds[champ.id] = true;
           var rounds = champ.rounds || champ.calendar || [];
           /* only count completed rounds using completedRounds counter */
