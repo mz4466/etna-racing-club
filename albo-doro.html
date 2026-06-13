@@ -125,7 +125,7 @@ a.trofeo-mini:hover{border-color:rgba(201,162,39,0.25);background:rgba(201,162,3
       .then(function(list){
         for(var i=0;i<list.length;i++){
           var e = list[i];
-          if(e.id) calMap[e.id] = { name: e.name || '', trophy: e.trophy || '', file: e.file || '', cat: e.cat || '' };
+          if(e.id) calMap[e.id] = { name: e.name || '', trophy: e.trophy || '', file: e.file || '', cat: e.cat || '', stagione: e.stagione || null };
         }
       })
       .catch(function(){});
@@ -199,7 +199,7 @@ a.trofeo-mini:hover{border-color:rgba(201,162,39,0.25);background:rgba(201,162,3
       var race = races[i];
       /* skip ufficiose championships */
       var champEntry = calMap[race.champId || ''] || calMap[race.champIdx || ''] || null;
-      if(champEntry && champEntry.cat === 'Gara/e Ufficiosa/e') continue;
+      if(champEntry && champEntry.cat === 'Gara Ufficiosa') continue;
       var isFinal = String(race.garaNum) === String(race.garaTot) && race.standings && race.standings.length;
       if(!isFinal) continue;
 
@@ -215,6 +215,7 @@ a.trofeo-mini:hover{border-color:rgba(201,162,39,0.25);background:rgba(201,162,3
       titles.push({
         champId: champId,
         year: yr,
+        stagione: calEntry.stagione || null,
         isTrofeo: trof,
         name: displayName,
         trophy: trophyFile,
@@ -230,18 +231,22 @@ a.trofeo-mini:hover{border-color:rgba(201,162,39,0.25);background:rgba(201,162,3
       }
     }
 
-    /* group by year desc */
+    /* group by stagione (fallback to year) desc */
     var yearMap = {};
     for(var j=0;j<titles.length;j++){
       var t = titles[j];
-      if(!yearMap[t.year]) yearMap[t.year] = [];
-      yearMap[t.year].push(t);
+      var key = t.stagione ? t.stagione : t.year;
+      if(!yearMap[key]) yearMap[key] = { label: key, year: t.year, items: [] };
+      yearMap[key].items.push(t);
     }
-    var years = Object.keys(yearMap).sort(function(a,b){ return b.localeCompare(a); });
+    /* sort stagioni: most recent first by year */
+    var years = Object.keys(yearMap).sort(function(a,b){
+      return (yearMap[b].year || '').localeCompare(yearMap[a].year || '');
+    });
 
-    /* sort within each year: campionati first (by numRaces desc), then trofei */
+    /* sort within each stagione: campionati first (by numRaces desc), then trofei */
     for(var yi=0;yi<years.length;yi++){
-      yearMap[years[yi]].sort(function(a,b){
+      yearMap[years[yi]].items.sort(function(a,b){
         if(a.isTrofeo !== b.isTrofeo) return a.isTrofeo ? 1 : -1;
         var ra = parseInt(a.numRaces) || 0;
         var rb = parseInt(b.numRaces) || 0;
@@ -265,12 +270,13 @@ a.trofeo-mini:hover{border-color:rgba(201,162,39,0.25);background:rgba(201,162,3
     var html = '';
     for(var yi=0;yi<years.length;yi++){
       var yr = years[yi];
-      var items = yearMap[yr];
+      var group = yearMap[yr];
+      var items = group.items;
 
       html += '<div class="season-group">';
       html += '<div class="year-divider">' +
         '<div class="line line-l"></div>' +
-        '<span class="year-label">' + yr + '</span>' +
+        '<span class="year-label">' + group.label + '</span>' +
         '<div class="line line-r"></div>' +
       '</div>';
 
