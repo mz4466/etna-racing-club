@@ -107,7 +107,7 @@
       <td><strong>26</strong></td>
     </tr><tr class="">
       <td class="pos-2">2°</td>
-      <td class="pilot-name-top">Claudio</td>
+      <td data-psn="SybeX26" class="pilot-name-top"><span class="pilot-name-text">Claudio</span></td>
       <td></td>
       <td class=""></td>
       <td>18</td>
@@ -115,7 +115,7 @@
       <td><strong>19</strong></td>
     </tr><tr class="">
       <td class="pos-3">3°</td>
-      <td class="pilot-name-top">Carmine</td>
+      <td data-psn="CarmineRafa87" class="pilot-name-top"><span class="pilot-name-text">Carmine</span></td>
       <td></td>
       <td class=""></td>
       <td>15</td>
@@ -131,7 +131,7 @@
       <td><strong>12</strong></td>
     </tr><tr class="">
       <td class="">5°</td>
-      <td class="pilot-name">Fabio</td>
+      <td data-psn="fabyus1983" class="pilot-name"><span class="pilot-name-text">Fabio</span></td>
       <td></td>
       <td class=""></td>
       <td>10</td>
@@ -147,7 +147,7 @@
       <td><strong>8</strong></td>
     </tr><tr class="">
       <td class="">7°</td>
-      <td class="pilot-name">William</td>
+      <td data-psn="steward_andante" class="pilot-name"><span class="pilot-name-text">William</span></td>
       <td></td>
       <td class=""></td>
       <td>6</td>
@@ -174,11 +174,11 @@
       <span class="standings-points">26</span>
     </div><div class="standings-item">
       <span class="standings-position pos-2">2°</span>
-      <span class="standings-driver">Claudio</span>
+      <span class="standings-driver" data-psn="SybeX26">Claudio</span>
       <span class="standings-points">19</span>
     </div><div class="standings-item">
       <span class="standings-position pos-3">3°</span>
-      <span class="standings-driver">Carmine</span>
+      <span class="standings-driver" data-psn="CarmineRafa87">Carmine</span>
       <span class="standings-points">15</span>
     </div><div class="standings-item">
       <span class="standings-position ">4°</span>
@@ -186,7 +186,7 @@
       <span class="standings-points">12</span>
     </div><div class="standings-item">
       <span class="standings-position ">5°</span>
-      <span class="standings-driver">Fabio</span>
+      <span class="standings-driver" data-psn="fabyus1983">Fabio</span>
       <span class="standings-points">10</span>
     </div><div class="standings-item">
       <span class="standings-position ">6°</span>
@@ -194,7 +194,7 @@
       <span class="standings-points">8</span>
     </div><div class="standings-item">
       <span class="standings-position ">7°</span>
-      <span class="standings-driver">William</span>
+      <span class="standings-driver" data-psn="steward_andante">William</span>
       <span class="standings-points">6</span>
     </div><div class="standings-item">
       <span class="standings-position ">8°</span>
@@ -267,6 +267,25 @@
             .then(function(m){
               if(!m||!m.content)return;
               try{processRace(JSON.parse(decodeURIComponent(escape(atob(m.content.replace(/s/g,""))))));}catch(e){}
+            });
+        }));
+      });
+  }
+
+  function loadSchedeNames(){
+    // Fetch index then each scheda via raw URL — no auth, no rate limits, always fresh
+    var RAW="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/piloti_schede/";
+    return fetch(RAW+"index.json?_="+Date.now())
+      .then(function(r){return r.ok?r.json():[];}).catch(function(){return[];})
+      .then(function(files){
+        return Promise.all((files||[]).filter(function(f){return f.endsWith(".json")&&f!=="psn-map.json";}).map(function(fname){
+          return fetch(RAW+fname+"?_="+Date.now())
+            .then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
+            .then(function(p){
+              if(!p) return;
+              var psn=(p.psn||"").trim().toLowerCase();
+              var nome=(p.nome||p.name||"").trim();
+              if(psn&&psn!=="na"&&nome) _nameMap[psn]=nome;
             });
         }));
       });

@@ -17,7 +17,8 @@
       "punti": 25,
       "extra": "1+1",
       "totale": 27,
-      "stato": "ok"
+      "stato": "ok",
+      "psn": "PyerStark"
     },
     {
       "pos": 2,
@@ -30,7 +31,8 @@
       "punti": 18,
       "extra": "-",
       "totale": 18,
-      "stato": "ok"
+      "stato": "ok",
+      "psn": "SybeX26"
     },
     {
       "pos": 3,
@@ -43,7 +45,8 @@
       "punti": 15,
       "extra": "-",
       "totale": 15,
-      "stato": "ok"
+      "stato": "ok",
+      "psn": "lucasct1986"
     }
   ],
   "standings": [

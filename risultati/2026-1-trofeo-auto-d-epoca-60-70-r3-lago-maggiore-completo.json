@@ -17,7 +17,8 @@
       "punti": 20,
       "extra": "1",
       "totale": 21,
-      "stato": "ok"
+      "stato": "ok",
+      "psn": "PyerStark"
     },
     {
       "pos": 2,
@@ -30,7 +31,8 @@
       "punti": 18,
       "extra": "-",
       "totale": 18,
-      "stato": "ok"
+      "stato": "ok",
+      "psn": "mz4461"
     },
     {
       "pos": 3,
@@ -43,7 +45,8 @@
       "punti": 16,
       "extra": "-",
       "totale": 16,
-      "stato": "ok"
+      "stato": "ok",
+      "psn": "CarmineRafa87"
     },
     {
       "pos": 4,
@@ -56,7 +59,8 @@
       "punti": 14,
       "extra": "-",
       "totale": 14,
-      "stato": "ok"
+      "stato": "ok",
+      "psn": "steward_andante"
     }
   ],
   "standings": [
