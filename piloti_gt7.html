@@ -512,6 +512,32 @@ async function loadAll() {
           if (c.cat === 'Gara Ufficiosa' && c.id) ufficioseIds[c.id] = true;
         });
 
+        // Resolve baked display names → immutable PSN. Names are frozen per-publish
+        // ("Pyer"), but PSN never changes, so trophies key off PSN to survive renames.
+        var psnByNameInChamp = {};   // champId -> { nmeLower: psnLower }
+        var psnByNameGlobal  = {};   // nmeLower -> psnLower (fallback)
+        results.filter(Boolean).forEach(function(race) {
+          var cid = race.champId || '';
+          (race.rows || []).forEach(function(row) {
+            if (!row.nome) return;
+            var nk = row.nome.toLowerCase().trim();
+            var ps = (row.psn || '').toLowerCase().trim();
+            if (!ps) return;
+            if (cid) {
+              if (!psnByNameInChamp[cid]) psnByNameInChamp[cid] = {};
+              psnByNameInChamp[cid][nk] = ps;
+            }
+            psnByNameGlobal[nk] = ps;
+          });
+        });
+        function resolvePsn(champId, nme) {
+          var nk = (nme || '').toLowerCase().trim();
+          if (!nk) return '';
+          if (champId && psnByNameInChamp[champId] && psnByNameInChamp[champId][nk]) return psnByNameInChamp[champId][nk];
+          if (psnByNameGlobal[nk]) return psnByNameGlobal[nk];
+          return '';   // no PSN on record → caller falls back to the name key
+        }
+
         // Scan ALL races to count participations per pilot (skip ufficiose)
         results.filter(Boolean).forEach(function(race) {
           var champId = race.champId || '';
@@ -519,7 +545,7 @@ async function loadAll() {
           var rows = race.rows || [];
           rows.forEach(function(row) {
             if (!row.nome) return;
-            var key = row.nome.toLowerCase().trim();
+            var key = (row.psn || '').toLowerCase().trim() || row.nome.toLowerCase().trim();
             if (!pilotStats[key]) pilotStats[key] = { races: 0, champs: {}, raceList: [] };
             pilotStats[key].races++;
             if (champId) {
@@ -568,7 +594,7 @@ async function loadAll() {
               champion = { nome: race.rows[0].nome };
             }
             if (champion && champion.nome) {
-              var key = champion.nome.toLowerCase().trim();
+              var key = resolvePsn(race.champId, champion.nome) || champion.nome.toLowerCase().trim();
               if (!pilotTrophies[key]) pilotTrophies[key] = [];
               pilotTrophies[key].push({
                 champName: champ.name,
@@ -587,7 +613,7 @@ async function loadAll() {
               finisher = { nome: race.rows[pos - 1].nome };
             }
             if (!finisher || !finisher.nome) return;
-            var mKey = finisher.nome.toLowerCase().trim();
+            var mKey = resolvePsn(race.champId, finisher.nome) || finisher.nome.toLowerCase().trim();
             if (!pilotMedals[mKey]) pilotMedals[mKey] = [];
             pilotMedals[mKey].push({
               champName: champ.name,
@@ -650,7 +676,7 @@ async function loadAll() {
               });
               teamPilots.forEach(function(pilot){
                 if (!pilot.qualified) return;
-                var pKey = pilot.name.toLowerCase().trim();
+                var pKey = resolvePsn(race.champId, pilot.name) || pilot.name.toLowerCase().trim();
                 if (!pilotCostrutTrophies[pKey]) pilotCostrutTrophies[pKey] = [];
                 pilotCostrutTrophies[pKey].push({
                   champName:  champ.name,
