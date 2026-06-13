@@ -118,6 +118,8 @@ a.trofeo-mini:hover{border-color:rgba(201,162,39,0.25);background:rgba(201,162,3
 
   var BASE = '';
   var calMap = {};
+  var psnMap = {};     /* psnLower -> currentName (fallback) */
+  var nameByPsn = {};  /* psnLower -> currentName (authoritative, from schede) */
 
   function fetchCalendario(){
     return fetch(BASE + 'calendario.json?_=' + Date.now())
@@ -129,6 +131,33 @@ a.trofeo-mini:hover{border-color:rgba(201,162,39,0.25);background:rgba(201,162,3
         }
       })
       .catch(function(){});
+  }
+
+  function fetchSchede(){
+    return fetch(BASE + 'piloti_schede/index.json?_=' + Date.now())
+      .then(function(r){ return r.ok ? r.json() : []; })
+      .then(function(list){
+        var ps = [];
+        for(var i=0;i<list.length;i++){
+          if(list[i] === 'index.json') continue;
+          (function(file){
+            var pr = fetch(BASE + 'piloti_schede/' + file + '?_=' + Date.now())
+              .then(function(r){ return r.ok ? r.json() : null; })
+              .then(function(d){ if(d && d.psn && d.nome) nameByPsn[(''+d.psn).toLowerCase().trim()] = d.nome; })
+              .catch(function(){});
+            ps.push(pr);
+          })(list[i]);
+        }
+        return Promise.all(ps);
+      })
+      .catch(function(){});
+  }
+
+  function fetchPsnMap(){
+    return fetch(BASE + 'piloti_schede/psn-map.json?_=' + Date.now())
+      .then(function(r){ return r.ok ? r.json() : {}; })
+      .then(function(m){ var o={}; for(var k in (m||{})){ if(m.hasOwnProperty(k)) o[k.toLowerCase()]=m[k]; } psnMap=o; })
+      .catch(function(){ psnMap={}; });
   }
 
   function fetchIndex(){
@@ -166,6 +195,10 @@ a.trofeo-mini:hover{border-color:rgba(201,162,39,0.25);background:rgba(201,162,3
 
   function loadAll(){
     fetchCalendario().then(function(){
+      return fetchPsnMap();
+    }).then(function(){
+      return fetchSchede();
+    }).then(function(){
       return fetchIndex();
     }).then(function(files){
       var total = files.length;
@@ -192,6 +225,30 @@ a.trofeo-mini:hover{border-color:rgba(201,162,39,0.25);background:rgba(201,162,3
   }
 
   function processAndRender(races){
+    /* resolve baked names -> immutable PSN -> current name (rename-proof) */
+    var psnInChamp = {}, psnGlobal = {};
+    for(var rr=0; rr<races.length; rr++){
+      var rc = races[rr], cid2 = rc.champId || rc.champIdx || '';
+      var rws = rc.rows || [];
+      for(var rj=0; rj<rws.length; rj++){
+        var nme = rws[rj].nome || '', ps = (rws[rj].psn || '').toLowerCase().trim();
+        if(!nme || !ps) continue;
+        var nk = nme.toLowerCase().trim();
+        if(cid2){ if(!psnInChamp[cid2]) psnInChamp[cid2] = {}; psnInChamp[cid2][nk] = ps; }
+        psnGlobal[nk] = ps;
+      }
+    }
+    function psnOf(cid, nme){
+      var nk = (nme || '').toLowerCase().trim(); if(!nk) return '';
+      if(cid && psnInChamp[cid] && psnInChamp[cid][nk]) return psnInChamp[cid][nk];
+      return psnGlobal[nk] || '';
+    }
+    function curName(cid, nme){
+      var ps = psnOf(cid, nme);
+      if(ps){ if(nameByPsn[ps]) return nameByPsn[ps]; if(psnMap[ps]) return psnMap[ps]; }
+      return nme;
+    }
+
     var titles = [];
     var winners = {};
 
@@ -221,13 +278,14 @@ a.trofeo-mini:hover{border-color:rgba(201,162,39,0.25);background:rgba(201,162,3
         trophy: trophyFile,
         link: champLink,
         numRaces: race.garaTot || '?',
-        first:  top3[0] ? top3[0].nome : '-',
-        second: top3[1] ? top3[1].nome : '-',
-        third:  top3[2] ? top3[2].nome : '-'
+        first:  top3[0] ? curName(champId, top3[0].nome) : '-',
+        second: top3[1] ? curName(champId, top3[1].nome) : '-',
+        third:  top3[2] ? curName(champId, top3[2].nome) : '-'
       });
 
       if(top3[0]){
-        winners[top3[0].nome] = (winners[top3[0].nome] || 0) + 1;
+        var wk = psnOf(champId, top3[0].nome) || top3[0].nome.toLowerCase().trim();
+        winners[wk] = (winners[wk] || 0) + 1;
       }
     }
 
