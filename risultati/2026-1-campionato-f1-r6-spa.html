@@ -242,21 +242,13 @@
   }
 
   function loadSchedeNames(){
-    // Fetch index then each scheda via raw URL — no auth, no rate limits, always fresh
-    var RAW="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/piloti_schede/";
-    return fetch(RAW+"index.json?_="+Date.now())
-      .then(function(r){return r.ok?r.json():[];}).catch(function(){return[];})
-      .then(function(files){
-        return Promise.all((files||[]).filter(function(f){return f.endsWith(".json")&&f!=="psn-map.json";}).map(function(fname){
-          return fetch(RAW+fname+"?_="+Date.now())
-            .then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
-            .then(function(p){
-              if(!p) return;
-              var psn=(p.psn||"").trim().toLowerCase();
-              var nome=(p.nome||p.name||"").trim();
-              if(psn&&psn!=="na"&&nome) _nameMap[psn]=nome;
-            });
-        }));
+    var RAW_MAP="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/piloti_schede/psn-map.json";
+    return fetch(RAW_MAP+"?_="+Date.now())
+      .then(function(r){return r.ok?r.json():{};}).catch(function(){return{};})
+      .then(function(map){
+        Object.keys(map).forEach(function(psn){
+          if(psn) _nameMap[psn.toLowerCase()]=map[psn];
+        });
       });
   }
 
