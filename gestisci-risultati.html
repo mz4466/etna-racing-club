@@ -1153,28 +1153,27 @@ ${'<scr'+'ipt>'}
       });
   }
 
-  // Load pilot schede to build PSN→nome map, then load race data
+  // Load PSN→nome map (tiny, same-origin → not Zscaler-blocked, no auth)
   function loadSchedeNames(){
-    // Fetch index then each scheda via raw URL — no auth, no rate limits, always fresh
-    var RAW="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/piloti_schede/";
-    return fetch(RAW+"index.json?_="+Date.now())
-      .then(function(r){return r.ok?r.json():[];}).catch(function(){return[];})
-      .then(function(files){
-        return Promise.all((files||[]).filter(function(f){return f.endsWith(".json")&&f!=="psn-map.json";}).map(function(fname){
-          return fetch(RAW+fname+"?_="+Date.now())
-            .then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
-            .then(function(p){
-              if(!p) return;
-              var psn=(p.psn||"").trim().toLowerCase();
-              var nome=(p.nome||p.name||"").trim();
-              if(psn&&psn!=="na"&&nome) _nameMap[psn]=nome;
-            });
-        }));
+    var REL="../piloti_schede/psn-map.json";
+    var RAW="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/piloti_schede/psn-map.json";
+    function applyMap(map){
+      if(!map) return;
+      Object.keys(map).forEach(function(psn){
+        if(psn&&map[psn]) _nameMap[psn.toLowerCase()]=map[psn];
       });
+    }
+    return fetch(REL+"?_="+Date.now())
+      .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      .catch(function(){
+        return fetch(RAW+"?_="+Date.now())
+          .then(function(r){return r.ok?r.json():{};}).catch(function(){return{};});
+      })
+      .then(applyMap);
   }
 
   loadSchedeNames().catch(function(){}).then(function(){
-    // Now resolve names in the result table DOM — only replace the name span, not the car HTML
+    // Map ready → resolve names already in the DOM (results table + static standings spans)
     document.querySelectorAll("td[data-psn]").forEach(function(td){
       var psn=td.getAttribute("data-psn").toLowerCase();
       if(psn&&_nameMap[psn]){
@@ -1183,14 +1182,13 @@ ${'<scr'+'ipt>'}
         else td.childNodes[0]&&(td.childNodes[0].textContent=_nameMap[psn]);
       }
     });
-    // Also resolve names in standings
     document.querySelectorAll(".standings-driver[data-psn]").forEach(function(el){
       var psn=el.getAttribute("data-psn").toLowerCase();
       if(psn&&_nameMap[psn]) el.textContent=_nameMap[psn];
     });
-  });
-
-  loadViaRaw().catch(function(){return loadViaApi();})
+    // Now load race data and rebuild standings, with _nameMap already populated
+    return loadViaRaw().catch(function(){return loadViaApi();});
+  })
   .catch(function(){}).then(function(){
     var allDone=Object.keys(allRaces).length>=_rt;
     var canDrop=allDone&&_bo>0&&_bo<_rt;
