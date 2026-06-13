@@ -487,6 +487,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     for(var n in pilotMap){
       if(!pilotMap.hasOwnProperty(n)) continue;
       var pp = pilotMap[n];
+      pp.key = n;
       /* show the pilot's CURRENT name from their scheda (matched by PSN) */
       if(pp.psn && schede[pp.psn] && schede[pp.psn].nome) pp.nome = schede[pp.psn].nome;
       allPilots.push(pp);
@@ -601,15 +602,14 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   /* ── head to head ── */
   function renderH2HSelectors(){
     var filtered = getFilteredPilots();
-    var names = [];
-    for(var i=0;i<filtered.length;i++) names.push(filtered[i].nome);
-    names.sort();
+    var opts = filtered.slice().sort(function(a,b){ return (a.nome||'').localeCompare(b.nome||''); });
 
     var optA = '<option value="">Scegli pilota</option>';
     var optB = '<option value="">Scegli pilota</option>';
-    for(var j=0;j<names.length;j++){
-      optA += '<option value="' + names[j] + '">' + names[j] + '</option>';
-      optB += '<option value="' + names[j] + '">' + names[j] + '</option>';
+    for(var j=0;j<opts.length;j++){
+      /* value = immutable key (PSN), label = current display name */
+      var opt = '<option value="' + opts[j].key + '">' + opts[j].nome + '</option>';
+      optA += opt; optB += opt;
     }
     document.getElementById('h2hA').innerHTML = optA;
     document.getElementById('h2hB').innerHTML = optB;
@@ -617,8 +617,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     /* default selection: first two most winning */
     var byWins = filtered.slice().sort(function(a,b){ return b.wins - a.wins; });
     if(byWins.length >= 2){
-      document.getElementById('h2hA').value = byWins[0].nome;
-      document.getElementById('h2hB').value = byWins[1].nome;
+      document.getElementById('h2hA').value = byWins[0].key;
+      document.getElementById('h2hB').value = byWins[1].key;
       computeH2H();
     }
 
