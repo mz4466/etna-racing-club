@@ -1,7 +1,7 @@
 {
   "circuito": "Lago Maggiore (5.809 m)",
   "data": "2025-07-13",
-  "garaNum": "1",
+  "garaNum": "2",
   "garaTot": "5",
   "champId": "estate-2025",
   "champIdx": "estate-2025",
@@ -9,7 +9,6 @@
     {
       "pos": 1,
       "nome": "Carmine",
-      "psn": "CarmineRafa87",
       "auto": "BMW M6 GT3 Endurance Model '16",
       "tempo": "28'09''578",
       "bestLap": "1'59''283",
@@ -23,7 +22,6 @@
     {
       "pos": 2,
       "nome": "Pyer",
-      "psn": "PyerStark",
       "auto": "Lamborghini Huracan GT3 '15",
       "tempo": "a 26\"584",
       "bestLap": "2'00''483",
@@ -37,7 +35,6 @@
     {
       "pos": 3,
       "nome": "Claudio",
-      "psn": "SybeX26",
       "auto": "Nissan GT-R NISMO GT3 '18",
       "tempo": "a 1'00\"468",
       "bestLap": "2'01''744",
@@ -51,7 +48,6 @@
     {
       "pos": 4,
       "nome": "Luca",
-      "psn": "",
       "auto": "McLaren 650S GT3 '15",
       "tempo": "",
       "bestLap": "2'06''419",
@@ -65,7 +61,6 @@
     {
       "pos": 5,
       "nome": "Fabio",
-      "psn": "fabyus1983",
       "auto": "Nissan GT-R NISMO '17",
       "tempo": "",
       "bestLap": "2'10''642",
@@ -79,46 +74,29 @@
   ],
   "standings": [
     {
-      "nome": "Claudio",
-      "psn": "SybeX26",
-      "pts": 78,
+      "nome": "Pyer",
+      "pts": 45,
       "pos": 1
     },
     {
-      "nome": "Pyer",
-      "psn": "PyerStark",
-      "pts": 78,
-      "pos": 1
+      "nome": "Claudio",
+      "pts": 33,
+      "pos": 2
     },
     {
       "nome": "Luca",
-      "psn": "",
-      "pts": 57,
+      "pts": 27,
       "pos": 3
     },
     {
-      "nome": "Antonio",
-      "psn": "antonioleocataad",
-      "pts": 44,
-      "pos": 4
-    },
-    {
-      "nome": "Pyer Longo",
-      "psn": "",
-      "pts": 27,
-      "pos": 5
-    },
-    {
       "nome": "Carmine",
-      "psn": "CarmineRafa87",
       "pts": 27,
-      "pos": 5
+      "pos": 3
     },
     {
       "nome": "Fabio",
-      "psn": "fabyus1983",
-      "pts": 25,
-      "pos": 7
+      "pts": 10,
+      "pos": 5
     }
   ],
   "bestOf": 4

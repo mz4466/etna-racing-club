@@ -24,8 +24,7 @@
   .results-wrapper{display:grid;grid-template-columns:1fr 360px;gap:28px;margin-bottom:40px;}
   @media(max-width:1024px){.results-wrapper{grid-template-columns:1fr;}}
   .results-table{background:linear-gradient(135deg,rgba(26,26,26,0.95),rgba(13,13,13,0.98));border:2px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,0.8);}
-  .standings-sidebar{position:sticky;top:20px;display:flex;flex-direction:column;gap:16px;}
-  .standings-card{background:linear-gradient(135deg,rgba(26,26,26,0.95),rgba(13,13,13,0.98));border:2px solid var(--border);border-radius:14px;padding:22px;box-shadow:0 10px 40px rgba(0,0,0,0.8);}
+  .standings-card{background:linear-gradient(135deg,rgba(26,26,26,0.95),rgba(13,13,13,0.98));border:2px solid var(--border);border-radius:14px;padding:22px;box-shadow:0 10px 40px rgba(0,0,0,0.8);position:sticky;top:20px;}
   .standings-title{font-family:'Russo One',sans-serif;font-size:22px;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:18px;text-align:center;text-shadow:0 0 15px rgba(255,215,0,0.5);}
   .standings-item{display:flex;align-items:center;justify-content:space-between;padding:12px 10px;margin-bottom:8px;background:linear-gradient(90deg,rgba(255,215,0,0.07),transparent);border:1px solid rgba(255,215,0,0.12);border-radius:9px;transition:all .3s;}
   .standings-item:hover{background:linear-gradient(90deg,rgba(255,215,0,0.14),transparent);transform:translateX(4px);}
@@ -69,7 +68,7 @@
 <body>
 <header>
   <div class="brand">
-    <a href="../index.html"><img src="../club-logo.png" alt="Etna Racing Club"></a>
+    <a href="../index.html"><img src="../etna-logo.jpg" alt="Etna Racing Club"></a>
     <div class="brand-text">
       <h1>Etna Racing Club</h1>
       <p>Risultati Gara</p>
@@ -113,14 +112,14 @@
       <td>18</td>
       <td>-</td>
       <td><strong>18</strong></td>
-    </tr><tr class="row-retired">
-      <td class="pos-3">3°<span class="dsq-tag">DSQ</span></td>
+    </tr><tr class="">
+      <td class="pos-3">3°</td>
       <td class="pilot-name-top">Sandro<div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3485.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Mercedes-AMG GT Black Series &#39;20</span></div></td>
       <td>a 15&quot;566</td>
       <td class="">01&#39;50&#39;&#39;586</td>
-      <td>0</td>
-      <td>-</td>
-      <td><strong>0</strong></td>
+      <td>15</td>
+      <td>1</td>
+      <td><strong>16</strong></td>
     </tr><tr class="">
       <td class="">4°</td>
       <td class="pilot-name">Alessandro H<div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3238.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Peugeot RCZ Gr.3</span></div></td>
@@ -164,58 +163,54 @@
     </tr></tbody>
       </table>
     </div>
-    <div class="standings-sidebar">
-      <div class="standings-card">
+    <div>
+      <div class="standings-card" style="margin-bottom:0">
         <h2 class="standings-title">🏆 Piloti</h2>
         <div style="font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:#c9a227;background:rgba(201,162,39,0.08);border:1px solid rgba(201,162,39,0.2);border-radius:5px;padding:5px 10px;margin-bottom:12px;">⚡ Migliori 4 risultati su 5</div>
         <div id="champStandings"><div class="standings-item">
       <span class="standings-position pos-1">1°</span>
       <span class="standings-driver">Carmine</span>
-      <span class="standings-points">95</span>
+      <span class="standings-points">61</span>
     </div><div class="standings-item">
       <span class="standings-position pos-2">2°</span>
       <span class="standings-driver">Pyer</span>
-      <span class="standings-points">75</span>
-    </div><div class="standings-item">
-      <span class="standings-position pos-3">3°</span>
-      <span class="standings-driver">Giovanni</span>
       <span class="standings-points">52</span>
     </div><div class="standings-item">
+      <span class="standings-position pos-3">3°</span>
+      <span class="standings-driver">Sandro</span>
+      <span class="standings-points">42</span>
+    </div><div class="standings-item">
       <span class="standings-position ">4°</span>
-      <span class="standings-driver">Claudio</span>
-      <span class="standings-points">40</span>
-    </div><div class="standings-item">
-      <span class="standings-position ">5°</span>
-      <span class="standings-driver">Alessandro</span>
-      <span class="standings-points">39</span>
-    </div><div class="standings-item">
-      <span class="standings-position ">6°</span>
-      <span class="standings-driver">Stefano</span>
-      <span class="standings-points">38</span>
-    </div><div class="standings-item">
-      <span class="standings-position ">7°</span>
       <span class="standings-driver">Alessandro H</span>
       <span class="standings-points">29</span>
     </div><div class="standings-item">
-      <span class="standings-position ">8°</span>
-      <span class="standings-driver">Sandro</span>
+      <span class="standings-position ">5°</span>
+      <span class="standings-driver">Alessandro</span>
+      <span class="standings-points">28</span>
+    </div><div class="standings-item">
+      <span class="standings-position ">6°</span>
+      <span class="standings-driver">Claudio</span>
       <span class="standings-points">26</span>
     </div><div class="standings-item">
+      <span class="standings-position ">7°</span>
+      <span class="standings-driver">Stefano</span>
+      <span class="standings-points">22</span>
+    </div><div class="standings-item">
       <span class="standings-position ">8°</span>
-      <span class="standings-driver">William</span>
-      <span class="standings-points">26</span>
+      <span class="standings-driver">Giovanni</span>
+      <span class="standings-points">21</span>
+    </div><div class="standings-item">
+      <span class="standings-position ">9°</span>
+      <span class="standings-driver">Daniele</span>
+      <span class="standings-points">15</span>
     </div><div class="standings-item">
       <span class="standings-position ">10°</span>
-      <span class="standings-driver">Daniele</span>
-      <span class="standings-points">20</span>
+      <span class="standings-driver">William</span>
+      <span class="standings-points">13</span>
     </div><div class="standings-item">
       <span class="standings-position ">11°</span>
       <span class="standings-driver">Fabio</span>
-      <span class="standings-points">16</span>
-    </div><div class="standings-item">
-      <span class="standings-position ">12°</span>
-      <span class="standings-driver">Matteo Spinotto</span>
-      <span class="standings-points">4</span>
+      <span class="standings-points">1</span>
     </div></div>
         <div class="race-info">
           <strong>Gara 2 di 5</strong>
@@ -225,7 +220,7 @@
     </div>
   </div>
 </main>
-<footer id="cfg-copyright">© 2026 Etna Racing Club • Sicilia, Italia</footer>
+<footer>© 2026 Etna Racing Club • Sicilia, Italia</footer>
 <script>
 (function(){
   var sc={};
@@ -257,7 +252,7 @@
     (d.rows||[]).forEach(function(r){addToStandings(r.nome,r.totale||0,raceN);});
   }
 
-  var rows=[{"nome":"Pyer","totale":25},{"nome":"Carmine","totale":18},{"nome":"Sandro","totale":0},{"nome":"Alessandro H","totale":13},{"nome":"Alessandro","totale":10},{"nome":"Claudio","totale":8},{"nome":"William","totale":6},{"nome":"Daniele","totale":5}];
+  var rows=[{"nome":"Pyer","totale":25},{"nome":"Carmine","totale":18},{"nome":"Sandro","totale":16},{"nome":"Alessandro H","totale":13},{"nome":"Alessandro","totale":10},{"nome":"Claudio","totale":8},{"nome":"William","totale":6},{"nome":"Daniele","totale":5}];
   rows.forEach(function(r){addToStandings(r.nome,r.totale,_rn);});
   allRaces[_rn]=true;
 
@@ -345,8 +340,7 @@
           var perRace=allRns.map(function(rn){
             var scores=team.pilots.map(function(pName){
               var pKey=pName.toLowerCase().trim();
-              var scKey=Object.keys(sc).find(function(k){return k.toLowerCase().trim()===pKey;});
-              var pEntry=scKey?sc[scKey]:null;
+              var pEntry=sc[pKey];
               if(!pEntry)return null;
               var rEntry=pEntry.find(function(e){return e.rn===rn;});
               return rEntry?rEntry.pts:null;
@@ -385,7 +379,5 @@
 
 
 
-<script src="copyright.js"></script>
-<script src="../nav.js"></script>
 </body>
 </html>

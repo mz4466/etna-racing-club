@@ -14,10 +14,10 @@
       "bestLap": "2'10''648",
       "fl": false,
       "pole": true,
-      "punti": 0,
-      "extra": "-",
-      "totale": 0,
-      "stato": "dsq"
+      "punti": 25,
+      "extra": "1",
+      "totale": 26,
+      "stato": "ok"
     },
     {
       "pos": 2,
@@ -153,63 +153,58 @@
   "standings": [
     {
       "nome": "Carmine",
-      "pts": 95,
+      "pts": 61,
       "pos": 1
     },
     {
       "nome": "Pyer",
-      "pts": 75,
+      "pts": 52,
       "pos": 2
     },
     {
-      "nome": "Giovanni",
-      "pts": 52,
+      "nome": "Sandro",
+      "pts": 41,
       "pos": 3
     },
     {
-      "nome": "Claudio",
-      "pts": 40,
+      "nome": "Alessandro H",
+      "pts": 30,
       "pos": 4
     },
     {
       "nome": "Alessandro",
-      "pts": 39,
+      "pts": 28,
       "pos": 5
     },
     {
-      "nome": "Stefano",
-      "pts": 38,
+      "nome": "Claudio",
+      "pts": 26,
       "pos": 6
     },
     {
-      "nome": "Alessandro H",
-      "pts": 29,
+      "nome": "Stefano",
+      "pts": 22,
       "pos": 7
     },
     {
-      "nome": "William",
-      "pts": 26,
+      "nome": "Giovanni",
+      "pts": 21,
       "pos": 8
     },
     {
       "nome": "Daniele",
-      "pts": 20,
+      "pts": 15,
       "pos": 9
     },
     {
-      "nome": "Sandro",
-      "pts": 16,
+      "nome": "William",
+      "pts": 13,
       "pos": 10
     },
     {
       "nome": "Fabio",
-      "pts": 16,
-      "pos": 10
-    },
-    {
-      "nome": "Matteo Spinotto",
-      "pts": 4,
-      "pos": 12
+      "pts": 2,
+      "pos": 11
     }
   ],
   "bestOf": 4
