@@ -193,6 +193,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   var seasonMap = {};
   var champWinners = {};
   var pilotStatus = {};
+  var schede = {};      /* psnLower -> { nome: currentName, attivo: bool } */
+  var nmeToPsn = {};    /* normalized baked name -> psnLower */
   var currentFilter = 'attivi';
   var ufficioseIds = {};  /* champIds to exclude from stats */
   var countedRaces = 0;  /* races actually counted after ufficiose filter */
@@ -210,6 +212,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
               .then(function(d){
                 var nome = d.nome || file.replace('.json','');
                 pilotStatus[nome] = d.attivo !== false;
+                var psn = (d.psn || '').toLowerCase().trim();
+                if(psn) schede[psn] = { nome: nome, attivo: d.attivo !== false };
               })
               .catch(function(){});
             promises.push(p);
@@ -302,6 +306,24 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
   /* ── process data ── */
   function processData(){
+    /* Resolve baked display names -> immutable PSN (rename-proof keying) */
+    var psnInChamp = {};
+    for(var rb=0; rb<races.length; rb++){
+      var rc = races[rb], cid2 = rc.champId || rc.champIdx || '';
+      var rws = rc.rows || [];
+      for(var rj=0; rj<rws.length; rj++){
+        var bnme = rws[rj].nome || '', bps = (rws[rj].psn || '').toLowerCase().trim();
+        if(!bnme || !bps) continue;
+        var bnk = norm(bnme);
+        if(cid2){ if(!psnInChamp[cid2]) psnInChamp[cid2] = {}; psnInChamp[cid2][bnk] = bps; }
+        nmeToPsn[bnk] = bps;
+      }
+    }
+    function resolvePsn(cid, nme){
+      var nk = norm(nme); if(!nk) return '';
+      if(cid && psnInChamp[cid] && psnInChamp[cid][nk]) return psnInChamp[cid][nk];
+      return nmeToPsn[nk] || '';
+    }
     for(var ri=0;ri<races.length;ri++){
       var race = races[ri];
       var yr = (race.data || '').substring(0,4) || (race._file || '').substring(0,4) || 'N/A';
@@ -323,7 +345,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       if(isFinal && champId){
         var winner = race.standings[0];
         if(winner && winner.nome){
-          champWinners[champId] = winner.nome;
+          champWinners[champId] = resolvePsn(champId, winner.nome) || norm(winner.nome);
         }
       }
 
@@ -332,11 +354,14 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
         var r = rows[pi];
         var name = r.nome || '';
         if(!name) continue;
+        var rpsn = (r.psn || '').toLowerCase().trim();
+        var pkey = rpsn || norm(name);
 
-        seasonMap[yr].pilots[name] = true;
+        seasonMap[yr].pilots[pkey] = true;
 
-        if(!pilotMap[name]) pilotMap[name] = {
+        if(!pilotMap[pkey]) pilotMap[pkey] = {
           nome: name,
+          psn: rpsn,
           races: 0,
           wins: 0,
           podiums: 0,
@@ -348,7 +373,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
           champsWon: 0,
           raceList: []
         };
-        var p = pilotMap[name];
+        var p = pilotMap[pkey];
         p.races++;
         var stato = norm(r.stato);
         if(stato === 'dnf') p.dnfs++;
@@ -387,9 +412,16 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   var currentSort = 'wins';
   var allPilots = [];
 
+  function pilotActiveByName(nome){
+    var psn = nmeToPsn[norm(nome)] || '';
+    if(psn && schede[psn]) return schede[psn].attivo !== false;
+    if(pilotStatus.hasOwnProperty(nome)) return pilotStatus[nome];
+    return true;
+  }
+
   function isPilotVisible(nome){
     if(currentFilter === 'tutti') return true;
-    var isActive = pilotStatus.hasOwnProperty(nome) ? pilotStatus[nome] : true;
+    var isActive = pilotActiveByName(nome);
     if(currentFilter === 'attivi') return isActive;
     return !isActive;
   }
@@ -454,7 +486,10 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     allPilots = [];
     for(var n in pilotMap){
       if(!pilotMap.hasOwnProperty(n)) continue;
-      allPilots.push(pilotMap[n]);
+      var pp = pilotMap[n];
+      /* show the pilot's CURRENT name from their scheda (matched by PSN) */
+      if(pp.psn && schede[pp.psn] && schede[pp.psn].nome) pp.nome = schede[pp.psn].nome;
+      allPilots.push(pp);
     }
 
     var filtered = getFilteredPilots();
