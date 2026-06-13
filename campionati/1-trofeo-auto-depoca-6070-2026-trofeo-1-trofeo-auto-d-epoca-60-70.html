@@ -33,11 +33,23 @@
   .round-note{margin-top:10px;font-size:14px;color:var(--text-dim);font-style:italic;}
   .back-link{display:block;text-align:center;margin-top:28px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:var(--text-dim);text-decoration:none;text-transform:uppercase;transition:color 0.2s;}
   .back-link:hover{color:var(--text);}
+
+  .round-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+  .round-row .round-card{flex:1;margin-bottom:0;}
+  .round-manifesto{width:120px;flex-shrink:0;border-radius:10px;overflow:hidden;border:1px solid var(--border-hi);cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;}
+  .round-manifesto:hover{border-color:var(--gold);box-shadow:0 4px 20px rgba(201,162,39,0.15);}
+  .round-manifesto img{width:100%;height:100%;object-fit:cover;display:block;}
+
+  .manifesto-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out;}
+  .manifesto-lightbox.open{display:flex;}
+  .manifesto-lightbox img{max-width:90vw;max-height:90vh;border-radius:10px;box-shadow:0 0 60px rgba(0,0,0,0.8);}
+  .manifesto-lightbox-close{position:absolute;top:20px;right:24px;font-size:28px;color:#fff;cursor:pointer;line-height:1;opacity:0.7;}
+  .manifesto-lightbox-close:hover{opacity:1;}
 </style>
 </head>
 <body>
 <header class="champ-header">
-  <img src="etna-logo.jpg" alt="Etna Racing Club" class="champ-logo">
+  <img src="../club-logo.png" alt="Etna Racing Club" class="champ-logo">
   <div class="champ-season">Etna Racing Club — 2026</div>
   <div class="champ-name">1 Trofeo auto d'epoca 60/70</div>
   <div class="champ-sub">Gara 1: Abarth 500 '70 - Gara 2: Alfa Giulia sprint '67 - Gara 3: Ferrari 512 bb '76 o Lamborghini countach Lp400 '74 o Porsche 911 Carrera RS (901) '73</div>
@@ -59,63 +71,87 @@ Usura gomme: x1</div>
 <div class="wrap">
   <div class="section-title">📅 Calendario — 3 rounds</div>
   
-    <div class="round-card">
-      <div class="round-header">
-        <div class="round-num">R1</div>
-        <div class="round-info">
-          <div class="round-circuit">Autodrome Lago Maggiore — West (4.2 km)</div>
-          <div class="round-date">10 maggio 2026</div>
+    <div class="round-row">
+      <div class="round-card">
+        <div class="round-header">
+          <div class="round-num">R1</div>
+          <div class="round-info">
+            <div class="round-circuit">Autodrome Lago Maggiore — West (4.2 km)</div>
+            <div class="round-date">10 maggio 2026</div>
+          </div>
+          <a href="../risultati/2026-1-trofeo-auto-d-epoca-60-70-r1-lago-maggiore-lato-ovest.html" class="results-btn">📋 Risultati</a>
         </div>
-        <a href="../risultati/2026-1-trofeo-auto-d-epoca-60-70-r1-lago-maggiore-lato-ovest.html" class="results-btn">📋 Risultati</a>
+        <div class="round-details">
+          
+          <div class="detail-pill">🔄 5 giri</div>
+          <div class="detail-pill">🏎️ Gomme x1</div>
+          <div class="detail-pill">⛽ Carb. x1</div>
+          <div class="detail-pill">🔵 Sport Dure</div>
+        </div>
+        <div class="round-note">📌 Auto: Abarth 500 '70 PP: 430 Cv: 100 Peso: nessun limite minimo</div>
       </div>
-      <div class="round-details">
-        
-        <div class="detail-pill">🔄 5 giri</div>
-        <div class="detail-pill">🏎️ Gomme x1</div>
-        <div class="detail-pill">⛽ Carb. x1</div>
-        <div class="detail-pill">🔵 Sport Dure</div>
-      </div>
-      <div class="round-note">📌 Auto: Abarth 500 '70 PP: 430 Cv: 100 Peso: nessun limite minimo</div>
+      
     </div>
-    <div class="round-card">
-      <div class="round-header">
-        <div class="round-num">R2</div>
-        <div class="round-info">
-          <div class="round-circuit">Autodrome Lago Maggiore — East (3.6 km)</div>
-          <div class="round-date">10 maggio 2026</div>
+    <div class="round-row">
+      <div class="round-card">
+        <div class="round-header">
+          <div class="round-num">R2</div>
+          <div class="round-info">
+            <div class="round-circuit">Autodrome Lago Maggiore — East (3.6 km)</div>
+            <div class="round-date">10 maggio 2026</div>
+          </div>
+          <a href="../risultati/2026-1-trofeo-auto-d-epoca-60-70-r2-lago-maggiore-est.html" class="results-btn">📋 Risultati</a>
         </div>
-        <a href="../risultati/2026-1-trofeo-auto-d-epoca-60-70-r2-lago-maggiore-est.html" class="results-btn">📋 Risultati</a>
+        <div class="round-details">
+          
+          <div class="detail-pill">🔄 5 giri</div>
+          <div class="detail-pill">🏎️ Gomme x1</div>
+          <div class="detail-pill">⛽ Carb. x1</div>
+          <div class="detail-pill">🔵 Sport morbide</div>
+        </div>
+        <div class="round-note">📌 Auto: Alfa Giulia sprint '67 PP: 560 Cv: 230 Peso: 850</div>
       </div>
-      <div class="round-details">
-        
-        <div class="detail-pill">🔄 5 giri</div>
-        <div class="detail-pill">🏎️ Gomme x1</div>
-        <div class="detail-pill">⛽ Carb. x1</div>
-        <div class="detail-pill">🔵 Sport morbide</div>
-      </div>
-      <div class="round-note">📌 Auto: Alfa Giulia sprint '67 PP: 560 Cv: 230 Peso: 850</div>
+      
     </div>
-    <div class="round-card">
-      <div class="round-header">
-        <div class="round-num">R3</div>
-        <div class="round-info">
-          <div class="round-circuit">Autodrome Lago Maggiore — Full Course (5.8 km)</div>
-          <div class="round-date">10 maggio 2026</div>
+    <div class="round-row">
+      <div class="round-card">
+        <div class="round-header">
+          <div class="round-num">R3</div>
+          <div class="round-info">
+            <div class="round-circuit">Autodrome Lago Maggiore — Full Course (5.8 km)</div>
+            <div class="round-date">10 maggio 2026</div>
+          </div>
+          <a href="../risultati/2026-1-trofeo-auto-d-epoca-60-70-r3-lago-maggiore-completo.html" class="results-btn">📋 Risultati</a>
         </div>
-        <a href="../risultati/2026-1-trofeo-auto-d-epoca-60-70-r3-lago-maggiore-completo.html" class="results-btn">📋 Risultati</a>
+        <div class="round-details">
+          
+          <div class="detail-pill">🔄 5 giri</div>
+          <div class="detail-pill">🏎️ Gomme x1</div>
+          <div class="detail-pill">⛽ Carb. x1</div>
+          <div class="detail-pill">🔵 Corsa medie</div>
+        </div>
+        <div class="round-note">📌 Auto: una a scelta tra:  - Ferrari 512 bb '76 - Lamborghini countach Lp400 '74 - Porsche 911 Carrera RS (901) '73 PP: 700 Cv: 415 Peso: 1000</div>
       </div>
-      <div class="round-details">
-        
-        <div class="detail-pill">🔄 5 giri</div>
-        <div class="detail-pill">🏎️ Gomme x1</div>
-        <div class="detail-pill">⛽ Carb. x1</div>
-        <div class="detail-pill">🔵 Corsa medie</div>
-      </div>
-      <div class="round-note">📌 Auto: una a scelta tra:  - Ferrari 512 bb '76 - Lamborghini countach Lp400 '74 - Porsche 911 Carrera RS (901) '73 PP: 700 Cv: 415 Peso: 1000</div>
+      
     </div>
   <a href="index.html" class="back-link">← Torna alla Home</a>
 </div>
-<'+'script src="copyright.js"><'+'/script>
-<'+'script src="../nav.js"><'+'/script>
+<div class="manifesto-lightbox" id="manifestoLightbox" onclick="closeManifesto()">
+  <span class="manifesto-lightbox-close" onclick="closeManifesto()">&#10005;</span>
+  <img id="manifestoLightboxImg" src="" alt="Manifesto">
+</div>
+<script>
+function openManifesto(el){
+  var img=el.querySelector("img");
+  document.getElementById("manifestoLightboxImg").src=img.src;
+  document.getElementById("manifestoLightbox").classList.add("open");
+}
+function closeManifesto(){
+  document.getElementById("manifestoLightbox").classList.remove("open");
+}
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeManifesto();});
+</script>
+<script src="copyright.js"></script>
+<script src="../nav.js"></script>
 </body>
 </html>
