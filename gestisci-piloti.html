@@ -939,6 +939,7 @@ async function savePilot(){
   try {
     await putFile(`${FOLDER}/${slug}.json`, JSON.stringify(payload,null,2), `${editingSlug?'Update':'Add'} pilot: ${slug}`, token);
     await updatePilotIndex(token);
+    await updatePsnMap(token, payload);
     toast(`✓ ${nome} salvato!`,'ok');
     closeModal();
     await loadPilots();
@@ -967,6 +968,7 @@ async function deletePilot(slug, nome){
     });
     if(!del.ok) throw new Error('ElimiRegione fallita');
     await updatePilotIndex(token);
+    await updatePsnMap(token);
     toast(`✓ ${nome} rimosso`,'ok');
     await loadPilots();
   } catch(e){
@@ -1023,6 +1025,38 @@ async function updatePilotIndex(token){
       .sort();
     await putFile(`${FOLDER}/index.json`, JSON.stringify(names, null, 0), 'Update pilot index', token);
   } catch(e){ console.warn('updatePilotIndex:', e.message); }
+}
+
+// ── UPDATE PSN MAP ──
+async function updatePsnMap(token, newPayload){
+  try {
+    // Fetch current psn-map.json
+    let psnMap = {};
+    let existingSha = null;
+    const mapPath = `${FOLDER}/psn-map.json`;
+    const mr = await fetch(`https://api.github.com/repos/${REPO}/contents/${mapPath}?ref=${BRANCH}&_=${Date.now()}`,{
+      headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+    });
+    if(mr.ok){
+      const md = await mr.json();
+      existingSha = md.sha;
+      try { psnMap = JSON.parse(decodeURIComponent(escape(atob(md.content.replace(/\s/g,''))))); } catch(e){}
+    }
+
+    // Update/add the entry for this pilot using the just-saved payload
+    if(newPayload){
+      const psn  = (newPayload.psn  || '').trim();
+      const nome = (newPayload.nome || newPayload.name || '').trim();
+      if(psn && psn.toUpperCase() !== 'NA' && nome){
+        psnMap[psn] = nome;
+      } else if(psn && psn.toUpperCase() !== 'NA'){
+        // If name is empty, remove the entry
+        delete psnMap[psn];
+      }
+    }
+
+    await putFile(mapPath, JSON.stringify(psnMap, null, 2), 'Update PSN map', token);
+  } catch(e){ console.warn('updatePsnMap:', e.message); }
 }
 
 // ── GITHUB HELPER ──
