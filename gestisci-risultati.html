@@ -334,6 +334,8 @@ let token = '';
 let calendarioData  = [];  // from calendario.json
 let champHtmlMap    = {};  // slug -> html string of championship file
 let pilotNames      = [];  // from piloti_schede/
+let pilotPsnMap     = {};  // nome_lowercase -> psn
+let psnNomeMap      = {};  // psn_lowercase -> nome (for display)
 let pilotCarsMap    = {};  // nome -> { champId: { cars: [...] } }
 let carNameToId     = {};  // gt7 displayName (lowercase) -> numeric id
 let previousResults = {};  // champIdx -> { pilotName -> [pts per round] }
@@ -504,7 +506,12 @@ async function loadPilots(){
     pilotNames = pilots.filter(Boolean).filter(p=>p.attivo !== false).map(p=>p.nome||p.name||p.psn||'').filter(Boolean);
     pilots.filter(Boolean).filter(p=>p.attivo !== false).forEach(function(p){
       var nome = p.nome||p.name||p.psn||'';
+      var psn  = (p.psn||'').trim();
       if(nome && p.campionati) pilotCarsMap[nome] = p.campionati;
+      if(nome && psn && psn !== 'NA') {
+        pilotPsnMap[nome.toLowerCase()] = psn;
+        psnNomeMap[psn.toLowerCase()]   = nome;
+      }
     });
     loadGT7Cars();
   } catch {}
@@ -631,6 +638,7 @@ function addRow(data={}){
       <div class="autocomplete-wrap pilot-cell">
         <input type="text" placeholder="Nome pilota" value="${esc(data.nome||'')}" id="nome-${id}"
           oninput="onNomeInput(${id},this)" autocomplete="off">
+        <input type="hidden" id="psn-${id}" value="${esc(data.psn||'')}">
         <button class="btn-pick-pilot" onclick="openPilotPicker(${id})" title="Scegli dalla rosa" type="button">▼</button>
       </div>
       <div id="car-wrap-${id}" style="display:none;margin-top:4px;">
@@ -659,11 +667,43 @@ function addRow(data={}){
   updateRowCount();
   if(data.punti!==undefined) calcTotal(id);
   if(data.nome) {
-    populateCarSelect(id, data.nome);
+    // ── Resolve current nome and PSN ──
+    var resolvedPsn  = data.psn || '';
+    var resolvedNome = data.nome;
+
+    if(resolvedPsn && psnNomeMap[resolvedPsn.toLowerCase()]) {
+      // PSN stored → use current nome from scheda
+      resolvedNome = psnNomeMap[resolvedPsn.toLowerCase()];
+    } else if(!resolvedPsn) {
+      // No PSN stored → try to find PSN by matching nome
+      var lowerNome = data.nome.toLowerCase();
+      // 1. Exact match
+      if(pilotPsnMap[lowerNome]) {
+        resolvedPsn  = pilotPsnMap[lowerNome];
+        resolvedNome = psnNomeMap[resolvedPsn.toLowerCase()] || data.nome;
+      } else {
+        // 2. First-word match (e.g. "Pyer" matches "Pyer Longo")
+        var firstWord = lowerNome.split(' ')[0];
+        Object.keys(psnNomeMap).forEach(function(psn){
+          var currentNome = psnNomeMap[psn];
+          if(currentNome.toLowerCase().split(' ')[0] === firstWord) {
+            resolvedPsn  = psn;
+            resolvedNome = currentNome;
+          }
+        });
+      }
+    }
+
+    // Update nome input and hidden PSN field with resolved values
+    var nomeEl = document.getElementById('nome-'+id);
+    var psnEl  = document.getElementById('psn-'+id);
+    if(nomeEl && resolvedNome !== data.nome) nomeEl.value = resolvedNome;
+    if(psnEl)  psnEl.value = resolvedPsn;
+
+    populateCarSelect(id, resolvedNome);
     if(data.auto){
       var carSel = document.getElementById('car-sel-'+id);
       if(carSel){
-        // add saved car as option if not already present, then select it
         if(!Array.from(carSel.options).some(function(o){return o.value===data.auto;})){
           var opt = document.createElement('option'); opt.value=data.auto; opt.textContent=data.auto;
           carSel.appendChild(opt);
@@ -764,6 +804,8 @@ function onNomeInput(id, input){
     item.textContent=name;
     item.onmousedown=()=>{
       document.getElementById(`nome-${id}`).value=name;
+      var psnEl=document.getElementById('psn-'+id);
+      if(psnEl) psnEl.value=pilotPsnMap[name.toLowerCase()]||'';
       dropdown.classList.remove('open');
       populateCarSelect(id, name);
     };
@@ -787,6 +829,18 @@ function collectRows(){
     return {
       pos:     i+1,
       nome:    ( document.getElementById(`nome-${id}`) ? document.getElementById(`nome-${id}`).value.trim() : ''),
+      psn:     (function(){ 
+        // 1. Use hidden PSN field if set (preserved from existing JSON or picker selection)
+        var stored = document.getElementById('psn-'+id) ? document.getElementById('psn-'+id).value.trim() : '';
+        if(stored) return stored;
+        // 2. Try nome match in pilotPsnMap
+        var n=(document.getElementById('nome-'+id)?document.getElementById('nome-'+id).value.trim():'').toLowerCase(); 
+        if(pilotPsnMap[n]) return pilotPsnMap[n];
+        // 3. Try matching current nome against psnNomeMap values (handles renamed pilots)
+        var found='';
+        Object.keys(psnNomeMap).forEach(function(psn){ if(psnNomeMap[psn].toLowerCase()===n) found=psn; });
+        return found;
+      })(),
       auto:    ( document.getElementById(`car-sel-${id}`) ? document.getElementById(`car-sel-${id}`).value.trim() : ''),
       tempo:   ( document.getElementById(`tempo-${id}`) ? document.getElementById(`tempo-${id}`).value.trim() : ''),
       bestLap: ( document.getElementById(`bestlap-${id}`) ? document.getElementById(`bestlap-${id}`).value.trim() : ''),
@@ -836,17 +890,16 @@ function collectStandings(applyBestOf=false){
   const pilots = Object.entries(pilotScores).map(function([nome, scores]){
     var usedScores = scores;
     if(canDrop && scores.length > bestOf){
-      // Drop whenever pilot has more results than the bestOf limit
       usedScores = scores.slice().sort(function(a,b){return b-a;}).slice(0, bestOf);
     }
-    return { nome: nome, pts: usedScores.reduce(function(s,v){return s+v;},0) };
+    return { nome: nome, psn: pilotPsnMap[nome.toLowerCase()]||'', pts: usedScores.reduce(function(s,v){return s+v;},0) };
   });
 
   const sorted = pilots.sort(function(a,b){return b.pts-a.pts;});
   let tiePos = 1;
   return sorted.map(function(p,i){
     if(i>0&&sorted[i].pts<sorted[i-1].pts) tiePos=i+1;
-    return {nome:p.nome, pts:p.pts, pos:tiePos};
+    return {nome:p.nome, psn:p.psn, pts:p.pts, pos:tiePos};
   });
 }
 
@@ -889,7 +942,7 @@ function buildHTML(){
       : '';
     return `<tr class="${r.stato!=='ok'?'row-retired':''}">
       <td class="${posClass}">${r.pos}°${statoTag}</td>
-      <td class="${nameClass}">${esc(r.nome)}${carHtml}</td>
+      <td class="${nameClass}" ${r.psn ? `data-psn="${esc(r.psn)}"` : ''}><span class="pilot-name-text">${esc(r.nome)}</span>${carHtml}</td>
       <td>${esc(r.tempo)}</td>
       <td class="${flClass}">${esc(r.bestLap)}</td>
       <td>${r.punti}</td>
@@ -906,9 +959,10 @@ function buildHTML(){
 
   const standingsHTML = standings.map(s=>{
     const posClass = s.pos<=3?`pos-${s.pos}`:'';
+    const psnAttr  = s.psn ? ` data-psn="${esc(s.psn)}"` : '';
     return `<div class="standings-item">
       <span class="standings-position ${posClass}">${s.pos}°</span>
-      <span class="standings-driver">${esc(s.nome)}</span>
+      <span class="standings-driver"${psnAttr}>${esc(s.nome)}</span>
       <span class="standings-points">${s.pts}</span>
     </div>`;
   }).join('');
@@ -1046,12 +1100,15 @@ ${'<scr'+'ipt>'}
   var _costruttori=${champ && champ.costruttori ? 'true' : 'false'};
   var RAW="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/risultati/";
   var API="https://api.github.com/repos/mz4466/etna-racing-club/contents/risultati";
+  var _nameMap={}; // psn_lowercase -> current nome
 
-  function addToStandings(nome,pts,rn){
+  function addToStandings(nome,pts,rn,psn){
     if(!nome)return;
-    if(!sc[nome])sc[nome]=[];
-    if(!sc[nome].find(function(e){return e.rn===rn;}))
-      sc[nome].push({pts:pts,rn:rn});
+    // Use PSN as key if available (resolves to current nome at render time)
+    var key=psn&&psn.toLowerCase&&_nameMap[psn.toLowerCase()]?_nameMap[psn.toLowerCase()]:nome;
+    if(!sc[key])sc[key]=[];
+    if(!sc[key].find(function(e){return e.rn===rn;}))
+      sc[key].push({pts:pts,rn:rn,psn:psn||''});
   }
 
   function processRace(d){
@@ -1062,11 +1119,11 @@ ${'<scr'+'ipt>'}
     allRaces[raceN]=true;
     if(raceN===_rn)return;
     if(raceN>_rn)return;
-    (d.rows||[]).forEach(function(r){addToStandings(r.nome,r.totale||0,raceN);});
+    (d.rows||[]).forEach(function(r){ var n=r.psn&&_nameMap[r.psn.toLowerCase()]?_nameMap[r.psn.toLowerCase()]:r.nome; addToStandings(n,r.totale||0,raceN,r.psn||''); });
   }
 
-  var rows=${JSON.stringify(rows.map(function(r){return{nome:r.nome,totale:r.totale};}))};
-  rows.forEach(function(r){addToStandings(r.nome,r.totale,_rn);});
+  var rows=${JSON.stringify(rows.map(function(r){return{nome:r.nome,psn:r.psn||'',totale:r.totale};}))};
+  rows.forEach(function(r){addToStandings(r.psn&&_nameMap[r.psn.toLowerCase()]?_nameMap[r.psn.toLowerCase()]:r.nome,r.totale,_rn,r.psn||'');});
   allRaces[_rn]=true;
 
   function loadViaRaw(){
@@ -1096,6 +1153,43 @@ ${'<scr'+'ipt>'}
       });
   }
 
+  // Load pilot schede to build PSN→nome map, then load race data
+  function loadSchedeNames(){
+    // Fetch index then each scheda via raw URL — no auth, no rate limits, always fresh
+    var RAW="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/piloti_schede/";
+    return fetch(RAW+"index.json?_="+Date.now())
+      .then(function(r){return r.ok?r.json():[];}).catch(function(){return[];})
+      .then(function(files){
+        return Promise.all((files||[]).filter(function(f){return f.endsWith(".json")&&f!=="psn-map.json";}).map(function(fname){
+          return fetch(RAW+fname+"?_="+Date.now())
+            .then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
+            .then(function(p){
+              if(!p) return;
+              var psn=(p.psn||"").trim().toLowerCase();
+              var nome=(p.nome||p.name||"").trim();
+              if(psn&&psn!=="na"&&nome) _nameMap[psn]=nome;
+            });
+        }));
+      });
+  }
+
+  loadSchedeNames().catch(function(){}).then(function(){
+    // Now resolve names in the result table DOM — only replace the name span, not the car HTML
+    document.querySelectorAll("td[data-psn]").forEach(function(td){
+      var psn=td.getAttribute("data-psn").toLowerCase();
+      if(psn&&_nameMap[psn]){
+        var span=td.querySelector(".pilot-name-text");
+        if(span) span.textContent=_nameMap[psn];
+        else td.childNodes[0]&&(td.childNodes[0].textContent=_nameMap[psn]);
+      }
+    });
+    // Also resolve names in standings
+    document.querySelectorAll(".standings-driver[data-psn]").forEach(function(el){
+      var psn=el.getAttribute("data-psn").toLowerCase();
+      if(psn&&_nameMap[psn]) el.textContent=_nameMap[psn];
+    });
+  });
+
   loadViaRaw().catch(function(){return loadViaApi();})
   .catch(function(){}).then(function(){
     var allDone=Object.keys(allRaces).length>=_rt;
@@ -1111,7 +1205,8 @@ ${'<scr'+'ipt>'}
         dropped=byVal.slice(0,toDrop);
       }
       var total=entries.reduce(function(s,e){return s+(dropped.indexOf(e)>=0?0:e.pts);},0);
-      return{nome:nm,entries:entries,dropped:dropped,total:total};
+      var psn=entries.length?entries[0].psn||'':'';
+      return{nome:nm,psn:psn,entries:entries,dropped:dropped,total:total};
     }).sort(function(a,b){return b.total-a.total;});
 
     var cl=["#FFD700","#C0C0C0","#CD7F32"];
@@ -1136,7 +1231,7 @@ ${'<scr'+'ipt>'}
       }
       return "<div class='standings-item' style='flex-wrap:wrap;align-items:center;padding-bottom:"+(breakdown?"6px":"12px")+"'>"
         +"<span class='standings-position' style='color:"+col+"'>"+pos+"&deg;</span>"
-        +"<span class='standings-driver'>"+s.nome+"</span>"
+        +"<span class='standings-driver' "+(s.psn?"data-psn='"+s.psn+"'":"")+">"+(_nameMap[s.psn&&s.psn.toLowerCase()]||s.nome)+"</span>"
         +"<span class='standings-points'>"+s.total+"</span>"
         +breakdown
         +"</div>";
@@ -1456,8 +1551,11 @@ function renderPilotPickerList(q){
 function selectPilotFromPicker(name){
   if(_pickerTargetId !== null){
     var input = document.getElementById('nome-' + _pickerTargetId);
+    var psnInput = document.getElementById('psn-' + _pickerTargetId);
     if(input){
       input.value = name;
+      // Set PSN hidden field
+      if(psnInput) psnInput.value = pilotPsnMap[name.toLowerCase()] || '';
       populateCarSelect(_pickerTargetId, name);
     }
   }
@@ -1537,55 +1635,69 @@ function resetResultsForm(){
 
 // ── LOAD EXISTING RESULTS ──
 async function tryLoadExistingResults(){
-  // Only attempt if connected
   if(!token) return;
 
-  const fname = document.getElementById('outputFilenameInput').value.trim();
-  if(!fname || fname === '—') return;
+  const champIdx  = document.getElementById('champSelect').value;
+  const garaNum   = parseInt(document.getElementById('roundSelect').value || document.getElementById('garaNum').value) || 0;
+  if(!champIdx || !garaNum) return;
 
-  const jsonFname = 'risultati/' + fname.replace('.html', '.json');
-  const htmlFname = 'risultati/' + fname;
+  document.getElementById('existingResultsBadge').style.display = 'none';
 
   try {
-    const r = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + jsonFname + '?ref=' + BRANCH, {
+    // 1. Fetch index.json to get list of all result files
+    const idxR = await fetch('https://api.github.com/repos/' + REPO + '/contents/risultati/index.json?ref=' + BRANCH, {
       headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json' }
     });
+    if(!idxR.ok) return;
+    const idxMeta = await idxR.json();
+    const fileList = JSON.parse(decodeURIComponent(escape(atob(idxMeta.content.replace(/\s/g,'')))));
 
-    // Hide badge by default
-    document.getElementById('existingResultsBadge').style.display = 'none';
+    // 2. Fetch each JSON and find the one matching champId + garaNum
+    let matchedData = null;
+    let matchedFilename = null;
 
-    if(!r.ok) {
-      // No existing results — form already reset by onRoundChange
-      return;
-    }
+    // Fetch in parallel for speed
+    const results = await Promise.all(fileList.map(async function(fname){
+      if(!fname.endsWith('.json') || fname === 'index.json') return null;
+      try {
+        const r = await fetch('https://api.github.com/repos/' + REPO + '/contents/risultati/' + fname + '?ref=' + BRANCH, {
+          headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json' }
+        });
+        if(!r.ok) return null;
+        const meta = await r.json();
+        const data = JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
+        const matchesChamp = data.champId === champIdx || data.champIdx === champIdx;
+        const matchesRound = parseInt(data.garaNum) === garaNum;
+        if(matchesChamp && matchesRound) return { data, fname };
+        return null;
+      } catch(e){ return null; }
+    }));
 
-    const d = await r.json();
-    const data = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\s/g,'')))));
+    const found = results.find(function(r){ return r !== null; });
+    if(!found) return; // no existing results for this round — fresh form
 
-    // Show "editing existing" badge
+    matchedData     = found.data;
+    matchedFilename = found.fname;
+
+    // 3. Populate form with found data
     document.getElementById('existingResultsBadge').style.display = 'block';
     toast('✓ Risultati esistenti caricati — puoi modificarli', 'ok');
 
-    // Populate race info fields
-    if(data.circuito) document.getElementById('circuitoInput').value = data.circuito;
-    if(data.data)     document.getElementById('dataInput').value = data.data;
-    // garaNum must NOT be restored from JSON — it is set by the round selector
-    // and the saved JSON may have a stale/wrong value
-    if(data.garaTot)  document.getElementById('garaTot').value = data.garaTot;
-    if(data.outputFilename) {
-      document.getElementById('outputFilenameInput').value = data.outputFilename;
-      document.getElementById('outputFilename').textContent = data.outputFilename;
-    }
+    if(matchedData.circuito) document.getElementById('circuitoInput').value = matchedData.circuito;
+    if(matchedData.data)     document.getElementById('dataInput').value = matchedData.data;
+    if(matchedData.garaTot)  document.getElementById('garaTot').value = matchedData.garaTot;
 
-    // Clear existing rows and repopulate
+    // Update the output filename to match the existing file (preserves original filename on re-publish)
+    const htmlFname = matchedFilename.replace('.json', '.html');
+    document.getElementById('outputFilenameInput').value = htmlFname;
+    document.getElementById('outputFilename').textContent = htmlFname;
+
+    // Repopulate rows
     document.getElementById('resultsBody').innerHTML = '';
     rowCounter = 0;
-
-    if(data.rows && data.rows.length){
-      data.rows.forEach(function(row){ addRow(row); });
+    if(matchedData.rows && matchedData.rows.length){
+      matchedData.rows.forEach(function(row){ addRow(row); });
     }
-
-    updateOutputFilename();
 
   } catch(e){
     console.warn('tryLoadExistingResults:', e.message);
