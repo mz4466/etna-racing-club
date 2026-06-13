@@ -272,13 +272,21 @@
   }
 
   function loadSchedeNames(){
-    var RAW_MAP="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/piloti_schede/psn-map.json";
-    return fetch(RAW_MAP+"?_="+Date.now())
-      .then(function(r){return r.ok?r.json():{};}).catch(function(){return{};})
-      .then(function(map){
-        Object.keys(map).forEach(function(psn){
-          if(psn) _nameMap[psn.toLowerCase()]=map[psn];
-        });
+    // Fetch index then each scheda via raw URL — no auth, no rate limits, always fresh
+    var RAW="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/piloti_schede/";
+    return fetch(RAW+"index.json?_="+Date.now())
+      .then(function(r){return r.ok?r.json():[];}).catch(function(){return[];})
+      .then(function(files){
+        return Promise.all((files||[]).filter(function(f){return f.endsWith(".json")&&f!=="psn-map.json";}).map(function(fname){
+          return fetch(RAW+fname+"?_="+Date.now())
+            .then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
+            .then(function(p){
+              if(!p) return;
+              var psn=(p.psn||"").trim().toLowerCase();
+              var nome=(p.nome||p.name||"").trim();
+              if(psn&&psn!=="na"&&nome) _nameMap[psn]=nome;
+            });
+        }));
       });
   }
 
@@ -377,6 +385,113 @@
 
 
 
+
+
+<!-- ERC-NAMEFIX v1 : resolves pilot display names live from piloti_schede/psn-map.json -->
+<script>/* ERC-NAMEFIX v1 */(function(){
+  if(window.__ercNameFix) return; window.__ercNameFix=true;
+  var REL="../piloti_schede/psn-map.json";
+  var RAW="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/piloti_schede/psn-map.json";
+  var map={};        // psnLower -> currentName
+  var oldToNew={};   // oldNameLower -> currentName
+  var ready=false;
+
+  // Capture psn<->old display name from the static DOM. The results table is never
+  // rebuilt, so this recovers every pilot even after the standings card regenerates.
+  var captured=[];
+  function capture(){
+    var tds=document.querySelectorAll("td[data-psn]"),i;
+    for(i=0;i<tds.length;i++){
+      var psn=(tds[i].getAttribute("data-psn")||"").trim().toLowerCase();
+      if(!psn) continue;
+      var sp=tds[i].querySelector(".pilot-name-text");
+      var txt=sp?sp.textContent:(tds[i].childNodes[0]?tds[i].childNodes[0].textContent:"");
+      captured.push([psn,(txt||"").trim()]);
+    }
+    var sd=document.querySelectorAll(".standings-driver[data-psn]"),j;
+    for(j=0;j<sd.length;j++){
+      var p2=(sd[j].getAttribute("data-psn")||"").trim().toLowerCase();
+      if(!p2) continue;
+      captured.push([p2,(sd[j].textContent||"").trim()]);
+    }
+  }
+  capture();
+
+  function buildOldToNew(){
+    var i;
+    for(i=0;i<captured.length;i++){
+      var psn=captured[i][0], oldName=captured[i][1], nn=map[psn];
+      if(nn&&oldName) oldToNew[oldName.toLowerCase()]=nn;
+    }
+  }
+
+  function setText(el,val){ if(el&&el.textContent!==val) el.textContent=val; }
+
+  function apply(){
+    if(!ready) return;
+    var i;
+    // 1) results table cells, by PSN
+    var tds=document.querySelectorAll("td[data-psn]");
+    for(i=0;i<tds.length;i++){
+      var psn=(tds[i].getAttribute("data-psn")||"").trim().toLowerCase();
+      var nn=map[psn]; if(!nn) continue;
+      var sp=tds[i].querySelector(".pilot-name-text");
+      if(sp) setText(sp,nn);
+      else if(tds[i].childNodes[0]) setText(tds[i].childNodes[0],nn);
+    }
+    // 2) standings spans that still carry PSN (before async rebuild)
+    var sd=document.querySelectorAll(".standings-driver[data-psn]");
+    for(i=0;i<sd.length;i++){
+      var p2=(sd[i].getAttribute("data-psn")||"").trim().toLowerCase();
+      var n2=map[p2]; if(n2) setText(sd[i],n2);
+    }
+    // 3) standings spans rebuilt WITHOUT PSN (plain pilot name) -> text remap
+    var all=document.querySelectorAll("#champStandings .standings-driver, #champCostruttoii .standings-driver");
+    for(i=0;i<all.length;i++){
+      var el=all[i];
+      if(el.hasAttribute("data-psn")) continue;
+      if(el.children.length) continue;            // skip team rows (nested structure)
+      var key=(el.textContent||"").trim().toLowerCase();
+      if(oldToNew[key]) setText(el,oldToNew[key]);
+    }
+    // 4) constructor pilot sub-lists ("Name \u00b7 Name") -> exact-token remap
+    var subs=document.querySelectorAll(".team-pilots-sub");
+    for(i=0;i<subs.length;i++){
+      var parts=(subs[i].textContent||"").split(" \u00b7 "), changed=false, p;
+      for(p=0;p<parts.length;p++){
+        var nk=parts[p].trim().toLowerCase();
+        if(oldToNew[nk]&&oldToNew[nk]!==parts[p].trim()){ parts[p]=oldToNew[nk]; changed=true; }
+      }
+      if(changed) subs[i].textContent=parts.join(" \u00b7 ");
+    }
+  }
+
+  // Re-apply when the page rebuilds the standings asynchronously.
+  function watch(){
+    if(!window.MutationObserver) return;
+    var t, obs=new MutationObserver(function(){ clearTimeout(t); t=setTimeout(apply,60); });
+    var ids=["champStandings","champCostruttoii"], i;
+    for(i=0;i<ids.length;i++){
+      var node=document.getElementById(ids[i]);
+      if(node) obs.observe(node,{childList:true,subtree:true});
+    }
+  }
+
+  function go(m){
+    var k;
+    map={};
+    if(m) for(k in m){ if(m.hasOwnProperty(k)&&k&&m[k]) map[(""+k).toLowerCase()]=m[k]; }
+    buildOldToNew();
+    ready=true;
+    apply(); watch();
+    setTimeout(apply,500); setTimeout(apply,1500); setTimeout(apply,4000);
+  }
+
+  fetch(REL+"?_="+Date.now())
+    .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+    .catch(function(){ return fetch(RAW+"?_="+Date.now()).then(function(r){return r.ok?r.json():{};}).catch(function(){return {};}); })
+    .then(go).catch(function(){});
+})();</script>
 
 </body>
 </html>
