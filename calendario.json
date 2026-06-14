@@ -727,5 +727,35 @@
     "costruttori": false,
     "teams": [],
     "stagione": "Stagione 1"
+  },
+  {
+    "id": "1-trofeo-auto-storiche-80-90-2025",
+    "name": "1 Trofeo Auto Storiche 80/90",
+    "year": "2025",
+    "cat": "Trofeo",
+    "stagione": "Stagione 1",
+    "slug": "1-trofeo-auto-storiche-80-90",
+    "trophy": "Classic_Vintage.png",
+    "cars": "",
+    "desc": "",
+    "status": "prossimo",
+    "file": "campionati/1-trofeo-auto-storiche-8090-2025-trofeo-1-trofeo-auto-storiche-80-90.html",
+    "totalRounds": 1,
+    "completedRounds": 0,
+    "bestOf": null,
+    "rounds": [
+      {
+        "circuit": "Circuit de Barcelona-Catalunya — Grand Prix Layout (4.7 km)",
+        "date": "2025-12-14",
+        "laps": "18",
+        "weather": "",
+        "tire": "x3",
+        "fuel": "x4",
+        "types": "",
+        "notes": ""
+      }
+    ],
+    "costruttori": false,
+    "teams": []
   }
 ]
