@@ -1,0 +1,70 @@
+{
+  "circuito": "Circuit de Barcelona-Catalunya — Grand Prix Layout (4.7 km)",
+  "data": "2025-12-14",
+  "garaNum": "1",
+  "garaTot": "1",
+  "champId": "1-trofeo-auto-storiche-80-90-2025",
+  "champIdx": "1-trofeo-auto-storiche-80-90-2025",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "auto": "",
+      "tempo": "32'34''367",
+      "bestLap": "1'47''203",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Mazza",
+      "psn": "mz4461",
+      "auto": "",
+      "tempo": "a 3\"247",
+      "bestLap": "1'47''208",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Pierpaolo Longo",
+      "psn": "PyerStark",
+      "auto": "",
+      "tempo": "a 30\"896",
+      "bestLap": "1'48''451",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Claudio",
+      "pts": 25,
+      "pos": 1
+    },
+    {
+      "nome": "Mazza",
+      "pts": 18,
+      "pos": 2
+    },
+    {
+      "nome": "Pierpaolo Longo",
+      "pts": 15,
+      "pos": 3
+    }
+  ],
+  "bestOf": null
+}
