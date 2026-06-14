@@ -498,7 +498,7 @@ async function loadPilots(){
     const r = await fetch(`https://api.github.com/repos/${REPO}/contents/piloti_schede?ref=${BRANCH}`,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
     if(!r.ok) return;
     const files = await r.json();
-    const jsons = files.filter(f=>f.name.endsWith('.json'));
+    const jsons = files.filter(f=>f.name.endsWith('.json') && f.name!=='index.json' && f.name!=='psn-map.json');
     const pilots = await Promise.all(jsons.map(async f=>{
       const jr = await fetch(f.url, {headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
       if(!jr.ok) return null;
