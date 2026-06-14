@@ -99,6 +99,10 @@
   .fl-check{width:18px;height:18px;accent-color:var(--gold);cursor:pointer;margin:auto;display:block;}
 
   /* DNF/DSQ select */
+  .cf-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+  .cf-btn{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;padding:7px 18px;border-radius:20px;border:1px solid rgba(255,110,40,0.35);background:transparent;color:#8a8098;cursor:pointer;transition:all .2s;}
+  .cf-btn:hover{border-color:#ff7a28;color:#ff9a3c;}
+  .cf-btn.active{background:linear-gradient(90deg,#e8491d,#ff9a3c);border-color:#ffb84d;color:#fff;}
   select.status-normal{color:var(--text);}
   select.status-dnf{color:var(--orange);}
   select.status-dsq{color:var(--red);}
@@ -218,6 +222,12 @@
     <!-- STEP 1: RACE INFO -->
     <div class="card">
       <div class="card-title">📋 Informazioni Gara</div>
+      <div class="cf-bar" id="raceChampFilterBar">
+        <button class="cf-btn active" onclick="setRaceChampFilter('in-corso',this)">🔥 In Corso</button>
+        <button class="cf-btn" onclick="setRaceChampFilter('prossimo',this)">⏳ Prossimamente</button>
+        <button class="cf-btn" onclick="setRaceChampFilter('concluso',this)">✅ Conclusi</button>
+        <button class="cf-btn" onclick="setRaceChampFilter('all',this)">Tutti</button>
+      </div>
       <div class="form-grid col2" style="margin-bottom:12px;">
         <div class="field">
           <label>Campionato</label>
@@ -405,16 +415,33 @@ async function loadCalendario(){
   toast(`✓ ${calendarioData.length} campionat${calendarioData.length===1?'o':'i'} caricati`,'ok');
 }
 
+let raceChampFilter = 'in-corso';
 function populateChampSelect(){
   const sel = document.getElementById('champSelect');
   sel.innerHTML = '<option value="">— Seleziona campionato —</option>';
   calendarioData.forEach((c,i)=>{
+    var st = (c.status || '').toLowerCase().replace(/\s+/g,'-');
+    if(raceChampFilter !== 'all' && st !== raceChampFilter) return;
     const opt = document.createElement('option');
     // Use stable id if present, fall back to array index for old entries
     opt.value = c.id || String(i);
     opt.textContent = `${c.name} ${c.year} (${c.cat})`;
     sel.appendChild(opt);
   });
+}
+
+function setRaceChampFilter(st, btn){
+  raceChampFilter = st;
+  document.querySelectorAll('#raceChampFilterBar .cf-btn').forEach(function(b){ b.classList.remove('active'); });
+  if(btn) btn.classList.add('active');
+  var sel = document.getElementById('champSelect');
+  var prev = sel ? sel.value : '';
+  populateChampSelect();
+  if(sel){
+    var keep = Array.prototype.slice.call(sel.options).some(function(o){ return o.value===prev; });
+    if(keep){ sel.value = prev; }
+    else { sel.value=''; onChampChange(); }
+  }
 }
 
 function getChampBySelectValue(val){
