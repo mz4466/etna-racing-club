@@ -338,6 +338,7 @@ let pilotPsnMap     = {};  // nome_lowercase -> psn
 let psnNomeMap      = {};  // psn_lowercase -> nome (for display)
 let pilotCarsMap    = {};  // nome -> { champId: { cars: [...] } }
 let carNameToId     = {};  // gt7 displayName (lowercase) -> numeric id
+let guestRegistry   = {};  // psnLower -> {nome,psn} : guests seen in past races (not members)
 let previousResults = {};  // champIdx -> { pilotName -> [pts per round] }
 let rowCounter      = 0;
 let currentAcInput  = null;
@@ -370,6 +371,7 @@ async function verifyAndLoad(){
   document.getElementById('statusText').textContent='Connesso';
 
   await loadPilots();
+  await loadGuests();
   enableActions();
 }
 
@@ -517,6 +519,50 @@ async function loadPilots(){
   } catch {}
 }
 
+// ── LOAD GUESTS (harvest {nome,psn} from past race rows; members excluded) ──
+async function loadGuests(){
+  guestRegistry = {};
+  try {
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/risultati?ref=${BRANCH}&_=${Date.now()}`,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
+    if(!r.ok) return;
+    const all = await r.json();
+    const jsons = all.filter(f=>f.name.endsWith('.json') && f.name!=='index.json');
+    await Promise.all(jsons.map(async f=>{
+      try {
+        const jr = await fetch(f.url,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
+        if(!jr.ok) return;
+        const meta = await jr.json();
+        const race = JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
+        (race.rows||[]).forEach(function(row){
+          var psn=(row.psn||'').trim(), nome=(row.nome||'').trim();
+          if(!psn || psn.toUpperCase()==='NA' || !nome) return;
+          var key=psn.toLowerCase();
+          if(psnNomeMap[key]) return;   // it's a member -> scheda wins, not a guest
+          guestRegistry[key] = { nome: nome, psn: psn };
+        });
+      } catch(e){}
+    }));
+  } catch(e){}
+}
+
+// Combined, de-duped suggestion list (members + remembered guests), keyed by PSN
+function getSuggestions(){
+  var out=[], seen={};
+  for(var i=0;i<pilotNames.length;i++){
+    var nm=pilotNames[i], psn=pilotPsnMap[nm.toLowerCase()]||'';
+    var key=psn?psn.toLowerCase():('name:'+nm.toLowerCase());
+    if(seen[key]) continue; seen[key]=true;
+    out.push({nome:nm, psn:psn, isGuest:false});
+  }
+  for(var k in guestRegistry){
+    if(!guestRegistry.hasOwnProperty(k)) continue;
+    if(seen[k] || psnNomeMap[k]) continue;   // dedupe; promoted guests show once as member
+    seen[k]=true;
+    out.push({nome:guestRegistry[k].nome, psn:guestRegistry[k].psn, isGuest:true});
+  }
+  return out;
+}
+
 // ── LOAD PREVIOUS RESULTS ──
 async function loadPreviousResults(champVal){
   previousResults[champVal] = {};
@@ -638,9 +684,12 @@ function addRow(data={}){
       <div class="autocomplete-wrap pilot-cell">
         <input type="text" placeholder="Nome pilota" value="${esc(data.nome||'')}" id="nome-${id}"
           oninput="onNomeInput(${id},this)" autocomplete="off">
-        <input type="hidden" id="psn-${id}" value="${esc(data.psn||'')}">
         <button class="btn-pick-pilot" onclick="openPilotPicker(${id})" title="Scegli dalla rosa" type="button">▼</button>
       </div>
+      <input type="text" placeholder="PSN (obbligatorio per ospiti)" value="${esc(data.psn||'')}" id="psn-${id}"
+        oninput="onPsnInput(${id})" autocomplete="off"
+        style="width:100%;margin-top:4px;background:#0e0e1c;color:#8fb7d6;border:1px solid rgba(79,195,247,0.25);border-radius:6px;padding:4px 7px;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:.5px;outline:none;">
+      <div id="psn-hint-${id}" style="font-size:11px;font-family:'Barlow Condensed',sans-serif;margin-top:2px;min-height:13px;letter-spacing:.5px;"></div>
       <div id="car-wrap-${id}" style="display:none;margin-top:4px;">
         <select id="car-sel-${id}" style="width:100%;background:#0e0e1c;color:#c9b8a3;border:1px solid rgba(201,162,39,0.25);border-radius:6px;padding:4px 7px;font-family:'Barlow Condensed',sans-serif;font-size:13px;outline:none;">
           <option value="">— Auto —</option>
@@ -783,14 +832,13 @@ function autoFillPoints(){
 
 // ── PILOT AUTOCOMPLETE ──
 function onNomeInput(id, input){
-  
   const q = input.value.trim().toLowerCase();
   const dropdown = document.getElementById('acDropdown');
-  if(!q||!pilotNames.length){ dropdown.classList.remove('open'); return; }
-  const matches = pilotNames.filter(n=>n.toLowerCase().includes(q)).slice(0,8);
+  const sugg = getSuggestions();
+  if(!q || !sugg.length){ dropdown.classList.remove('open'); return; }
+  const matches = sugg.filter(function(s){ return s.nome.toLowerCase().includes(q); }).slice(0,8);
   if(!matches.length){ dropdown.classList.remove('open'); return; }
 
-  // position dropdown under input
   const rect = input.getBoundingClientRect();
   dropdown.style.position='fixed';
   dropdown.style.top=(rect.bottom+window.scrollY+2)+'px';
@@ -798,16 +846,17 @@ function onNomeInput(id, input){
   dropdown.style.width=rect.width+'px';
 
   dropdown.innerHTML='';
-  matches.forEach(name=>{
+  matches.forEach(function(sg){
     const item=document.createElement('div');
     item.className='ac-item';
-    item.textContent=name;
-    item.onmousedown=()=>{
-      document.getElementById(`nome-${id}`).value=name;
+    item.innerHTML = sg.nome + (sg.isGuest ? ' <span style="font-size:10px;color:#e8c547;letter-spacing:1px;">OSPITE</span>' : '');
+    item.onmousedown=function(){
+      document.getElementById('nome-'+id).value=sg.nome;
       var psnEl=document.getElementById('psn-'+id);
-      if(psnEl) psnEl.value=pilotPsnMap[name.toLowerCase()]||'';
+      if(psnEl) psnEl.value = sg.psn || pilotPsnMap[sg.nome.toLowerCase()] || '';
+      onPsnInput(id);
       dropdown.classList.remove('open');
-      populateCarSelect(id, name);
+      populateCarSelect(id, sg.nome);
     };
     dropdown.appendChild(item);
   });
@@ -1529,35 +1578,47 @@ function filterPilotPicker(q){
 
 function renderPilotPickerList(q){
   var list = document.getElementById('pilotPickerList');
-  var filtered = pilotNames.filter(function(n){
-    return !q || n.toLowerCase().indexOf(q.toLowerCase()) >= 0;
+  var filtered = getSuggestions().filter(function(s){
+    return !q || s.nome.toLowerCase().indexOf(q.toLowerCase()) >= 0;
   });
   if(!filtered.length){
     list.innerHTML = '<div class="pilot-modal-empty">Nessun pilota trovato</div>';
     return;
   }
   list.innerHTML = '';
-  filtered.forEach(function(name){
+  filtered.forEach(function(sg){
     var item = document.createElement('div');
     item.className = 'pilot-modal-item';
-    item.textContent = name;
-    item.addEventListener('click', function(){ selectPilotFromPicker(name); });
+    item.innerHTML = sg.nome + (sg.isGuest ? ' <span style="font-size:10px;color:#e8c547;letter-spacing:1px;">OSPITE</span>' : '');
+    item.addEventListener('click', function(){ selectPilotFromPicker(sg.nome, sg.psn); });
     list.appendChild(item);
   });
 }
 
-function selectPilotFromPicker(name){
+function selectPilotFromPicker(name, psn){
   if(_pickerTargetId !== null){
     var input = document.getElementById('nome-' + _pickerTargetId);
     var psnInput = document.getElementById('psn-' + _pickerTargetId);
     if(input){
       input.value = name;
-      // Set PSN hidden field
-      if(psnInput) psnInput.value = pilotPsnMap[name.toLowerCase()] || '';
+      if(psnInput) psnInput.value = psn || pilotPsnMap[name.toLowerCase()] || '';
+      onPsnInput(_pickerTargetId);
       populateCarSelect(_pickerTargetId, name);
     }
   }
   closePilotPicker();
+}
+
+// Inline hint when a typed PSN matches a known member or a remembered guest (dup-guard)
+function onPsnInput(id){
+  var el = document.getElementById('psn-'+id);
+  var hint = document.getElementById('psn-hint-'+id);
+  if(!el || !hint) return;
+  var psn = el.value.trim(); var k = psn.toLowerCase();
+  if(!psn){ hint.textContent=''; return; }
+  if(psnNomeMap[k]){ hint.textContent='\u2713 membro: '+psnNomeMap[k]; hint.style.color='#7ddc8f'; }
+  else if(guestRegistry[k]){ hint.textContent='\u21BA ospite gi\u00e0 visto: '+guestRegistry[k].nome; hint.style.color='#e8c547'; }
+  else { hint.textContent='nuovo ospite'; hint.style.color='#8a8098'; }
 }
 
 // Close picker on backdrop click
