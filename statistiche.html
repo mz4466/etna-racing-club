@@ -212,7 +212,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       .then(function(list){
         var promises = [];
         for(var i=0;i<list.length;i++){
-          if(list[i] === 'index.json') continue;
+          if(list[i] === 'index.json' || list[i] === 'psn-map.json') continue;
           (function(file){
             var p = fetch(BASE + 'piloti_schede/' + file + '?_=' + Date.now())
               .then(function(r){ return r.json(); })
