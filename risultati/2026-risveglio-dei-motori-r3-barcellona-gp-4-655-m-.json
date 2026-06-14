@@ -9,6 +9,7 @@
     {
       "pos": 1,
       "nome": "Carmine",
+      "psn": "CarmineRafa87",
       "auto": "Volkswagen Beetle Gr.3",
       "tempo": "31'22''701",
       "bestLap": "01'47''654",
@@ -17,12 +18,12 @@
       "punti": 25,
       "extra": "-",
       "totale": 25,
-      "stato": "ok",
-      "psn": "CarmineRafa87"
+      "stato": "ok"
     },
     {
       "pos": 2,
       "nome": "Pyer",
+      "psn": "PyerStark",
       "auto": "Peugeot RCZ Gr.3",
       "tempo": "a 07\"649",
       "bestLap": "01'47''745",
@@ -31,12 +32,12 @@
       "punti": 18,
       "extra": "1",
       "totale": 19,
-      "stato": "ok",
-      "psn": "PyerStark"
+      "stato": "ok"
     },
     {
       "pos": 3,
       "nome": "Giovanni",
+      "psn": "mz4461",
       "auto": "Lexus RC F GT3 '17",
       "tempo": "a 14\"314",
       "bestLap": "01'48''034",
@@ -45,12 +46,12 @@
       "punti": 15,
       "extra": "-",
       "totale": 15,
-      "stato": "ok",
-      "psn": "mz4461"
+      "stato": "ok"
     },
     {
       "pos": 4,
       "nome": "Alessandro",
+      "psn": "Aelmundo62",
       "auto": "911 GT3 R (992) '22",
       "tempo": "a 19\"372",
       "bestLap": "01'47''135",
@@ -59,12 +60,12 @@
       "punti": 12,
       "extra": "1",
       "totale": 13,
-      "stato": "ok",
-      "psn": "Aelmundo62"
+      "stato": "ok"
     },
     {
       "pos": 5,
       "nome": "Claudio",
+      "psn": "SybeX26",
       "auto": "BMW M6 GT3 Endurance Model '16",
       "tempo": "a 1'00\"902",
       "bestLap": "01'49''403",
@@ -73,12 +74,12 @@
       "punti": 10,
       "extra": "-",
       "totale": 10,
-      "stato": "ok",
-      "psn": "SybeX26"
+      "stato": "ok"
     },
     {
       "pos": 6,
       "nome": "Stefano",
+      "psn": "stefano8923",
       "auto": "Mercedes-AMG GT Black Series '20",
       "tempo": "a 1'05\"742",
       "bestLap": "01'47''446",
@@ -87,12 +88,12 @@
       "punti": 8,
       "extra": "-",
       "totale": 8,
-      "stato": "ok",
-      "psn": "stefano8923"
+      "stato": "ok"
     },
     {
       "pos": 7,
       "nome": "Daniele",
+      "psn": "MrSciacca81",
       "auto": "Audi R8 LMS Evo '19",
       "tempo": "a 1'11\"337",
       "bestLap": "01'51''209",
@@ -101,12 +102,12 @@
       "punti": 6,
       "extra": "-",
       "totale": 6,
-      "stato": "ok",
-      "psn": "MrSciacca81"
+      "stato": "ok"
     },
     {
       "pos": 8,
       "nome": "William",
+      "psn": "steward_andante",
       "auto": "Ford GT Race Car '18",
       "tempo": "a 4'00\"472",
       "bestLap": "01'51''289",
@@ -115,12 +116,12 @@
       "punti": 5,
       "extra": "-",
       "totale": 5,
-      "stato": "ok",
-      "psn": "steward_andante"
+      "stato": "ok"
     },
     {
       "pos": 9,
       "nome": "Sandro",
+      "psn": "Sand_ro83",
       "auto": "Mercedes-AMG GT Black Series '20",
       "tempo": "",
       "bestLap": "",
@@ -129,65 +130,87 @@
       "punti": 0,
       "extra": "-",
       "totale": 0,
-      "stato": "dnf",
-      "psn": "Sand_ro83"
+      "stato": "dnf"
     }
   ],
   "standings": [
     {
       "nome": "Carmine",
-      "pts": 61,
+      "psn": "CarmineRafa87",
+      "pts": 95,
       "pos": 1
     },
     {
-      "nome": "Pyer",
+      "nome": "Giovanni",
+      "psn": "mz4461",
       "pts": 52,
       "pos": 2
     },
     {
-      "nome": "Sandro",
-      "pts": 41,
+      "nome": "Pierpaolo Longo",
+      "psn": "",
+      "pts": 45,
       "pos": 3
     },
     {
-      "nome": "Alessandro H",
-      "pts": 30,
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "pts": 40,
       "pos": 4
     },
     {
-      "nome": "Claudio",
-      "pts": 28,
-      "pos": 5
-    },
-    {
       "nome": "Alessandro",
-      "pts": 28,
+      "psn": "Aelmundo62",
+      "pts": 39,
       "pos": 5
-    },
-    {
-      "nome": "Giovanni",
-      "pts": 21,
-      "pos": 7
     },
     {
       "nome": "Stefano",
-      "pts": 20,
+      "psn": "stefano8923",
+      "pts": 38,
+      "pos": 6
+    },
+    {
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "pts": 38,
+      "pos": 6
+    },
+    {
+      "nome": "Alessandro H",
+      "psn": "FRT-Morzeus96",
+      "pts": 29,
       "pos": 8
     },
     {
-      "nome": "Daniele",
-      "pts": 15,
+      "nome": "William",
+      "psn": "steward_andante",
+      "pts": 26,
       "pos": 9
     },
     {
-      "nome": "William",
-      "pts": 14,
+      "nome": "Daniele",
+      "psn": "MrSciacca81",
+      "pts": 17,
       "pos": 10
     },
     {
       "nome": "Fabio",
-      "pts": 1,
+      "psn": "fabyus1983",
+      "pts": 16,
       "pos": 11
+    },
+    {
+      "nome": "Matteo Spinotto",
+      "psn": "Sp1n8_Mes",
+      "pts": 4,
+      "pos": 12
+    },
+    {
+      "nome": "Sandro",
+      "psn": "",
+      "pts": 0,
+      "pos": 13
     }
   ],
   "bestOf": 4
