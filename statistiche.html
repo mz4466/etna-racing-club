@@ -89,6 +89,13 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 .circuit-name{font-size:13px;color:var(--text);width:220px;min-width:220px;text-align:right;flex-shrink:0;word-break:break-word;line-height:1.3}
 .circuit-bar-bg{flex:1;height:22px;background:rgba(255,255,255,0.03);border-radius:4px;overflow:hidden}
 .circuit-bar{height:100%;background:linear-gradient(90deg,rgba(201,162,39,0.4),rgba(232,197,71,0.65));border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-family:'Russo One',sans-serif;font-size:12px;color:var(--bg);min-width:28px;transition:width 0.5s}
+.circuit-row.extra-circuit{display:none}
+.circuit-bars.expanded .circuit-row.extra-circuit{display:flex}
+.circuit-toggle-row{display:flex;justify-content:center;margin-top:10px}
+.circuit-toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:var(--card2);border:1px solid rgba(201,162,39,0.25);color:var(--gold-hi);font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;text-transform:uppercase;padding:6px 18px;border-radius:8px;transition:background .2s,border-color .2s}
+.circuit-toggle:hover{background:rgba(201,162,39,0.12);border-color:rgba(201,162,39,0.5)}
+.circuit-toggle .chev{font-size:11px;line-height:1;transition:transform .25s}
+.circuit-bars.expanded .circuit-toggle .chev{transform:rotate(180deg)}
 
 .car-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:32px}
 .car-card{background:var(--card);border:1px solid rgba(201,162,39,0.08);border-radius:8px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
@@ -706,6 +713,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   }
 
   /* ── circuits ── */
+  var TOP_CIRCUITS = 5;
   function renderCircuits(){
     var arr = [];
     for(var c in circuitMap){
@@ -715,16 +723,35 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     arr.sort(function(a,b){ return b.count - a.count; });
 
     var max = arr.length ? arr[0].count : 1;
-    var show = arr.slice(0, 10);
     var html = '';
-    for(var i=0;i<show.length;i++){
-      var w = Math.round(show[i].count / max * 100);
-      html += '<div class="circuit-row">' +
-        '<span class="circuit-name">' + show[i].name + '</span>' +
-        '<div class="circuit-bar-bg"><div class="circuit-bar" style="width:' + w + '%">' + show[i].count + '</div></div>' +
+    for(var i=0;i<arr.length;i++){
+      var w = Math.round(arr[i].count / max * 100);
+      var cls = i < TOP_CIRCUITS ? 'circuit-row' : 'circuit-row extra-circuit';
+      html += '<div class="' + cls + '">' +
+        '<span class="circuit-name">' + arr[i].name + '</span>' +
+        '<div class="circuit-bar-bg"><div class="circuit-bar" style="width:' + w + '%">' + arr[i].count + '</div></div>' +
       '</div>';
     }
-    document.getElementById('circuitBars').innerHTML = html;
+    if(arr.length > TOP_CIRCUITS){
+      html += '<div class="circuit-toggle-row">' +
+        '<button type="button" class="circuit-toggle" id="circuitToggle">' +
+          '<span class="ct-label">Mostra tutti (' + arr.length + ')</span>' +
+          '<span class="chev">\u25BE</span>' +
+        '</button></div>';
+    }
+
+    var box = document.getElementById('circuitBars');
+    box.classList.remove('expanded');
+    box.innerHTML = html;
+
+    var btn = document.getElementById('circuitToggle');
+    if(btn){
+      btn.addEventListener('click', function(){
+        var expanded = box.classList.toggle('expanded');
+        var lbl = btn.querySelector('.ct-label');
+        if(lbl) lbl.textContent = expanded ? 'Mostra meno' : 'Mostra tutti (' + arr.length + ')';
+      });
+    }
   }
 
   /* ── cars ── */
