@@ -193,6 +193,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   var seasonMap = {};
   var champWinners = {};
   var pilotStatus = {};
+  var schede = {};      /* psnLower -> { nome, attivo } */
+  var nmeToPsn = {};    /* normalized baked name -> psnLower */
   var currentFilter = 'attivi';
   var ufficioseIds = {};  /* champIds to include in stats (ufficiose only) */
   var countedRaces = 0;
@@ -210,6 +212,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
               .then(function(d){
                 var nome = d.nome || file.replace('.json','');
                 pilotStatus[nome] = d.attivo !== false;
+                var psn = (d.psn || '').toLowerCase().trim();
+                if(psn) schede[psn] = { nome: nome, attivo: d.attivo !== false };
               })
               .catch(function(){});
             promises.push(p);
@@ -234,8 +238,9 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
   function fetchRace(file){
     return fetch(BASE + 'risultati/' + file + '?_=' + Date.now())
-      .then(function(r){ return r.json(); })
-      .then(function(d){ d._file = file; return d; });
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){ if(d) d._file = file; return d; })
+      .catch(function(){ return null; });
   }
 
   function fetchCalendario(){
@@ -284,7 +289,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
         })(files[i]);
       }
       Promise.all(promises).then(function(results){
-        races = results;
+        races = results.filter(function(x){ return x; });
         return fetchCalendario();
       }).then(function(){
         processData();
@@ -299,6 +304,23 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
   /* ── process data ── */
   function processData(){
+    var psnInChamp = {};
+    for(var rb=0; rb<races.length; rb++){
+      var rc = races[rb], cid2 = rc.champId || rc.champIdx || '';
+      var rws = rc.rows || [];
+      for(var rj=0; rj<rws.length; rj++){
+        var bnme = rws[rj].nome || '', bps = (rws[rj].psn || '').toLowerCase().trim();
+        if(!bnme || !bps) continue;
+        var bnk = norm(bnme);
+        if(cid2){ if(!psnInChamp[cid2]) psnInChamp[cid2] = {}; psnInChamp[cid2][bnk] = bps; }
+        nmeToPsn[bnk] = bps;
+      }
+    }
+    function resolvePsn(cid, nme){
+      var nk = norm(nme); if(!nk) return '';
+      if(cid && psnInChamp[cid] && psnInChamp[cid][nk]) return psnInChamp[cid][nk];
+      return nmeToPsn[nk] || '';
+    }
     for(var ri=0;ri<races.length;ri++){
       var race = races[ri];
       var yr = (race.data || '').substring(0,4) || (race._file || '').substring(0,4) || 'N/A';
@@ -320,7 +342,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       if(isFinal && champId){
         var winner = race.standings[0];
         if(winner && winner.nome){
-          champWinners[champId] = winner.nome;
+          champWinners[champId] = resolvePsn(champId, winner.nome) || norm(winner.nome);
         }
       }
 
@@ -329,11 +351,14 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
         var r = rows[pi];
         var name = r.nome || '';
         if(!name) continue;
+        var rpsn = (r.psn || '').toLowerCase().trim();
+        var pkey = rpsn || norm(name);
 
-        seasonMap[yr].pilots[name] = true;
+        seasonMap[yr].pilots[pkey] = true;
 
-        if(!pilotMap[name]) pilotMap[name] = {
+        if(!pilotMap[pkey]) pilotMap[pkey] = {
           nome: name,
+          psn: rpsn,
           races: 0,
           wins: 0,
           podiums: 0,
@@ -345,7 +370,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
           champsWon: 0,
           raceList: []
         };
-        var p = pilotMap[name];
+        var p = pilotMap[pkey];
         p.races++;
         var stato = norm(r.stato);
         if(stato === 'dnf') p.dnfs++;
@@ -384,9 +409,16 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   var currentSort = 'wins';
   var allPilots = [];
 
+  function pilotActiveByName(nome){
+    var psn = nmeToPsn[norm(nome)] || '';
+    if(psn && schede[psn]) return schede[psn].attivo !== false;
+    if(pilotStatus.hasOwnProperty(nome)) return pilotStatus[nome];
+    return true;
+  }
+
   function isPilotVisible(nome){
     if(currentFilter === 'tutti') return true;
-    var isActive = pilotStatus.hasOwnProperty(nome) ? pilotStatus[nome] : true;
+    var isActive = pilotActiveByName(nome);
     if(currentFilter === 'attivi') return isActive;
     return !isActive;
   }
@@ -451,7 +483,10 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     allPilots = [];
     for(var n in pilotMap){
       if(!pilotMap.hasOwnProperty(n)) continue;
-      allPilots.push(pilotMap[n]);
+      var pp = pilotMap[n];
+      pp.key = n;
+      if(pp.psn && schede[pp.psn] && schede[pp.psn].nome) pp.nome = schede[pp.psn].nome;
+      allPilots.push(pp);
     }
 
     var filtered = getFilteredPilots();
@@ -563,15 +598,13 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   /* ── head to head ── */
   function renderH2HSelectors(){
     var filtered = getFilteredPilots();
-    var names = [];
-    for(var i=0;i<filtered.length;i++) names.push(filtered[i].nome);
-    names.sort();
+    var opts = filtered.slice().sort(function(a,b){ return (a.nome||'').localeCompare(b.nome||''); });
 
     var optA = '<option value="">Scegli pilota</option>';
     var optB = '<option value="">Scegli pilota</option>';
-    for(var j=0;j<names.length;j++){
-      optA += '<option value="' + names[j] + '">' + names[j] + '</option>';
-      optB += '<option value="' + names[j] + '">' + names[j] + '</option>';
+    for(var j=0;j<opts.length;j++){
+      var opt = '<option value="' + opts[j].key + '">' + opts[j].nome + '</option>';
+      optA += opt; optB += opt;
     }
     document.getElementById('h2hA').innerHTML = optA;
     document.getElementById('h2hB').innerHTML = optB;
@@ -579,8 +612,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     /* default selection: first two most winning */
     var byWins = filtered.slice().sort(function(a,b){ return b.wins - a.wins; });
     if(byWins.length >= 2){
-      document.getElementById('h2hA').value = byWins[0].nome;
-      document.getElementById('h2hB').value = byWins[1].nome;
+      document.getElementById('h2hA').value = byWins[0].key;
+      document.getElementById('h2hB').value = byWins[1].key;
       computeH2H();
     }
 
