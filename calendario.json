@@ -488,9 +488,9 @@
     "desc": "",
     "status": "in-corso",
     "file": "campionati/1-campionato-f1-2026-formula-1-campionato-f1.html",
-    "totalRounds": 8,
+    "totalRounds": 7,
     "completedRounds": 7,
-    "bestOf": 7,
+    "bestOf": 6,
     "rounds": [
       {
         "circuit": "Yas Marina",
@@ -556,16 +556,6 @@
         "circuit": "Suzuka",
         "date": "2026-05-31",
         "laps": "70",
-        "weather": "",
-        "tire": "x3",
-        "fuel": "x4",
-        "types": "",
-        "notes": ""
-      },
-      {
-        "circuit": "Interlagos",
-        "date": "2026-06-14",
-        "laps": "60",
         "weather": "",
         "tire": "x3",
         "fuel": "x4",
