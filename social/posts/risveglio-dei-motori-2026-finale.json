@@ -1,0 +1,32 @@
+{
+  "title": "Risveglio dei motori 2026 - Finale",
+  "slug": "risveglio-dei-motori-2026-finale",
+  "date": "2026-06-07",
+  "year": 2026,
+  "campionato": "Risveglio dei Motori (2026)",
+  "blocks": [
+    {
+      "id": "b0",
+      "type": "title",
+      "x": 0,
+      "y": 0,
+      "w": 100.97,
+      "h": 14.11,
+      "content": {
+        "text": "Risveglio dei Motori 2026: Carmine campione, Pyer secondo aspettato, Giovanni terzo a sorpresa",
+        "size": "medium"
+      }
+    },
+    {
+      "id": "b1",
+      "type": "text",
+      "x": 0,
+      "y": 14.65,
+      "w": 78.19,
+      "h": 26.9,
+      "content": {
+        "html": "<div>Il campionato Gr.3 dell'Etna Racing Club si chiude con la vittoria di Carmine, dominatore della seconda metà di stagione. Alle sue spalle, una grandiosa rimonta porta Pyer al secondo posto assoluto, mentre Giovanni completa il podio.&nbsp;</div><div><br></div><div>Cinque round, cinque tracciati leggendari, condizioni meteo estreme e una lotta per il titolo che si è decisa solo all'ultima gara. Il \"Risveglio dei Motori 2026\" dell'Etna Racing Club ha incoronato Carmine come campione della categoria Gr.3, ma la vera sorpresa è stata la rimonta di Pyer, che con 75 punti ha chiuso a -20 dal vincitore.</div>"
+      }
+    }
+  ]
+}
