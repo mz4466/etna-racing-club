@@ -1333,20 +1333,30 @@ async function executeDelete() {
     setProgress('🔍 Ricerca file risultati…');
     let resultFiles = [];
     try {
-      const r = await fetch(`https://api.github.com/repos/${REPO}/contents/risultati?ref=${BRANCH}`, {
+      const r = await fetch(`https://api.github.com/repos/${REPO}/contents/risultati?ref=${BRANCH}&_=${Date.now()}`, {
         headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
       });
       if (r.ok) {
         const allFiles = await r.json();
-        const champSlug = (champ.slug || champ.name || '').toLowerCase().replace(/[^a-z0-9]/g, '-');
-        const champYear = String(champ.year || '');
-        resultFiles = allFiles.filter(f => {
-          const name = f.name.toLowerCase();
-          return name.includes(champYear) && (
-            name.includes(champSlug) ||
-            name.includes((champ.name||'').toLowerCase().replace(/[^a-z0-9]/g,'-').slice(0,8))
-          );
-        });
+        /* Match races by champId (the field that actually links a race to its championship),
+           not by guessing from the slug/name. Read each race JSON via the contents API
+           (f.url + base64 — works behind Zscaler, unlike download_url/raw). */
+        const jsonFiles = allFiles.filter(f => f.name.endsWith('.json') && f.name !== 'index.json');
+        let scanned = 0;
+        for (const f of jsonFiles) {
+          scanned++;
+          setProgress(`🔍 Ricerca file risultati… ${scanned}/${jsonFiles.length}`);
+          try {
+            const cr = await fetch(`${f.url}${f.url.indexOf('?') === -1 ? '?' : '&'}_=${Date.now()}`, {
+              headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+            });
+            if (!cr.ok) continue;
+            const cd = await cr.json();
+            const race = JSON.parse(decodeURIComponent(escape(atob((cd.content || '').replace(/\s/g,'')))));
+            const rcid = race.champId || race.champIdx || '';
+            if (rcid && rcid === champ.id) resultFiles.push(f);
+          } catch(e) { /* unreadable/odd file — skip */ }
+        }
       }
     } catch(e) { console.warn('Could not list risultati:', e.message); }
 
