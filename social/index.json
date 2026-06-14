@@ -7,6 +7,7 @@
     "campionato": "Risveglio dei Motori (2026)",
     "blockTypes": [
       "title",
+      "text",
       "text"
     ],
     "created": "2026-06-14T20:42:23.586Z"
