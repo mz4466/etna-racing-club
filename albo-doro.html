@@ -174,8 +174,9 @@ a.trofeo-mini:hover{border-color:rgba(201,162,39,0.25);background:rgba(201,162,3
 
   function fetchRace(file){
     return fetch(BASE + 'risultati/' + file + '?_=' + Date.now())
-      .then(function(r){ return r.json(); })
-      .then(function(d){ d._file = file; return d; });
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){ if(d) d._file = file; return d; })
+      .catch(function(){ return null; });   /* missing/deleted file -> skip, don't hang */
   }
 
   function prettifyName(champId){
@@ -217,7 +218,7 @@ a.trofeo-mini:hover{border-color:rgba(201,162,39,0.25);background:rgba(201,162,3
         })(files[i]);
       }
       Promise.all(promises).then(function(results){
-        processAndRender(results);
+        processAndRender(results.filter(function(x){ return x; }));
       });
     }).catch(function(){
       document.getElementById('loadingText').textContent = 'Errore nel caricamento';
