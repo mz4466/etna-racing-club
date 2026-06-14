@@ -50,7 +50,7 @@
     },
     {
       "pos": 4,
-      "nome": "Pierpaolo Longo",
+      "nome": "Pyer",
       "psn": "PyerStark",
       "auto": "Peugeot RCZ Gr.3",
       "tempo": "a 25\"598",
@@ -140,13 +140,13 @@
       "pos": 1
     },
     {
-      "nome": "Giovanni",
-      "pts": 52,
+      "nome": "Pyer",
+      "pts": 75,
       "pos": 2
     },
     {
-      "nome": "Pierpaolo Longo",
-      "pts": 45,
+      "nome": "Giovanni",
+      "pts": 52,
       "pos": 3
     },
     {
@@ -165,39 +165,34 @@
       "pos": 6
     },
     {
-      "nome": "Pyer",
-      "pts": 38,
-      "pos": 6
-    },
-    {
       "nome": "Alessandro H",
       "pts": 29,
-      "pos": 8
+      "pos": 7
     },
     {
       "nome": "William",
       "pts": 26,
-      "pos": 9
+      "pos": 8
     },
     {
       "nome": "Daniele",
       "pts": 17,
-      "pos": 10
+      "pos": 9
     },
     {
       "nome": "Fabio",
       "pts": 16,
-      "pos": 11
+      "pos": 10
     },
     {
       "nome": "Matteo Spinotto",
       "pts": 4,
-      "pos": 12
+      "pos": 11
     },
     {
       "nome": "Sandro",
       "pts": 0,
-      "pos": 13
+      "pos": 12
     }
   ],
   "bestOf": 4
