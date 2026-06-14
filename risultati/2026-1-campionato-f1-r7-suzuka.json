@@ -2,13 +2,14 @@
   "circuito": "Suzuka",
   "data": "2026-05-31",
   "garaNum": "7",
-  "garaTot": "8",
+  "garaTot": "7",
   "champId": "1-campionato-f1-2026",
   "champIdx": "1-campionato-f1-2026",
   "rows": [
     {
       "pos": 1,
       "nome": "Stefano",
+      "psn": "stefano8923",
       "auto": "SF19 Super Formula / Honda '19",
       "tempo": "130'03''704",
       "bestLap": "01'37''049",
@@ -17,12 +18,12 @@
       "punti": 25,
       "extra": "1+1",
       "totale": 27,
-      "stato": "ok",
-      "psn": "stefano8923"
+      "stato": "ok"
     },
     {
       "pos": 2,
-      "nome": "Pyer",
+      "nome": "Pierpaolo Longo",
+      "psn": "PyerStark",
       "auto": "SF19 Super Formula / Honda '19",
       "tempo": "a 59\"951",
       "bestLap": "01'38''336",
@@ -31,12 +32,12 @@
       "punti": 18,
       "extra": "-",
       "totale": 18,
-      "stato": "ok",
-      "psn": "PyerStark"
+      "stato": "ok"
     },
     {
       "pos": 3,
       "nome": "Giovanni",
+      "psn": "mz4461",
       "auto": "SF19 Super Formula / Honda '19",
       "tempo": "a 2 Giri",
       "bestLap": "01'38''601",
@@ -45,12 +46,12 @@
       "punti": 15,
       "extra": "-",
       "totale": 15,
-      "stato": "ok",
-      "psn": "mz4461"
+      "stato": "ok"
     },
     {
       "pos": 4,
       "nome": "Claudio",
+      "psn": "SybeX26",
       "auto": "SF19 Super Formula / Honda '19",
       "tempo": "a 5 Giri",
       "bestLap": "01'42''693",
@@ -59,12 +60,12 @@
       "punti": 12,
       "extra": "-",
       "totale": 12,
-      "stato": "ok",
-      "psn": "SybeX26"
+      "stato": "ok"
     },
     {
       "pos": 5,
       "nome": "William",
+      "psn": "steward_andante",
       "auto": "SF19 Super Formula / Honda '19",
       "tempo": "a 8 Giri",
       "bestLap": "01'45''163",
@@ -73,19 +74,18 @@
       "punti": 10,
       "extra": "-",
       "totale": 10,
-      "stato": "ok",
-      "psn": "steward_andante"
+      "stato": "ok"
     }
   ],
   "standings": [
     {
       "nome": "Stefano",
-      "pts": 178,
+      "pts": 159,
       "pos": 1
     },
     {
       "nome": "Pyer",
-      "pts": 114,
+      "pts": 96,
       "pos": 2
     },
     {
@@ -109,20 +109,25 @@
       "pos": 6
     },
     {
+      "nome": "Pierpaolo Longo",
+      "pts": 18,
+      "pos": 7
+    },
+    {
       "nome": "Carmine",
       "pts": 15,
-      "pos": 7
+      "pos": 8
     },
     {
       "nome": "Antonio",
       "pts": 5,
-      "pos": 8
+      "pos": 9
     },
     {
       "nome": "Fabio",
       "pts": 4,
-      "pos": 9
+      "pos": 10
     }
   ],
-  "bestOf": 7
+  "bestOf": 6
 }
