@@ -669,36 +669,6 @@
     "stagione": "Stagione 1"
   },
   {
-    "id": "summer-trophy-gr-4-2026",
-    "name": "Summer Trophy Gr.4",
-    "year": "2026",
-    "cat": "Gara Ufficiosa",
-    "slug": "summer-trophy-gr-4",
-    "trophy": null,
-    "cars": "Toyota Supra Gr.4",
-    "desc": "",
-    "status": "concluso",
-    "file": "campionati/summer-trophy-gr4-2026-gara-ufficiosa.html",
-    "totalRounds": 1,
-    "completedRounds": 1,
-    "bestOf": null,
-    "rounds": [
-      {
-        "circuit": "Sardegna - Road Track — Layout A (5.1 km)",
-        "date": "2026-06-05",
-        "laps": "15",
-        "weather": "",
-        "tire": "x2",
-        "fuel": "x2",
-        "types": "Medie/Morbide",
-        "notes": ""
-      }
-    ],
-    "costruttori": false,
-    "teams": [],
-    "stagione": "Stagione 1"
-  },
-  {
     "id": "1-trofeo-auto-storiche-80-90-2025",
     "name": "1 Trofeo Auto Storiche 80/90",
     "year": "2025",
