@@ -8,7 +8,7 @@
   "rows": [
     {
       "pos": 1,
-      "nome": "Pierpaolo Longo",
+      "nome": "Pyer",
       "psn": "PyerStark",
       "auto": "Peugeot RCZ Gr.3",
       "tempo": "32'11''440",
@@ -128,8 +128,8 @@
     },
     {
       "nome": "Pyer",
-      "psn": "",
-      "pts": 58,
+      "psn": "PyerStark",
+      "pts": 63,
       "pos": 2
     },
     {
@@ -163,12 +163,6 @@
       "pos": 7
     },
     {
-      "nome": "Sandro",
-      "psn": "",
-      "pts": 26,
-      "pos": 8
-    },
-    {
       "nome": "William",
       "psn": "steward_andante",
       "pts": 26,
@@ -176,26 +170,32 @@
     },
     {
       "nome": "Pierpaolo Longo",
-      "psn": "PyerStark",
-      "pts": 25,
-      "pos": 10
+      "psn": "",
+      "pts": 20,
+      "pos": 9
     },
     {
       "nome": "Daniele",
       "psn": "MrSciacca81",
-      "pts": 19,
-      "pos": 11
+      "pts": 17,
+      "pos": 10
     },
     {
       "nome": "Fabio",
       "psn": "fabyus1983",
       "pts": 16,
-      "pos": 12
+      "pos": 11
     },
     {
       "nome": "Matteo Spinotto",
       "psn": "Sp1n8_Mes",
       "pts": 4,
+      "pos": 12
+    },
+    {
+      "nome": "Sandro",
+      "psn": "",
+      "pts": 0,
       "pos": 13
     }
   ],
