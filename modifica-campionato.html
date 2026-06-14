@@ -108,6 +108,10 @@
   .card-title { font-family: 'Teko', sans-serif; font-size: 17px; letter-spacing: 3px; color: var(--gold-hi); text-transform: uppercase; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
 
   /* ── STEP 1: SELECT CHAMPIONSHIP ── */
+  .cf-bar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+  .cf-btn { font-family:'Teko',sans-serif; font-size:14px; letter-spacing:2px; text-transform:uppercase; padding:7px 18px; border-radius:20px; border:1px solid rgba(255,110,40,0.35); background:transparent; color:#8a8098; cursor:pointer; transition:all .2s; }
+  .cf-btn:hover { border-color:#ff7a28; color:#ff9a3c; }
+  .cf-btn.active { background:linear-gradient(90deg,#e8491d,#ff9a3c); border-color:#ffb84d; color:#fff; }
   #stepSelect { display: flex; flex-direction: column; gap: 12px; }
 
   .champ-pick-list { display: flex; flex-direction: column; gap: 8px; }
@@ -394,6 +398,12 @@
     <!-- STEP 1: pick a championship -->
     <div class="card" id="stepSelect">
       <div class="card-title">📋 Campionati Disponibili</div>
+      <div class="cf-bar" id="champFilterBar">
+        <button class="cf-btn active" onclick="setChampFilter('in-corso',this)">🔥 In Corso</button>
+        <button class="cf-btn" onclick="setChampFilter('prossimo',this)">⏳ Prossimamente</button>
+        <button class="cf-btn" onclick="setChampFilter('concluso',this)">✅ Conclusi</button>
+        <button class="cf-btn" onclick="setChampFilter('all',this)">Tutti</button>
+      </div>
       <div id="pickList">
         <div class="empty-pick">Connetti GitHub per caricare i campionati</div>
       </div>
@@ -520,6 +530,7 @@ const BRANCH = 'main';
 
 let championships = [];
 let currentChamp  = null;
+let champFilter   = 'in-corso';
 let roundCounter  = 0;
 
 // ── TROPHY PICKER ──
@@ -634,8 +645,11 @@ function renderPickList() {
     list.innerHTML = '<div class="empty-pick">Nessun campionato nel calendario</div>';
     return;
   }
+  function nstat(c){ return (c.status || '').toLowerCase().replace(/\s+/g,'-'); }
+  const filtered = championships.filter(function(c){ return champFilter === 'all' || nstat(c) === champFilter; });
   list.innerHTML = '';
-  championships.forEach((c, i) => {
+  if (!filtered.length) { list.innerHTML = '<div class="empty-pick">Nessun campionato in questo stato</div>'; return; }
+  filtered.forEach((c, i) => {
     const row = document.createElement('div');
     row.className = 'champ-pick-row';
     row.style.animationDelay = `${i * 0.06}s`;
@@ -663,6 +677,13 @@ function renderPickList() {
     row.appendChild(delBtn);
     list.appendChild(row);
   });
+}
+
+function setChampFilter(st, btn){
+  champFilter = st;
+  document.querySelectorAll('#champFilterBar .cf-btn').forEach(function(b){ b.classList.remove('active'); });
+  if(btn) btn.classList.add('active');
+  renderPickList();
 }
 
 // ── STEP 2: LOAD & EDIT ──
