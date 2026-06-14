@@ -717,5 +717,35 @@
     ],
     "costruttori": false,
     "teams": []
+  },
+  {
+    "id": "trofeo-gr1-manche-2-2026",
+    "name": "Trofeo GR1 - Manche 2",
+    "year": "2026",
+    "cat": "Gara Ufficiosa",
+    "stagione": "Stagione 1",
+    "slug": "trofeo-gr1-manche-2",
+    "trophy": null,
+    "cars": "Gr.1 - Porsche 919 Hybrid '16",
+    "desc": "Round 2. Avete avuto quattro giorni per rimuginare sulla prima manche — adesso si torna in pista e si chiude. Stessa macchina, stessa pista, ma questa volta nessuno si fa sorprendere. Chi sale sul podio? Lo scopriamo domenica! 🏆",
+    "status": "prossimo",
+    "file": "campionati/trofeo-gr1---manche-2-2026-gara-ufficiosa.html",
+    "totalRounds": 1,
+    "completedRounds": 0,
+    "bestOf": null,
+    "rounds": [
+      {
+        "circuit": "Circuit de la Sarthe — Full Course (13.6 km)",
+        "date": "2026-06-19",
+        "laps": "7",
+        "weather": "☀️ Sereno",
+        "tire": "x5",
+        "fuel": "x4",
+        "types": "Medie/Morbide",
+        "notes": ""
+      }
+    ],
+    "costruttori": false,
+    "teams": []
   }
 ]
