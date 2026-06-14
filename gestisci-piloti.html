@@ -596,7 +596,7 @@ async function loadPilots(){
     }
 
     const files = await r.json();
-    const jsonFiles = files.filter(f=>f.name.endsWith('.json') && f.name!=='index.json');
+    const jsonFiles = files.filter(f=>f.name.endsWith('.json') && f.name!=='index.json' && f.name!=='psn-map.json');
 
     if(!jsonFiles.length){ allPilots=[]; renderGrid(); toast('Nessun pilota trovato',''); return; }
 
@@ -1020,7 +1020,7 @@ async function updatePilotIndex(token){
     if(!r.ok) return;
     const files = await r.json();
     const names = files
-      .filter(f => f.name.endsWith('.json') && f.name !== 'index.json')
+      .filter(f => f.name.endsWith('.json') && f.name !== 'index.json' && f.name !== 'psn-map.json')
       .map(f => f.name)
       .sort();
     await putFile(`${FOLDER}/index.json`, JSON.stringify(names, null, 0), 'Update pilot index', token);
