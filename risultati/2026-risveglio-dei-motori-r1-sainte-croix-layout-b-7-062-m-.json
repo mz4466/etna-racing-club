@@ -36,7 +36,7 @@
     },
     {
       "pos": 3,
-      "nome": "Alessandro H",
+      "nome": "Ale Morzeus",
       "psn": "FRT-Morzeus96",
       "auto": "Peugeot RCZ Gr.3",
       "tempo": "a 8\"893",
@@ -106,7 +106,7 @@
     },
     {
       "pos": 8,
-      "nome": "Alessandro",
+      "nome": "Ale Elmundo",
       "psn": "Aelmundo62",
       "auto": "911 GT3 R (992) '22",
       "tempo": "a 2'15\"749",
@@ -169,15 +169,15 @@
       "pos": 1
     },
     {
-      "nome": "Giovanni",
-      "psn": "mz4461",
-      "pts": 52,
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "pts": 75,
       "pos": 2
     },
     {
-      "nome": "Pyer",
-      "psn": "PyerStark",
-      "pts": 46,
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "pts": 52,
       "pos": 3
     },
     {
@@ -188,7 +188,7 @@
     },
     {
       "nome": "Alessandro",
-      "psn": "Aelmundo62",
+      "psn": "",
       "pts": 39,
       "pos": 5
     },
@@ -199,33 +199,33 @@
       "pos": 6
     },
     {
-      "nome": "Pierpaolo Longo",
-      "psn": "",
-      "pts": 37,
-      "pos": 7
-    },
-    {
-      "nome": "Alessandro H",
-      "psn": "FRT-Morzeus96",
-      "pts": 29,
-      "pos": 8
-    },
-    {
       "nome": "William",
       "psn": "steward_andante",
       "pts": 26,
-      "pos": 9
+      "pos": 7
     },
     {
       "nome": "Daniele",
       "psn": "MrSciacca81",
       "pts": 17,
-      "pos": 10
+      "pos": 8
     },
     {
       "nome": "Fabio",
       "psn": "fabyus1983",
       "pts": 16,
+      "pos": 9
+    },
+    {
+      "nome": "Ale Morzeus",
+      "psn": "FRT-Morzeus96",
+      "pts": 16,
+      "pos": 9
+    },
+    {
+      "nome": "Alessandro H",
+      "psn": "",
+      "pts": 13,
       "pos": 11
     },
     {
@@ -235,10 +235,16 @@
       "pos": 12
     },
     {
+      "nome": "Ale Elmundo",
+      "psn": "Aelmundo62",
+      "pts": 4,
+      "pos": 12
+    },
+    {
       "nome": "Sandro",
       "psn": "",
       "pts": 0,
-      "pos": 13
+      "pos": 14
     }
   ],
   "bestOf": 4
