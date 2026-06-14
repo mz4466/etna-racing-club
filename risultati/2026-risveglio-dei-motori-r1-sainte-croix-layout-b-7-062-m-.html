@@ -24,7 +24,8 @@
   .results-wrapper{display:grid;grid-template-columns:1fr 360px;gap:28px;margin-bottom:40px;}
   @media(max-width:1024px){.results-wrapper{grid-template-columns:1fr;}}
   .results-table{background:linear-gradient(135deg,rgba(26,26,26,0.95),rgba(13,13,13,0.98));border:2px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,0.8);}
-  .standings-card{background:linear-gradient(135deg,rgba(26,26,26,0.95),rgba(13,13,13,0.98));border:2px solid var(--border);border-radius:14px;padding:22px;box-shadow:0 10px 40px rgba(0,0,0,0.8);position:sticky;top:20px;}
+  .standings-sidebar{position:sticky;top:20px;display:flex;flex-direction:column;gap:16px;}
+  .standings-card{background:linear-gradient(135deg,rgba(26,26,26,0.95),rgba(13,13,13,0.98));border:2px solid var(--border);border-radius:14px;padding:22px;box-shadow:0 10px 40px rgba(0,0,0,0.8);}
   .standings-title{font-family:'Russo One',sans-serif;font-size:22px;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:18px;text-align:center;text-shadow:0 0 15px rgba(255,215,0,0.5);}
   .standings-item{display:flex;align-items:center;justify-content:space-between;padding:12px 10px;margin-bottom:8px;background:linear-gradient(90deg,rgba(255,215,0,0.07),transparent);border:1px solid rgba(255,215,0,0.12);border-radius:9px;transition:all .3s;}
   .standings-item:hover{background:linear-gradient(90deg,rgba(255,215,0,0.14),transparent);transform:translateX(4px);}
@@ -68,7 +69,7 @@
 <body>
 <header>
   <div class="brand">
-    <a href="../index.html"><img src="../etna-logo.jpg" alt="Etna Racing Club"></a>
+    <a href="../index.html"><img src="../club-logo.png" alt="Etna Racing Club"></a>
     <div class="brand-text">
       <h1>Etna Racing Club</h1>
       <p>Risultati Gara</p>
@@ -96,17 +97,17 @@
             <th>Totale</th>
           </tr>
         </thead>
-        <tbody><tr class="">
-      <td class="pos-1">1°</td>
-      <td data-psn="Sand_ro83" class="pilot-name-top"><span class="pilot-name-text">Sandro</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3485.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Mercedes-AMG GT Black Series &#39;20</span></div></td>
+        <tbody><tr class="row-retired">
+      <td class="pos-1">1°<span class="dsq-tag">DSQ</span></td>
+      <td class="pilot-name-top" data-psn="Sand_ro83"><span class="pilot-name-text">Sandro</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3485.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Mercedes-AMG GT Black Series &#39;20</span></div></td>
       <td>24&#39;47&#39;&#39;506</td>
       <td class="">2&#39;10&#39;&#39;648</td>
-      <td>25</td>
-      <td>1</td>
-      <td><strong>26</strong></td>
+      <td>0</td>
+      <td>-</td>
+      <td><strong>0</strong></td>
     </tr><tr class="">
       <td class="pos-2">2°</td>
-      <td data-psn="CarmineRafa87" class="pilot-name-top"><span class="pilot-name-text">Carmine</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Volkswagen Beetle Gr.3</span></div></td>
+      <td class="pilot-name-top" data-psn="CarmineRafa87"><span class="pilot-name-text">Carmine</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Volkswagen Beetle Gr.3</span></div></td>
       <td>a 6&quot;278</td>
       <td class="">2&#39;10&#39;&#39;768</td>
       <td>18</td>
@@ -114,7 +115,7 @@
       <td><strong>18</strong></td>
     </tr><tr class="">
       <td class="pos-3">3°</td>
-      <td data-psn="FRT-Morzeus96" class="pilot-name-top"><span class="pilot-name-text">Alessandro H</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3238.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Peugeot RCZ Gr.3</span></div></td>
+      <td class="pilot-name-top" data-psn="FRT-Morzeus96"><span class="pilot-name-text">Alessandro H</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3238.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Peugeot RCZ Gr.3</span></div></td>
       <td>a 8&quot;893</td>
       <td class="best-lap">2&#39;09&#39;&#39;487</td>
       <td>15</td>
@@ -122,7 +123,7 @@
       <td><strong>16</strong></td>
     </tr><tr class="">
       <td class="">4°</td>
-      <td data-psn="stefano8923" class="pilot-name"><span class="pilot-name-text">Stefano</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3485.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Mercedes-AMG GT Black Series &#39;20</span></div></td>
+      <td class="pilot-name" data-psn="stefano8923"><span class="pilot-name-text">Stefano</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3485.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Mercedes-AMG GT Black Series &#39;20</span></div></td>
       <td>a 10&quot;224</td>
       <td class="">2&#39;10&#39;&#39;590</td>
       <td>12</td>
@@ -130,7 +131,7 @@
       <td><strong>12</strong></td>
     </tr><tr class="">
       <td class="">5°</td>
-      <td data-psn="SybeX26" class="pilot-name"><span class="pilot-name-text">Claudio</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3218.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">BMW M6 GT3 Endurance Model &#39;16</span></div></td>
+      <td class="pilot-name" data-psn="SybeX26"><span class="pilot-name-text">Claudio</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3218.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">BMW M6 GT3 Endurance Model &#39;16</span></div></td>
       <td>a 37&quot;252</td>
       <td class="">2&#39;11&#39;&#39;125</td>
       <td>10</td>
@@ -138,7 +139,7 @@
       <td><strong>10</strong></td>
     </tr><tr class="">
       <td class="">6°</td>
-      <td data-psn="PyerStark" class="pilot-name"><span class="pilot-name-text">Pyer</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3238.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Peugeot RCZ Gr.3</span></div></td>
+      <td class="pilot-name" data-psn="PyerStark"><span class="pilot-name-text">Pierpaolo Longo</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3238.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Peugeot RCZ Gr.3</span></div></td>
       <td>a 39&quot;060</td>
       <td class="">2&#39;11&#39;&#39;101</td>
       <td>8</td>
@@ -146,7 +147,7 @@
       <td><strong>8</strong></td>
     </tr><tr class="">
       <td class="">7°</td>
-      <td data-psn="mz4461" class="pilot-name"><span class="pilot-name-text">Giovanni</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3340.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Lexus RC F GT3 &#39;17</span></div></td>
+      <td class="pilot-name" data-psn="mz4461"><span class="pilot-name-text">Giovanni</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3340.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Lexus RC F GT3 &#39;17</span></div></td>
       <td>a 43&quot;350</td>
       <td class="">2&#39;11&#39;&#39;098</td>
       <td>6</td>
@@ -154,31 +155,31 @@
       <td><strong>6</strong></td>
     </tr><tr class="">
       <td class="">8°</td>
-      <td data-psn="Aelmundo62" class="pilot-name"><span class="pilot-name-text">Alessandro</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3600.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">911 GT3 R (992) &#39;22</span></div></td>
+      <td class="pilot-name" data-psn="Aelmundo62"><span class="pilot-name-text">Alessandro</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3600.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">911 GT3 R (992) &#39;22</span></div></td>
       <td>a 2&#39;15&quot;749</td>
       <td class="">2&#39;11&#39;&#39;785</td>
-      <td>5</td>
-      <td>-</td>
-      <td><strong>5</strong></td>
-    </tr><tr class="">
-      <td class="">9°</td>
-      <td data-psn="MrSciacca81" class="pilot-name"><span class="pilot-name-text">Daniele</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3405.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Audi R8 LMS Evo &#39;19</span></div></td>
-      <td>a 3&#39;23&quot;695</td>
-      <td class="">2&#39;16&#39;&#39;092</td>
       <td>4</td>
       <td>-</td>
       <td><strong>4</strong></td>
     </tr><tr class="">
+      <td class="">9°</td>
+      <td class="pilot-name" data-psn="MrSciacca81"><span class="pilot-name-text">Daniele</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3405.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Audi R8 LMS Evo &#39;19</span></div></td>
+      <td>a 3&#39;23&quot;695</td>
+      <td class="">2&#39;16&#39;&#39;092</td>
+      <td>2</td>
+      <td>-</td>
+      <td><strong>2</strong></td>
+    </tr><tr class="">
       <td class="">10°</td>
-      <td data-psn="steward_andante" class="pilot-name"><span class="pilot-name-text">William</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3436.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Ford GT Race Car &#39;18</span></div></td>
+      <td class="pilot-name" data-psn="steward_andante"><span class="pilot-name-text">William</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car3436.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Ford GT Race Car &#39;18</span></div></td>
       <td>a 3&#39;24&quot;811</td>
       <td class="">2&#39;14&#39;&#39;469</td>
-      <td>3</td>
+      <td>1</td>
       <td>-</td>
-      <td><strong>3</strong></td>
+      <td><strong>1</strong></td>
     </tr><tr class="row-retired">
       <td class="">11°<span class="dnf-tag">DNF</span></td>
-      <td data-psn="fabyus1983" class="pilot-name"><span class="pilot-name-text">Fabio</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car2186.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Subaru WRX Gr.3</span></div></td>
+      <td class="pilot-name" data-psn="fabyus1983"><span class="pilot-name-text">Fabio</span><div style="display:flex;align-items:center;gap:5px;margin-top:3px;"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car2186.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'"><span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:rgba(201,162,39,0.7);letter-spacing:0.5px;">Subaru WRX Gr.3</span></div></td>
       <td></td>
       <td class="">2&#39;15&#39;&#39;650</td>
       <td>2</td>
@@ -187,54 +188,62 @@
     </tr></tbody>
       </table>
     </div>
-    <div>
-      <div class="standings-card" style="margin-bottom:0">
+    <div class="standings-sidebar">
+      <div class="standings-card">
         <h2 class="standings-title">🏆 Piloti</h2>
         <div style="font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;color:#c9a227;background:rgba(201,162,39,0.08);border:1px solid rgba(201,162,39,0.2);border-radius:5px;padding:5px 10px;margin-bottom:12px;">⚡ Migliori 4 risultati su 5</div>
         <div id="champStandings"><div class="standings-item">
       <span class="standings-position pos-1">1°</span>
       <span class="standings-driver" data-psn="CarmineRafa87">Carmine</span>
-      <span class="standings-points">61</span>
+      <span class="standings-points">95</span>
     </div><div class="standings-item">
       <span class="standings-position pos-2">2°</span>
-      <span class="standings-driver" data-psn="PyerStark">Pyer</span>
-      <span class="standings-points">52</span>
+      <span class="standings-driver">Pyer</span>
+      <span class="standings-points">75</span>
     </div><div class="standings-item">
       <span class="standings-position pos-3">3°</span>
-      <span class="standings-driver" data-psn="Sand_ro83">Sandro</span>
-      <span class="standings-points">41</span>
+      <span class="standings-driver" data-psn="mz4461">Giovanni</span>
+      <span class="standings-points">52</span>
     </div><div class="standings-item">
       <span class="standings-position ">4°</span>
-      <span class="standings-driver" data-psn="FRT-Morzeus96">Alessandro H</span>
-      <span class="standings-points">30</span>
+      <span class="standings-driver" data-psn="SybeX26">Claudio</span>
+      <span class="standings-points">40</span>
     </div><div class="standings-item">
       <span class="standings-position ">5°</span>
       <span class="standings-driver" data-psn="Aelmundo62">Alessandro</span>
-      <span class="standings-points">28</span>
+      <span class="standings-points">39</span>
     </div><div class="standings-item">
       <span class="standings-position ">6°</span>
-      <span class="standings-driver" data-psn="SybeX26">Claudio</span>
-      <span class="standings-points">26</span>
+      <span class="standings-driver" data-psn="stefano8923">Stefano</span>
+      <span class="standings-points">38</span>
     </div><div class="standings-item">
       <span class="standings-position ">7°</span>
-      <span class="standings-driver" data-psn="stefano8923">Stefano</span>
-      <span class="standings-points">22</span>
+      <span class="standings-driver" data-psn="FRT-Morzeus96">Alessandro H</span>
+      <span class="standings-points">29</span>
     </div><div class="standings-item">
       <span class="standings-position ">8°</span>
-      <span class="standings-driver" data-psn="mz4461">Giovanni</span>
-      <span class="standings-points">21</span>
+      <span class="standings-driver" data-psn="steward_andante">William</span>
+      <span class="standings-points">26</span>
     </div><div class="standings-item">
       <span class="standings-position ">9°</span>
       <span class="standings-driver" data-psn="MrSciacca81">Daniele</span>
-      <span class="standings-points">15</span>
+      <span class="standings-points">18</span>
     </div><div class="standings-item">
       <span class="standings-position ">10°</span>
-      <span class="standings-driver" data-psn="steward_andante">William</span>
-      <span class="standings-points">13</span>
+      <span class="standings-driver">Sandro</span>
+      <span class="standings-points">16</span>
     </div><div class="standings-item">
-      <span class="standings-position ">11°</span>
+      <span class="standings-position ">10°</span>
       <span class="standings-driver" data-psn="fabyus1983">Fabio</span>
-      <span class="standings-points">2</span>
+      <span class="standings-points">16</span>
+    </div><div class="standings-item">
+      <span class="standings-position ">12°</span>
+      <span class="standings-driver" data-psn="PyerStark">Pierpaolo Longo</span>
+      <span class="standings-points">8</span>
+    </div><div class="standings-item">
+      <span class="standings-position ">13°</span>
+      <span class="standings-driver" data-psn="Sp1n8_Mes">Matteo Spinotto</span>
+      <span class="standings-points">4</span>
     </div></div>
         <div class="race-info">
           <strong>Gara 1 di 5</strong>
@@ -244,7 +253,7 @@
     </div>
   </div>
 </main>
-<footer>© 2026 Etna Racing Club • Sicilia, Italia</footer>
+<footer id="cfg-copyright">© 2026 Etna Racing Club • Sicilia, Italia</footer>
 <script>
 (function(){
   var sc={};
@@ -257,12 +266,15 @@
   var _costruttori=false;
   var RAW="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/risultati/";
   var API="https://api.github.com/repos/mz4466/etna-racing-club/contents/risultati";
+  var _nameMap={}; // psn_lowercase -> current nome
 
-  function addToStandings(nome,pts,rn){
+  function addToStandings(nome,pts,rn,psn){
     if(!nome)return;
-    if(!sc[nome])sc[nome]=[];
-    if(!sc[nome].find(function(e){return e.rn===rn;}))
-      sc[nome].push({pts:pts,rn:rn});
+    // Use PSN as key if available (resolves to current nome at render time)
+    var key=psn&&psn.toLowerCase&&_nameMap[psn.toLowerCase()]?_nameMap[psn.toLowerCase()]:nome;
+    if(!sc[key])sc[key]=[];
+    if(!sc[key].find(function(e){return e.rn===rn;}))
+      sc[key].push({pts:pts,rn:rn,psn:psn||''});
   }
 
   function processRace(d){
@@ -273,11 +285,11 @@
     allRaces[raceN]=true;
     if(raceN===_rn)return;
     if(raceN>_rn)return;
-    (d.rows||[]).forEach(function(r){addToStandings(r.nome,r.totale||0,raceN);});
+    (d.rows||[]).forEach(function(r){ var n=r.psn&&_nameMap[r.psn.toLowerCase()]?_nameMap[r.psn.toLowerCase()]:r.nome; addToStandings(n,r.totale||0,raceN,r.psn||''); });
   }
 
-  var rows=[{"nome":"Sandro","totale":26},{"nome":"Carmine","totale":18},{"nome":"Alessandro H","totale":16},{"nome":"Stefano","totale":12},{"nome":"Claudio","totale":10},{"nome":"Pyer","totale":8},{"nome":"Giovanni","totale":6},{"nome":"Alessandro","totale":5},{"nome":"Daniele","totale":4},{"nome":"William","totale":3},{"nome":"Fabio","totale":2}];
-  rows.forEach(function(r){addToStandings(r.nome,r.totale,_rn);});
+  var rows=[{"nome":"Sandro","psn":"Sand_ro83","totale":0},{"nome":"Carmine","psn":"CarmineRafa87","totale":18},{"nome":"Alessandro H","psn":"FRT-Morzeus96","totale":16},{"nome":"Stefano","psn":"stefano8923","totale":12},{"nome":"Claudio","psn":"SybeX26","totale":10},{"nome":"Pierpaolo Longo","psn":"PyerStark","totale":8},{"nome":"Giovanni","psn":"mz4461","totale":6},{"nome":"Alessandro","psn":"Aelmundo62","totale":4},{"nome":"Daniele","psn":"MrSciacca81","totale":2},{"nome":"William","psn":"steward_andante","totale":1},{"nome":"Fabio","psn":"fabyus1983","totale":2}];
+  rows.forEach(function(r){addToStandings(r.psn&&_nameMap[r.psn.toLowerCase()]?_nameMap[r.psn.toLowerCase()]:r.nome,r.totale,_rn,r.psn||'');});
   allRaces[_rn]=true;
 
   function loadViaRaw(){
@@ -307,26 +319,42 @@
       });
   }
 
+  // Load PSN→nome map (tiny, same-origin → not Zscaler-blocked, no auth)
   function loadSchedeNames(){
-    // Fetch index then each scheda via raw URL — no auth, no rate limits, always fresh
-    var RAW="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/piloti_schede/";
-    return fetch(RAW+"index.json?_="+Date.now())
-      .then(function(r){return r.ok?r.json():[];}).catch(function(){return[];})
-      .then(function(files){
-        return Promise.all((files||[]).filter(function(f){return f.endsWith(".json")&&f!=="psn-map.json";}).map(function(fname){
-          return fetch(RAW+fname+"?_="+Date.now())
-            .then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
-            .then(function(p){
-              if(!p) return;
-              var psn=(p.psn||"").trim().toLowerCase();
-              var nome=(p.nome||p.name||"").trim();
-              if(psn&&psn!=="na"&&nome) _nameMap[psn]=nome;
-            });
-        }));
+    var REL="../piloti_schede/psn-map.json";
+    var RAW="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/piloti_schede/psn-map.json";
+    function applyMap(map){
+      if(!map) return;
+      Object.keys(map).forEach(function(psn){
+        if(psn&&map[psn]) _nameMap[psn.toLowerCase()]=map[psn];
       });
+    }
+    return fetch(REL+"?_="+Date.now())
+      .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      .catch(function(){
+        return fetch(RAW+"?_="+Date.now())
+          .then(function(r){return r.ok?r.json():{};}).catch(function(){return{};});
+      })
+      .then(applyMap);
   }
 
-  loadViaRaw().catch(function(){return loadViaApi();})
+  loadSchedeNames().catch(function(){}).then(function(){
+    // Map ready → resolve names already in the DOM (results table + static standings spans)
+    document.querySelectorAll("td[data-psn]").forEach(function(td){
+      var psn=td.getAttribute("data-psn").toLowerCase();
+      if(psn&&_nameMap[psn]){
+        var span=td.querySelector(".pilot-name-text");
+        if(span) span.textContent=_nameMap[psn];
+        else td.childNodes[0]&&(td.childNodes[0].textContent=_nameMap[psn]);
+      }
+    });
+    document.querySelectorAll(".standings-driver[data-psn]").forEach(function(el){
+      var psn=el.getAttribute("data-psn").toLowerCase();
+      if(psn&&_nameMap[psn]) el.textContent=_nameMap[psn];
+    });
+    // Now load race data and rebuild standings, with _nameMap already populated
+    return loadViaRaw().catch(function(){return loadViaApi();});
+  })
   .catch(function(){}).then(function(){
     var allDone=Object.keys(allRaces).length>=_rt;
     var canDrop=allDone&&_bo>0&&_bo<_rt;
@@ -341,7 +369,8 @@
         dropped=byVal.slice(0,toDrop);
       }
       var total=entries.reduce(function(s,e){return s+(dropped.indexOf(e)>=0?0:e.pts);},0);
-      return{nome:nm,entries:entries,dropped:dropped,total:total};
+      var psn=entries.length?entries[0].psn||'':'';
+      return{nome:nm,psn:psn,entries:entries,dropped:dropped,total:total};
     }).sort(function(a,b){return b.total-a.total;});
 
     var cl=["#FFD700","#C0C0C0","#CD7F32"];
@@ -366,7 +395,7 @@
       }
       return "<div class='standings-item' style='flex-wrap:wrap;align-items:center;padding-bottom:"+(breakdown?"6px":"12px")+"'>"
         +"<span class='standings-position' style='color:"+col+"'>"+pos+"&deg;</span>"
-        +"<span class='standings-driver'>"+s.nome+"</span>"
+        +"<span class='standings-driver' "+(s.psn?"data-psn='"+s.psn+"'":"")+">"+(_nameMap[s.psn&&s.psn.toLowerCase()]||s.nome)+"</span>"
         +"<span class='standings-points'>"+s.total+"</span>"
         +breakdown
         +"</div>";
@@ -383,7 +412,8 @@
           var perRace=allRns.map(function(rn){
             var scores=team.pilots.map(function(pName){
               var pKey=pName.toLowerCase().trim();
-              var pEntry=sc[pKey];
+              var scKey=Object.keys(sc).find(function(k){return k.toLowerCase().trim()===pKey;});
+              var pEntry=scKey?sc[scKey]:null;
               if(!pEntry)return null;
               var rEntry=pEntry.find(function(e){return e.rn===rn;});
               return rEntry?rEntry.pts:null;
@@ -422,112 +452,7 @@
 
 
 
-
-<!-- ERC-NAMEFIX v1 : resolves pilot display names live from piloti_schede/psn-map.json -->
-<script>/* ERC-NAMEFIX v1 */(function(){
-  if(window.__ercNameFix) return; window.__ercNameFix=true;
-  var REL="../piloti_schede/psn-map.json";
-  var RAW="https://raw.githubusercontent.com/mz4466/etna-racing-club/main/piloti_schede/psn-map.json";
-  var map={};        // psnLower -> currentName
-  var oldToNew={};   // oldNameLower -> currentName
-  var ready=false;
-
-  // Capture psn<->old display name from the static DOM. The results table is never
-  // rebuilt, so this recovers every pilot even after the standings card regenerates.
-  var captured=[];
-  function capture(){
-    var tds=document.querySelectorAll("td[data-psn]"),i;
-    for(i=0;i<tds.length;i++){
-      var psn=(tds[i].getAttribute("data-psn")||"").trim().toLowerCase();
-      if(!psn) continue;
-      var sp=tds[i].querySelector(".pilot-name-text");
-      var txt=sp?sp.textContent:(tds[i].childNodes[0]?tds[i].childNodes[0].textContent:"");
-      captured.push([psn,(txt||"").trim()]);
-    }
-    var sd=document.querySelectorAll(".standings-driver[data-psn]"),j;
-    for(j=0;j<sd.length;j++){
-      var p2=(sd[j].getAttribute("data-psn")||"").trim().toLowerCase();
-      if(!p2) continue;
-      captured.push([p2,(sd[j].textContent||"").trim()]);
-    }
-  }
-  capture();
-
-  function buildOldToNew(){
-    var i;
-    for(i=0;i<captured.length;i++){
-      var psn=captured[i][0], oldName=captured[i][1], nn=map[psn];
-      if(nn&&oldName) oldToNew[oldName.toLowerCase()]=nn;
-    }
-  }
-
-  function setText(el,val){ if(el&&el.textContent!==val) el.textContent=val; }
-
-  function apply(){
-    if(!ready) return;
-    var i;
-    // 1) results table cells, by PSN
-    var tds=document.querySelectorAll("td[data-psn]");
-    for(i=0;i<tds.length;i++){
-      var psn=(tds[i].getAttribute("data-psn")||"").trim().toLowerCase();
-      var nn=map[psn]; if(!nn) continue;
-      var sp=tds[i].querySelector(".pilot-name-text");
-      if(sp) setText(sp,nn);
-      else if(tds[i].childNodes[0]) setText(tds[i].childNodes[0],nn);
-    }
-    // 2) standings spans that still carry PSN (before async rebuild)
-    var sd=document.querySelectorAll(".standings-driver[data-psn]");
-    for(i=0;i<sd.length;i++){
-      var p2=(sd[i].getAttribute("data-psn")||"").trim().toLowerCase();
-      var n2=map[p2]; if(n2) setText(sd[i],n2);
-    }
-    // 3) standings spans rebuilt WITHOUT PSN (plain pilot name) -> text remap
-    var all=document.querySelectorAll("#champStandings .standings-driver, #champCostruttoii .standings-driver");
-    for(i=0;i<all.length;i++){
-      var el=all[i];
-      if(el.hasAttribute("data-psn")) continue;
-      if(el.children.length) continue;            // skip team rows (nested structure)
-      var key=(el.textContent||"").trim().toLowerCase();
-      if(oldToNew[key]) setText(el,oldToNew[key]);
-    }
-    // 4) constructor pilot sub-lists ("Name \u00b7 Name") -> exact-token remap
-    var subs=document.querySelectorAll(".team-pilots-sub");
-    for(i=0;i<subs.length;i++){
-      var parts=(subs[i].textContent||"").split(" \u00b7 "), changed=false, p;
-      for(p=0;p<parts.length;p++){
-        var nk=parts[p].trim().toLowerCase();
-        if(oldToNew[nk]&&oldToNew[nk]!==parts[p].trim()){ parts[p]=oldToNew[nk]; changed=true; }
-      }
-      if(changed) subs[i].textContent=parts.join(" \u00b7 ");
-    }
-  }
-
-  // Re-apply when the page rebuilds the standings asynchronously.
-  function watch(){
-    if(!window.MutationObserver) return;
-    var t, obs=new MutationObserver(function(){ clearTimeout(t); t=setTimeout(apply,60); });
-    var ids=["champStandings","champCostruttoii"], i;
-    for(i=0;i<ids.length;i++){
-      var node=document.getElementById(ids[i]);
-      if(node) obs.observe(node,{childList:true,subtree:true});
-    }
-  }
-
-  function go(m){
-    var k;
-    map={};
-    if(m) for(k in m){ if(m.hasOwnProperty(k)&&k&&m[k]) map[(""+k).toLowerCase()]=m[k]; }
-    buildOldToNew();
-    ready=true;
-    apply(); watch();
-    setTimeout(apply,500); setTimeout(apply,1500); setTimeout(apply,4000);
-  }
-
-  fetch(REL+"?_="+Date.now())
-    .then(function(r){ if(!r.ok) throw 0; return r.json(); })
-    .catch(function(){ return fetch(RAW+"?_="+Date.now()).then(function(r){return r.ok?r.json():{};}).catch(function(){return {};}); })
-    .then(go).catch(function(){});
-})();</script>
-
+<script src="copyright.js"></script>
+<script src="../nav.js"></script>
 </body>
 </html>
