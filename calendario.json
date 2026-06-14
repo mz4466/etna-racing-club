@@ -687,5 +687,35 @@
     ],
     "costruttori": false,
     "teams": []
+  },
+  {
+    "id": "trofeo-gr1-manche-1-2026",
+    "name": "Trofeo Gr1 - Manche 1",
+    "year": "2026",
+    "cat": "Gara Ufficiosa",
+    "stagione": "Stagione 1",
+    "slug": "trofeo-gr1-manche-1",
+    "trophy": null,
+    "cars": "GR.1 - Porsche 919 Hybrid '16",
+    "desc": "Ci siamo! Il Trofeo GR1 è finalmente qui. Sette giri con le Hypercar, gomme medie-morbide e qualche pit stop da non sbagliare. Partenza lanciata, BDP attivi e zero pietà. Vediamo chi ha il coraggio di spingere fino in fondo! 🔥",
+    "status": "prossimo",
+    "file": "campionati/trofeo-gr1---manche-1-2026-gara-ufficiosa.html",
+    "totalRounds": 1,
+    "completedRounds": 0,
+    "bestOf": null,
+    "rounds": [
+      {
+        "circuit": "Circuit de la Sarthe — Full Course (13.6 km)",
+        "date": "2026-06-15",
+        "laps": "7",
+        "weather": "☀️ Sereno",
+        "tire": "x5",
+        "fuel": "x4",
+        "types": "Medie/Morbide",
+        "notes": ""
+      }
+    ],
+    "costruttori": false,
+    "teams": []
   }
 ]
