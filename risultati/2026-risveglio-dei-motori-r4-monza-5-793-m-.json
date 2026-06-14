@@ -92,7 +92,7 @@
     },
     {
       "pos": 7,
-      "nome": "Alessandro",
+      "nome": "Ale Elmundo",
       "psn": "Aelmundo62",
       "auto": "911 GT3 R (992) '22",
       "tempo": "",
@@ -127,15 +127,15 @@
       "pos": 1
     },
     {
-      "nome": "Giovanni",
-      "psn": "mz4461",
-      "pts": 52,
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "pts": 75,
       "pos": 2
     },
     {
-      "nome": "Pierpaolo Longo",
-      "psn": "",
-      "pts": 45,
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "pts": 52,
       "pos": 3
     },
     {
@@ -145,45 +145,45 @@
       "pos": 4
     },
     {
-      "nome": "Alessandro",
-      "psn": "Aelmundo62",
-      "pts": 39,
-      "pos": 5
-    },
-    {
       "nome": "Stefano",
       "psn": "stefano8923",
       "pts": 38,
-      "pos": 6
+      "pos": 5
     },
     {
-      "nome": "Pyer",
-      "psn": "PyerStark",
-      "pts": 38,
+      "nome": "Alessandro",
+      "psn": "",
+      "pts": 37,
       "pos": 6
     },
     {
       "nome": "Alessandro H",
-      "psn": "FRT-Morzeus96",
+      "psn": "",
       "pts": 29,
-      "pos": 8
+      "pos": 7
     },
     {
       "nome": "William",
       "psn": "steward_andante",
       "pts": 26,
-      "pos": 9
+      "pos": 8
     },
     {
       "nome": "Daniele",
       "psn": "MrSciacca81",
       "pts": 17,
-      "pos": 10
+      "pos": 9
     },
     {
       "nome": "Fabio",
       "psn": "fabyus1983",
       "pts": 16,
+      "pos": 10
+    },
+    {
+      "nome": "Ale Elmundo",
+      "psn": "Aelmundo62",
+      "pts": 6,
       "pos": 11
     },
     {
