@@ -139,7 +139,7 @@ a.trofeo-mini:hover{border-color:rgba(201,162,39,0.25);background:rgba(201,162,3
       .then(function(list){
         var ps = [];
         for(var i=0;i<list.length;i++){
-          if(list[i] === 'index.json') continue;
+          if(list[i] === 'index.json' || list[i] === 'psn-map.json') continue;
           (function(file){
             var pr = fetch(BASE + 'piloti_schede/' + file + '?_=' + Date.now())
               .then(function(r){ return r.ok ? r.json() : null; })
