@@ -15,7 +15,7 @@
     "bestOf": 4,
     "rounds": [
       {
-        "circuit": "Dragon Trail - Litorale (5.209 m)",
+        "circuit": "Dragon Trail – Litorale – 5,2 km",
         "date": "2025-06-20",
         "laps": "15",
         "weather": "🌤️ Parzialmente nuvoloso",
@@ -25,7 +25,7 @@
         "notes": "Pit 1"
       },
       {
-        "circuit": "Lago Maggiore (5.809 m)",
+        "circuit": "Lago Maggiore – Layout completo – 5,8 km",
         "date": "2025-07-13",
         "laps": "14",
         "weather": "☀️ Sereno",
@@ -35,7 +35,7 @@
         "notes": "Pit 1"
       },
       {
-        "circuit": "Daytona - Tri Ovale (4.023 m)",
+        "circuit": "Daytona – Tri-ovale – 4,0 km",
         "date": "2025-07-27",
         "laps": "24",
         "weather": "⛅ Poco nuvoloso (sole dominante)",
@@ -45,7 +45,7 @@
         "notes": "Pit 1"
       },
       {
-        "circuit": "Le Mans (13.629 m)",
+        "circuit": "Le Mans – Senza chicane – 13,6 km",
         "date": "2025-08-31",
         "laps": "6",
         "weather": "🌅 Tardo pomeriggio",
@@ -55,7 +55,7 @@
         "notes": "1 pit"
       },
       {
-        "circuit": "Alsace - Villaggio (5.423 m)",
+        "circuit": "Alsazia – Villaggio – 5,4 km",
         "date": "2025-09-14",
         "laps": "15",
         "weather": "🌤️ Sereno con cirri",
