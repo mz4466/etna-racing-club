@@ -40,28 +40,28 @@
       }
     },
     {
-      "id": "b7",
+      "id": "b9",
       "type": "photo",
-      "x": 78.2,
-      "y": 14.68,
-      "w": 10.36,
-      "h": 21.48,
+      "x": 78.54,
+      "y": 15.08,
+      "w": 9.2,
+      "h": 23.1,
       "content": {
-        "src": "social/media/risveglio-dei-motori-2026-finale-b7.jpg",
+        "src": "social/media/risveglio-dei-motori-2026-finale-b9.jpg",
         "caption": "",
         "pending": null,
         "url": ""
       }
     },
     {
-      "id": "b8",
+      "id": "b10",
       "type": "photo",
-      "x": 89.02,
-      "y": 14.74,
-      "w": 9.55,
-      "h": 21.48,
+      "x": 88.39,
+      "y": 15.19,
+      "w": 9.28,
+      "h": 23.1,
       "content": {
-        "src": "social/media/risveglio-dei-motori-2026-finale-b8.jpg",
+        "src": "social/media/risveglio-dei-motori-2026-finale-b10.jpg",
         "caption": "",
         "pending": null,
         "url": ""
