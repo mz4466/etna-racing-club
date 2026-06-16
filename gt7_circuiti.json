@@ -1,0 +1,849 @@
+[
+  {
+    "venue": "Alsazia",
+    "layout": "Village",
+    "km": 5.4,
+    "it": "Alsazia – Village – 5,4 km",
+    "en": "Alsace — Village (5.423 km)"
+  },
+  {
+    "venue": "Alsazia",
+    "layout": "Village Reverse",
+    "km": 5.4,
+    "it": "Alsazia – Village Reverse – 5,4 km",
+    "en": "Alsace — Village Reverse (5.423 km)"
+  },
+  {
+    "venue": "Alsazia",
+    "layout": "Test Course",
+    "km": 2.1,
+    "it": "Alsazia – Test Course – 2,1 km",
+    "en": "Alsace — Test Course (2.1 km)"
+  },
+  {
+    "venue": "Alsazia",
+    "layout": "Test Course Reverse",
+    "km": 2.1,
+    "it": "Alsazia – Test Course Reverse – 2,1 km",
+    "en": "Alsace — Test Course Reverse (2.1 km)"
+  },
+  {
+    "venue": "Autopolis",
+    "layout": "Layout completo",
+    "km": 4.7,
+    "it": "Autopolis – Layout completo – 4,7 km",
+    "en": "Autopolis International Racing Course — Full Course (4.674 km)"
+  },
+  {
+    "venue": "Autopolis",
+    "layout": "Layout corto",
+    "km": 3.0,
+    "it": "Autopolis – Layout corto – 3,0 km",
+    "en": "Autopolis International Racing Course — Shortcut Course (3.022 km)"
+  },
+  {
+    "venue": "Barcellona",
+    "layout": "Layout GP",
+    "km": 4.7,
+    "it": "Barcellona – Layout GP – 4,7 km",
+    "en": "Circuit de Barcelona-Catalunya — Grand Prix Layout (4.7 km)"
+  },
+  {
+    "venue": "Barcellona",
+    "layout": "Layout GP senza chicane",
+    "km": 4.7,
+    "it": "Barcellona – Layout GP senza chicane – 4,7 km",
+    "en": "Circuit de Barcelona-Catalunya — Grand Prix Layout No Chicane (4.7 km)"
+  },
+  {
+    "venue": "Barcellona",
+    "layout": "Layout nazionale",
+    "km": 3.0,
+    "it": "Barcellona – Layout nazionale – 3,0 km",
+    "en": "Circuit de Barcelona-Catalunya — National Layout (3.0 km)"
+  },
+  {
+    "venue": "Barcellona",
+    "layout": "Rallycross",
+    "km": 1.1,
+    "it": "Barcellona – Rallycross – 1,1 km",
+    "en": "Circuit de Barcelona-Catalunya — Rallycross Layout (1.1 km)"
+  },
+  {
+    "venue": "Brands Hatch",
+    "layout": "GP",
+    "km": 3.9,
+    "it": "Brands Hatch – GP – 3,9 km",
+    "en": "Brands Hatch — Grand Prix Circuit (3.946 km)"
+  },
+  {
+    "venue": "Brands Hatch",
+    "layout": "Indy",
+    "km": 1.9,
+    "it": "Brands Hatch – Indy – 1,9 km",
+    "en": "Brands Hatch — Indy Circuit (1.944 km)"
+  },
+  {
+    "venue": "Deep Forest",
+    "layout": "Raceway",
+    "km": 4.3,
+    "it": "Deep Forest Raceway – 4,3 km",
+    "en": "Deep Forest Raceway (4.253 km)"
+  },
+  {
+    "venue": "Deep Forest",
+    "layout": "Raceway Reverse",
+    "km": 4.3,
+    "it": "Deep Forest Raceway Reverse – 4,3 km",
+    "en": "Deep Forest Raceway Reverse (4.253 km)"
+  },
+  {
+    "venue": "Dragon Trail",
+    "layout": "Seaside",
+    "km": 5.2,
+    "it": "Dragon Trail – Seaside – 5,2 km",
+    "en": "Dragon Trail — Seaside (5.2 km)"
+  },
+  {
+    "venue": "Dragon Trail",
+    "layout": "Seaside Reverse",
+    "km": 5.2,
+    "it": "Dragon Trail – Seaside Reverse – 5,2 km",
+    "en": "Dragon Trail — Seaside Reverse (5.2 km)"
+  },
+  {
+    "venue": "Dragon Trail",
+    "layout": "Gardens",
+    "km": 4.4,
+    "it": "Dragon Trail – Gardens – 4,4 km",
+    "en": "Dragon Trail — Gardens (4.4 km)"
+  },
+  {
+    "venue": "Dragon Trail",
+    "layout": "Gardens Reverse",
+    "km": 4.4,
+    "it": "Dragon Trail – Gardens Reverse – 4,4 km",
+    "en": "Dragon Trail — Gardens Reverse (4.4 km)"
+  },
+  {
+    "venue": "Eiger Nordwand",
+    "layout": "",
+    "km": 2.4,
+    "it": "Eiger Nordwand – 2,4 km",
+    "en": "Eiger Nordwand (2.436 km)"
+  },
+  {
+    "venue": "Eiger Nordwand",
+    "layout": "Reverse",
+    "km": 2.4,
+    "it": "Eiger Nordwand Reverse – 2,4 km",
+    "en": "Eiger Nordwand Reverse (2.436 km)"
+  },
+  {
+    "venue": "Goodwood",
+    "layout": "Motor Circuit",
+    "km": 3.8,
+    "it": "Goodwood Motor Circuit – 3,8 km",
+    "en": "Goodwood Motor Circuit (3.809 km)"
+  },
+  {
+    "venue": "Lago Maggiore",
+    "layout": "Layout completo",
+    "km": 5.8,
+    "it": "Lago Maggiore – Layout completo – 5,8 km",
+    "en": "Autodrome Lago Maggiore — Full Course (5.8 km)"
+  },
+  {
+    "venue": "Lago Maggiore",
+    "layout": "Layout completo Reverse",
+    "km": 5.8,
+    "it": "Lago Maggiore – Layout completo Reverse – 5,8 km",
+    "en": "Autodrome Lago Maggiore — Full Course Reverse (5.8 km)"
+  },
+  {
+    "venue": "Lago Maggiore",
+    "layout": "Centre",
+    "km": 1.7,
+    "it": "Lago Maggiore – Centre – 1,7 km",
+    "en": "Autodrome Lago Maggiore — Centre (1.7 km)"
+  },
+  {
+    "venue": "Lago Maggiore",
+    "layout": "Centre Reverse",
+    "km": 1.7,
+    "it": "Lago Maggiore – Centre Reverse – 1,7 km",
+    "en": "Autodrome Lago Maggiore — Centre Reverse (1.7 km)"
+  },
+  {
+    "venue": "Lago Maggiore",
+    "layout": "East End",
+    "km": 2.0,
+    "it": "Lago Maggiore – East End – 2,0 km",
+    "en": "Autodrome Lago Maggiore — East End (2.0 km)"
+  },
+  {
+    "venue": "Lago Maggiore",
+    "layout": "East End Reverse",
+    "km": 2.0,
+    "it": "Lago Maggiore – East End Reverse – 2,0 km",
+    "en": "Autodrome Lago Maggiore — East End Reverse (2.0 km)"
+  },
+  {
+    "venue": "Lago Maggiore",
+    "layout": "West End",
+    "km": 2.4,
+    "it": "Lago Maggiore – West End – 2,4 km",
+    "en": "Autodrome Lago Maggiore — West End (2.4 km)"
+  },
+  {
+    "venue": "Lago Maggiore",
+    "layout": "West End Reverse",
+    "km": 2.4,
+    "it": "Lago Maggiore – West End Reverse – 2,4 km",
+    "en": "Autodrome Lago Maggiore — West End Reverse (2.4 km)"
+  },
+  {
+    "venue": "Lago Maggiore",
+    "layout": "East",
+    "km": 3.6,
+    "it": "Lago Maggiore – East – 3,6 km",
+    "en": "Autodrome Lago Maggiore — East (3.6 km)"
+  },
+  {
+    "venue": "Lago Maggiore",
+    "layout": "East Reverse",
+    "km": 3.6,
+    "it": "Lago Maggiore – East Reverse – 3,6 km",
+    "en": "Autodrome Lago Maggiore — East Reverse (3.6 km)"
+  },
+  {
+    "venue": "Lago Maggiore",
+    "layout": "West",
+    "km": 4.2,
+    "it": "Lago Maggiore – West – 4,2 km",
+    "en": "Autodrome Lago Maggiore — West (4.2 km)"
+  },
+  {
+    "venue": "Lago Maggiore",
+    "layout": "West Reverse",
+    "km": 4.2,
+    "it": "Lago Maggiore – West Reverse – 4,2 km",
+    "en": "Autodrome Lago Maggiore — West Reverse (4.2 km)"
+  },
+  {
+    "venue": "Le Mans",
+    "layout": "Layout completo",
+    "km": 13.6,
+    "it": "Le Mans – Layout completo – 13,6 km",
+    "en": "Circuit de la Sarthe — Full Course (13.6 km)"
+  },
+  {
+    "venue": "Le Mans",
+    "layout": "Senza chicane",
+    "km": 13.6,
+    "it": "Le Mans – Senza chicane – 13,6 km",
+    "en": "Circuit de la Sarthe — No Chicane (13.6 km)"
+  },
+  {
+    "venue": "Monza",
+    "layout": "Layout completo",
+    "km": 5.8,
+    "it": "Monza – Layout completo – 5,8 km",
+    "en": "Autodromo Nazionale Monza — Full Course (5.8 km)"
+  },
+  {
+    "venue": "Monza",
+    "layout": "Senza chicane",
+    "km": 5.8,
+    "it": "Monza – Senza chicane – 5,8 km",
+    "en": "Autodromo Nazionale Monza — No Chicane (5.8 km)"
+  },
+  {
+    "venue": "Nürburgring",
+    "layout": "Grand Prix",
+    "km": 5.1,
+    "it": "Nürburgring – Grand Prix – 5,1 km",
+    "en": "Nürburgring — Grand Prix (5.148 km)"
+  },
+  {
+    "venue": "Nürburgring",
+    "layout": "Nordschleife",
+    "km": 20.8,
+    "it": "Nürburgring – Nordschleife – 20,8 km",
+    "en": "Nürburgring — Nordschleife (20.832 km)"
+  },
+  {
+    "venue": "Nürburgring",
+    "layout": "Nordschleife Tourist",
+    "km": 20.8,
+    "it": "Nürburgring – Nordschleife Tourist – 20,8 km",
+    "en": "Nürburgring — Nordschleife Tourist (20.832 km)"
+  },
+  {
+    "venue": "Nürburgring",
+    "layout": "24h",
+    "km": 25.4,
+    "it": "Nürburgring – 24h – 25,4 km",
+    "en": "Nürburgring — 24h (25.378 km)"
+  },
+  {
+    "venue": "Nürburgring",
+    "layout": "Endurance",
+    "km": 23.9,
+    "it": "Nürburgring – Endurance – 23,9 km",
+    "en": "Nürburgring — Endurance (23.864 km)"
+  },
+  {
+    "venue": "Nürburgring",
+    "layout": "Sprint",
+    "km": 3.6,
+    "it": "Nürburgring – Sprint – 3,6 km",
+    "en": "Nürburgring — Sprint (3.629 km)"
+  },
+  {
+    "venue": "Red Bull Ring",
+    "layout": "Layout completo",
+    "km": 4.3,
+    "it": "Red Bull Ring – Layout completo – 4,3 km",
+    "en": "Red Bull Ring — Full Course (4.3 km)"
+  },
+  {
+    "venue": "Red Bull Ring",
+    "layout": "Layout corto",
+    "km": 2.3,
+    "it": "Red Bull Ring – Layout corto – 2,3 km",
+    "en": "Red Bull Ring — Short Track (2.3 km)"
+  },
+  {
+    "venue": "Sainte-Croix",
+    "layout": "Layout A",
+    "km": 9.5,
+    "it": "Sainte-Croix – Layout A – 9,5 km",
+    "en": "Circuit de Sainte-Croix — Layout A (9.5 km)"
+  },
+  {
+    "venue": "Sainte-Croix",
+    "layout": "Layout A Reverse",
+    "km": 9.5,
+    "it": "Sainte-Croix – Layout A Reverse – 9,5 km",
+    "en": "Circuit de Sainte-Croix — Layout A Reverse (9.5 km)"
+  },
+  {
+    "venue": "Sainte-Croix",
+    "layout": "Layout B",
+    "km": 7.1,
+    "it": "Sainte-Croix – Layout B – 7,1 km",
+    "en": "Circuit de Sainte-Croix — Layout B (7.1 km)"
+  },
+  {
+    "venue": "Sainte-Croix",
+    "layout": "Layout B Reverse",
+    "km": 7.1,
+    "it": "Sainte-Croix – Layout B Reverse – 7,1 km",
+    "en": "Circuit de Sainte-Croix — Layout B Reverse (7.1 km)"
+  },
+  {
+    "venue": "Sainte-Croix",
+    "layout": "Layout C",
+    "km": 10.8,
+    "it": "Sainte-Croix – Layout C – 10,8 km",
+    "en": "Circuit de Sainte-Croix — Layout C (10.8 km)"
+  },
+  {
+    "venue": "Sainte-Croix",
+    "layout": "Layout C Reverse",
+    "km": 10.8,
+    "it": "Sainte-Croix – Layout C Reverse – 10,8 km",
+    "en": "Circuit de Sainte-Croix — Layout C Reverse (10.8 km)"
+  },
+  {
+    "venue": "Sardegna",
+    "layout": "Road Track Layout A",
+    "km": 5.1,
+    "it": "Sardegna – Road Track Layout A – 5,1 km",
+    "en": "Sardegna - Road Track — Layout A (5.1 km)"
+  },
+  {
+    "venue": "Sardegna",
+    "layout": "Road Track Layout A Reverse",
+    "km": 5.1,
+    "it": "Sardegna – Road Track Layout A Reverse – 5,1 km",
+    "en": "Sardegna - Road Track — Layout A Reverse (5.1 km)"
+  },
+  {
+    "venue": "Sardegna",
+    "layout": "Road Track Layout B",
+    "km": 3.9,
+    "it": "Sardegna – Road Track Layout B – 3,9 km",
+    "en": "Sardegna - Road Track — Layout B (3.9 km)"
+  },
+  {
+    "venue": "Sardegna",
+    "layout": "Road Track Layout B Reverse",
+    "km": 3.9,
+    "it": "Sardegna – Road Track Layout B Reverse – 3,9 km",
+    "en": "Sardegna - Road Track — Layout B Reverse (3.9 km)"
+  },
+  {
+    "venue": "Sardegna",
+    "layout": "Road Track Layout C",
+    "km": 2.7,
+    "it": "Sardegna – Road Track Layout C – 2,7 km",
+    "en": "Sardegna - Road Track — Layout C (2.7 km)"
+  },
+  {
+    "venue": "Sardegna",
+    "layout": "Road Track Layout C Reverse",
+    "km": 2.7,
+    "it": "Sardegna – Road Track Layout C Reverse – 2,7 km",
+    "en": "Sardegna - Road Track — Layout C Reverse (2.7 km)"
+  },
+  {
+    "venue": "Sardegna",
+    "layout": "Windmills",
+    "km": 3.3,
+    "it": "Sardegna – Windmills – 3,3 km",
+    "en": "Sardegna - Windmills (3.3 km)"
+  },
+  {
+    "venue": "Sardegna",
+    "layout": "Windmills Reverse",
+    "km": 3.3,
+    "it": "Sardegna – Windmills Reverse – 3,3 km",
+    "en": "Sardegna - Windmills Reverse (3.3 km)"
+  },
+  {
+    "venue": "Spa-Francorchamps",
+    "layout": "Layout completo",
+    "km": 7.0,
+    "it": "Spa-Francorchamps – Layout completo – 7,0 km",
+    "en": "Circuit de Spa-Francorchamps — Full Course (7.004 km)"
+  },
+  {
+    "venue": "Spa-Francorchamps",
+    "layout": "Layout 24h",
+    "km": 7.0,
+    "it": "Spa-Francorchamps – Layout 24h – 7,0 km",
+    "en": "Circuit de Spa-Francorchamps — 24h Layout (7.004 km)"
+  },
+  {
+    "venue": "Bathurst",
+    "layout": "Mount Panorama",
+    "km": 6.2,
+    "it": "Bathurst – Mount Panorama – 6,2 km",
+    "en": "Mount Panorama Circuit (6.2 km)"
+  },
+  {
+    "venue": "Fuji",
+    "layout": "Layout completo",
+    "km": 4.6,
+    "it": "Fuji – Layout completo – 4,6 km",
+    "en": "Fuji International Speedway — Full Course (4.6 km)"
+  },
+  {
+    "venue": "Fuji",
+    "layout": "Layout corto",
+    "km": 4.5,
+    "it": "Fuji – Layout corto – 4,5 km",
+    "en": "Fuji International Speedway — Short Course (4.5 km)"
+  },
+  {
+    "venue": "High Speed Ring",
+    "layout": "",
+    "km": 4.3,
+    "it": "High Speed Ring – 4,3 km",
+    "en": "High Speed Ring (4.345 km)"
+  },
+  {
+    "venue": "High Speed Ring",
+    "layout": "Reverse",
+    "km": 4.3,
+    "it": "High Speed Ring Reverse – 4,3 km",
+    "en": "High Speed Ring Reverse (4.345 km)"
+  },
+  {
+    "venue": "Kyoto Driving Park",
+    "layout": "Yamagiwa",
+    "km": 4.9,
+    "it": "Kyoto Driving Park – Yamagiwa – 4,9 km",
+    "en": "Kyoto Driving Park — Yamagiwa (4.9 km)"
+  },
+  {
+    "venue": "Kyoto Driving Park",
+    "layout": "Yamagiwa Reverse",
+    "km": 4.9,
+    "it": "Kyoto Driving Park – Yamagiwa Reverse – 4,9 km",
+    "en": "Kyoto Driving Park — Yamagiwa Reverse (4.9 km)"
+  },
+  {
+    "venue": "Kyoto Driving Park",
+    "layout": "Miyabi",
+    "km": 2.0,
+    "it": "Kyoto Driving Park – Miyabi – 2,0 km",
+    "en": "Kyoto Driving Park — Miyabi (2.0 km)"
+  },
+  {
+    "venue": "Kyoto Driving Park",
+    "layout": "Yamagiwa + Miyabi",
+    "km": 6.8,
+    "it": "Kyoto Driving Park – Yamagiwa + Miyabi – 6,8 km",
+    "en": "Kyoto Driving Park — Yamagiwa + Miyabi (6.8 km)"
+  },
+  {
+    "venue": "Kyoto Driving Park",
+    "layout": "Yamagiwa + Miyabi Reverse",
+    "km": 6.8,
+    "it": "Kyoto Driving Park – Yamagiwa + Miyabi Reverse – 6,8 km",
+    "en": "Kyoto Driving Park — Yamagiwa + Miyabi Reverse (6.8 km)"
+  },
+  {
+    "venue": "Suzuka",
+    "layout": "Layout completo",
+    "km": 5.8,
+    "it": "Suzuka – Layout completo – 5,8 km",
+    "en": "Suzuka Circuit — Full Course (5.8 km)"
+  },
+  {
+    "venue": "Suzuka",
+    "layout": "East Course",
+    "km": 2.2,
+    "it": "Suzuka – East Course – 2,2 km",
+    "en": "Suzuka Circuit — East Course (2.2 km)"
+  },
+  {
+    "venue": "Tokyo Expressway",
+    "layout": "Central senso orario",
+    "km": 4.4,
+    "it": "Tokyo Expressway – Central in senso orario – 4,4 km",
+    "en": "Tokyo Expressway — Central Clockwise (4.405 km)"
+  },
+  {
+    "venue": "Tokyo Expressway",
+    "layout": "Central senso antiorario",
+    "km": 4.4,
+    "it": "Tokyo Expressway – Central in senso antiorario – 4,4 km",
+    "en": "Tokyo Expressway — Central Counterclockwise (4.4 km)"
+  },
+  {
+    "venue": "Tokyo Expressway",
+    "layout": "East senso orario",
+    "km": 7.3,
+    "it": "Tokyo Expressway – East in senso orario – 7,3 km",
+    "en": "Tokyo Expressway — East Clockwise (7.301 km)"
+  },
+  {
+    "venue": "Tokyo Expressway",
+    "layout": "East senso antiorario",
+    "km": 7.2,
+    "it": "Tokyo Expressway – East in senso antiorario – 7,2 km",
+    "en": "Tokyo Expressway — East Counterclockwise (7.2 km)"
+  },
+  {
+    "venue": "Tokyo Expressway",
+    "layout": "South senso orario",
+    "km": 5.2,
+    "it": "Tokyo Expressway – South in senso orario – 5,2 km",
+    "en": "Tokyo Expressway — South Clockwise (5.2 km)"
+  },
+  {
+    "venue": "Tokyo Expressway",
+    "layout": "South senso antiorario",
+    "km": 6.6,
+    "it": "Tokyo Expressway – South in senso antiorario – 6,6 km",
+    "en": "Tokyo Expressway — South Counterclockwise (6.56 km)"
+  },
+  {
+    "venue": "Tsukuba",
+    "layout": "",
+    "km": 2.0,
+    "it": "Tsukuba – 2,0 km",
+    "en": "Tsukuba Circuit (2.045 km)"
+  },
+  {
+    "venue": "Circuit Gilles-Villeneuve",
+    "layout": "",
+    "km": 4.4,
+    "it": "Circuit Gilles-Villeneuve – 4,4 km",
+    "en": "Circuit Gilles-Villeneuve (4.4 km)"
+  },
+  {
+    "venue": "Colorado Springs",
+    "layout": "Lake",
+    "km": 3.0,
+    "it": "Colorado Springs – Lake – 3,0 km",
+    "en": "Colorado Springs (2.99 km)"
+  },
+  {
+    "venue": "Colorado Springs",
+    "layout": "Lake Reverse",
+    "km": 3.0,
+    "it": "Colorado Springs – Lake Reverse – 3,0 km",
+    "en": "Colorado Springs Reverse (2.99 km)"
+  },
+  {
+    "venue": "Daytona",
+    "layout": "Tri-Oval",
+    "km": 4.0,
+    "it": "Daytona – Tri-Oval – 4,0 km",
+    "en": "Daytona International Speedway — Tri-Oval (4.023 km)"
+  },
+  {
+    "venue": "Daytona",
+    "layout": "Road Course",
+    "km": 5.7,
+    "it": "Daytona – Road Course – 5,7 km",
+    "en": "Daytona International Speedway — Road Course (5.729 km)"
+  },
+  {
+    "venue": "Fishermans Ranch",
+    "layout": "",
+    "km": 6.9,
+    "it": "Fishermans Ranch – 6,9 km",
+    "en": "Fishermans Ranch (6.893 km)"
+  },
+  {
+    "venue": "Fishermans Ranch",
+    "layout": "Reverse",
+    "km": 6.9,
+    "it": "Fishermans Ranch Reverse – 6,9 km",
+    "en": "Fishermans Ranch Reverse (6.893 km)"
+  },
+  {
+    "venue": "Grand Valley",
+    "layout": "Highway 1",
+    "km": 5.1,
+    "it": "Grand Valley – Highway 1 – 5,1 km",
+    "en": "Grand Valley — Highway 1 (5.1 km)"
+  },
+  {
+    "venue": "Grand Valley",
+    "layout": "Highway 1 Reverse",
+    "km": 5.1,
+    "it": "Grand Valley – Highway 1 Reverse – 5,1 km",
+    "en": "Grand Valley — Highway 1 Reverse (5.1 km)"
+  },
+  {
+    "venue": "Grand Valley",
+    "layout": "South",
+    "km": 3.1,
+    "it": "Grand Valley – South – 3,1 km",
+    "en": "Grand Valley — South (3.1 km)"
+  },
+  {
+    "venue": "Grand Valley",
+    "layout": "South Reverse",
+    "km": 3.1,
+    "it": "Grand Valley – South Reverse – 3,1 km",
+    "en": "Grand Valley — South Reverse (3.1 km)"
+  },
+  {
+    "venue": "Interlagos",
+    "layout": "",
+    "km": 4.3,
+    "it": "Interlagos – 4,3 km",
+    "en": "Autódromo de Interlagos (4.309 km)"
+  },
+  {
+    "venue": "Lake Louise",
+    "layout": "Tri-Oval",
+    "km": 3.1,
+    "it": "Lake Louise – Tri-Oval – 3,1 km",
+    "en": "Lake Louise — Tri-Oval (3.1 km)"
+  },
+  {
+    "venue": "Lake Louise",
+    "layout": "Tri-Oval Reverse",
+    "km": 3.1,
+    "it": "Lake Louise – Tri-Oval Reverse – 3,1 km",
+    "en": "Lake Louise — Tri-Oval Reverse (3.1 km)"
+  },
+  {
+    "venue": "Lake Louise",
+    "layout": "Short Track",
+    "km": 2.6,
+    "it": "Lake Louise – Short Track – 2,6 km",
+    "en": "Lake Louise — Short Track (2.6 km)"
+  },
+  {
+    "venue": "Lake Louise",
+    "layout": "Short Track Reverse",
+    "km": 2.6,
+    "it": "Lake Louise – Short Track Reverse – 2,6 km",
+    "en": "Lake Louise — Short Track Reverse (2.6 km)"
+  },
+  {
+    "venue": "Lake Louise",
+    "layout": "Long Track",
+    "km": 3.7,
+    "it": "Lake Louise – Long Track – 3,7 km",
+    "en": "Lake Louise — Long Track (3.7 km)"
+  },
+  {
+    "venue": "Lake Louise",
+    "layout": "Long Track Reverse",
+    "km": 3.7,
+    "it": "Lake Louise – Long Track Reverse – 3,7 km",
+    "en": "Lake Louise — Long Track Reverse (3.7 km)"
+  },
+  {
+    "venue": "Laguna Seca",
+    "layout": "",
+    "km": 3.6,
+    "it": "Laguna Seca – 3,6 km",
+    "en": "WeatherTech Raceway Laguna Seca (3.602 km)"
+  },
+  {
+    "venue": "Road Atlanta",
+    "layout": "",
+    "km": 4.1,
+    "it": "Michelin Raceway Road Atlanta – 4,1 km",
+    "en": "Michelin Raceway Road Atlanta (4.1 km)"
+  },
+  {
+    "venue": "Watkins Glen",
+    "layout": "Layout completo",
+    "km": 5.4,
+    "it": "Watkins Glen – Layout completo – 5,4 km",
+    "en": "Watkins Glen International — Long Course (5.423 km)"
+  },
+  {
+    "venue": "Watkins Glen",
+    "layout": "Layout lungo",
+    "km": 6.1,
+    "it": "Watkins Glen – Layout lungo – 6,1 km",
+    "en": "Watkins Glen International — Short Course (3.9 km)"
+  },
+  {
+    "venue": "Watkins Glen",
+    "layout": "Layout NASCAR",
+    "km": 3.7,
+    "it": "Watkins Glen – Layout NASCAR – 3,7 km",
+    "en": "Watkins Glen International — NASCAR Layout (3.7 km)"
+  },
+  {
+    "venue": "Willow Springs",
+    "layout": "Big Willow",
+    "km": 3.9,
+    "it": "Willow Springs – Big Willow – 3,9 km",
+    "en": "Willow Springs International Raceway — Big Willow (4.0 km)"
+  },
+  {
+    "venue": "Willow Springs",
+    "layout": "Streets of Willow",
+    "km": 2.4,
+    "it": "Willow Springs – Streets of Willow – 2,4 km",
+    "en": "Willow Springs International Raceway — Streets of Willow Springs (2.7 km)"
+  },
+  {
+    "venue": "Willow Springs",
+    "layout": "Streets of Willow Reverse",
+    "km": 2.4,
+    "it": "Willow Springs – Streets of Willow Reverse – 2,4 km",
+    "en": "Willow Springs International Raceway — Streets of Willow Springs Reverse (2.7 km)"
+  },
+  {
+    "venue": "Willow Springs",
+    "layout": "Horse Thief Mile",
+    "km": 1.6,
+    "it": "Willow Springs – Horse Thief Mile – 1,6 km",
+    "en": "Willow Springs International Raceway — Horse Thief Mile (1.6 km)"
+  },
+  {
+    "venue": "Willow Springs",
+    "layout": "Horse Thief Mile Reverse",
+    "km": 1.6,
+    "it": "Willow Springs – Horse Thief Mile Reverse – 1,6 km",
+    "en": "Willow Springs International Raceway — Horse Thief Mile Reverse (1.6 km)"
+  },
+  {
+    "venue": "Blue Moon Bay",
+    "layout": "Tri-Ovale",
+    "km": 3.2,
+    "it": "Blue Moon Bay – Tri-Ovale – 3,2 km",
+    "en": "Blue Moon Bay Speedway — Full Course (3.2 km)"
+  },
+  {
+    "venue": "Blue Moon Bay",
+    "layout": "Tri-Ovale Reverse",
+    "km": 3.2,
+    "it": "Blue Moon Bay – Tri-Ovale Reverse – 3,2 km",
+    "en": "Blue Moon Bay Speedway — Full Course Reverse (3.2 km)"
+  },
+  {
+    "venue": "Blue Moon Bay",
+    "layout": "Infield A",
+    "km": 3.4,
+    "it": "Blue Moon Bay – Infield A – 3,4 km",
+    "en": "Blue Moon Bay Speedway — Infield A (3.35 km)"
+  },
+  {
+    "venue": "Blue Moon Bay",
+    "layout": "Infield A Reverse",
+    "km": 3.4,
+    "it": "Blue Moon Bay – Infield A Reverse – 3,4 km",
+    "en": "Blue Moon Bay Speedway — Infield A Reverse (3.35 km)"
+  },
+  {
+    "venue": "Blue Moon Bay",
+    "layout": "Infield B",
+    "km": 2.9,
+    "it": "Blue Moon Bay – Infield B – 2,9 km",
+    "en": "Blue Moon Bay Speedway — Infield B (2.86 km)"
+  },
+  {
+    "venue": "Blue Moon Bay",
+    "layout": "Infield B Reverse",
+    "km": 2.9,
+    "it": "Blue Moon Bay – Infield B Reverse – 2,9 km",
+    "en": "Blue Moon Bay Speedway — Infield B Reverse (2.86 km)"
+  },
+  {
+    "venue": "Broad Bean Raceway",
+    "layout": "",
+    "km": 1.7,
+    "it": "Broad Bean Raceway – 1,7 km",
+    "en": "Broad Bean Raceway (1.665 km)"
+  },
+  {
+    "venue": "Broad Bean Raceway",
+    "layout": "Reverse",
+    "km": 1.7,
+    "it": "Broad Bean Raceway Reverse – 1,7 km",
+    "en": "Broad Bean Raceway Reverse (1.665 km)"
+  },
+  {
+    "venue": "Northern Isle Speedway",
+    "layout": "",
+    "km": 0.9,
+    "it": "Northern Isle Speedway – 0,9 km",
+    "en": "Northern Isle Speedway (0.9 km)"
+  },
+  {
+    "venue": "Special Stage Route X",
+    "layout": "",
+    "km": 30.3,
+    "it": "Special Stage Route X – 30,3 km",
+    "en": "Special Stage Route X (30.283 km)"
+  },
+  {
+    "venue": "Trial Mountain",
+    "layout": "",
+    "km": 5.4,
+    "it": "Trial Mountain – 5,4 km",
+    "en": "Trial Mountain Circuit (5.4 km)"
+  },
+  {
+    "venue": "Trial Mountain",
+    "layout": "Reverse",
+    "km": 5.4,
+    "it": "Trial Mountain Reverse – 5,4 km",
+    "en": "Trial Mountain Circuit Reverse (5.4 km)"
+  },
+  {
+    "venue": "Yas Marina",
+    "layout": "Layout completo",
+    "km": 5.3,
+    "it": "Yas Marina – Layout completo – 5,3 km",
+    "en": "Yas Marina Circuit (5.281 km)"
+  }
+]
