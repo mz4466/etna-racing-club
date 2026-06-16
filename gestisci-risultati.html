@@ -1168,6 +1168,7 @@ function buildHTML(){
       </div>
       ${champ && champ.costruttori && (champ.teams||[]).length ? `<div class="standings-card">
         <h2 class="standings-title">🏭 Costruttori</h2>
+        ${bestOfNote}
         <div style="font-family:'Teko',sans-serif;font-size:11px;letter-spacing:2px;color:#c9a227;background:rgba(201,162,39,0.08);border:1px solid rgba(201,162,39,0.2);border-radius:5px;padding:5px 10px;margin-bottom:12px;">⚡ Miglior pilota per gara</div>
         <div id="champCostruttoii"></div>
         <div class="race-info"><strong>Gara ${garaNum} di ${garaTot}</strong></div>
@@ -1347,8 +1348,15 @@ ${'<scr'+'ipt>'}
             var worst=scores.length>1?Math.min.apply(null,scores):null;
             return{rn:rn,best:best,worst:worst,scores:scores};
           });
-          var total=perRace.reduce(function(s,r){return s+r.best;},0);
-          return{team:team,perRace:perRace,total:total};
+          // Apply the same best-of rule as the drivers: drop each team's worst race(s).
+          var dropped=[];
+          if(canDrop && perRace.length>_bo){
+            var toDrop=perRace.length-_bo;
+            var byVal=perRace.slice().sort(function(a,b){return a.best-b.best;});
+            dropped=byVal.slice(0,toDrop);
+          }
+          var total=perRace.reduce(function(s,r){return s+(dropped.indexOf(r)>=0?0:r.best);},0);
+          return{team:team,perRace:perRace,dropped:dropped,total:total};
         }).sort(function(a,b){return b.total-a.total;});
 
         var cpos=1;
@@ -1359,7 +1367,8 @@ ${'<scr'+'ipt>'}
           if(ts.perRace.length>1){
             var items=ts.perRace.map(function(r,idx){
               var sep=idx>0?"<span style='color:#444;font-size:10px;margin:0 2px'>+</span>":"";
-              var bestStr="<span class='cscore-best'>"+r.best+"</span>";
+              var isDrop=ts.dropped.indexOf(r)>=0;
+              var bestStr="<span class='cscore-best'"+(isDrop?" style='text-decoration:line-through;color:#e74c3c;opacity:0.8'":"")+">"+r.best+"</span>";
               var worstStr=r.worst!==null&&r.scores.length>1?"<span class='cscore-lost'>"+r.worst+"</span>":"";
               return sep+"<span style='display:inline-flex;flex-direction:column;align-items:center;min-width:22px'>"                +"<span style='color:#555;font-size:9px;line-height:1;display:block;text-align:center'>R"+r.rn+"</span>"                +bestStr+worstStr                +"</span>";
             }).join("");
