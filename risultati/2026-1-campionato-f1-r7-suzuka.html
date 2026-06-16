@@ -150,8 +150,8 @@
       <span class="standings-points">159</span>
     </div><div class="standings-item">
       <span class="standings-position pos-2">2°</span>
-      <span class="standings-driver">Pyer</span>
-      <span class="standings-points">96</span>
+      <span class="standings-driver" data-psn="PyerStark">Pyer</span>
+      <span class="standings-points">102</span>
     </div><div class="standings-item">
       <span class="standings-position pos-3">3°</span>
       <span class="standings-driver" data-psn="mz4461">Giovanni</span>
@@ -166,22 +166,18 @@
       <span class="standings-points">48</span>
     </div><div class="standings-item">
       <span class="standings-position ">6°</span>
-      <span class="standings-driver">Sandro</span>
+      <span class="standings-driver" data-psn="Sand_ro83">Sandro</span>
       <span class="standings-points">26</span>
     </div><div class="standings-item">
       <span class="standings-position ">7°</span>
-      <span class="standings-driver" data-psn="PyerStark">Pierpaolo Longo</span>
-      <span class="standings-points">18</span>
-    </div><div class="standings-item">
-      <span class="standings-position ">8°</span>
       <span class="standings-driver" data-psn="CarmineRafa87">Carmine</span>
       <span class="standings-points">15</span>
     </div><div class="standings-item">
-      <span class="standings-position ">9°</span>
+      <span class="standings-position ">8°</span>
       <span class="standings-driver" data-psn="antonioleocataad">Antonio</span>
       <span class="standings-points">5</span>
     </div><div class="standings-item">
-      <span class="standings-position ">10°</span>
+      <span class="standings-position ">9°</span>
       <span class="standings-driver" data-psn="fabyus1983">Fabio</span>
       <span class="standings-points">4</span>
     </div></div>
@@ -214,12 +210,13 @@
   var _nameMap={}; // psn_lowercase -> current nome
 
   function addToStandings(nome,pts,rn,psn){
-    if(!nome)return;
-    // Use PSN as key if available (resolves to current nome at render time)
-    var key=psn&&psn.toLowerCase&&_nameMap[psn.toLowerCase()]?_nameMap[psn.toLowerCase()]:nome;
+    if(!psn&&!nome)return;
+    // Group by PSN (stable identity) so a renamed driver never splits into two rows,
+    // regardless of whether the name map has loaded yet. Guests with no PSN group by name.
+    var key=(psn&&psn.toLowerCase)?('#'+psn.toLowerCase()):nome;
     if(!sc[key])sc[key]=[];
     if(!sc[key].find(function(e){return e.rn===rn;}))
-      sc[key].push({pts:pts,rn:rn,psn:psn||''});
+      sc[key].push({pts:pts,rn:rn,psn:psn||'',nome:nome||''});
   }
 
   function processRace(d){
@@ -230,11 +227,11 @@
     allRaces[raceN]=true;
     if(raceN===_rn)return;
     if(raceN>_rn)return;
-    (d.rows||[]).forEach(function(r){ var n=r.psn&&_nameMap[r.psn.toLowerCase()]?_nameMap[r.psn.toLowerCase()]:r.nome; addToStandings(n,r.totale||0,raceN,r.psn||''); });
+    (d.rows||[]).forEach(function(r){ addToStandings(r.nome,r.totale||0,raceN,r.psn||''); });
   }
 
   var rows=[{"nome":"Stefano","psn":"stefano8923","totale":27},{"nome":"Pierpaolo Longo","psn":"PyerStark","totale":18},{"nome":"Giovanni","psn":"mz4461","totale":15},{"nome":"Claudio","psn":"SybeX26","totale":12},{"nome":"William","psn":"steward_andante","totale":10}];
-  rows.forEach(function(r){addToStandings(r.psn&&_nameMap[r.psn.toLowerCase()]?_nameMap[r.psn.toLowerCase()]:r.nome,r.totale,_rn,r.psn||'');});
+  rows.forEach(function(r){addToStandings(r.nome,r.totale,_rn,r.psn||'');});
   allRaces[_rn]=true;
 
   function loadViaRaw(){
@@ -258,7 +255,7 @@
           return fetch(f.url).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;})
             .then(function(m){
               if(!m||!m.content)return;
-              try{processRace(JSON.parse(decodeURIComponent(escape(atob(m.content.replace(/s/g,""))))));}catch(e){}
+              try{processRace(JSON.parse(decodeURIComponent(escape(atob(m.content.replace(/\s/g,""))))));}catch(e){}
             });
         }));
       });
@@ -305,7 +302,6 @@
     var canDrop=allDone&&_bo>0&&_bo<_rt;
 
     var st=Object.entries(sc).map(function(e){
-      var nm=e[0];
       var entries=e[1].slice().sort(function(a,b){return a.rn-b.rn;});
       var dropped=[];
       if(canDrop&&entries.length>_bo){
@@ -315,6 +311,8 @@
       }
       var total=entries.reduce(function(s,e){return s+(dropped.indexOf(e)>=0?0:e.pts);},0);
       var psn=entries.length?entries[0].psn||'':'';
+      // Display name: PSN->name map first, else the most recent stored name, else the key.
+      var nm=(psn&&_nameMap[psn.toLowerCase()])?_nameMap[psn.toLowerCase()]:((entries.length&&entries[entries.length-1].nome)?entries[entries.length-1].nome:e[0]);
       return{nome:nm,psn:psn,entries:entries,dropped:dropped,total:total};
     }).sort(function(a,b){return b.total-a.total;});
 
@@ -350,15 +348,16 @@
     if(_costruttori && _teams && _teams.length){
       var cel=document.getElementById("champCostruttoii");
       if(cel){
+        // sc is keyed by PSN, so resolve each driver's current display name to match team rosters.
+        var stByName={};
+        st.forEach(function(s){ if(s.nome) stByName[s.nome.toLowerCase().trim()]=s.entries; });
         // Per each team, per each race round, take the best score among pilots
         var teamScores=_teams.map(function(team){
           // Get all race numbers seen
           var allRns=Object.keys(allRaces).map(Number).sort(function(a,b){return a-b;});
           var perRace=allRns.map(function(rn){
             var scores=team.pilots.map(function(pName){
-              var pKey=pName.toLowerCase().trim();
-              var scKey=Object.keys(sc).find(function(k){return k.toLowerCase().trim()===pKey;});
-              var pEntry=scKey?sc[scKey]:null;
+              var pEntry=stByName[pName.toLowerCase().trim()];
               if(!pEntry)return null;
               var rEntry=pEntry.find(function(e){return e.rn===rn;});
               return rEntry?rEntry.pts:null;
