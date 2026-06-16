@@ -733,8 +733,9 @@ function generatePostHTML(post,bks,canvasRatio){
   o+='.cb-e iframe{width:100%;height:100%;border:none}\n';
   o+='@media(max-width:768px){.cv{height:auto!important;padding-bottom:0!important}\n';
   o+='.cb{position:relative!important;left:auto!important;top:auto!important;width:100%!important;height:auto!important;margin-bottom:12px}\n';
-  o+='.cb-p img{height:auto;max-height:400px;object-fit:contain}\n';
+  o+='.cb-p img{height:auto;max-height:400px;object-fit:contain;cursor:zoom-in}\n';
   o+='.cb-v{padding-bottom:56.25%;position:relative;height:0!important}.cb-v iframe,.cb-v video{position:absolute;top:0;left:0}}\n';
+  o+='/* lightbox */\n.lbx{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out}\n.lbx.open{display:flex}\n.lbx img{max-width:92vw;max-height:92vh;object-fit:contain;border-radius:6px;box-shadow:0 0 60px rgba(0,0,0,.8);cursor:default}\n.lbx-close{position:fixed;top:18px;right:22px;font-size:32px;color:#fff;cursor:pointer;line-height:1;opacity:.7;transition:opacity .15s}\n.lbx-close:hover{opacity:1}\n.cb-p img{cursor:zoom-in}\n';
   o+='<'+'/style>\n<'+'/head>\n<body>\n';
   o+='<div class="top"><a href="../../social.html" class="logo">\u25C0 ERC Social</a><a href="../../social.html" class="back">\u2190 Tutti i Post</a></div>\n';
   o+='<div class="hdr"><h1>'+esc(post.title)+'</h1><div class="meta">';
@@ -776,7 +777,9 @@ function generatePostHTML(post,bks,canvasRatio){
       o+='</div>\n';
     }
   });
-  o+='</div></div>\n<'+'/body>\n<'+'/html>';
+  o+='</div></div>\n';
+  o+='<div class=\'lbx\' id=\'lbx\' onclick=\'this.classList.remove(\'open\')\'><span class=\'lbx-close\' onclick=\'event.stopPropagation();document.getElementById(\'lbx\').classList.remove(\'open\')\'>&#x2715;</span><img id=\'lbx-img\' src=\'\'  alt=\'\' onclick=\'event.stopPropagation()\'></div>\n<script>(function(){document.querySelectorAll(\'.cb-p img\').forEach(function(img){img.addEventListener(\'click\',function(){var lb=document.getElementById(\'lbx\');document.getElementById(\'lbx-img\').src=this.src;lb.classList.add(\'open\');});});document.addEventListener(\'keydown\',function(e){if(e.key===\'Escape\') document.getElementById(\'lbx\').classList.remove(\'open\');});})();<\/script>\n';
+  o+='<'+'/body>\n<'+'/html>';
   return o;
 }
 
