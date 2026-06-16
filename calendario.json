@@ -493,7 +493,7 @@
     "bestOf": 6,
     "rounds": [
       {
-        "circuit": "Yas Marina",
+        "circuit": "Circuito di Yas Marina – Layout completo – 5,3 km",
         "date": "",
         "laps": "58",
         "weather": "",
@@ -503,7 +503,7 @@
         "notes": "Tutte e tre le mescole"
       },
       {
-        "circuit": "Montreal",
+        "circuit": "Circuito Gilles Villeneuve – 4,4 km",
         "date": "",
         "laps": "70",
         "weather": "",
@@ -513,7 +513,7 @@
         "notes": "Tutte e tre le mescole"
       },
       {
-        "circuit": "Barcellona",
+        "circuit": "Barcellona – Layout GP – 4,7 km",
         "date": "2026-03-22",
         "laps": "65",
         "weather": "",
@@ -523,7 +523,7 @@
         "notes": "Tutte e tre le mescole"
       },
       {
-        "circuit": "Monza",
+        "circuit": "Monza – Layout completo – 5,8 km",
         "date": "2026-04-19",
         "laps": "53",
         "weather": "",
@@ -533,7 +533,7 @@
         "notes": "Tutte e tre le mescole"
       },
       {
-        "circuit": "Red Bull Ring",
+        "circuit": "Red Bull Ring – Layout completo – 4,3 km",
         "date": "2026-05-03",
         "laps": "71",
         "weather": "",
@@ -543,7 +543,7 @@
         "notes": "Tutte e tre le mescole"
       },
       {
-        "circuit": "SPA",
+        "circuit": "Spa-Francorchamps – Layout completo – 7,0 km",
         "date": "2026-05-17",
         "laps": "44",
         "weather": "",
@@ -553,7 +553,7 @@
         "notes": "Tutte e tre le mescole"
       },
       {
-        "circuit": "Suzuka",
+        "circuit": "Suzuka – Layout completo – 5,8 km",
         "date": "2026-05-31",
         "laps": "70",
         "weather": "",
