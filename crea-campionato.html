@@ -1899,8 +1899,8 @@ function toast(msg, type) {
 (function(){
   var dl = document.getElementById('gt7-circuits');
   if(!dl) return;
-  fetch('../gt7_circuiti.json?_='+Date.now())
-    .catch(function(){ return fetch('gt7_circuiti.json?_='+Date.now()); })
+  fetch('gt7_circuiti.json?_='+Date.now())
+    
     .then(function(r){ return r.ok ? r.json() : []; })
     .catch(function(){ return []; })
     .then(function(list){
