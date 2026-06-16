@@ -622,9 +622,11 @@ async function loadPreviousResults(champVal){
       if(!matchesId && !matchesIdx) return;
       var rows = race.rows || [];
       rows.forEach(function(row){
-        if(!row.nome) return;
-        if(!previousResults[champVal][row.nome]) previousResults[champVal][row.nome] = [];
-        previousResults[champVal][row.nome].push({ pts: row.totale||0, round: parseInt(race.garaNum)||0 });
+        if(!row.nome && !row.psn) return;
+        // Key by PSN (stable identity) so renamed drivers aren't split; guests fall back to name.
+        var key = row.psn ? ('#'+row.psn.toLowerCase()) : row.nome;
+        if(!previousResults[champVal][key]) previousResults[champVal][key] = [];
+        previousResults[champVal][key].push({ pts: row.totale||0, round: parseInt(race.garaNum)||0, psn: row.psn||'', nome: row.nome||'' });
       });
     });
   } catch(e){ console.warn('loadPreviousResults:', e.message); }
@@ -938,23 +940,29 @@ function collectStandings(applyBestOf=false){
                        parseInt(document.getElementById('garaNum').value) || 0;
 
   // Start with accumulated points from previous races
-  const pilotScores = {};  // nome -> [pts per round]
+  const pilotScores = {};  // key (#psn or guest-name) -> { psn, nome, scores:[] }
+
+  function bucket(key, psn, nome){
+    if(!pilotScores[key]) pilotScores[key] = { psn: psn||'', nome: nome||'', scores: [] };
+    if(nome) pilotScores[key].nome = nome;            // keep most recent stored name as fallback
+    if(psn && !pilotScores[key].psn) pilotScores[key].psn = psn;
+    return pilotScores[key];
+  }
 
   // Add previous rounds (excluding current round if already saved)
   const prev = (champIdx !== '' && previousResults[champIdx]) ? previousResults[champIdx] : {};
-  Object.entries(prev).forEach(function([nome, rounds]){
-    if(!pilotScores[nome]) pilotScores[nome] = [];
+  Object.entries(prev).forEach(function([key, rounds]){
     rounds.forEach(function(r){
       // Skip current round — we'll use live data for it
-      if(r.round !== currentRound) pilotScores[nome].push(r.pts);
+      if(r.round !== currentRound) bucket(key, r.psn, r.nome).scores.push(r.pts);
     });
   });
 
-  // Add current race live data
+  // Add current race live data (key by PSN when present, matching the prev-rounds scheme)
   collectRows().forEach(function(r){
-    if(!r.nome) return;
-    if(!pilotScores[r.nome]) pilotScores[r.nome] = [];
-    pilotScores[r.nome].push(r.totale);
+    if(!r.nome && !r.psn) return;
+    var key = r.psn ? ('#'+r.psn.toLowerCase()) : r.nome;
+    bucket(key, r.psn, r.nome).scores.push(r.totale);
   });
 
   // Apply bestOf per pilot whenever they have more results than the limit
@@ -963,12 +971,16 @@ function collectStandings(applyBestOf=false){
   const totalRounds = parseInt(document.getElementById('champSelect').dataset.totalRounds)||0;
   const canDrop = bestOf > 0 && totalRounds > 0 && bestOf < totalRounds;
 
-  const pilots = Object.entries(pilotScores).map(function([nome, scores]){
+  const pilots = Object.values(pilotScores).map(function(p){
+    var scores = p.scores;
     var usedScores = scores;
     if(canDrop && scores.length > bestOf){
       usedScores = scores.slice().sort(function(a,b){return b-a;}).slice(0, bestOf);
     }
-    return { nome: nome, psn: pilotPsnMap[nome.toLowerCase()]||'', pts: usedScores.reduce(function(s,v){return s+v;},0) };
+    // Resolve current display name from the PSN->name map when we have a PSN.
+    var psn = p.psn || (p.nome ? (pilotPsnMap[p.nome.toLowerCase()]||'') : '');
+    var nome = (psn && psnNomeMap[psn.toLowerCase()]) ? psnNomeMap[psn.toLowerCase()] : p.nome;
+    return { nome: nome, psn: psn, pts: usedScores.reduce(function(s,v){return s+v;},0) };
   });
 
   const sorted = pilots.sort(function(a,b){return b.pts-a.pts;});
@@ -1179,12 +1191,13 @@ ${'<scr'+'ipt>'}
   var _nameMap={}; // psn_lowercase -> current nome
 
   function addToStandings(nome,pts,rn,psn){
-    if(!nome)return;
-    // Use PSN as key if available (resolves to current nome at render time)
-    var key=psn&&psn.toLowerCase&&_nameMap[psn.toLowerCase()]?_nameMap[psn.toLowerCase()]:nome;
+    if(!psn&&!nome)return;
+    // Group by PSN (stable identity) so a renamed driver never splits into two rows,
+    // regardless of whether the name map has loaded yet. Guests with no PSN group by name.
+    var key=(psn&&psn.toLowerCase)?('#'+psn.toLowerCase()):nome;
     if(!sc[key])sc[key]=[];
     if(!sc[key].find(function(e){return e.rn===rn;}))
-      sc[key].push({pts:pts,rn:rn,psn:psn||''});
+      sc[key].push({pts:pts,rn:rn,psn:psn||'',nome:nome||''});
   }
 
   function processRace(d){
@@ -1195,11 +1208,11 @@ ${'<scr'+'ipt>'}
     allRaces[raceN]=true;
     if(raceN===_rn)return;
     if(raceN>_rn)return;
-    (d.rows||[]).forEach(function(r){ var n=r.psn&&_nameMap[r.psn.toLowerCase()]?_nameMap[r.psn.toLowerCase()]:r.nome; addToStandings(n,r.totale||0,raceN,r.psn||''); });
+    (d.rows||[]).forEach(function(r){ addToStandings(r.nome,r.totale||0,raceN,r.psn||''); });
   }
 
   var rows=${JSON.stringify(rows.map(function(r){return{nome:r.nome,psn:r.psn||'',totale:r.totale};}))};
-  rows.forEach(function(r){addToStandings(r.psn&&_nameMap[r.psn.toLowerCase()]?_nameMap[r.psn.toLowerCase()]:r.nome,r.totale,_rn,r.psn||'');});
+  rows.forEach(function(r){addToStandings(r.nome,r.totale,_rn,r.psn||'');});
   allRaces[_rn]=true;
 
   function loadViaRaw(){
@@ -1270,7 +1283,6 @@ ${'<scr'+'ipt>'}
     var canDrop=allDone&&_bo>0&&_bo<_rt;
 
     var st=Object.entries(sc).map(function(e){
-      var nm=e[0];
       var entries=e[1].slice().sort(function(a,b){return a.rn-b.rn;});
       var dropped=[];
       if(canDrop&&entries.length>_bo){
@@ -1280,6 +1292,8 @@ ${'<scr'+'ipt>'}
       }
       var total=entries.reduce(function(s,e){return s+(dropped.indexOf(e)>=0?0:e.pts);},0);
       var psn=entries.length?entries[0].psn||'':'';
+      // Display name: PSN->name map first, else the most recent stored name, else the key.
+      var nm=(psn&&_nameMap[psn.toLowerCase()])?_nameMap[psn.toLowerCase()]:((entries.length&&entries[entries.length-1].nome)?entries[entries.length-1].nome:e[0]);
       return{nome:nm,psn:psn,entries:entries,dropped:dropped,total:total};
     }).sort(function(a,b){return b.total-a.total;});
 
@@ -1315,15 +1329,16 @@ ${'<scr'+'ipt>'}
     if(_costruttori && _teams && _teams.length){
       var cel=document.getElementById("champCostruttoii");
       if(cel){
+        // sc is keyed by PSN, so resolve each driver's current display name to match team rosters.
+        var stByName={};
+        st.forEach(function(s){ if(s.nome) stByName[s.nome.toLowerCase().trim()]=s.entries; });
         // Per each team, per each race round, take the best score among pilots
         var teamScores=_teams.map(function(team){
           // Get all race numbers seen
           var allRns=Object.keys(allRaces).map(Number).sort(function(a,b){return a-b;});
           var perRace=allRns.map(function(rn){
             var scores=team.pilots.map(function(pName){
-              var pKey=pName.toLowerCase().trim();
-              var scKey=Object.keys(sc).find(function(k){return k.toLowerCase().trim()===pKey;});
-              var pEntry=scKey?sc[scKey]:null;
+              var pEntry=stByName[pName.toLowerCase().trim()];
               if(!pEntry)return null;
               var rEntry=pEntry.find(function(e){return e.rn===rn;});
               return rEntry?rEntry.pts:null;
@@ -1382,15 +1397,22 @@ function downloadHTML(){
 // ── COLLECT FINAL STANDINGS (for saving in last race JSON) ──
 // Fetches ALL race JSONs for this championship and computes true cumulative standings
 async function collectFinalStandings(champVal, champ){
-  const sc = {}; // pilotName -> [pts]
+  const sc = {}; // key (#psn or guest-name) -> { psn, nome, scores:[] }
   const currentRows = collectRows();
   const currentRound = parseInt(document.getElementById('roundSelect').value) || parseInt(document.getElementById('garaNum').value) || 0;
 
+  function fsBucket(psn, nome){
+    var key = psn ? ('#'+psn.toLowerCase()) : nome;
+    if(!sc[key]) sc[key] = { psn: psn||'', nome: nome||'', scores: [] };
+    if(nome) sc[key].nome = nome;
+    if(psn && !sc[key].psn) sc[key].psn = psn;
+    return sc[key];
+  }
+
   // Add current race live data
   currentRows.forEach(function(r){
-    if(!r.nome) return;
-    if(!sc[r.nome]) sc[r.nome] = [];
-    sc[r.nome].push(r.totale);
+    if(!r.nome && !r.psn) return;
+    fsBucket(r.psn, r.nome).scores.push(r.totale);
   });
 
   try {
@@ -1415,9 +1437,8 @@ async function collectFinalStandings(champVal, champ){
         if(!matchesId && !matchesIdx) return;
         if(parseInt(race.garaNum) === currentRound) return; // skip current — using live data
         (race.rows||[]).forEach(function(row){
-          if(!row.nome) return;
-          if(!sc[row.nome]) sc[row.nome] = [];
-          sc[row.nome].push(row.totale||0);
+          if(!row.nome && !row.psn) return;
+          fsBucket(row.psn, row.nome).scores.push(row.totale||0);
         });
       });
     }
@@ -1427,18 +1448,21 @@ async function collectFinalStandings(champVal, champ){
   const totalRounds = champ && champ.totalRounds ? parseInt(champ.totalRounds) : 0;
   const canDrop = bestOf > 0 && totalRounds > 0 && bestOf < totalRounds;
 
-  const pilots = Object.entries(sc).map(function([nome, scores]){
+  const pilots = Object.values(sc).map(function(p){
+    var scores = p.scores;
     var used = scores;
     if(canDrop && scores.length > bestOf){
       used = scores.slice().sort(function(a,b){return b-a;}).slice(0, bestOf);
     }
-    return { nome: nome, pts: used.reduce(function(s,v){return s+v;},0) };
+    var psn = p.psn || (p.nome ? (pilotPsnMap[p.nome.toLowerCase()]||'') : '');
+    var nome = (psn && psnNomeMap[psn.toLowerCase()]) ? psnNomeMap[psn.toLowerCase()] : p.nome;
+    return { nome: nome, psn: psn, pts: used.reduce(function(s,v){return s+v;},0) };
   }).sort(function(a,b){return b.pts-a.pts;});
 
   let tiePos = 1;
   return pilots.map(function(p,i){
     if(i>0 && pilots[i].pts < pilots[i-1].pts) tiePos = i+1;
-    return { nome: p.nome, pts: p.pts, pos: tiePos };
+    return { nome: p.nome, psn: p.psn, pts: p.pts, pos: tiePos };
   });
 }
 
