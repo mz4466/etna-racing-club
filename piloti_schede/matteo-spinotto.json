@@ -11,6 +11,12 @@
   "foto": "",
   "foto2": "",
   "numero": "",
-  "campionati": {},
+  "campionati": {
+    "trofeo-gr1-manche-1-2026": {
+      "cars": [
+        "919 Hybrid '16"
+      ]
+    }
+  },
   "attivo": true
 }
