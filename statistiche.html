@@ -250,35 +250,73 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       .catch(function(){ return null; });   /* missing/deleted file -> skip, don't hang */
   }
 
-  function fetchCalendario(){
-    return fetch(BASE + 'calendario.json?_=' + Date.now())
-      .then(function(r){ return r.json(); })
-      .then(function(champs){
-        circuitMap = {};
-        ufficioseIds = {};
-        for(var ci=0; ci<champs.length; ci++){
-          var champ = champs[ci];
-          /* mark ufficiose championships so processData can skip them */
-          if(champ.cat === 'Gara Ufficiosa'){
-            if(champ.id) ufficioseIds[champ.id] = true;
-            continue; /* skip circuit counting for ufficiose */
-          }
-          var rounds = champ.rounds || champ.calendar || [];
-          /* only count completed rounds using completedRounds counter */
-          var completed = typeof champ.completedRounds === 'number' ? champ.completedRounds : rounds.length;
-          for(var ri=0; ri<rounds.length && ri<completed; ri++){
-            var round = rounds[ri];
-            var circuit = round.circuit || round.circuito || '';
-            if(!circuit) continue;
-            /* strip km suffix for grouping: "Suzuka Circuit — Full Course (5.8 km)" -> "Suzuka Circuit — Full Course" */
-            var cKey = circuit.replace(/\s*\([\d.]+ km\)\s*$/i, '').trim();
-            /* also strip old-style metre suffix: "Monza (5.793 m)" -> "Monza" */
-            cKey = cKey.replace(/\s*\([\d.]+ m\)\s*$/i, '').trim();
-            circuitMap[cKey] = (circuitMap[cKey] || 0) + 1;
-          }
+  /* canonical track lookup: built from gt7_circuiti.json */
+  var canonicalTrack = {}; /* normalisedKey -> canonical track string */
+
+  function normaliseCircuit(s){
+    /* lowercase, collapse spaces, strip km/m suffixes, strip dashes */
+    return (s || '').toLowerCase()
+      .replace(/\s*[\(\[][\d.,]+ ?k?m[\)\]]\s*/gi, '')
+      .replace(/\s*—\s*/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function fetchGT7Circuits(){
+    return fetch(BASE + 'gt7_circuiti.json?_=' + Date.now())
+      .then(function(r){ return r.ok ? r.json() : []; })
+      .catch(function(){ return []; })
+      .then(function(list){
+        for(var i=0; i<list.length; i++){
+          var t = list[i].track || '';
+          if(t) canonicalTrack[normaliseCircuit(t)] = t;
         }
-      })
-      .catch(function(){ circuitMap = {}; });
+      });
+  }
+
+  function resolveCircuit(raw){
+    if(!raw) return '';
+    /* 1. exact match in canonical map */
+    var nk = normaliseCircuit(raw);
+    if(canonicalTrack[nk]) return canonicalTrack[nk];
+    /* 2. partial match: find the canonical entry whose normalised key the raw key starts with or vice-versa */
+    for(var k in canonicalTrack){
+      if(!canonicalTrack.hasOwnProperty(k)) continue;
+      if(nk.indexOf(k) === 0 || k.indexOf(nk) === 0) return canonicalTrack[k];
+    }
+    /* 3. fallback: strip old-style suffixes and return as-is */
+    return raw.replace(/\s*\([\d.]+ km\)\s*$/i,'').replace(/\s*\([\d.]+ m\)\s*$/i,'').trim();
+  }
+
+  function fetchCalendario(){
+    return fetchGT7Circuits().then(function(){
+      return fetch(BASE + 'calendario.json?_=' + Date.now())
+        .then(function(r){ return r.json(); })
+        .then(function(champs){
+          circuitMap = {};
+          ufficioseIds = {};
+          for(var ci=0; ci<champs.length; ci++){
+            var champ = champs[ci];
+            /* mark ufficiose championships so processData can skip them */
+            if(champ.cat === 'Gara Ufficiosa'){
+              if(champ.id) ufficioseIds[champ.id] = true;
+              continue; /* skip circuit counting for ufficiose */
+            }
+            var rounds = champ.rounds || champ.calendar || [];
+            /* only count completed rounds using completedRounds counter */
+            var completed = typeof champ.completedRounds === 'number' ? champ.completedRounds : rounds.length;
+            for(var ri=0; ri<rounds.length && ri<completed; ri++){
+              var round = rounds[ri];
+              var circuit = round.circuit || round.circuito || '';
+              if(!circuit) continue;
+              var cKey = resolveCircuit(circuit);
+              if(!cKey) continue;
+              circuitMap[cKey] = (circuitMap[cKey] || 0) + 1;
+            }
+          }
+        })
+        .catch(function(){ circuitMap = {}; });
+    });
   }
 
   function loadAll(){
