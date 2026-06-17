@@ -254,12 +254,20 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   var canonicalTrack = {}; /* normalisedKey -> canonical track string */
 
   function normaliseCircuit(s){
-    /* lowercase, collapse spaces, strip km/m suffixes, strip dashes */
     return (s || '').toLowerCase()
-      .replace(/\s*[\(\[][\d.,]+ ?k?m[\)\]]\s*/gi, '')
+      .replace(/\s*[\(\[]\s*[\d.,]+ ?k?m?\s*[\)\]]\s*/gi, '') /* (5.8 km), (5.8 m), (4.253) */
       .replace(/\s*—\s*/g, ' ')
+      .replace(/-/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
+  }
+
+  function venueKey(nk){
+    /* first word(s) before known suffixes — used as a last-resort prefix match */
+    return nk.split(' layout')[0].split(' tracciato')[0].split(' stradale')[0]
+             .split(' road')[0].split(' circuit')[0].split(' international')[0]
+             .split(' speedway')[0].split(' raceway')[0]
+             .trim();
   }
 
   function fetchGT7Circuits(){
@@ -276,16 +284,29 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
   function resolveCircuit(raw){
     if(!raw) return '';
-    /* 1. exact match in canonical map */
     var nk = normaliseCircuit(raw);
+    /* 1. exact normalised match */
     if(canonicalTrack[nk]) return canonicalTrack[nk];
-    /* 2. partial match: find the canonical entry whose normalised key the raw key starts with or vice-versa */
+    /* 2. one key is a prefix of the other */
     for(var k in canonicalTrack){
       if(!canonicalTrack.hasOwnProperty(k)) continue;
       if(nk.indexOf(k) === 0 || k.indexOf(nk) === 0) return canonicalTrack[k];
     }
-    /* 3. fallback: strip old-style suffixes and return as-is */
-    return raw.replace(/\s*\([\d.]+ km\)\s*$/i,'').replace(/\s*\([\d.]+ m\)\s*$/i,'').trim();
+    /* 3. venue-prefix match: strip known suffixes and match start of canonical key */
+    var vk = venueKey(nk);
+    if(vk.length >= 4){
+      for(var k2 in canonicalTrack){
+        if(!canonicalTrack.hasOwnProperty(k2)) continue;
+        if(k2.indexOf(vk) === 0) return canonicalTrack[k2];
+      }
+    }
+    /* 4. raw contains a canonical key as substring */
+    for(var k3 in canonicalTrack){
+      if(!canonicalTrack.hasOwnProperty(k3)) continue;
+      if(nk.indexOf(k3) >= 0 && k3.length >= 5) return canonicalTrack[k3];
+    }
+    /* 5. fallback: strip suffixes and return cleaned */
+    return raw.replace(/\s*[\(\[]\s*[\d.,]+ ?k?m?\s*[\)\]]\s*$/i,'').trim();
   }
 
   function fetchCalendario(){
