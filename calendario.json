@@ -668,10 +668,10 @@
     "trophy": "Classic_Vintage.png",
     "cars": "",
     "desc": "",
-    "status": "prossimo",
+    "status": "concluso",
     "file": "campionati/1-trofeo-auto-storiche-8090-2025-trofeo-1-trofeo-auto-storiche-80-90.html",
     "totalRounds": 1,
-    "completedRounds": 0,
+    "completedRounds": 1,
     "bestOf": null,
     "rounds": [
       {
