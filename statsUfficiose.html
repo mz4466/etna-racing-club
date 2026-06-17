@@ -293,6 +293,12 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       if(!canonicalTrack.hasOwnProperty(k3)) continue;
       if(nk.indexOf(k3) >= 0 && k3.length >= 5) return canonicalTrack[k3];
     }
+    if(nk.length >= 4){
+      for(var k4 in canonicalTrack){
+        if(!canonicalTrack.hasOwnProperty(k4)) continue;
+        if(k4.indexOf(nk) >= 0) return canonicalTrack[k4];
+      }
+    }
     return raw.replace(/\s*[\(\[][\s\d.,]+ ?k?m?\s*[\)\]]\s*$/i,'').trim();
   }
 
