@@ -315,7 +315,9 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
             if(champ.cat !== 'Gara Ufficiosa') continue;
             if(champ.id) ufficioseIds[champ.id] = true;
             var rounds = champ.rounds || champ.calendar || [];
-            var completed = typeof champ.completedRounds === 'number' ? champ.completedRounds : rounds.length;
+            /* for ufficiose, completedRounds=0 means "no tracking" — treat all rounds as completed */
+            var completed = (typeof champ.completedRounds === 'number' && champ.completedRounds > 0)
+              ? champ.completedRounds : rounds.length;
             for(var ri=0; ri<rounds.length && ri<completed; ri++){
               var round = rounds[ri];
               var circuit = round.circuit || round.circuito || '';
