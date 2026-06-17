@@ -668,10 +668,10 @@
     "trophy": "Classic_Vintage.png",
     "cars": "",
     "desc": "",
-    "status": "prossimo",
+    "status": "concluso",
     "file": "campionati/1-trofeo-auto-storiche-8090-2025-trofeo-1-trofeo-auto-storiche-80-90.html",
     "totalRounds": 1,
-    "completedRounds": 0,
+    "completedRounds": 1,
     "bestOf": null,
     "rounds": [
       {
@@ -698,10 +698,10 @@
     "trophy": null,
     "cars": "GR.1 - Porsche 919 Hybrid '16",
     "desc": "Ci siamo! Il Trofeo GR1 è finalmente qui. Sette giri con le Hypercar, gomme medie-morbide e qualche pit stop da non sbagliare. Partenza lanciata, BDP attivi e zero pietà. Vediamo chi ha il coraggio di spingere fino in fondo! 🔥",
-    "status": "prossimo",
+    "status": "concluso",
     "file": "campionati/trofeo-gr1---manche-1-2026-gara-ufficiosa.html",
     "totalRounds": 1,
-    "completedRounds": 0,
+    "completedRounds": 1,
     "bestOf": null,
     "rounds": [
       {
