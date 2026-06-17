@@ -10,7 +10,7 @@
       "pos": 1,
       "nome": "Claudio",
       "psn": "SybeX26",
-      "auto": "",
+      "auto": "Nissan Skyline Super Silhouette Group 5 '84",
       "tempo": "32'34''367",
       "bestLap": "1'47''203",
       "fl": false,
@@ -22,9 +22,9 @@
     },
     {
       "pos": 2,
-      "nome": "Mazza",
+      "nome": "Giovanni",
       "psn": "mz4461",
-      "auto": "",
+      "auto": "Peugeot 205 Turbo 16 Evolution 2 '86",
       "tempo": "a 3\"247",
       "bestLap": "1'47''208",
       "fl": false,
@@ -36,9 +36,9 @@
     },
     {
       "pos": 3,
-      "nome": "Pierpaolo Longo",
+      "nome": "Pyer",
       "psn": "PyerStark",
-      "auto": "",
+      "auto": "Alfa Romeo 155 2.5 V6 TI '93",
       "tempo": "a 30\"896",
       "bestLap": "1'48''451",
       "fl": false,
@@ -52,16 +52,19 @@
   "standings": [
     {
       "nome": "Claudio",
+      "psn": "SybeX26",
       "pts": 25,
       "pos": 1
     },
     {
-      "nome": "Mazza",
+      "nome": "Giovanni",
+      "psn": "mz4461",
       "pts": 18,
       "pos": 2
     },
     {
-      "nome": "Pierpaolo Longo",
+      "nome": "Pyer",
+      "psn": "PyerStark",
       "pts": 15,
       "pos": 3
     }
