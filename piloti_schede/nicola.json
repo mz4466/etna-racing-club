@@ -1,0 +1,22 @@
+{
+  "nome": "Nicola",
+  "psn": "taeniko85",
+  "nazione": "",
+  "auto": "",
+  "stile": "",
+  "pistaAma": "",
+  "pistaOdia": "",
+  "catchphrase": "",
+  "badges": [],
+  "foto": "",
+  "foto2": "",
+  "numero": "",
+  "campionati": {
+    "trofeo-gr1-manche-1-2026": {
+      "cars": [
+        "919 Hybrid '16"
+      ]
+    }
+  },
+  "attivo": true
+}
