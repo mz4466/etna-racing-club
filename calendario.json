@@ -153,7 +153,7 @@
     "bestOf": null,
     "rounds": [
       {
-        "circuit": "Monza (5.793 m)",
+        "circuit": "Monza – Layout completo – 5,8 km",
         "date": "2025-10-05",
         "laps": "14",
         "weather": "🌆 Tramonto alto",
@@ -183,7 +183,7 @@
     "bestOf": null,
     "rounds": [
       {
-        "circuit": "Tsukuba Circuit",
+        "circuit": "Tsukuba – 2,0 km",
         "date": "2025-10-25",
         "laps": "30",
         "weather": "",
@@ -243,7 +243,7 @@
     "bestOf": null,
     "rounds": [
       {
-        "circuit": "Mount Panorama (6.213 m)",
+        "circuit": "Bathurst – Mount Panorama – 6,2 km",
         "date": "2025-11-25",
         "laps": "3",
         "weather": "",
@@ -303,7 +303,7 @@
     "bestOf": 4,
     "rounds": [
       {
-        "circuit": "Autopolis (4.674 m)",
+        "circuit": "Autopolis – Layout completo – 4,7 km",
         "date": "2026-01-11",
         "laps": "17",
         "weather": "🌅 Mattino presto + ☁️ Molto nuvoloso + 🌫️ Coperto cupo + 🌧️ Pioggia + ⛈️ Temporale",
@@ -313,7 +313,7 @@
         "notes": "1 Pit - 15 min Qualifiche"
       },
       {
-        "circuit": "Interlagos (4.309 m)",
+        "circuit": "Interlagos – 4,3 km",
         "date": "2026-01-25",
         "laps": "18",
         "weather": "☁️ Molto nuvoloso",
@@ -323,7 +323,7 @@
         "notes": ""
       },
       {
-        "circuit": "Red Bull Ring (4.318 m)",
+        "circuit": "Red Bull Ring – Layout completo – 4,3 km",
         "date": "2026-02-01",
         "laps": "18",
         "weather": "☁️ Molto nuvoloso + 🌫️ Coperto cupo + 🌑 Overcast + 🌧️ Pioggia + 🌧️ Pioggia battente",
@@ -333,7 +333,7 @@
         "notes": ""
       },
       {
-        "circuit": "Deep Forest (4.253)",
+        "circuit": "Deep Forest Raceway – 4,3 km",
         "date": "2026-02-22",
         "laps": "18",
         "weather": "🌥️ Nuvoloso variabile",
@@ -343,7 +343,7 @@
         "notes": ""
       },
       {
-        "circuit": "Suzuka (5.807 m)",
+        "circuit": "Suzuka – Layout completo – 5,8 km",
         "date": "2026-03-08",
         "laps": "14",
         "weather": "🌇 Pre-tramonto + 🌇 Tramonto basso + 🌧️ Pioggia + 🌧️ Pioggia battente",
@@ -443,7 +443,7 @@
     "bestOf": 2,
     "rounds": [
       {
-        "circuit": "Sardegna - Stradale (conf. A) (5.113 m)",
+        "circuit": "Sardegna – Tracciato stradale Layout A – 5,1 km",
         "date": "2025-12-07",
         "laps": "17",
         "weather": "",
@@ -453,7 +453,7 @@
         "notes": ""
       },
       {
-        "circuit": "Lago Maggiore (5.809 m)",
+        "circuit": "Lago Maggiore – Layout completo – 5,8 km",
         "date": "2026-01-18",
         "laps": "17",
         "weather": "",
@@ -463,7 +463,7 @@
         "notes": ""
       },
       {
-        "circuit": "Monza (5.793 m)",
+        "circuit": "Monza – Layout completo – 5,8 km",
         "date": "2026-02-08",
         "laps": "17",
         "weather": "",
@@ -668,14 +668,14 @@
     "trophy": "Classic_Vintage.png",
     "cars": "",
     "desc": "",
-    "status": "concluso",
+    "status": "prossimo",
     "file": "campionati/1-trofeo-auto-storiche-8090-2025-trofeo-1-trofeo-auto-storiche-80-90.html",
     "totalRounds": 1,
-    "completedRounds": 1,
+    "completedRounds": 0,
     "bestOf": null,
     "rounds": [
       {
-        "circuit": "Circuit de Barcelona-Catalunya — Grand Prix Layout (4.7 km)",
+        "circuit": "Barcellona – Layout GP – 4,7 km",
         "date": "2025-12-14",
         "laps": "18",
         "weather": "",
@@ -705,7 +705,7 @@
     "bestOf": null,
     "rounds": [
       {
-        "circuit": "Circuit de la Sarthe — Full Course (13.6 km)",
+        "circuit": "Le Mans – Layout completo – 13,6 km",
         "date": "2026-06-15",
         "laps": "7",
         "weather": "☀️ Sereno",
