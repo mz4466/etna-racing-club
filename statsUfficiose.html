@@ -314,18 +314,6 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
             /* ONLY process ufficiose championships */
             if(champ.cat !== 'Gara Ufficiosa') continue;
             if(champ.id) ufficioseIds[champ.id] = true;
-            var rounds = champ.rounds || champ.calendar || [];
-            /* for ufficiose, completedRounds=0 means "no tracking" — treat all rounds as completed */
-            var completed = (typeof champ.completedRounds === 'number' && champ.completedRounds > 0)
-              ? champ.completedRounds : rounds.length;
-            for(var ri=0; ri<rounds.length && ri<completed; ri++){
-              var round = rounds[ri];
-              var circuit = round.circuit || round.circuito || '';
-              if(!circuit) continue;
-              var cKey = resolveCircuit(circuit);
-              if(!cKey) continue;
-              circuitMap[cKey] = (circuitMap[cKey] || 0) + 1;
-            }
           }
         })
         .catch(function(){ circuitMap = {}; });
@@ -393,6 +381,10 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       /* only process ufficiose championships */
       if(!champId || !ufficioseIds[champId]) continue;
       countedRaces++;
+
+      /* count circuit from actual race data */
+      var cKey = resolveCircuit(circuit);
+      if(cKey) circuitMap[cKey] = (circuitMap[cKey] || 0) + 1;
 
       /* season */
       if(!seasonMap[yr]) seasonMap[yr] = {races:0, pilots:{}, gridSizes:[]};
