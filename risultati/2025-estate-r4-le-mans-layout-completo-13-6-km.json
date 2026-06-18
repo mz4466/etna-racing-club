@@ -1,0 +1,91 @@
+{
+  "circuito": "Le Mans – Layout completo – 13,6 km",
+  "data": "2025-08-31",
+  "garaNum": "4",
+  "garaTot": "5",
+  "champId": "estate-2025",
+  "champIdx": "estate-2025",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Antonio",
+      "psn": "antonioleocataad",
+      "auto": "Ferrari 296 GT3 '23",
+      "tempo": "26'13''315",
+      "bestLap": "4'11''943",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "auto": "Nissan GT-R NISMO GT3 '18",
+      "tempo": "a 2\"190",
+      "bestLap": "4'09''725",
+      "fl": true,
+      "pole": false,
+      "punti": 18,
+      "extra": "1",
+      "totale": 19,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "auto": "Lamborghini Huracan GT3 '15",
+      "tempo": "a 1'32\"514",
+      "bestLap": "4'26''339",
+      "fl": false,
+      "pole": false,
+      "punti": 15,
+      "extra": "-",
+      "totale": 15,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "pts": 90,
+      "pos": 1
+    },
+    {
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "pts": 78,
+      "pos": 2
+    },
+    {
+      "nome": "Luca",
+      "psn": "lucasct1986",
+      "pts": 57,
+      "pos": 3
+    },
+    {
+      "nome": "Antonio",
+      "psn": "antonioleocataad",
+      "pts": 44,
+      "pos": 4
+    },
+    {
+      "nome": "Carmine",
+      "psn": "CarmineRafa87",
+      "pts": 27,
+      "pos": 5
+    },
+    {
+      "nome": "Fabio",
+      "psn": "fabyus1983",
+      "pts": 25,
+      "pos": 6
+    }
+  ],
+  "bestOf": 4
+}
