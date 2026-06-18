@@ -203,8 +203,9 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   var schede = {};      /* psnLower -> { nome: currentName, attivo: bool } */
   var nmeToPsn = {};    /* normalized baked name -> psnLower */
   var currentFilter = 'attivi';
-  var ufficioseIds = {};  /* champIds to exclude from stats */
-  var countedRaces = 0;  /* races actually counted after ufficiose filter */
+  var ufficioseIds = {};   /* champIds to exclude from stats */
+  var champStatusMap = {}; /* champId -> status ('concluso','in-corso','prossimo') */
+  var countedRaces = 0;   /* races actually counted after filters */
 
   function fetchPilotStatus(){
     return fetch(BASE + 'piloti_schede/index.json?_=' + Date.now())
@@ -323,23 +324,14 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
         .then(function(champs){
           circuitMap = {};
           ufficioseIds = {};
+          champStatusMap = {};
           for(var ci=0; ci<champs.length; ci++){
             var champ = champs[ci];
-            /* mark ufficiose championships so processData can skip them */
+            var cid = champ.id || '';
+            var status = (champ.status || '').toLowerCase();
+            if(cid) champStatusMap[cid] = status;
             if(champ.cat === 'Gara Ufficiosa'){
-              if(champ.id) ufficioseIds[champ.id] = true;
-              continue; /* skip circuit counting for ufficiose */
-            }
-            var rounds = champ.rounds || champ.calendar || [];
-            /* only count completed rounds using completedRounds counter */
-            var completed = typeof champ.completedRounds === 'number' ? champ.completedRounds : rounds.length;
-            for(var ri=0; ri<rounds.length && ri<completed; ri++){
-              var round = rounds[ri];
-              var circuit = round.circuit || round.circuito || '';
-              if(!circuit) continue;
-              var cKey = resolveCircuit(circuit);
-              if(!cKey) continue;
-              circuitMap[cKey] = (circuitMap[cKey] || 0) + 1;
+              if(cid) ufficioseIds[cid] = true;
             }
           }
         })
@@ -408,7 +400,17 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
       /* skip ufficiose championships entirely */
       if(champId && ufficioseIds[champId]) continue;
+
+      /* only count races from concluded championships or standalone single races */
+      var champStatus = champId ? (champStatusMap[champId] || '') : '';
+      var isStandalone = !champId || (parseInt(race.garaTot) === 1);
+      if(!isStandalone && champStatus !== 'concluso') continue;
+
       countedRaces++;
+
+      /* count circuit from actual race data (only played races reach here) */
+      var cKey = resolveCircuit(circuit);
+      if(cKey) circuitMap[cKey] = (circuitMap[cKey] || 0) + 1;
 
       /* season */
       if(!seasonMap[yr]) seasonMap[yr] = {races:0, pilots:{}, gridSizes:[]};
