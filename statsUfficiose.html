@@ -394,11 +394,12 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       seasonMap[yr].races++;
       seasonMap[yr].gridSizes.push(rows.length);
 
-      /* championship winners */
+      /* championship winners — key by PSN to match pilotMap */
       if(isFinal && champId){
         var winner = race.standings[0];
         if(winner && winner.nome){
-          champWinners[champId] = resolvePsn(champId, winner.nome) || norm(winner.nome);
+          var wPsn = (winner.psn || '').toLowerCase().trim() || resolvePsn(champId, winner.nome);
+          champWinners[champId] = wPsn ? ('#'+wPsn) : norm(winner.nome);
         }
       }
 
