@@ -315,7 +315,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
             /* ONLY process ufficiose championships */
             if(champ.cat !== 'Gara Ufficiosa') continue;
             if(champ.id) ufficioseIds[champ.id] = true;
-            if(champ.id && champ.year) champYearMap[champ.id] = String(champ.year);
+            if(champ.id && (champ.stagione || champ.year)) champYearMap[champ.id] = champ.stagione || String(champ.year);
           }
         })
         .catch(function(){ circuitMap = {}; });
@@ -828,7 +828,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       }
       var avgGrid = avg(s.gridSizes);
       html += '<div class="season-card">' +
-        '<div class="season-year">Stagione ' + yr + '</div>' +
+        '<div class="season-year">' + yr + '</div>' +
         '<div class="season-stats">' +
           '<div><div class="season-num">' + s.races + '</div><div class="season-label">Gare</div></div>' +
           '<div><div class="season-num">' + pilotCount + '</div><div class="season-label">Piloti</div></div>' +
