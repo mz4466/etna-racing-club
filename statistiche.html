@@ -331,7 +331,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
             var cid = champ.id || '';
             var status = (champ.status || '').toLowerCase();
             if(cid) champStatusMap[cid] = status;
-            if(cid && champ.year) champYearMap[cid] = String(champ.year);
+            if(cid && (champ.stagione || champ.year)) champYearMap[cid] = champ.stagione || String(champ.year);
             if(champ.cat === 'Gara Ufficiosa'){
               if(cid) ufficioseIds[cid] = true;
             }
@@ -873,7 +873,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       }
       var avgGrid = avg(s.gridSizes);
       html += '<div class="season-card">' +
-        '<div class="season-year">Stagione ' + yr + '</div>' +
+        '<div class="season-year">' + yr + '</div>' +
         '<div class="season-stats">' +
           '<div><div class="season-num">' + s.races + '</div><div class="season-label">Gare</div></div>' +
           '<div><div class="season-num">' + pilotCount + '</div><div class="season-label">Piloti</div></div>' +
