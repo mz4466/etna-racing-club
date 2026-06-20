@@ -191,6 +191,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   var circuitMap = {};
   var carWins = {};
   var seasonMap = {};
+  var champYearMap = {}; /* champId -> season year string */
   var champWinners = {};
   var pilotStatus = {};
   var schede = {};      /* psnLower -> { nome, attivo } */
@@ -314,6 +315,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
             /* ONLY process ufficiose championships */
             if(champ.cat !== 'Gara Ufficiosa') continue;
             if(champ.id) ufficioseIds[champ.id] = true;
+            if(champ.id && champ.year) champYearMap[champ.id] = String(champ.year);
           }
         })
         .catch(function(){ circuitMap = {}; });
@@ -372,7 +374,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     }
     for(var ri=0;ri<races.length;ri++){
       var race = races[ri];
-      var yr = (race.data || '').substring(0,4) || (race._file || '').substring(0,4) || 'N/A';
+      var champId0 = race.champId || race.champIdx || '';
+      var yr = (champId0 && champYearMap[champId0]) || (race.data || '').substring(0,4) || (race._file || '').substring(0,4) || 'N/A';
       var circuit = race.circuito || 'Sconosciuto';
       var rows = race.rows || [];
       var isFinal = String(race.garaNum) === String(race.garaTot) && race.standings && race.standings.length;
@@ -825,7 +828,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       }
       var avgGrid = avg(s.gridSizes);
       html += '<div class="season-card">' +
-        '<div class="season-year">' + yr + '</div>' +
+        '<div class="season-year">Stagione ' + yr + '</div>' +
         '<div class="season-stats">' +
           '<div><div class="season-num">' + s.races + '</div><div class="season-label">Gare</div></div>' +
           '<div><div class="season-num">' + pilotCount + '</div><div class="season-label">Piloti</div></div>' +
