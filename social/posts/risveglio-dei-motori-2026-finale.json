@@ -66,6 +66,20 @@
         "pending": null,
         "url": ""
       }
+    },
+    {
+      "id": "b11",
+      "type": "photo",
+      "x": 78.61,
+      "y": 38.58,
+      "w": 9.07,
+      "h": 20.59,
+      "content": {
+        "src": "social/media/risveglio-dei-motori-2026-finale-b11.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
     }
   ]
 }
