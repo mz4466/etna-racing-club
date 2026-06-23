@@ -754,7 +754,8 @@ function populateFromHTML(entry, html) {
       });
 
       const lapsMatch = pills.find(p => p.startsWith('🔄'));
-      const laps = lapsMatch ? lapsMatch.replace('🔄','').replace('giri','').trim() : '17';
+      const laps = lapsMatch ? lapsMatch.replace('🔄','').replace('⏱','').replace('giri','').replace('min','').trim() : '17';
+      const lapsType = lapsMatch && lapsMatch.startsWith('⏱') ? 'min' : 'giri';
 
       let dateVal = '';
       try {
@@ -763,7 +764,7 @@ function populateFromHTML(entry, html) {
         if (parts.length >= 3) dateVal = `${parts[2]}-${months[parts[1]]||'01'}-${parts[0].padStart(2,'0')}`;
       } catch {}
 
-      addRoundWithData({ circuit, date: dateVal, laps, weather, tire, fuel, types, note, results });
+      addRoundWithData({ circuit, date: dateVal, laps, lapsType, weather, tire, fuel, types, note, results });
     });
   } else {
     // Fallback: use rounds from calendario.json
@@ -773,6 +774,7 @@ function populateFromHTML(entry, html) {
         circuit: rd.circuit || '',
         date:    rd.date    || '',
         laps:    rd.laps    || '17',
+        lapsType: rd.lapsType || 'giri',
         weather: rd.weather || '',
         tire:    rd.tire    || 'x3',
         fuel:    rd.fuel    || 'x4',
@@ -850,7 +852,7 @@ function roundHTML(id, pos, d={}) {
         <div class="field"><label>Round #</label><input type="number" value="${pos}" min="1" id="rnum-${id}"></div>
         <div class="field"><label>Circuito</label><input type="text" value="${esc(d.circuit||'')}" class="circuit-input" id="rcircuit-${id}" list="gt7-circuits" oninput="syncRound(${id})"></div>
         <div class="field"><label>Data Gara</label><input type="date" value="${d.date||''}" id="rdate-${id}" oninput="syncRound(${id})"></div>
-        <div class="field"><label>Giri</label><input type="number" value="${d.laps||17}" min="1" id="rlaps-${id}"></div>
+        <div class="field"><label>Giri / Min</label><div style="display:flex;gap:4px;align-items:center;"><input type="number" value="${d.laps||17}" min="1" id="rlaps-${id}" style="flex:1;min-width:0;"><button type="button" id="rlapstype-${id}" data-type="${d.lapsType||'giri'}" onclick="toggleLapsType('${id}')" style="flex-shrink:0;padding:7px 10px;border-radius:6px;border:1px solid var(--border-hi);background:var(--bg-input);color:var(--gold);font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:all .2s;" title="Clicca per cambiare">${d.lapsType==='min'?'⏱ min':'🔄 giri'}</button></div></div>
       </div>
       <div class="form-row col4">
         <div class="field">
@@ -1055,6 +1057,8 @@ function buildHTML() {
     const circuit = val(`rcircuit-${id}`) || '—';
     const date    = val(`rdate-${id}`);
     const laps    = val(`rlaps-${id}`) || '—';
+    const lapsTypeBtn2 = document.getElementById(`rlapstype-${id}`);
+    const lapsType = lapsTypeBtn2 ? lapsTypeBtn2.dataset.type : 'giri';
     const weather = getWeatherVal(id);
     const tire    = val(`rtire-${id}`);
     const fuel    = val(`rfuel-${id}`);
@@ -1085,7 +1089,7 @@ function buildHTML() {
         </div>
         <div class="round-details">
           ${weather ? `<div class="detail-pill">${weather}</div>` : ''}
-          <div class="detail-pill">🔄 ${laps} giri</div>
+          <div class="detail-pill">${lapsType==='min'?'⏱':'🔄'} ${laps} ${lapsType==='min'?'min':'giri'}</div>
           <div class="detail-pill">🏎️ Gomme ${tire}</div>
           <div class="detail-pill">⛽ Carb. ${fuel}</div>
           ${types ? `<div class="detail-pill">🔵 ${types}</div>` : ''}
@@ -1270,6 +1274,7 @@ async function updateCalendarioEntry(token, fname) {
           circuit: val('rcircuit-'+rid),
           date:    (document.getElementById('rdate-'+rid)||{}).value || '',
           laps:    val('rlaps-'+rid)    || '17',
+          lapsType: (function(){ var b=document.getElementById('rlapstype-'+rid); return b?b.dataset.type:'giri'; })(),
           weather: getWeatherVal(rid),
           tire:    val('rtire-'+rid),
           fuel:    val('rfuel-'+rid),
@@ -1505,6 +1510,18 @@ async function removeFromCalendario(token, fileToRemove) {
       });
     });
 })();
+
+function toggleLapsType(id) {
+  var btn = document.getElementById('rlapstype-' + id);
+  if (!btn) return;
+  var current = btn.dataset.type || 'giri';
+  var next = current === 'giri' ? 'min' : 'giri';
+  btn.dataset.type = next;
+  btn.textContent = next === 'min' ? '⏱ min' : '🔄 giri';
+  btn.style.color = next === 'min' ? 'var(--blue)' : 'var(--gold)';
+  btn.style.borderColor = next === 'min' ? 'var(--blue)' : 'var(--border-hi)';
+  if (typeof syncRound === 'function') syncRound(id);
+}
 </script>
 </body>
 </html>
