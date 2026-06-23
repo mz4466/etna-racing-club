@@ -748,5 +748,80 @@
     ],
     "costruttori": false,
     "teams": []
+  },
+  {
+    "id": "sole-sorpassi-2026",
+    "name": "Sole & Sorpassi",
+    "year": "2026",
+    "cat": "Campionato",
+    "stagione": "Stagione 2",
+    "slug": "sole-sorpassi",
+    "trophy": "GR3_Championship_Winner.png",
+    "cars": "Gr.3",
+    "desc": "",
+    "status": "prossimo",
+    "file": "campionati/sole--sorpassi-2026-campionato-sole-sorpassi.html",
+    "totalRounds": 5,
+    "completedRounds": 0,
+    "bestOf": 4,
+    "rounds": [
+      {
+        "circuit": "Dragon Trail – Litorale – 5,2 km",
+        "date": "2026-07-05",
+        "laps": "24",
+        "lapsType": "giri",
+        "weather": "🌤️ Sereno con foschia leggera",
+        "tire": "x4",
+        "fuel": "x3",
+        "types": "Dure/Morbide",
+        "notes": ""
+      },
+      {
+        "circuit": "Lago Maggiore – Layout completo – 5,8 km",
+        "date": "2026-07-19",
+        "laps": "22",
+        "lapsType": "giri",
+        "weather": "⛅ Poco nuvoloso (cumuli sparsi)",
+        "tire": "x5",
+        "fuel": "x3",
+        "types": "Dure/Medie/Morbite",
+        "notes": ""
+      },
+      {
+        "circuit": "Circuito di Yas Marina – Layout completo – 5,3 km",
+        "date": "2026-07-26",
+        "laps": "24",
+        "lapsType": "giri",
+        "weather": "☀️ Sereno",
+        "tire": "x5",
+        "fuel": "x2",
+        "types": "Dure/Medie",
+        "notes": ""
+      },
+      {
+        "circuit": "Circuito Gilles Villeneuve – 4,4 km",
+        "date": "2026-08-09",
+        "laps": "28",
+        "lapsType": "giri",
+        "weather": "☀️ Soleggiato con foschia densa",
+        "tire": "x4",
+        "fuel": "x4",
+        "types": "Dure/Medie/Morbide",
+        "notes": ""
+      },
+      {
+        "circuit": "Alsazia – Villaggio – 5,4 km",
+        "date": "2026-08-30",
+        "laps": "23",
+        "lapsType": "giri",
+        "weather": "🌤️ Sereno con cirri",
+        "tire": "x4",
+        "fuel": "x5",
+        "types": "Dure/Medie/morbide",
+        "notes": ""
+      }
+    ],
+    "costruttori": false,
+    "teams": []
   }
 ]
