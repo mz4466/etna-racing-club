@@ -1922,7 +1922,8 @@ function toast(msg, type) {
 })();
 </script>
 <script src="copyright.js"></script>
-<script src="nav.js">
+<script src="nav.js"></script>
+<script>
 function toggleLapsType(id) {
   var btn = document.getElementById('rlapstype-' + id);
   if (!btn) return;
@@ -1933,6 +1934,7 @@ function toggleLapsType(id) {
   btn.style.color = next === 'min' ? 'var(--blue)' : 'var(--gold)';
   btn.style.borderColor = next === 'min' ? 'var(--blue)' : 'var(--border-hi)';
   if (typeof syncRound === 'function') syncRound(id);
-}</script>
+}
+</script>
 </body>
 </html>
