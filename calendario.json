@@ -717,5 +717,36 @@
     ],
     "costruttori": false,
     "teams": []
+  },
+  {
+    "id": "etna-racing-day-2026",
+    "name": "Etna Racing Day",
+    "year": "2026",
+    "cat": "Trofeo",
+    "stagione": "Stagione 2",
+    "slug": "etna-racing-day",
+    "trophy": "ERD-Trofeo.jpg",
+    "cars": "FIAT Panda 30 CL '85",
+    "desc": "Stagione 2: Si riparte da dove tutto è iniziato. Niente elettronica, 30 cavalli (forse) e i ricordi di quando eravamo bambini sul sedile posteriore. Scaldate i motori, la leggenda di famiglia è tornata",
+    "status": "prossimo",
+    "file": "campionati/etna-racing-day-2026-trofeo-etna-racing-day.html",
+    "totalRounds": 1,
+    "completedRounds": 0,
+    "bestOf": null,
+    "rounds": [
+      {
+        "circuit": "Sardegna – Tracciato stradale Layout A – 5,1 km",
+        "date": "2026-06-28",
+        "laps": "15",
+        "lapsType": "giri",
+        "weather": "🌤️ Sereno con foschia leggera",
+        "tire": "x3",
+        "fuel": "x3",
+        "types": "Morbide",
+        "notes": "1 Pit obbligatorio"
+      }
+    ],
+    "costruttori": false,
+    "teams": []
   }
 ]
