@@ -1163,7 +1163,7 @@ function roundHTML(id, pos) {
           <div style="display:flex;gap:4px;align-items:center;">
             <input type="number" value="17" min="1" id="rlaps-${id}" oninput="syncRound(${id})" style="flex:1;min-width:0;">
             <button type="button" id="rlapstype-${id}" data-type="giri"
-              onclick="toggleLapsType('${id}')"
+              onclick="toggleLapsType(${id})"
               style="flex-shrink:0;padding:7px 10px;border-radius:6px;border:1px solid var(--border-hi);background:var(--bg-input);color:var(--gold);font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:all .2s;"
               title="Clicca per cambiare">🔄 giri</button>
           </div>
@@ -1933,7 +1933,6 @@ function toggleLapsType(id) {
   btn.style.color = next === 'min' ? 'var(--blue)' : 'var(--gold)';
   btn.style.borderColor = next === 'min' ? 'var(--blue)' : 'var(--border-hi)';
   if (typeof syncRound === 'function') syncRound(id);
-}
-</script>
+}</script>
 </body>
 </html>
