@@ -26,8 +26,14 @@
           "subtitle": "🏆 Super Patente",
           "startPts": 10,
           "deductions": [
-            {"label": "Reprimenda", "pts": -2},
-            {"label": "Penalità", "pts": -4}
+            {
+              "label": "Reprimenda",
+              "pts": -2
+            },
+            {
+              "label": "Penalità",
+              "pts": -4
+            }
           ],
           "items": [
             "Nella Stagione successiva i punti verranno restituiti totalmente",
@@ -38,10 +44,22 @@
           "type": "format",
           "subtitle": "⏱️ Formato Gara",
           "steps": [
-            {"label": "Apertura Lobby", "value": "Tra le 09:45 e le 10:00"},
-            {"label": "Prove Libere", "value": "circa 30 minuti"},
-            {"label": "Qualifiche", "value": "15 minuti (se non specificato differentemente)"},
-            {"label": "Gara", "value": "terminerà intorno alle 11:30"}
+            {
+              "label": "Apertura Lobby",
+              "value": "Tra le 09:45 e le 10:00"
+            },
+            {
+              "label": "Prove Libere",
+              "value": "circa 30 minuti"
+            },
+            {
+              "label": "Qualifiche",
+              "value": "15 minuti (se non specificato differentemente)"
+            },
+            {
+              "label": "Gara",
+              "value": "terminerà intorno alle 11:30"
+            }
           ],
           "items": [
             "In Qualsiasi Gara della Stagione sarà sempre presente almeno **un Pit Stop Obbligatorio** (tranne nelle gare con pioggia)"
@@ -50,7 +68,24 @@
         {
           "type": "points",
           "subtitle": "🏆 Sistema di Punteggio",
-          "values": [25, 18, 15, 12, 10, 8, 6, 5, 4, 3, 2.5, 2, 1.5, 1, 0.5, 0]
+          "values": [
+            25,
+            21,
+            18,
+            16,
+            14,
+            12,
+            10,
+            8,
+            7,
+            6,
+            5,
+            4,
+            3,
+            2,
+            1,
+            0
+          ]
         },
         {
           "type": "rules",
@@ -83,5 +118,6 @@
         }
       ]
     }
-  ]
+  ],
+  "icon": "📋"
 }
