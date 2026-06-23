@@ -1159,8 +1159,14 @@ function roundHTML(id, pos) {
           <input type="date" id="rdate-${id}" oninput="syncRound(${id})">
         </div>
         <div class="field">
-          <label>Giri</label>
-          <input type="number" value="17" min="1" id="rlaps-${id}" oninput="syncRound(${id})">
+          <label>Giri / Min</label>
+          <div style="display:flex;gap:4px;align-items:center;">
+            <input type="number" value="17" min="1" id="rlaps-${id}" oninput="syncRound(${id})" style="flex:1;min-width:0;">
+            <button type="button" id="rlapstype-${id}" data-type="giri"
+              onclick="toggleLapsType('${id}')"
+              style="flex-shrink:0;padding:7px 10px;border-radius:6px;border:1px solid var(--border-hi);background:var(--bg-input);color:var(--gold);font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:all .2s;"
+              title="Clicca per cambiare">🔄 giri</button>
+          </div>
         </div>
       </div>
       <div class="form-row col4">
@@ -1390,6 +1396,8 @@ function buildHTML() {
     const circuit  = val(`rcircuit-${id}`) || '—';
     const date     = val(`rdate-${id}`);
     const laps     = val(`rlaps-${id}`) || '—';
+    const lapsTypeBtn = document.getElementById(`rlapstype-${id}`);
+    const lapsType = lapsTypeBtn ? lapsTypeBtn.dataset.type : 'giri';
     const weather  = getWeatherVal(id);
     const tire     = val(`rtire-${id}`);
     const fuel     = val(`rfuel-${id}`);
@@ -1429,7 +1437,7 @@ function buildHTML() {
         </div>
         <div class="round-details">
           <div class="detail-pill">${weather}</div>
-          <div class="detail-pill">🔄 ${laps} giri</div>
+          <div class="detail-pill">${lapsType==='min'?'⏱':'🔄'} ${laps} ${lapsType==='min'?'min':'giri'}</div>
           <div class="detail-pill">🏎️ Gomme ${tire}</div>
           <div class="detail-pill">⛽ Carb. ${fuel}</div>
           ${types ? `<div class="detail-pill">🔵 ${types}</div>` : ''}
@@ -1794,6 +1802,7 @@ async function updateCalendario(token, fname, champPath) {
       circuit: circEl    ? circEl.value.trim()    : '',
       date:    dateEl    ? dateEl.value            : '',
       laps:    lapsEl    ? lapsEl.value            : '17',
+      lapsType: (function(){ var b=document.getElementById('rlapstype-'+rid); return b?b.dataset.type:'giri'; })(),
       weather: getWeatherVal(weatherEl ? weatherEl.id.replace('rweather-','') : ''),
       tire:    tireEl    ? tireEl.value            : '',
       fuel:    fuelEl    ? fuelEl.value            : '',
@@ -1913,6 +1922,18 @@ function toast(msg, type) {
 })();
 </script>
 <script src="copyright.js"></script>
-<script src="nav.js"></script>
+<script src="nav.js">
+function toggleLapsType(id) {
+  var btn = document.getElementById('rlapstype-' + id);
+  if (!btn) return;
+  var current = btn.dataset.type || 'giri';
+  var next = current === 'giri' ? 'min' : 'giri';
+  btn.dataset.type = next;
+  btn.textContent = next === 'min' ? '⏱ min' : '🔄 giri';
+  btn.style.color = next === 'min' ? 'var(--blue)' : 'var(--gold)';
+  btn.style.borderColor = next === 'min' ? 'var(--blue)' : 'var(--border-hi)';
+  if (typeof syncRound === 'function') syncRound(id);
+}
+</script>
 </body>
 </html>
