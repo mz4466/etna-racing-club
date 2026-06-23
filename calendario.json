@@ -823,5 +823,58 @@
     ],
     "costruttori": false,
     "teams": []
+  },
+  {
+    "id": "licence-to-race-2026",
+    "name": "Licence To Race",
+    "year": "2026",
+    "cat": "Evento",
+    "stagione": "Stagione 2",
+    "slug": "licence-to-race",
+    "trophy": "evento_winner.png",
+    "cars": "Aston Martin DB5 '64 - Toyota 2000GT '67 - Bmw Z8 '01",
+    "desc": "Il risultato delle Qualifiche determinerà la griglia di partenza di tutte e 3 le gare / dopo le prime 2 gare ci saranno 5 minuti di prove libere per abituarsi alla nuova auto / Ogni gara assegna dei punti e vince il trofeo chi fa più punti dopo le 3 gare",
+    "status": "prossimo",
+    "file": "campionati/licence-to-race-2026-evento-licence-to-race.html",
+    "totalRounds": 3,
+    "completedRounds": 0,
+    "bestOf": null,
+    "rounds": [
+      {
+        "circuit": "Brands Hatch – GP – 3,9 km",
+        "date": "2026-07-25",
+        "laps": "15",
+        "lapsType": "min",
+        "weather": "🌅 Soleggiato pomeridiano",
+        "tire": "x1",
+        "fuel": "x1",
+        "types": "Dure/Medie/Morbite",
+        "notes": "Aston Martin DB5 '64"
+      },
+      {
+        "circuit": "Brands Hatch – GP – 3,9 km",
+        "date": "2026-07-25",
+        "laps": "15",
+        "lapsType": "min",
+        "weather": "🌅 Luce pomeridiana calda",
+        "tire": "x1",
+        "fuel": "x1",
+        "types": "Dure/Medie/Morbite",
+        "notes": "oyota 2000GT '67"
+      },
+      {
+        "circuit": "Brands Hatch – GP – 3,9 km",
+        "date": "2026-07-25",
+        "laps": "15",
+        "lapsType": "min",
+        "weather": "🌇 Pre-tramonto",
+        "tire": "x1",
+        "fuel": "x1",
+        "types": "Dure/Medie/Morbite",
+        "notes": "Bmw Z8 '01"
+      }
+    ],
+    "costruttori": false,
+    "teams": []
   }
 ]
