@@ -843,8 +843,8 @@
       {
         "circuit": "Brands Hatch – GP – 3,9 km",
         "date": "2026-07-25",
-        "laps": "15",
-        "lapsType": "min",
+        "laps": "17",
+        "lapsType": "giri",
         "weather": "🌅 Soleggiato pomeridiano",
         "tire": "x1",
         "fuel": "x1",
@@ -854,19 +854,19 @@
       {
         "circuit": "Brands Hatch – GP – 3,9 km",
         "date": "2026-07-25",
-        "laps": "15",
-        "lapsType": "min",
+        "laps": "17",
+        "lapsType": "giri",
         "weather": "🌅 Luce pomeridiana calda",
         "tire": "x1",
         "fuel": "x1",
         "types": "Dure/Medie/Morbite",
-        "notes": "oyota 2000GT '67"
+        "notes": "Toyota 2000GT '67"
       },
       {
         "circuit": "Brands Hatch – GP – 3,9 km",
         "date": "2026-07-25",
-        "laps": "15",
-        "lapsType": "min",
+        "laps": "17",
+        "lapsType": "giri",
         "weather": "🌇 Pre-tramonto",
         "tire": "x1",
         "fuel": "x1",
