@@ -41,31 +41,6 @@
           ]
         },
         {
-          "type": "format",
-          "subtitle": "⏱️ Formato Gara",
-          "steps": [
-            {
-              "label": "Apertura Lobby",
-              "value": "Tra le 09:45 e le 10:00"
-            },
-            {
-              "label": "Prove Libere",
-              "value": "circa 30 minuti"
-            },
-            {
-              "label": "Qualifiche",
-              "value": "15 minuti (se non specificato differentemente)"
-            },
-            {
-              "label": "Gara",
-              "value": "terminerà intorno alle 11:30"
-            }
-          ],
-          "items": [
-            "In Qualsiasi Gara della Stagione sarà sempre presente almeno **un Pit Stop Obbligatorio** (tranne nelle gare con pioggia)"
-          ]
-        },
-        {
           "type": "points",
           "subtitle": "🏆 Sistema di Punteggio",
           "values": [
