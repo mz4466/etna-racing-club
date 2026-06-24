@@ -970,7 +970,7 @@ function renderPilot(p, calendario) {
     + '</div>'
     + '<div class="pilot-content">'
     +   '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">'
-    +     '<div class="pilot-name">' + esc(nome) + '</div>'
+    +     '<div class="pilot-name">' + esc(nome) + (psn && psn !== '—' ? ' <span style="color:#c9a227;font-size:22px;opacity:0.75;">(' + esc(psn) + ')</span>' : '') + '</div>'
     +     (!isActive ? '<span style="display:inline-block;background:rgba(192,57,43,.18);border:1px solid rgba(192,57,43,.4);border-radius:20px;padding:2px 10px;font-family:Teko,sans-serif;font-size:11px;letter-spacing:1.5px;color:#e05a4a;text-transform:uppercase;">Non Attivo</span>' : '')
     +   '</div>'
     +   ''
