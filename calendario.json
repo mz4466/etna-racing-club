@@ -876,5 +876,36 @@
     ],
     "costruttori": false,
     "teams": []
+  },
+  {
+    "id": "evento-gr-4-2026",
+    "name": "Evento Gr.4",
+    "year": "2026",
+    "cat": "Evento",
+    "stagione": "Stagione 2",
+    "slug": "evento-gr-4",
+    "trophy": "evento_winner.png",
+    "cars": "Ferrari 458 Italia Gr.4",
+    "desc": "",
+    "status": "prossimo",
+    "file": "campionati/evento-gr4-2026-evento-evento-gr-4.html",
+    "totalRounds": 1,
+    "completedRounds": 0,
+    "bestOf": null,
+    "rounds": [
+      {
+        "circuit": "Sainte-Croix – Layout A – 9,5 km",
+        "date": "2026-07-04",
+        "laps": "13",
+        "lapsType": "giri",
+        "weather": "🌇 Pre-tramonto",
+        "tire": "x2",
+        "fuel": "x4",
+        "types": "Medie/Morbide",
+        "notes": ""
+      }
+    ],
+    "costruttori": false,
+    "teams": []
   }
 ]
