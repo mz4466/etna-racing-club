@@ -920,7 +920,8 @@ function esc(s){ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&
 function setVal(id, v) {
   const el = document.getElementById(id);
   if (!el) return;
-  for (let o of el.options) { if (o.value === v) { o.selected = true; return; } }
+  if (el.options) { for (let o of el.options) { if (o.value === v) { o.selected = true; return; } } }
+  else { el.value = v; }
 }
 
 function toggleRound(id) { document.getElementById(`round-${id}`).classList.toggle('collapsed'); }
