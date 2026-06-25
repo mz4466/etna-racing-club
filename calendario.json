@@ -843,35 +843,38 @@
       {
         "circuit": "Brands Hatch – GP – 3,9 km",
         "date": "2026-07-25",
-        "laps": "17",
+        "laps": "15",
+        "fase": "Tarda mattinata",
         "lapsType": "giri",
         "weather": "💧 Umido, sereno e piacevole",
         "tire": "x1",
         "fuel": "x1",
-        "types": "Dure/Medie/Morbite",
-        "notes": "Aston Martin DB5 '64"
+        "types": "Morbide",
+        "notes": "Qualifiche: 10 minuti (valide per tutte le gare)- Bop attivo - Danni ridotti - Aston Martin DB5 '64"
       },
       {
         "circuit": "Brands Hatch – GP – 3,9 km",
         "date": "2026-07-25",
-        "laps": "17",
+        "laps": "15",
+        "fase": "Pomeriggio",
         "lapsType": "giri",
         "weather": "🌥️ Umido, soleggiato e nuvoloso",
         "tire": "x1",
         "fuel": "x1",
-        "types": "Dure/Medie/Morbite",
-        "notes": "Toyota 2000GT '67"
+        "types": "Medie",
+        "notes": "Bop attivo - Danni ridotti - Toyota 2000GT '67"
       },
       {
         "circuit": "Brands Hatch – GP – 3,9 km",
         "date": "2026-07-25",
-        "laps": "17",
+        "laps": "15",
+        "fase": "Sera",
         "lapsType": "giri",
         "weather": "🌫️ Nebbioso, soleggiato con molte nuvole",
         "tire": "x1",
         "fuel": "x1",
-        "types": "Dure/Medie/Morbite",
-        "notes": "Bmw Z8 '01"
+        "types": "Dure",
+        "notes": "Bop attivo - Danni ridotti - Bmw Z8 '01"
       }
     ],
     "costruttori": false,
