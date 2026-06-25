@@ -777,6 +777,7 @@ function populateFromHTML(entry, html) {
         circuit: rd.circuit || '',
         date:    rd.date    || '',
         laps:    rd.laps    || '17',
+        fase:    rd.fase    || '',
         lapsType: rd.lapsType || 'giri',
         weather: rd.weather || '',
         tire:    rd.tire    || 'x3',
@@ -830,6 +831,7 @@ function addRoundWithData(data) {
   if (data.weather) setWeatherVal(id, data.weather);
   if (data.tire)    setVal(`rtire-${id}`, data.tire);
   if (data.fuel)    setVal(`rfuel-${id}`, data.fuel);
+  if (data.fase)    setVal(`rfase-${id}`, data.fase);
   if (data.manifesto) {
     manifestoData[id] = data.manifesto;
     var nameEl = document.getElementById('rmanifesto-name-' + id);
@@ -863,6 +865,19 @@ function roundHTML(id, pos, d={}) {
           <div class="weather-picker" id="rweather-${id}"><div class="wp-group-label">☀️ Sereno / Luce</div><div class="wp-row"><div class="wp-pill" data-code="S01" data-label="☀️ Asciutto, sereno e piacevole" onclick="toggleWeather(this,'${id}')" title="☀️ Asciutto, sereno e piacevole">S01</div><div class="wp-pill" data-code="S02" data-label="🌤️ Asciutto e piacevole, scarsa nuvolosità" onclick="toggleWeather(this,'${id}')" title="🌤️ Asciutto e piacevole, scarsa nuvolosità">S02</div><div class="wp-pill" data-code="S03" data-label="⛅ Asciutto, nuvoloso e piacevole" onclick="toggleWeather(this,'${id}')" title="⛅ Asciutto, nuvoloso e piacevole">S03</div><div class="wp-pill" data-code="S04" data-label="🌤️ Asciutto, nuvoloso e soleggiato" onclick="toggleWeather(this,'${id}')" title="🌤️ Asciutto, nuvoloso e soleggiato">S04</div><div class="wp-pill" data-code="S05" data-label="🌫️ Nebbioso, sereno e piacevole" onclick="toggleWeather(this,'${id}')" title="🌫️ Nebbioso, sereno e piacevole">S05</div><div class="wp-pill" data-code="S06" data-label="💧 Umido, sereno e piacevole" onclick="toggleWeather(this,'${id}')" title="💧 Umido, sereno e piacevole">S06</div><div class="wp-pill" data-code="S07" data-label="💧 Umido e piacevole, scarsa nuvolosità" onclick="toggleWeather(this,'${id}')" title="💧 Umido e piacevole, scarsa nuvolosità">S07</div><div class="wp-pill" data-code="S08" data-label="🌥️ Umido, soleggiato e nuvoloso" onclick="toggleWeather(this,'${id}')" title="🌥️ Umido, soleggiato e nuvoloso">S08</div><div class="wp-pill" data-code="S09" data-label="⛅ Umido, soleggiato con molte nuvole" onclick="toggleWeather(this,'${id}')" title="⛅ Umido, soleggiato con molte nuvole">S09</div><div class="wp-pill" data-code="S10" data-label="🌫️ Nebbioso, soleggiato con molte nuvole" onclick="toggleWeather(this,'${id}')" title="🌫️ Nebbioso, soleggiato con molte nuvole">S10</div><div class="wp-pill" data-code="S11" data-label="🏔️ Sole con foschia alpina" onclick="toggleWeather(this,'${id}')" title="🏔️ Sole con foschia alpina">S11</div><div class="wp-pill" data-code="S12" data-label="🌤️ Sole con molte nubi monsoniche" onclick="toggleWeather(this,'${id}')" title="🌤️ Sole con molte nubi monsoniche">S12</div><div class="wp-pill" data-code="S13" data-label="☀️ Sole con poche nubi monsoniche" onclick="toggleWeather(this,'${id}')" title="☀️ Sole con poche nubi monsoniche">S13</div><div class="wp-pill" data-code="S14" data-label="⛅ Sole con molte nubi monsoniche (più coperto)" onclick="toggleWeather(this,'${id}')" title="⛅ Sole con molte nubi monsoniche (più coperto)">S14</div><div class="wp-pill" data-code="S15" data-label="🌫️ Foschia, cielo sereno e piacevole" onclick="toggleWeather(this,'${id}')" title="🌫️ Foschia, cielo sereno e piacevole">S15</div><div class="wp-pill" data-code="S16" data-label="🌫️ Foschia, sole con poche nuvole" onclick="toggleWeather(this,'${id}')" title="🌫️ Foschia, sole con poche nuvole">S16</div><div class="wp-pill" data-code="S17" data-label="🌫️ Foschia, nuvoloso e soleggiato" onclick="toggleWeather(this,'${id}')" title="🌫️ Foschia, nuvoloso e soleggiato">S17</div><div class="wp-pill" data-code="S18" data-label="🌫️ Foschia, nuvoloso e soleggiato (più coperto)" onclick="toggleWeather(this,'${id}')" title="🌫️ Foschia, nuvoloso e soleggiato (più coperto)">S18</div></div><div class="wp-group-label">☁️ Nuvoloso</div><div class="wp-row"><div class="wp-pill" data-code="C01" data-label="🌤️ Nuvoloso e luminoso" onclick="toggleWeather(this,'${id}')" title="🌤️ Nuvoloso e luminoso">C01</div><div class="wp-pill" data-code="C02" data-label="🌥️ Nuvoloso e mite" onclick="toggleWeather(this,'${id}')" title="🌥️ Nuvoloso e mite">C02</div><div class="wp-pill" data-code="C03" data-label="☁️ Nuvoloso e scuro" onclick="toggleWeather(this,'${id}')" title="☁️ Nuvoloso e scuro">C03</div><div class="wp-pill" data-code="C04" data-label="☁️ Nuvoloso e fresco" onclick="toggleWeather(this,'${id}')" title="☁️ Nuvoloso e fresco">C04</div><div class="wp-pill" data-code="C05" data-label="☁️ Completamente nuvoloso" onclick="toggleWeather(this,'${id}')" title="☁️ Completamente nuvoloso">C05</div><div class="wp-pill" data-code="C06" data-label="🌑 Nubi dense" onclick="toggleWeather(this,'${id}')" title="🌑 Nubi dense">C06</div></div><div class="wp-group-label">🌧️ Pioggia</div><div class="wp-row"><div class="wp-pill" data-code="R01" data-label="🌦️ Pioviggine leggera" onclick="toggleWeather(this,'${id}')" title="🌦️ Pioviggine leggera">R01</div><div class="wp-pill" data-code="R02" data-label="🌧️ Pioggia calda con cielo sereno" onclick="toggleWeather(this,'${id}')" title="🌧️ Pioggia calda con cielo sereno">R02</div><div class="wp-pill" data-code="R03" data-label="🌧️ Pioggia leggera" onclick="toggleWeather(this,'${id}')" title="🌧️ Pioggia leggera">R03</div><div class="wp-pill" data-code="R04" data-label="🌧️ Nuvoloso con pioggia" onclick="toggleWeather(this,'${id}')" title="🌧️ Nuvoloso con pioggia">R04</div><div class="wp-pill" data-code="R05" data-label="🌧️ Nuvoloso con pioggia (copertura uniforme)" onclick="toggleWeather(this,'${id}')" title="🌧️ Nuvoloso con pioggia (copertura uniforme)">R05</div><div class="wp-pill" data-code="R06" data-label="⛈️ Nubi dense con pioggia" onclick="toggleWeather(this,'${id}')" title="⛈️ Nubi dense con pioggia">R06</div><div class="wp-pill" data-code="R07" data-label="⛈️ Nuvoloso con pioggia torrenziale" onclick="toggleWeather(this,'${id}')" title="⛈️ Nuvoloso con pioggia torrenziale">R07</div><div class="wp-pill" data-code="R08" data-label="🌊 Nubi dense con pioggia torrenziale" onclick="toggleWeather(this,'${id}')" title="🌊 Nubi dense con pioggia torrenziale">R08</div></div><input type="hidden" class="weather-val" id="rweather-val-${id}"></div>
       </div>
       <div class="form-row col2">
+        <div class="field"><label>Fase Giornata</label><select id="rfase-${id}"><option value="">— Seleziona —</option>
+            <option value="Alba" ${d.fase==='Alba'?'selected':''}>Alba</option>
+            <option value="Aurora" ${d.fase==='Aurora'?'selected':''}>Aurora</option>
+            <option value="Sorgere del sole" ${d.fase==='Sorgere del sole'?'selected':''}>Sorgere del sole</option>
+            <option value="Primo mattino" ${d.fase==='Primo mattino'?'selected':''}>Primo mattino</option>
+            <option value="Tarda mattinata" ${d.fase==='Tarda mattinata'?'selected':''}>Tarda mattinata</option>
+            <option value="Pomeriggio" ${d.fase==='Pomeriggio'?'selected':''}>Pomeriggio</option>
+            <option value="Sera" ${d.fase==='Sera'?'selected':''}>Sera</option>
+            <option value="Tramonto" ${d.fase==='Tramonto'?'selected':''}>Tramonto</option>
+            <option value="Imbrunire" ${d.fase==='Imbrunire'?'selected':''}>Imbrunire</option>
+            <option value="Notte" ${d.fase==='Notte'?'selected':''}>Notte</option>
+            <option value="Mezzanotte" ${d.fase==='Mezzanotte'?'selected':''}>Mezzanotte</option>
+          </select></div>
         <div class="field"><label>Note (opzionale)</label><input type="text" value="${esc(d.note||'')}" placeholder="es. Pit stop obbligatorio" id="rnotes-${id}"></div>
         <div class="field"><label>Link Risultati</label><input type="text" value="${esc(d.results||'')}" placeholder="es. risultati-01.html" id="rresults-${id}"></div>
         <div class="field" style="grid-column:1/-1">
@@ -933,7 +948,7 @@ function syncRound(id) {
   else { nameEl.textContent = 'Nuovo Round'; nameEl.classList.add('empty'); }
 
   const dateFmt = date ? new Date(date).toLocaleDateString('it-IT',{day:'2-digit',month:'short',year:'numeric'}) : '';
-  document.getElementById(`rmeta-${id}`).textContent = [dateFmt, weather, `Gomme ${tire}`, `Carb. ${fuel}`].filter(Boolean).join(' · ');
+  document.getElementById(`rmeta-${id}`).textContent = [dateFmt, fase, weather, `Gomme ${tire}`, `Carb. ${fuel}`].filter(Boolean).join(' · ');
   updateAll();
 }
 
@@ -1006,6 +1021,7 @@ function buildHTML() {
     const weather = getWeatherVal(id);
     const tire    = val(`rtire-${id}`);
     const fuel    = val(`rfuel-${id}`);
+    const fase    = val(`rfase-${id}`);
     const types   = val(`rtypes-${id}`);
     const note    = val(`rnotes-${id}`);
     const results = val(`rresults-${id}`);
@@ -1218,7 +1234,9 @@ async function updateCalendarioEntry(token, fname) {
           circuit: val('rcircuit-'+rid),
           date:    (document.getElementById('rdate-'+rid)||{}).value || '',
           laps:    val('rlaps-'+rid)    || '17',
+          fase:    val('rfase-'+rid)    || '',
           lapsType: (function(){ var b=document.getElementById('rlapstype-'+rid); return b?b.dataset.type:'giri'; })(),
+      fase:    (function(){ var f=document.getElementById('rfase-'+rid); return f?f.value:''; })(),
           weather: getWeatherVal(rid),
           tire:    val('rtire-'+rid),
           fuel:    val('rfuel-'+rid),
