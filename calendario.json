@@ -934,7 +934,7 @@
         "tire": "",
         "fuel": "",
         "types": "",
-        "notes": "Qualifiche: 10 minuti - Bop attivo - Danni ridotti - Bmw M3 Sport Evo '89"
+        "notes": "Qualifiche: 10 minuti (valide per tutte le gare)- Bop attivo - Danni ridotti - Bmw M3 Sport Evo '89"
       },
       {
         "circuit": "Barcellona – Layout GP – 4,7 km",
@@ -946,7 +946,7 @@
         "tire": "",
         "fuel": "",
         "types": "",
-        "notes": "Griglia invertita - Bop attivo - Danni ridotti - Mercedes 190 E 2.5-16 Evolution II '91"
+        "notes": "Bop attivo - Danni ridotti - Mercedes 190 E 2.5-16 Evolution II '91"
       },
       {
         "circuit": "Barcellona – Layout GP – 4,7 km",
@@ -958,7 +958,7 @@
         "tire": "",
         "fuel": "",
         "types": "",
-        "notes": "Griglia invertita - Danni ridotti - Alfa 155 2.5 V6 TI '93"
+        "notes": "Danni ridotti - Alfa 155 2.5 V6 TI '93"
       }
     ],
     "costruttori": false,
