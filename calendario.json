@@ -917,7 +917,7 @@
     "slug": "trofeo-super-turismo",
     "trophy": "superT_trophy.jpg",
     "cars": "Bmw M3 Sport Evo '89 - Mercedes 190 E 2.5-16 Evolution II '91 - Alfa 155 2.5 V6 TI '93",
-    "desc": "",
+    "desc": "Il risultato delle Qualifiche determinerà la griglia di partenza di tutte e 3 le gare / dopo le prime 2 gare ci saranno 5 minuti di prove libere per abituarci alla nuova auto / ogni gara assegna dei punti e vince il trofeo chi fa più punti dopo le 3 gare",
     "status": "prossimo",
     "file": "campionati/trofeo-super-turismo-2026-trofeo-trofeo-super-turismo.html",
     "totalRounds": 3,
@@ -931,9 +931,9 @@
         "fase": "Primo mattino",
         "lapsType": "giri",
         "weather": "🌫️ Foschia, cielo sereno e piacevole",
-        "tire": "",
-        "fuel": "",
-        "types": "",
+        "tire": "x1",
+        "fuel": "x1",
+        "types": "Morbide",
         "notes": "Qualifiche: 10 minuti (valide per tutte le gare)- Bop attivo - Danni ridotti - Bmw M3 Sport Evo '89"
       },
       {
@@ -943,9 +943,9 @@
         "fase": "Tarda mattinata",
         "lapsType": "giri",
         "weather": "☀️ Sole con poche nubi monsoniche",
-        "tire": "",
-        "fuel": "",
-        "types": "",
+        "tire": "x1",
+        "fuel": "x1",
+        "types": "Medie",
         "notes": "Bop attivo - Danni ridotti - Mercedes 190 E 2.5-16 Evolution II '91"
       },
       {
@@ -955,9 +955,9 @@
         "fase": "Pomeriggio",
         "lapsType": "giri",
         "weather": "🌫️ Nebbioso, sereno e piacevole",
-        "tire": "",
-        "fuel": "",
-        "types": "",
+        "tire": "x1",
+        "fuel": "x1",
+        "types": "Dure",
         "notes": "Danni ridotti - Alfa 155 2.5 V6 TI '93"
       }
     ],
