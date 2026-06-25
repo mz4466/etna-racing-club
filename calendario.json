@@ -907,5 +907,61 @@
     ],
     "costruttori": false,
     "teams": []
+  },
+  {
+    "id": "trofeo-super-turismo-2026",
+    "name": "Trofeo Super Turismo",
+    "year": "2026",
+    "cat": "Trofeo",
+    "stagione": "Stagione 2",
+    "slug": "trofeo-super-turismo",
+    "trophy": "superT_trophy.jpg",
+    "cars": "Bmw M3 Sport Evo '89 - Mercedes 190 E 2.5-16 Evolution II '91 - Alfa 155 2.5 V6 TI '93",
+    "desc": "",
+    "status": "prossimo",
+    "file": "campionati/trofeo-super-turismo-2026-trofeo-trofeo-super-turismo.html",
+    "totalRounds": 3,
+    "completedRounds": 0,
+    "bestOf": null,
+    "rounds": [
+      {
+        "circuit": "Barcellona – Layout GP – 4,7 km",
+        "date": "2026-07-12",
+        "laps": "15",
+        "lapsType": "min",
+        "fase": "Primo mattino",
+        "weather": "🌫️ Foschia, cielo sereno e piacevole",
+        "tire": "x1",
+        "fuel": "x1",
+        "types": "Morbide",
+        "notes": "Qualifiche: 10 minuti - Bop attivo - Danni ridotti - Bmw M3 Sport Evo '89"
+      },
+      {
+        "circuit": "Barcellona – Layout GP – 4,7 km",
+        "date": "2026-07-12",
+        "laps": "15",
+        "lapsType": "min",
+        "fase": "Tarda mattinata",
+        "weather": "☀️ Sole con poche nubi monsoniche",
+        "tire": "x1",
+        "fuel": "x1",
+        "types": "Medie",
+        "notes": "Qualifiche: 10 minuti - Bop attivo - Danni ridotti - Mercedes 190 E 2.5-16 Evolution II '91"
+      },
+      {
+        "circuit": "Barcellona – Layout GP – 4,7 km",
+        "date": "2026-07-12",
+        "laps": "16",
+        "lapsType": "min",
+        "fase": "Pomeriggio",
+        "weather": "🌫️ Nebbioso, sereno e piacevole",
+        "tire": "x1",
+        "fuel": "x1",
+        "types": "Dure",
+        "notes": "Qualifiche: 10 minuti - Bop attivo - Danni ridotti - Alfa 155 2.5 V6 TI '93"
+      }
+    ],
+    "costruttori": false,
+    "teams": []
   }
 ]
