@@ -748,9 +748,10 @@ function populateFromHTML(entry, html) {
       const resultsEl = rc.querySelector('.results-btn:not(.upcoming)');
       const results  = resultsEl ? resultsEl.getAttribute('href') || '' : '';
 
-      let weather='', tire='x3', fuel='x4', types='';
+      let weather='', fase='', tire='x3', fuel='x4', types='';
       pills.forEach(p => {
-        if (p.startsWith('🔄')) { /* laps */ }
+        if (p.startsWith('🔄') || p.startsWith('⏱')) { /* laps */ }
+        else if (p.startsWith('🌅')) fase = p.replace('🌅','').trim();
         else if (p.startsWith('🏎️')) tire = p.replace('🏎️ Gomme','').trim();
         else if (p.startsWith('⛽')) fuel = p.replace('⛽ Carb.','').trim();
         else if (p.startsWith('🔵')) types = p.replace('🔵','').trim();
@@ -768,7 +769,7 @@ function populateFromHTML(entry, html) {
         if (parts.length >= 3) dateVal = `${parts[2]}-${months[parts[1]]||'01'}-${parts[0].padStart(2,'0')}`;
       } catch {}
 
-      addRoundWithData({ circuit, date: dateVal, laps, lapsType, weather, tire, fuel, types, note, results });
+      addRoundWithData({ circuit, date: dateVal, laps, lapsType, weather, fase, tire, fuel, types, note, results });
     });
   } else {
     // Fallback: use rounds from calendario.json
@@ -1070,6 +1071,7 @@ function buildHTML() {
         </div>
         <div class="round-details">
           ${weather ? `<div class="detail-pill">${weather}</div>` : ''}
+          ${fase ? `<div class="detail-pill">🌅 ${fase}</div>` : ''}
           <div class="detail-pill">${lapsType==='min'?'⏱':'🔄'} ${laps} ${lapsType==='min'?'min':'giri'}</div>
           <div class="detail-pill">🏎️ Gomme ${tire}</div>
           <div class="detail-pill">⛽ Carb. ${fuel}</div>
