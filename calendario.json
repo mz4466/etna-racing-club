@@ -1028,5 +1028,37 @@
     ],
     "costruttori": false,
     "teams": []
+  },
+  {
+    "id": "trofeo-endurance-2026",
+    "name": "Trofeo Endurance",
+    "year": "2026",
+    "cat": "Trofeo",
+    "stagione": "Stagione 2",
+    "slug": "trofeo-endurance",
+    "trophy": "endurance_trophy.jpg",
+    "cars": "Bac Mono '16",
+    "desc": "",
+    "status": "prossimo",
+    "file": "campionati/trofeo-endurance-2026-trofeo-trofeo-endurance.html",
+    "totalRounds": 1,
+    "completedRounds": 0,
+    "bestOf": null,
+    "rounds": [
+      {
+        "circuit": "Laguna Seca – 3,6 km",
+        "date": "2026-08-02",
+        "laps": "60",
+        "lapsType": "min",
+        "fase": "Sera",
+        "weather": "🌤️ Asciutto, nuvoloso e soleggiato + 💧 Umido e piacevole, scarsa nuvolosità + 🌫️ Nebbioso, soleggiato con molte nuvole + ☀️ Sole con poche nubi monsoniche + 🌫️ Foschia, sole con poche nuvole + 🌤️ Nuvoloso e luminoso + ☁️ Nuvoloso e scuro + ☁️ Nuvoloso e fresco + 🌑 Nubi dense",
+        "tire": "x4",
+        "fuel": "x2",
+        "types": "Dure/Medie/Morbite",
+        "notes": ""
+      }
+    ],
+    "costruttori": false,
+    "teams": []
   }
 ]
