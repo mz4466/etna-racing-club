@@ -943,7 +943,9 @@ function renderPilot(p, calendario) {
         + '</div>');
     });
     if(rows.length) {
-      campionatiHTML = '<div class="pilot-campionati">' + rows.join('') + '</div>';
+      campionatiHTML = '<div class="pilot-campionati">'
+        + '<div style="font-family:\'Teko\',sans-serif;font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;padding-top:10px;border-top:1px solid rgba(201,162,39,0.15);">🚗 Auto in Gara — Campionati Attivi</div>'
+        + rows.join('') + '</div>';
     }
   }
 
