@@ -310,6 +310,9 @@
             .pilot-photo-racing { width:50%; min-width:auto; height:150px; }
             .pilot-number-box { width:50%; height:150px; }
             .pilot-number { font-size:48px; }
+            .controls { flex-direction:column; align-items:stretch; gap:8px; }
+            .controls input[type="search"] { width:100%; }
+            .controls select { width:100%; min-width:0 !important; }
         }
     </style>
 </head>
@@ -330,7 +333,7 @@
 <main class="container">
     <div class="controls">
         <input id="search" type="search" placeholder="Cerca pilota, PSN, auto..." style="flex:1;padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.06);background:#0f1014;color:var(--cream);transition:.25s ease">
-        <select id="numberRoster" style="padding:12px 14px;border-radius:10px;border:1px solid rgba(201,162,39,0.2);background:#0b0b0d;color:var(--cream);font-family:'Russo One',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;outline:none;min-width:190px;">
+        <select id="numberRoster" style="padding:12px 14px;border-radius:10px;border:1px solid rgba(201,162,39,0.2);background:#0b0b0d;color:var(--cream);font-family:'Russo One',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;outline:none;min-width:190px;max-width:100%;">
             <option value=""># Numeri Piloti</option>
         </select>
         <select id="sortSelect" style="padding:12px 14px;border-radius:10px;border:1px solid rgba(255,80,20,0.3);background:#0b0b0d;color:var(--cream);font-family:'Russo One',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;outline:none;min-width:190px;">
