@@ -1,0 +1,133 @@
+{
+  "circuito": "Sardegna – Tracciato stradale Layout A – 5,1 km",
+  "data": "2026-06-28",
+  "garaNum": "1",
+  "garaTot": "1",
+  "champId": "etna-racing-day-2026",
+  "champIdx": "etna-racing-day-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "auto": "Fiat Panda 30 CL '85",
+      "tempo": "32'46''395",
+      "bestLap": "02'07''483",
+      "fl": true,
+      "pole": true,
+      "punti": 25,
+      "extra": "1+1",
+      "totale": 27,
+      "stato": "ok"
+    },
+    {
+      "pos": 2,
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "auto": "Fiat Panda 30 CL '85",
+      "tempo": "a 10\"763",
+      "bestLap": "02'08''533",
+      "fl": false,
+      "pole": false,
+      "punti": 21,
+      "extra": "-",
+      "totale": 21,
+      "stato": "ok"
+    },
+    {
+      "pos": 3,
+      "nome": "Antonio",
+      "psn": "antonioleocataad",
+      "auto": "Fiat Panda 30 CL '85",
+      "tempo": "a 30\"611",
+      "bestLap": "02'08''940",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok"
+    },
+    {
+      "pos": 4,
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "auto": "Fiat Panda 30 CL '85",
+      "tempo": "a 33\"300",
+      "bestLap": "02'08''582",
+      "fl": false,
+      "pole": false,
+      "punti": 16,
+      "extra": "-",
+      "totale": 16,
+      "stato": "ok"
+    },
+    {
+      "pos": 5,
+      "nome": "Carmine",
+      "psn": "CarmineRafa87",
+      "auto": "Fiat Panda 30 CL '85",
+      "tempo": "a 1 Giro",
+      "bestLap": "02'15''109",
+      "fl": false,
+      "pole": false,
+      "punti": 14,
+      "extra": "-",
+      "totale": 14,
+      "stato": "ok"
+    },
+    {
+      "pos": 6,
+      "nome": "Fabio",
+      "psn": "fabyus1983",
+      "auto": "Fiat Panda 30 CL '85",
+      "tempo": "a 1 Giro",
+      "bestLap": "02'17''244",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "pts": 27,
+      "pos": 1
+    },
+    {
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "pts": 21,
+      "pos": 2
+    },
+    {
+      "nome": "Antonio",
+      "psn": "antonioleocataad",
+      "pts": 18,
+      "pos": 3
+    },
+    {
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "pts": 16,
+      "pos": 4
+    },
+    {
+      "nome": "Carmine",
+      "psn": "CarmineRafa87",
+      "pts": 14,
+      "pos": 5
+    },
+    {
+      "nome": "Fabio",
+      "psn": "fabyus1983",
+      "pts": 12,
+      "pos": 6
+    }
+  ],
+  "bestOf": null
+}
