@@ -728,10 +728,10 @@
     "trophy": "ERD-Trofeo.jpg",
     "cars": "FIAT Panda 30 CL '85",
     "desc": "Stagione 2: Si riparte da dove tutto è iniziato. Niente elettronica, 30 cavalli (forse) e i ricordi di quando eravamo bambini sul sedile posteriore. Scaldate i motori, la leggenda di famiglia è tornata",
-    "status": "in-corso",
+    "status": "concluso",
     "file": "campionati/etna-racing-day-2026-trofeo-etna-racing-day.html",
     "totalRounds": 1,
-    "completedRounds": 0,
+    "completedRounds": 1,
     "bestOf": null,
     "rounds": [
       {
