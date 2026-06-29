@@ -29,7 +29,6 @@
     background: var(--bg);
     color: var(--text);
     font-family: 'Barlow Condensed', sans-serif;
-    overflow: hidden;
   }
 
   .bg-canvas {
@@ -247,9 +246,8 @@
     display: none;
     position: relative;
     z-index: 10;
-    height: 100vh;
+    min-height: 100vh;
     flex-direction: column;
-    overflow: hidden;
   }
 
   #dashboard.visible {
@@ -343,7 +341,6 @@
     align-items: center;
     justify-content: center;
     padding: 10px 40px;
-    overflow: hidden;
   }
 
   .dash-content { width: 100%; max-width: 960px; }
@@ -524,7 +521,8 @@
     .login-box { width: 90vw; padding: 36px 28px 28px; }
     .menu-grid { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; }
     .dash-topbar { padding: 0 18px; }
-    .dash-body { padding: 24px 16px; }
+    .dash-body { padding: 16px 16px 32px; align-items: flex-start; }
+    #loginScreen { overflow-y: auto; }
   }
 </style>
 </head>
