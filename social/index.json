@@ -5,7 +5,14 @@
     "date": "2026-06-28",
     "year": 2026,
     "campionato": "Etna Racing Day (2026)",
-    "blockTypes": [],
+    "blockTypes": [
+      "title",
+      "text",
+      "video",
+      "title",
+      "embed",
+      "photo"
+    ],
     "created": "2026-06-29T19:30:31.139Z"
   },
   {
