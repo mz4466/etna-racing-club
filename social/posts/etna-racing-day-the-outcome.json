@@ -1,0 +1,83 @@
+{
+  "title": "Etna Racing Day - The Outcome",
+  "slug": "etna-racing-day-the-outcome",
+  "date": "2026-06-28",
+  "year": 2026,
+  "campionato": "Etna Racing Day (2026)",
+  "blocks": [
+    {
+      "id": "b0",
+      "type": "title",
+      "x": 5.02,
+      "y": 3.78,
+      "w": 40.44,
+      "h": 15.11,
+      "content": {
+        "text": "Etna Racing Day - Il Resoconto",
+        "size": "large"
+      }
+    },
+    {
+      "id": "b1",
+      "type": "text",
+      "x": 4.91,
+      "y": 20.41,
+      "w": 62.55,
+      "h": 74.23,
+      "content": {
+        "html": "<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">&nbsp;28 Giugno 2026, l’Etna Racing Club inizia la sua seconda stagione\ncon un evento che voleva essere una festa tra amici, il luogo di\nquesto ritrovo: Sardegna. L’auto usata: Fiat Panda. La Gara: 15\nGiri</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Il\nvostro inviato sul posto, P. Longo, ha assistito per voi a questa\nprima ed emozionante gara</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">La\ngiornata è stata favorevole allo spettacolo, temperature piuttosto\nmite, cielo completamente sereno, rarissime nuvole all orizzonte,\ntutto lasciava presagire una gara esaltante</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Le\nQualifiche si sono chiuse con la Pole Position da parte di Giovanni,\npiù veloce di Pierpaolo di poco meno di 2 decimi, a seguire Claudio,\nAntonio, Fabio e a chiudere Carmine che ha deciso di saltare le\nqualificazioni per provare delle modifiche dell ultimo minuto</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Lo\nStart è avvenuto con uno scatto perentorio di Antonio che ha\nbruciato tutti, Giovanni invece veniva superato da ben 4 partecipanti\nritrovandosi ad inseguire sin da subito vanificando quindi la sua\nottima pole</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Giovanni\nè comunque riuscito a recuperare subito, saltando Carmine dopo la\nprima curva, mentre Pierpaolo ha sfrutta verso la fine del primo giro\nun errore di Antonio per passare in testa; la prima curva del secondo\ngiro è però fatale al duo Antonio-Claudio visto che Antonio va un\npo’ lungo e Claudio finisce per tamponarlo, ne approfitta Giovanni\nche passa in seconda posizione; Da lì inizia una gara a “coppie”,\nPierpaolo vs Giovanni per la vittoria, Claudio vs Antonio per il\nterzo posto, Carmine vs Fabio per non arrivare ultimo</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">La\nprima delle 3 sfide si decide quando Pierpaolo al 4° giro arriva\ntroppo lungo in una curva, Giovanni lo passa e vola verso la\nvittoria, la sfida per non arrivare ultimo invece si decide al 12°\nGiro quando Fabio perde il controllo dell auto e perde contatto,\nquella invece per il terzo posto dura praticamente tutta la gara e si\ndecide solo al penultimo dei 15 giri quando Claudio sconta una\npenalità e non riesce più ad avvicinarsi ad Antonio.</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Questo\nrisultato permette a Giovanni di aggiudicarsi la sua prima vera\nvittoria (aveva già vinto una gara, ma come manches di un evento più\ngrande). Gara dominata, Pole, vittoria e giro veloce</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Complimenti\na lui, complimenti a tutti</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Dal\nvostro P. Longo è tutto, a voi studio</p>"
+      }
+    },
+    {
+      "id": "b2",
+      "type": "video",
+      "x": 68.3,
+      "y": 15.29,
+      "w": 17.28,
+      "h": 53.14,
+      "content": {
+        "url": "",
+        "caption": "",
+        "src": "social/media/etna-racing-day-the-outcome-b2.mp4",
+        "pending": null
+      }
+    },
+    {
+      "id": "b3",
+      "type": "title",
+      "x": 68.23,
+      "y": 3.95,
+      "w": 17.08,
+      "h": 10.13,
+      "content": {
+        "text": "Interviste",
+        "size": "medium"
+      }
+    },
+    {
+      "id": "b4",
+      "type": "embed",
+      "x": 46.19,
+      "y": 3.96,
+      "w": 22,
+      "h": 15,
+      "content": {
+        "url": "https://etnaracingclub.com/risultati/2026-etna-racing-day-r1-sardegna-tracciato-stradale-layout-a-5-1-km.html"
+      }
+    },
+    {
+      "id": "b5",
+      "type": "photo",
+      "x": 68.19,
+      "y": 69.54,
+      "w": 8.95,
+      "h": 24.08,
+      "content": {
+        "src": "social/media/etna-racing-day-the-outcome-b5.png",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    }
+  ]
+}
