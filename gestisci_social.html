@@ -778,7 +778,7 @@ function generatePostHTML(post,bks,canvasRatio){
     }
   });
   o+='</div></div>\n';
-  o+='<div class=\'lbx\' id=\'lbx\' onclick=\'this.classList.remove(\'open\')\'><span class=\'lbx-close\' onclick=\'event.stopPropagation();document.getElementById(\'lbx\').classList.remove(\'open\')\'>&#x2715;</span><img id=\'lbx-img\' src=\'\'  alt=\'\' onclick=\'event.stopPropagation()\'></div>\n<script>(function(){document.querySelectorAll(\'.cb-p img\').forEach(function(img){img.addEventListener(\'click\',function(){var lb=document.getElementById(\'lbx\');document.getElementById(\'lbx-img\').src=this.src;lb.classList.add(\'open\');});});document.addEventListener(\'keydown\',function(e){if(e.key===\'Escape\') document.getElementById(\'lbx\').classList.remove(\'open\');});})();<\/script>\n';
+  o+='<div class="lbx" id="lbx" onclick="this.classList.remove(\'open\')"><span class="lbx-close" onclick="event.stopPropagation();document.getElementById(\'lbx\').classList.remove(\'open\')">&#x2715;</span><img id="lbx-img" src="" alt="" onclick="event.stopPropagation()"></div>\n<' + 'script>(function(){document.querySelectorAll(\'.cb-p img\').forEach(function(img){img.addEventListener(\'click\',function(){var lb=document.getElementById(\'lbx\');document.getElementById(\'lbx-img\').src=this.src;lb.classList.add(\'open\');});});document.addEventListener(\'keydown\',function(e){if(e.key===\'Escape\') document.getElementById(\'lbx\').classList.remove(\'open\');});})();<\/script>\n';
   o+='<'+'/body>\n<'+'/html>';
   return o;
 }
