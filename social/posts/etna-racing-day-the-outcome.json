@@ -67,6 +67,76 @@
         "pending": null,
         "url": ""
       }
+    },
+    {
+      "id": "b6",
+      "type": "photo",
+      "x": 86.06,
+      "y": 19.99,
+      "w": 12.45,
+      "h": 15.94,
+      "content": {
+        "src": "social/media/etna-racing-day-the-outcome-b6.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b7",
+      "type": "photo",
+      "x": 86.22,
+      "y": 36.83,
+      "w": 12.55,
+      "h": 14.11,
+      "content": {
+        "src": "social/media/etna-racing-day-the-outcome-b7.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b11",
+      "type": "photo",
+      "x": 86.12,
+      "y": 51.69,
+      "w": 12.64,
+      "h": 14.61,
+      "content": {
+        "src": "social/media/etna-racing-day-the-outcome-b11.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b12",
+      "type": "photo",
+      "x": 86.31,
+      "y": 66.9,
+      "w": 12.84,
+      "h": 14.45,
+      "content": {
+        "src": "social/media/etna-racing-day-the-outcome-b12.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b13",
+      "type": "photo",
+      "x": 86.11,
+      "y": 82.37,
+      "w": 12.93,
+      "h": 16.27,
+      "content": {
+        "src": "social/media/etna-racing-day-the-outcome-b13.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
     }
   ]
 }
