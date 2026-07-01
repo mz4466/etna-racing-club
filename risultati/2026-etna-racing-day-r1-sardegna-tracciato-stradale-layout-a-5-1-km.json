@@ -14,10 +14,10 @@
       "tempo": "32'46''395",
       "bestLap": "02'07''483",
       "fl": true,
-      "pole": true,
-      "punti": 25,
-      "extra": "1+1",
-      "totale": 27,
+      "pole": false,
+      "punti": 0,
+      "extra": "0",
+      "totale": 0,
       "stato": "ok"
     },
     {
@@ -29,9 +29,9 @@
       "bestLap": "02'08''533",
       "fl": false,
       "pole": false,
-      "punti": 21,
+      "punti": 0,
       "extra": "-",
-      "totale": 21,
+      "totale": 0,
       "stato": "ok"
     },
     {
@@ -43,9 +43,9 @@
       "bestLap": "02'08''940",
       "fl": false,
       "pole": false,
-      "punti": 18,
+      "punti": 0,
       "extra": "-",
-      "totale": 18,
+      "totale": 0,
       "stato": "ok"
     },
     {
@@ -57,9 +57,9 @@
       "bestLap": "02'08''582",
       "fl": false,
       "pole": false,
-      "punti": 16,
+      "punti": 0,
       "extra": "-",
-      "totale": 16,
+      "totale": 0,
       "stato": "ok"
     },
     {
@@ -71,9 +71,9 @@
       "bestLap": "02'15''109",
       "fl": false,
       "pole": false,
-      "punti": 14,
+      "punti": 0,
       "extra": "-",
-      "totale": 14,
+      "totale": 0,
       "stato": "ok"
     },
     {
@@ -85,9 +85,9 @@
       "bestLap": "02'17''244",
       "fl": false,
       "pole": false,
-      "punti": 12,
+      "punti": 0,
       "extra": "-",
-      "totale": 12,
+      "totale": 0,
       "stato": "ok"
     }
   ],
@@ -95,38 +95,38 @@
     {
       "nome": "Giovanni",
       "psn": "mz4461",
-      "pts": 27,
+      "pts": 0,
       "pos": 1
     },
     {
       "nome": "Pyer",
       "psn": "PyerStark",
-      "pts": 21,
-      "pos": 2
+      "pts": 0,
+      "pos": 1
     },
     {
       "nome": "Antonio",
       "psn": "antonioleocataad",
-      "pts": 18,
-      "pos": 3
+      "pts": 0,
+      "pos": 1
     },
     {
       "nome": "Claudio",
       "psn": "SybeX26",
-      "pts": 16,
-      "pos": 4
+      "pts": 0,
+      "pos": 1
     },
     {
       "nome": "Carmine",
       "psn": "CarmineRafa87",
-      "pts": 14,
-      "pos": 5
+      "pts": 0,
+      "pos": 1
     },
     {
       "nome": "Fabio",
       "psn": "fabyus1983",
-      "pts": 12,
-      "pos": 6
+      "pts": 0,
+      "pos": 1
     }
   ],
   "bestOf": null
