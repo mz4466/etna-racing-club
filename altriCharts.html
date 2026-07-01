@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Altri Chart — Etna Racing Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@300;400;500;600;700&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07070f;--card:#0e0e1c;--card2:#0a0a16;
+  --border:rgba(201,162,39,0.12);--border-hi:rgba(201,162,39,0.25);
+  --gold:#c9a227;--gold-hi:#e8c547;--gold-dim:rgba(201,162,39,0.10);
+  --text:#e8e0d0;--muted:#8a8098;--dim:#5a5470;
+  --red:#ff5014;--green:#27ae60;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh}
+
+.header-action{position:absolute;top:16px;right:20px;z-index:2}
+.btn-back{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border-radius:6px;border:1px solid var(--gold);color:var(--gold);background:transparent;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s}
+.btn-back:hover{background:var(--gold);color:#07070f}
+.page-header{position:relative;text-align:center;padding:36px 160px 28px}
+.page-header img{width:64px;height:64px;object-fit:contain;margin-bottom:14px;filter:drop-shadow(0 0 12px rgba(201,162,39,0.3));border-radius:8px}
+.page-season{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
+.page-title{font-family:'Russo One',sans-serif;font-size:clamp(24px,5vw,36px);color:var(--text);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px}
+.page-sub{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:3px;color:var(--dim);text-transform:uppercase}
+
+.wrap{max-width:900px;margin:0 auto;padding:24px 20px 60px}
+
+.loading{text-align:center;padding:60px 20px}
+.loading-bar{width:240px;height:6px;background:rgba(201,162,39,0.10);border-radius:3px;margin:16px auto 0;overflow:hidden}
+.loading-fill{height:100%;background:var(--gold);border-radius:3px;width:0%;transition:width 0.3s}
+.loading-text{font-family:'Teko',sans-serif;font-size:16px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-top:10px}
+
+.section-title{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:4px;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:14px}
+
+/* KM TABLE */
+.km-table-wrap{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow-x:auto;margin-bottom:32px}
+.km-table{width:100%;border-collapse:collapse;min-width:500px}
+.km-table thead{background:rgba(201,162,39,0.06)}
+.km-table th{font-family:'Teko',sans-serif;font-size:13px;font-weight:500;letter-spacing:2px;color:var(--gold);text-transform:uppercase;padding:10px 14px;text-align:center;border-bottom:1px solid var(--border-hi);white-space:nowrap}
+.km-table th:nth-child(2){text-align:left}
+.km-table td{padding:10px 14px;font-size:14px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.03);color:#ffffff;white-space:nowrap}
+.km-table td:nth-child(2){text-align:left;color:var(--text);font-weight:500}
+.km-table tbody tr:hover{background:rgba(201,162,39,0.04)}
+.pos-gold{color:var(--gold);font-family:'Russo One',sans-serif;font-weight:700}
+.pos-dim{color:var(--dim)}
+.km-val{color:var(--gold-hi);font-family:'Russo One',sans-serif;font-weight:700;font-size:15px}
+
+/* KM BAR */
+.km-bar-wrap{height:6px;background:rgba(255,255,255,0.04);border-radius:3px;overflow:hidden;margin-top:4px}
+.km-bar{height:100%;background:linear-gradient(90deg,rgba(201,162,39,0.5),rgba(232,197,71,0.8));border-radius:3px;transition:width 0.5s}
+
+.footer-note{text-align:center;font-size:12px;letter-spacing:2px;color:rgba(201,184,163,0.3);margin-top:20px}
+
+@media(max-width:700px){
+  .page-header{padding:36px 20px 28px}
+  .header-action{position:static;text-align:right;margin-bottom:10px}
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="header-action"><a href="statistiche.html" class="btn-back">← Statistiche</a></div>
+  <a href="index.html"><img src="etna-logo.jpg" alt="Etna Racing Club"></a>
+  <div class="page-season">Etna Racing Club</div>
+  <h1 class="page-title">Altri Chart</h1>
+  <div class="page-sub">Chilometri percorsi &middot; Statistiche extra</div>
+</header>
+
+<div class="wrap">
+
+  <div class="loading" id="loadingBox">
+    <div style="font-family:'Russo One',sans-serif;font-size:18px;color:var(--gold);letter-spacing:2px">Caricamento dati...</div>
+    <div class="loading-bar"><div class="loading-fill" id="loadingFill"></div></div>
+    <div class="loading-text" id="loadingText">Recupero risultati...</div>
+  </div>
+
+  <div id="dashboard" style="display:none">
+
+    <div class="section-title">🛣️ Chilometri percorsi (esclusi DNF e DSQ)</div>
+    <div class="km-table-wrap">
+      <table class="km-table">
+        <thead>
+          <tr>
+            <th style="width:44px">#</th>
+            <th>Pilota</th>
+            <th>Km Totali</th>
+            <th>Gare</th>
+            <th>Km / Gara</th>
+          </tr>
+        </thead>
+        <tbody id="kmTableBody"></tbody>
+      </table>
+    </div>
+
+    <div class="footer-note" id="footerNote"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+
+  var BASE = '';
+
+  /* ── helpers ── */
+  function norm(s){ return (s||'').toLowerCase().replace(/-/g,' ').trim(); }
+
+  function extractKm(circuit){
+    if(!circuit) return null;
+    var m = circuit.match(/[\-\u2013]\s*([\d,\.]+)\s*km/i);
+    if(m) return parseFloat(m[1].replace(',','.'));
+    var m2 = circuit.match(/\(([\d,\.]+)\s*[km]*\)/i);
+    if(m2){
+      var v = parseFloat(m2[1].replace(',','.'));
+      /* old format has metres, e.g. (5.793 m) → need to detect if it's km or m */
+      /* if value > 30 it's likely metres → convert */
+      return v > 30 ? Math.round(v / 1000 * 1000) / 1000 : v;
+    }
+    return null;
+  }
+
+  /* ── PSN map ── */
+  var schede = {};
+  var nmeToPsn = {};
+
+  function fetchPsnMap(){
+    return fetch(BASE + 'piloti_schede/psn-map.json?_=' + Date.now())
+      .then(function(r){ return r.ok ? r.json() : {}; })
+      .then(function(m){
+        for(var k in (m||{})){
+          if(m.hasOwnProperty(k)){
+            var psn = k.toLowerCase().trim();
+            schede[psn] = m[k];
+          }
+        }
+      })
+      .catch(function(){});
+  }
+
+  /* ── calendario → champId -> rounds map ── */
+  var champRoundsMap = {};
+  var ufficioseIds = {};
+
+  function fetchCalendario(){
+    return fetch(BASE + 'calendario.json?_=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(champs){
+        for(var ci=0; ci<champs.length; ci++){
+          var c = champs[ci];
+          if(c.cat === 'Gara Ufficiosa'){
+            if(c.id) ufficioseIds[c.id] = true;
+            continue;
+          }
+          if(c.id) champRoundsMap[c.id] = c.rounds || [];
+        }
+      })
+      .catch(function(){});
+  }
+
+  /* ── risultati ── */
+  function fetchIndex(){
+    return fetch(BASE + 'risultati/index.json?_=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(list){
+        return list.filter(function(f){ return f !== 'index.json' && f.endsWith('.json'); });
+      });
+  }
+
+  function fetchRace(file){
+    return fetch(BASE + 'risultati/' + file + '?_=' + Date.now())
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .catch(function(){ return null; });
+  }
+
+  /* ── main ── */
+  function loadAll(){
+    Promise.all([fetchCalendario(), fetchPsnMap()])
+      .then(function(){ return fetchIndex(); })
+      .then(function(files){
+        var total = files.length, done = 0;
+        var promises = files.map(function(f){
+          return fetchRace(f).then(function(d){
+            done++;
+            document.getElementById('loadingFill').style.width = Math.round(done/total*100) + '%';
+            document.getElementById('loadingText').textContent = done + ' / ' + total + ' risultati';
+            return d;
+          });
+        });
+        return Promise.all(promises);
+      })
+      .then(function(races){
+        processAndRender(races.filter(function(x){ return x; }));
+      })
+      .catch(function(){
+        document.getElementById('loadingText').textContent = 'Errore nel caricamento';
+      });
+  }
+
+  function processAndRender(races){
+    /* Build nmeToPsn from race rows */
+    for(var ri=0; ri<races.length; ri++){
+      var rows = races[ri].rows || [];
+      for(var rj=0; rj<rows.length; rj++){
+        var psn = (rows[rj].psn||'').toLowerCase().trim();
+        var nome = rows[rj].nome || '';
+        if(psn && nome) nmeToPsn[norm(nome)] = psn;
+      }
+    }
+
+    /* KM per pilot */
+    var pilotKm = {}; /* pkey -> {nome, psn, km, races, validRaces} */
+
+    for(var ri=0; ri<races.length; ri++){
+      var race = races[ri];
+      var cid = race.champId || race.champIdx || '';
+      if(cid && ufficioseIds[cid]) continue;
+
+      var garaNum = parseInt(race.garaNum) || 0;
+      var rounds = champRoundsMap[cid] || [];
+      var rd = garaNum > 0 && garaNum <= rounds.length ? rounds[garaNum-1] : null;
+      if(!rd) continue;
+
+      var laps = parseInt(rd.laps) || 0;
+      if(!laps || rd.lapsType === 'min') continue; /* skip timed races — no lap count */
+
+      var km = extractKm(rd.circuit || race.circuito || '');
+      if(!km) continue;
+
+      var raceKm = Math.round(laps * km * 10) / 10;
+
+      var rows = race.rows || [];
+      for(var pi=0; pi<rows.length; pi++){
+        var r = rows[pi];
+        var stato = norm(r.stato || 'ok');
+        if(stato === 'dnf' || stato === 'dsq') continue;
+
+        var nome = r.nome || '';
+        if(!nome) continue;
+        var rpsn = (r.psn||'').toLowerCase().trim() || nmeToPsn[norm(nome)] || '';
+        var pkey = rpsn || norm(nome);
+
+        if(!pilotKm[pkey]){
+          pilotKm[pkey] = { nome: nome, psn: rpsn, km: 0, races: 0 };
+        }
+        /* update display name from schede if available */
+        if(rpsn && schede[rpsn]) pilotKm[pkey].nome = schede[rpsn];
+
+        pilotKm[pkey].km += raceKm;
+        pilotKm[pkey].races++;
+      }
+    }
+
+    /* Sort by km desc */
+    var arr = [];
+    for(var k in pilotKm){
+      if(pilotKm.hasOwnProperty(k)) arr.push(pilotKm[k]);
+    }
+    arr.sort(function(a,b){ return b.km - a.km; });
+
+    renderKmTable(arr);
+
+    document.getElementById('loadingBox').style.display = 'none';
+    document.getElementById('dashboard').style.display = '';
+    document.getElementById('footerNote').textContent =
+      'Calcolato su ' + races.length + ' gare pubblicate · Solo gare completate (esclusi DNF/DSQ)';
+  }
+
+  function renderKmTable(arr){
+    var maxKm = arr.length ? arr[0].km : 1;
+    var html = '';
+    for(var i=0; i<arr.length; i++){
+      var p = arr[i];
+      var posCls = i < 3 ? 'pos-gold' : 'pos-dim';
+      var avgKm = p.races ? Math.round(p.km / p.races * 10) / 10 : 0;
+      var barW = Math.round(p.km / maxKm * 100);
+      html += '<tr>'
+        + '<td class="' + posCls + '">' + (i+1) + '</td>'
+        + '<td>' + esc(p.nome) + '</td>'
+        + '<td><div class="km-val">' + p.km.toLocaleString('it-IT', {minimumFractionDigits:1, maximumFractionDigits:1}) + ' km</div>'
+        + '<div class="km-bar-wrap"><div class="km-bar" style="width:' + barW + '%"></div></div></td>'
+        + '<td>' + p.races + '</td>'
+        + '<td>' + avgKm.toLocaleString('it-IT', {minimumFractionDigits:1, maximumFractionDigits:1}) + ' km</td>'
+        + '</tr>';
+    }
+    document.getElementById('kmTableBody').innerHTML = html || '<tr><td colspan="5" style="text-align:center;color:var(--dim);padding:24px;">Nessun dato disponibile</td></tr>';
+  }
+
+  function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+  loadAll();
+
+})();
+</script>
+<script src="copyright.js"></script>
+<script src="nav.js"></script>
+</body>
+</html>
