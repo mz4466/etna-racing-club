@@ -1005,6 +1005,7 @@ function buildHTML(){
 
   const rows = collectRows();
   const standings = collectStandings();
+  const allZero = rows.every(r => r.totale === 0);
   const _raceDataJSON = JSON.stringify({
     champId: String(champIdx),
     champIdx: String(champIdx), // kept for backwards compat with old pages
@@ -1033,9 +1034,7 @@ function buildHTML(){
       <td class="${nameClass}" ${r.psn ? `data-psn="${esc(r.psn)}"` : ''}><span class="pilot-name-text">${esc(r.nome)}</span>${carHtml}</td>
       <td>${esc(r.tempo)}</td>
       <td class="${flClass}">${esc(r.bestLap)}</td>
-      <td>${r.punti}</td>
-      <td>${esc(r.extra)}</td>
-      <td><strong>${r.totale}</strong></td>
+      ${allZero ? '' : `<td>${r.punti}</td><td>${esc(r.extra)}</td><td><strong>${r.totale}</strong></td>`}
     </tr>`;
   }).join('');
 
@@ -1140,7 +1139,7 @@ function buildHTML(){
     <p class="race-subtitle">${esc(champName)}</p>
     ${dateFmt?`<p class="race-date">${dateFmt}</p>`:''}
   </div>
-  <div class="results-wrapper">
+  <div class="results-wrapper" style="${allZero ? 'grid-template-columns:1fr' : ''}">
     <div class="results-table">
       <table>
         <thead>
@@ -1149,15 +1148,13 @@ function buildHTML(){
             <th>Pilota</th>
             <th>Tempo Totale</th>
             <th>Best Lap</th>
-            <th>Punti</th>
-            <th>Extra</th>
-            <th>Totale</th>
+            ${allZero ? '' : '<th>Punti</th><th>Extra</th><th>Totale</th>'}
           </tr>
         </thead>
         <tbody>${rowsHTML}</tbody>
       </table>
     </div>
-    <div class="standings-sidebar">
+    ${allZero ? '' : `<div class="standings-sidebar">
       <div class="standings-card">
         <h2 class="standings-title">🏆 Piloti</h2>
         ${bestOfNote}
@@ -1173,7 +1170,7 @@ function buildHTML(){
         <div id="champCostruttoii"></div>
         <div class="race-info"><strong>Gara ${garaNum} di ${garaTot}</strong></div>
       </div>` : ''}
-    </div>
+    </div>`}
   </div>
 </main>
 <footer id="cfg-copyright">© 2026 Etna Racing Club • Sicilia, Italia</footer>
