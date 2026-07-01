@@ -895,7 +895,7 @@
     "slug": "evento-gr-4",
     "trophy": "evento_winner.png",
     "cars": "Ferrari 458 Italia Gr.4",
-    "desc": "🏁 Etna Racing Club presents: EVENTO GR.4! 🏁Get ready for high-octane action as we kick off the 2026 season! We are hitting the track in the iconic Ferrari 458 Italia Gr.4 for a thrilling single-round challenge. Round 1 takes us to the massive Sainte-Croix – Layout A (9.5 KM) on July 4th, 2026. With changing weather conditions, strategic tire wear ($\\times2$), and fuel consumption ($\\times4$), strategy will be just as important as raw speed.Do you have what it takes to conquer Sainte-Croix? 🚗💨",
+    "desc": "🏁 Etna Racing Club presenta: EVENTO GR.4! 🏁\nPreparatevi per un'azione ad alto ottano mentre diamo il via alla stagione 2026! Scendiamo in pista con l'iconica Ferrari 458 Italia Gr.4 per una emozionante sfida a round singolo. Il Round 1 ci porta sull'imponente Sainte-Croix – Layout A (9,5 KM) il 4 luglio 2026. Con condizioni meteo variabili, usura degli pneumatici strategica (×2) e consumo carburante elevato (×4), la strategia conterà quanto la pura velocità.\nAvete quello che serve per conquistare Sainte-Croix? 🚗",
     "status": "prossimo",
     "file": "campionati/evento-gr4-2026-evento-evento-gr-4.html",
     "totalRounds": 1,
@@ -903,7 +903,7 @@
     "bestOf": null,
     "rounds": [
       {
-        "circuit": "Sainte-Croix – Layout A – 9,5 km",
+        "circuit": "Sainte-Croix – Layout B – 7,1 km",
         "date": "2026-07-04",
         "laps": "13",
         "fase": "Pomeriggio",
