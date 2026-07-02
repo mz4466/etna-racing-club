@@ -572,6 +572,8 @@ document.addEventListener('DOMContentLoaded', function() { buildTrophyPicker('')
 
 // ── MANIFESTO HANDLERS ──
 var manifestoData = {};
+var trackMapData = {};
+var trackMapIndex = {};  // circuit_normalised -> url
 
 function handleManifesto(id, input) {
   var file = input.files[0];
@@ -594,6 +596,63 @@ function clearManifesto(id) {
   document.getElementById('rmanifesto-clear-' + id).style.display = 'none';
   syncRound(id);
 }
+
+function handleTrackMap(id, input) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    trackMapData[id] = e.target.result;
+    document.getElementById('rtrackmap-name-' + id).textContent = file.name;
+    document.getElementById('rtrackmap-clear-' + id).style.display = 'inline-block';
+    // Save association: circuit -> filename for future auto-fill
+    var circ = document.getElementById('rcircuit-' + id);
+    if (circ && circ.value.trim()) {
+      var ck = circ.value.trim().toLowerCase();
+      trackMapIndex[ck] = 'track_maps/' + file.name;
+      try { localStorage.setItem('erc_track_map_index', JSON.stringify(trackMapIndex)); } catch(e2){}
+    }
+    syncRound(id);
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearTrackMap(id) {
+  trackMapData[id] = null;
+  var inp = document.getElementById('rtrackmap-' + id);
+  if (inp) inp.value = '';
+  document.getElementById('rtrackmap-name-' + id).textContent = '';
+  document.getElementById('rtrackmap-clear-' + id).style.display = 'none';
+  syncRound(id);
+}
+
+function autoFillTrackMap(id) {
+  var circ = document.getElementById('rcircuit-' + id);
+  if (!circ || trackMapData[id]) return; // already has one
+  var ck = (circ.value || '').trim().toLowerCase();
+  if (!ck) return;
+  var url = trackMapIndex[ck];
+  if (url) {
+    trackMapData[id] = url;
+    document.getElementById('rtrackmap-name-' + id).textContent = '✓ Mappa caricata automaticamente';
+    document.getElementById('rtrackmap-clear-' + id).style.display = 'inline-block';
+    syncRound(id);
+  }
+}
+
+function loadTrackMapIndex() {
+  try {
+    var cached = localStorage.getItem('erc_track_map_index');
+    if (cached) trackMapIndex = JSON.parse(cached);
+  } catch(e) {}
+  fetch('track_maps/index.json?_=' + Date.now())
+    .then(function(r){ return r.ok ? r.json() : {}; })
+    .then(function(data){
+      for (var k in data) { if (data.hasOwnProperty(k)) trackMapIndex[k] = data[k]; }
+      try { localStorage.setItem('erc_track_map_index', JSON.stringify(trackMapIndex)); } catch(e) {}
+    }).catch(function(){});
+}
+loadTrackMapIndex();
 
 function getToken() { return document.getElementById('patInput').value.trim(); }
 function togglePAT() { const i = document.getElementById('patInput'); i.type = i.type==='password'?'text':'password'; }
@@ -838,6 +897,8 @@ function addRoundWithData(data) {
   if (data.fase)    setVal(`rfase-${id}`, data.fase);
   if (data.manifesto) {
     manifestoData[id] = data.manifesto;
+    if (data.trackMap) { trackMapData[id] = data.trackMap; }
+    else { setTimeout(function(){ autoFillTrackMap(id); }, 100); }
     var nameEl = document.getElementById('rmanifesto-name-' + id);
     var clearEl = document.getElementById('rmanifesto-clear-' + id);
     if (nameEl) nameEl.textContent = '✓ Manifesto presente';
@@ -859,7 +920,7 @@ function roundHTML(id, pos, d={}) {
     <div class="race-card-body">
       <div class="form-row col4">
         <div class="field"><label>Round #</label><input type="number" value="${pos}" min="1" id="rnum-${id}"></div>
-        <div class="field"><label>Circuito</label><input type="text" value="${esc(d.circuit||'')}" class="circuit-input" id="rcircuit-${id}" list="gt7-circuits" oninput="syncRound(${id})"></div>
+        <div class="field"><label>Circuito</label><input type="text" value="${esc(d.circuit||'')}" class="circuit-input" id="rcircuit-${id}" list="gt7-circuits" oninput="syncRound(${id});autoFillTrackMap(${id})"></div>
         <div class="field"><label>Data Gara</label><input type="date" value="${d.date||''}" id="rdate-${id}" oninput="syncRound(${id})"></div>
         <div class="field"><label>Giri / Min</label><div style="display:flex;gap:4px;align-items:center;"><input type="number" value="${d.laps||17}" min="1" id="rlaps-${id}" style="flex:1;min-width:0;"><button type="button" id="rlapstype-${id}" data-type="${d.lapsType||'giri'}" onclick="toggleLapsType('${id}')" style="flex-shrink:0;padding:7px 10px;border-radius:6px;border:1px solid var(--border-hi);background:var(--bg-input);color:var(--gold);font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:all .2s;" title="Clicca per cambiare">${d.lapsType==='min'?'⏱ min':'🔄 giri'}</button></div></div>
       </div>
@@ -901,7 +962,16 @@ function roundHTML(id, pos, d={}) {
         <div class="field"><label>Gomme Disponibili</label><input type="text" value="${esc(d.types||'')}" placeholder="Soft / Medium / Hard" id="rtypes-${id}" oninput="syncRound(${id})"></div>
         <div class="field"><label>Note (opzionale)</label><input type="text" value="${esc(d.note||'')}" placeholder="es. Pit stop obbligatorio" id="rnotes-${id}"></div>
         <div class="field"><label>Link Risultati</label><input type="text" value="${esc(d.results||'')}" placeholder="es. risultati-01.html" id="rresults-${id}"></div>
-        <div class="field" style="grid-column:1/-1">
+        <div class="field">
+          <label>Mappa Circuito (opzionale)</label>
+          <div class="manifesto-upload" id="trackmap-wrap-${id}">
+            <input type="file" accept="image/*" id="rtrackmap-${id}" style="display:none" onchange="handleTrackMap(${id}, this)">
+            <button type="button" class="btn btn-sm" data-tid="${id}" onclick="document.getElementById('rtrackmap-'+this.dataset.tid).click()">🗺️ Carica mappa</button>
+            <span id="rtrackmap-name-${id}" style="font-size:12px;color:var(--text-dim);margin-left:8px;">${d.trackMap ? '✓ Mappa presente' : ''}</span>
+            <button type="button" class="btn btn-sm" id="rtrackmap-clear-${id}" style="display:${d.trackMap ? 'inline-block' : 'none'};margin-left:6px;color:var(--red)" onclick="clearTrackMap(${id})">✕ Rimuovi</button>
+          </div>
+        </div>
+        <div class="field">
           <label>Manifesto Gara (opzionale)</label>
           <div class="manifesto-upload">
             <input type="file" accept="image/*" id="rmanifesto-${id}" style="display:none" onchange="handleManifesto(${id}, this)">
@@ -1049,6 +1119,7 @@ function buildHTML() {
     const note    = val(`rnotes-${id}`);
     const results = val(`rresults-${id}`);
     const manifesto = manifestoData[id] || null;
+    const trackMap  = trackMapData[id] || null;
     const dateFmt = date ? new Date(date).toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'}) : 'Data TBD';
     const btnHTML = results ? `<a href="${results}" class="results-btn">📋 Risultati</a>` : `<span class="results-btn upcoming">In arrivo</span>`;
     const notesHTML = note ? `<div class="round-note">📌 ${note}</div>` : '';
@@ -1058,9 +1129,15 @@ function buildHTML() {
            <img src="${manifesto}" alt="Manifesto R${rnum}">
          </div>`
       : '';
+    const trackMapHTML = trackMap
+      ? `<div class="round-track-map" onclick="openManifesto(this)" title="Mappa circuito">
+           <img src="${trackMap}" alt="Mappa R${rnum}">
+         </div>`
+      : '';
 
     roundsHTML += `
     <div class="round-row">
+      ${trackMapHTML}
       <div class="round-card">
         <div class="round-header">
           <div class="round-num">R${rnum}</div>
@@ -1125,6 +1202,9 @@ function buildHTML() {
   .round-manifesto{width:120px;flex-shrink:0;border-radius:10px;overflow:hidden;border:1px solid var(--border-hi);cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;}
   .round-manifesto:hover{border-color:var(--gold);box-shadow:0 4px 20px rgba(201,162,39,0.15);}
   .round-manifesto img{width:100%;height:100%;object-fit:cover;display:block;}
+  .round-track-map{width:120px;flex-shrink:0;border-radius:10px;overflow:hidden;border:1px solid rgba(79,195,247,0.2);cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;}
+  .round-track-map:hover{border-color:rgba(79,195,247,0.5);box-shadow:0 4px 20px rgba(79,195,247,0.1);}
+  .round-track-map img{width:100%;height:100%;object-fit:contain;display:block;background:#080814;}
 
   .manifesto-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out;}
   .manifesto-lightbox.open{display:flex;}
