@@ -120,10 +120,22 @@ canvas#raceChart{display:block}
     <!-- RACE PROGRESSION CHART -->
     <div class="section-title">📈 Posizione gara per gara</div>
 
-    <div class="filter-bar">
-      <span class="filter-label">Filtra:</span>
-      <button class="filter-pill active" onclick="setChampFilter('all',this)">Tutte le gare</button>
-      <div id="champFilterPills"></div>
+    <!-- Pilot status filter -->
+    <div class="filter-bar" id="pilotFilterBar" style="margin-bottom:8px">
+      <span class="filter-label">Piloti:</span>
+      <button class="filter-pill active" id="pf-tutti"   onclick="setPilotFilter('tutti',this)">Tutti</button>
+      <button class="filter-pill"        id="pf-attivi"  onclick="setPilotFilter('attivi',this)">🟢 Attivi</button>
+      <button class="filter-pill"        id="pf-inattivi" onclick="setPilotFilter('inattivi',this)">⚫ Non Attivi</button>
+    </div>
+    <!-- Championship category + individual filter -->
+    <div class="filter-bar race-filter-bar">
+      <span class="filter-label">Gare:</span>
+      <button class="filter-pill active" onclick="setChampFilter('all',this)">Tutte</button>
+      <button class="filter-pill" onclick="setChampFilter('cat:Campionato',this)">🏆 Campionati</button>
+      <button class="filter-pill" onclick="setChampFilter('cat:Trofeo',this)">🎖️ Trofei</button>
+      <button class="filter-pill" onclick="setChampFilter('cat:Evento',this)">🎯 Eventi</button>
+      <button class="filter-pill" onclick="setChampFilter('cat:Formula',this)">🏎️ Formula</button>
+      <div id="champFilterPills" style="display:contents"></div>
     </div>
 
     <div class="legend" id="pilotLegend"></div>
@@ -177,10 +189,12 @@ var PILOT_COLORS = [
 var allRaces = [];       // sorted by date
 var pilotMap = {};       // pkey -> {nome, psn, color, active}
 var schede   = {};       // psnLower -> currentNome
+var pilotSchede = {};    // psnLower -> {nome, attivo}
 var nmeToPsn = {};       // normNome -> psnLower
 var ufficioseIds = {};
-var champMeta = {};      // champId -> {name, year}
+var champMeta = {};      // champId -> {name, year, cat}
 var currentFilter = 'all';
+var pilotFilter = 'tutti';
 var champRoundsMap = {};
 
 function norm(s){ return (s||'').toLowerCase().replace(/-/g,' ').trim(); }
@@ -201,6 +215,22 @@ function fetchPsnMap(){
     .catch(function(){});
 }
 
+function fetchPilotSchede(){
+  return fetch(BASE+'piloti_schede/index.json?_='+Date.now())
+    .then(function(r){return r.ok?r.json():[];})
+    .then(function(list){
+      return Promise.all(list.filter(function(f){return f.endsWith('.json')&&f!=='index.json'&&f!=='psn-map.json';}).map(function(f){
+        return fetch(BASE+'piloti_schede/'+f+'?_='+Date.now())
+          .then(function(r){return r.ok?r.json():null;})
+          .then(function(d){
+            if(!d) return;
+            var psn=(d.psn||'').toLowerCase().trim();
+            if(psn) pilotSchede[psn]={nome:d.nome||'',attivo:d.attivo!==false};
+          }).catch(function(){});
+      }));
+    }).catch(function(){});
+}
+
 function fetchCalendario(){
   return fetch(BASE+'calendario.json?_='+Date.now())
     .then(function(r){return r.json();})
@@ -208,7 +238,7 @@ function fetchCalendario(){
       champs.forEach(function(c){
         if(c.cat==='Gara Ufficiosa'){ if(c.id) ufficioseIds[c.id]=true; return; }
         if(c.id){
-          champMeta[c.id]={name:c.name||c.id, year:c.year||''};
+          champMeta[c.id]={name:c.name||c.id, year:c.year||'', cat:c.cat||''};
           champRoundsMap[c.id]=c.rounds||[];
         }
       });
@@ -228,7 +258,7 @@ function fetchRace(file){
 }
 
 function loadAll(){
-  Promise.all([fetchCalendario(),fetchPsnMap()])
+  Promise.all([fetchCalendario(),fetchPsnMap(),fetchPilotSchede()])
     .then(function(){ return fetchIndex(); })
     .then(function(files){
       var total=files.length, done=0;
@@ -287,6 +317,7 @@ function processAndRender(races){
       champId: cid,
       champName: cm.name||cid,
       champYear: cm.year||'',
+      champCat: cm.cat||'',
       rows: rows
     };
   });
@@ -351,13 +382,41 @@ function buildChampFilter(){
 
 function setChampFilter(val, btn){
   currentFilter=val;
-  document.querySelectorAll('.filter-pill').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.race-filter-bar .filter-pill').forEach(function(b){b.classList.remove('active');});
   if(btn) btn.classList.add('active');
   drawChart();
 }
 
+function setPilotFilter(val, btn){
+  pilotFilter=val;
+  document.querySelectorAll('#pilotFilterBar .filter-pill').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  applyPilotFilter();
+  drawChart();
+}
+
+function applyPilotFilter(){
+  Object.keys(pilotMap).forEach(function(pkey){
+    var p=pilotMap[pkey];
+    var psn=(p.psn||'').toLowerCase().trim();
+    var scheda=pilotSchede[psn]||null;
+    var isActive=scheda?scheda.attivo!==false:true;
+    var userOff=p.userActive===false;
+    if(userOff){ p.active=false; }
+    else if(pilotFilter==='attivi'&&!isActive){ p.active=false; }
+    else if(pilotFilter==='inattivi'&&isActive){ p.active=false; }
+    else{ p.active=true; }
+    var el=document.querySelector('[data-pkey="'+esc(pkey)+'"]');
+    if(el) el.classList.toggle('inactive',!p.active);
+  });
+}
+
 function getFilteredRaces(){
   if(currentFilter==='all') return allRaces;
+  if(currentFilter.indexOf('cat:')===0){
+    var cat=currentFilter.slice(4);
+    return allRaces.filter(function(r){return r.champCat===cat;});
+  }
   return allRaces.filter(function(r){return r.champId===currentFilter;});
 }
 
@@ -376,9 +435,8 @@ function buildLegend(){
 
 function togglePilot(pkey){
   if(!pilotMap[pkey]) return;
-  pilotMap[pkey].active=!pilotMap[pkey].active;
-  var el=document.querySelector('[data-pkey="'+pkey+'"]');
-  if(el) el.classList.toggle('inactive',!pilotMap[pkey].active);
+  pilotMap[pkey].userActive = pilotMap[pkey].userActive===false ? true : false;
+  applyPilotFilter();
   drawChart();
 }
 
