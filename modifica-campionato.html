@@ -808,6 +808,13 @@ function populateFromHTML(entry, html) {
       const resultsEl = rc.querySelector('.results-btn:not(.upcoming)');
       const results  = resultsEl ? resultsEl.getAttribute('href') || '' : '';
 
+      // Extract existing images from the round-row (parent of round-card)
+      const roundRow = rc.parentElement;
+      const manifestoImg = roundRow ? roundRow.querySelector('.round-manifesto img') : null;
+      const manifesto = manifestoImg ? manifestoImg.getAttribute('src') : null;
+      const trackMapImg = roundRow ? roundRow.querySelector('.round-track-map img') : null;
+      const trackMap = trackMapImg ? trackMapImg.getAttribute('src') : null;
+
       let weather='', fase='', tire='x3', fuel='x4', types='';
       pills.forEach(p => {
         if (p.startsWith('🔄') || p.startsWith('⏱')) { /* laps */ }
@@ -829,7 +836,7 @@ function populateFromHTML(entry, html) {
         if (parts.length >= 3) dateVal = `${parts[2]}-${months[parts[1]]||'01'}-${parts[0].padStart(2,'0')}`;
       } catch {}
 
-      addRoundWithData({ circuit, date: dateVal, laps, lapsType, weather, fase, tire, fuel, types, note, results });
+      addRoundWithData({ circuit, date: dateVal, laps, lapsType, weather, fase, tire, fuel, types, note, results, manifesto, trackMap });
     });
   } else {
     // Fallback: use rounds from calendario.json
@@ -897,12 +904,19 @@ function addRoundWithData(data) {
   if (data.fase)    setVal(`rfase-${id}`, data.fase);
   if (data.manifesto) {
     manifestoData[id] = data.manifesto;
-    if (data.trackMap) { trackMapData[id] = data.trackMap; }
-    else { setTimeout(function(){ autoFillTrackMap(id); }, 100); }
     var nameEl = document.getElementById('rmanifesto-name-' + id);
     var clearEl = document.getElementById('rmanifesto-clear-' + id);
     if (nameEl) nameEl.textContent = '✓ Manifesto presente';
     if (clearEl) clearEl.style.display = 'inline-block';
+  }
+  if (data.trackMap) {
+    trackMapData[id] = data.trackMap;
+    var tmNameEl = document.getElementById('rtrackmap-name-' + id);
+    var tmClearEl = document.getElementById('rtrackmap-clear-' + id);
+    if (tmNameEl) tmNameEl.textContent = '✓ Mappa presente';
+    if (tmClearEl) tmClearEl.style.display = 'inline-block';
+  } else {
+    setTimeout(function(){ autoFillTrackMap(id); }, 100);
   }
 
   syncRound(id);
