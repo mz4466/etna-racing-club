@@ -111,5 +111,29 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape")closeManifes
 </script>
 <script src="copyright.js"></script>
 <script src="../nav.js"></script>
+
+<!-- Rotate warning -->
+<div id="rotateWarning" style="display:none;position:fixed;inset:0;z-index:9999;background:#07070f;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;">
+  <div style="font-size:56px;margin-bottom:20px;animation:spin 2s linear infinite">📱</div>
+  <div style="font-family:'Russo One',sans-serif;font-size:18px;color:#c9a227;letter-spacing:2px;margin-bottom:12px;">RUOTA IL DISPOSITIVO</div>
+  <div style="font-family:'Teko',sans-serif;font-size:16px;letter-spacing:2px;color:#8a8098;line-height:1.6;">Per una migliore esperienza<br>visualizza in modalità orizzontale.</div>
+</div>
+<style>
+@keyframes spin{0%{transform:rotate(0deg)}25%{transform:rotate(-20deg)}75%{transform:rotate(20deg)}100%{transform:rotate(0deg)}}
+</style>
+<script>
+function checkOrientation(){
+  var w=document.getElementById('rotateWarning');
+  if(!w) return;
+  if(window.innerWidth < 768 && window.innerHeight > window.innerWidth){
+    w.style.display='flex';
+  } else {
+    w.style.display='none';
+  }
+}
+checkOrientation();
+window.addEventListener('resize', checkOrientation);
+window.addEventListener('orientationchange', function(){ setTimeout(checkOrientation, 200); });
+</script>
 </body>
 </html>
