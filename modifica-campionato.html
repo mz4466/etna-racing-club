@@ -815,6 +815,10 @@ function populateFromHTML(entry, html) {
   // Parse rounds from HTML
   document.getElementById('racesList').innerHTML = '';
   roundCounter = 0;
+  // Clear any manifesto/track-map data left over from a previously edited
+  // championship in this same session, so it can't leak into this one.
+  manifestoData = {};
+  trackMapData = {};
 
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
@@ -905,6 +909,10 @@ function backToList() {
   document.getElementById('racesList').innerHTML = '';
   roundCounter = 0;
   currentChamp = null;
+  // Prevent manifesto/track-map images from a previously edited championship
+  // leaking into the next one opened in the same session (same round id reused).
+  manifestoData = {};
+  trackMapData = {};
 }
 
 // ── ROUNDS ──
