@@ -1105,6 +1105,8 @@ function syncRound(id) {
   const circuit = val(`rcircuit-${id}`);
   const date    = val(`rdate-${id}`);
   const weather = getWeatherVal(id);
+  const carId   = (document.getElementById(`rcarid-${id}`)||{}).value||'';
+  const carName  = (document.getElementById(`rcarname-${id}`)||{}).value||'';
   const fase    = val(`rfase-${id}`);
   const tire    = val(`rtire-${id}`);
   const fuel    = val(`rfuel-${id}`);
@@ -1227,6 +1229,7 @@ function buildHTML() {
           <div class="detail-pill">🏎️ Gomme ${tire}</div>
           <div class="detail-pill">⛽ Carb. ${fuel}</div>
           ${types ? `<div class="detail-pill">🔵 ${types}</div>` : ''}
+          ${carName ? `<div class="detail-pill" style="display:inline-flex;align-items:center;gap:6px;">🚗 ${carName}<img class="car-pill-img" src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car${carId}.png" referrerpolicy="no-referrer" alt="" onclick="openCarLbx(this)" onerror="this.style.display='none'"></div>` : ''}
         </div>
         ${notesHTML}
       </div>
