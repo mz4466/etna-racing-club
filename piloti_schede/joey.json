@@ -1,0 +1,22 @@
+{
+  "nome": "Joey",
+  "psn": "caltablack",
+  "nazione": "",
+  "auto": "",
+  "stile": "",
+  "pistaAma": "",
+  "pistaOdia": "",
+  "catchphrase": "",
+  "badges": [],
+  "foto": "",
+  "foto2": "",
+  "numero": "",
+  "campionati": {
+    "sole-sorpassi-2026": {
+      "cars": [
+        "Mercedes-AMG GT3 '20"
+      ]
+    }
+  },
+  "attivo": true
+}
