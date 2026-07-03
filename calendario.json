@@ -902,7 +902,7 @@
     "trophy": "evento_winner.png",
     "cars": "Ferrari 458 Italia Gr.4",
     "desc": "🏁 Etna Racing Club presenta: EVENTO GR.4! 🏁\nPreparatevi per un'azione ad alto ottano mentre diamo il via alla stagione 2026! Scendiamo in pista con l'iconica Ferrari 458 Italia Gr.4 per una emozionante sfida a round singolo. Il Round 1 ci porta sull'imponente Sainte-Croix – Layout A (9,5 KM) il 4 luglio 2026. Con condizioni meteo variabili, usura degli pneumatici strategica (×2) e consumo carburante elevato (×4), la strategia conterà quanto la pura velocità.\nAvete quello che serve per conquistare Sainte-Croix? 🚗",
-    "status": "prossimo",
+    "status": "in-corso",
     "file": "campionati/evento-gr4-2026-evento-evento-gr-4.html",
     "totalRounds": 1,
     "completedRounds": 0,
@@ -1008,43 +1008,37 @@
         "circuit": "Tokyo Expressway – Centrale in senso orario – 4,4 km",
         "date": "2026-08-29",
         "laps": "5",
-        "fase": "Pomeriggio",
         "lapsType": "giri",
+        "fase": "Pomeriggio",
         "weather": "⛅ Asciutto, nuvoloso e piacevole",
         "tire": "x1",
         "fuel": "x1",
         "types": "Dure",
-        "notes": "Qualifiche 5 minuti  - Bop attivo  - Toyota Supra RZ '97",
-        "carId": "82",
-        "carName": "Toyota Supra RZ '97"
+        "notes": "Qualifiche 5 minuti  - Bop attivo  - Toyota Supra RZ '97"
       },
       {
         "circuit": "Tokyo Expressway – Est in senso orario – 7,3 km",
         "date": "2026-08-29",
         "laps": "5",
-        "fase": "Sera",
         "lapsType": "giri",
+        "fase": "Sera",
         "weather": "🌫️ Nebbioso, soleggiato con molte nuvole",
         "tire": "x1",
         "fuel": "x1",
         "types": "Medie",
-        "notes": "Bop attivo - Nissan R34 GT-R V-spec II Nur '02",
-        "carId": "210",
-        "carName": "R34 GT-R V-spec II Nur '02"
+        "notes": "Bop attivo - Nissan R34 GT-R V-spec II Nur '02"
       },
       {
         "circuit": "Tokyo Expressway – Sud in senso orario – 5,2 km",
         "date": "2026-08-29",
         "laps": "5",
-        "fase": "Tramonto",
         "lapsType": "giri",
+        "fase": "Tramonto",
         "weather": "⛅ Sole con molte nubi monsoniche (più coperto)",
         "tire": "x1",
         "fuel": "x1",
         "types": "Morbide",
-        "notes": "Bop attivo - Mazda Rx-7 Spirit R Type A (FD) '02",
-        "carId": "205",
-        "carName": "Mazda RX-7 Spirit R Type A (FD) '02"
+        "notes": "Bop attivo - Mazda Rx-7 Spirit R Type A (FD) '02"
       }
     ],
     "costruttori": false,
