@@ -1070,7 +1070,9 @@
         "tire": "x4",
         "fuel": "x2",
         "types": "Dure/Medie/Morbite",
-        "notes": ""
+        "notes": "",
+        "carId": "3409",
+        "carName": "Mono '16"
       }
     ],
     "costruttori": false,
