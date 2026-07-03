@@ -5,7 +5,13 @@
     "date": "2026-07-03",
     "year": 2026,
     "campionato": "Evento Gr.4 (2026)",
-    "blockTypes": [],
+    "blockTypes": [
+      "photo",
+      "title",
+      "text",
+      "photo",
+      "audio"
+    ],
     "created": "2026-07-03T17:37:05.989Z"
   },
   {
