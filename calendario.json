@@ -1008,37 +1008,43 @@
         "circuit": "Tokyo Expressway – Centrale in senso orario – 4,4 km",
         "date": "2026-08-29",
         "laps": "5",
-        "lapsType": "giri",
         "fase": "Pomeriggio",
+        "lapsType": "giri",
         "weather": "⛅ Asciutto, nuvoloso e piacevole",
         "tire": "x1",
         "fuel": "x1",
         "types": "Dure",
-        "notes": "Qualifiche 5 minuti  - Bop attivo  - Toyota Supra RZ '97"
+        "notes": "Qualifiche 5 minuti  - Bop attivo  - Toyota Supra RZ '97",
+        "carId": "82",
+        "carName": "Toyota Supra RZ '97"
       },
       {
         "circuit": "Tokyo Expressway – Est in senso orario – 7,3 km",
         "date": "2026-08-29",
         "laps": "5",
-        "lapsType": "giri",
         "fase": "Sera",
+        "lapsType": "giri",
         "weather": "🌫️ Nebbioso, soleggiato con molte nuvole",
         "tire": "x1",
         "fuel": "x1",
         "types": "Medie",
-        "notes": "Bop attivo - Nissan R34 GT-R V-spec II Nur '02"
+        "notes": "Bop attivo - Nissan R34 GT-R V-spec II Nur '02",
+        "carId": "210",
+        "carName": "R34 GT-R V-spec II Nur '02"
       },
       {
         "circuit": "Tokyo Expressway – Sud in senso orario – 5,2 km",
         "date": "2026-08-29",
         "laps": "5",
-        "lapsType": "giri",
         "fase": "Tramonto",
+        "lapsType": "giri",
         "weather": "⛅ Sole con molte nubi monsoniche (più coperto)",
         "tire": "x1",
         "fuel": "x1",
         "types": "Morbide",
-        "notes": "Bop attivo - Mazda Rx-7 Spirit R Type A (FD) '02"
+        "notes": "Bop attivo - Mazda Rx-7 Spirit R Type A (FD) '02",
+        "carId": "205",
+        "carName": "Mazda RX-7 Spirit R Type A (FD) '02"
       }
     ],
     "costruttori": false,
