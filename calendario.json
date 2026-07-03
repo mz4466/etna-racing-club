@@ -946,7 +946,9 @@
         "tire": "x1",
         "fuel": "x1",
         "types": "Morbide",
-        "notes": "Qualifiche: 10 minuti (valide per tutte le gare)- Bop attivo BoP No - PP 596 - Potenza (Cavalli) 295 - Peso 1.104 Kg // Pezzi da poter montare: Sport: Computer Sport - Filtro dell'aria Sport - Marmitta Sport - Pastiglia dei freni Sport - Sospensioni da strada - Riduzione peso fase 1 / Sport Club: Aumento Alesaggio - Albero a camme ad alto sollevamento - Pistoni ad alta compressione - Kit freni sportivo - Frizione e volano sport - Controller bilanciamento freni"
+        "notes": "Qualifiche: 10 minuti (valide per tutte le gare)- Bop attivo BoP No - PP 596 - Potenza (Cavalli) 295 - Peso 1.104 Kg // Pezzi da poter montare: Sport: Computer Sport - Filtro dell'aria Sport - Marmitta Sport - Pastiglia dei freni Sport - Sospensioni da strada - Riduzione peso fase 1 / Sport Club: Aumento Alesaggio - Albero a camme ad alto sollevamento - Pistoni ad alta compressione - Kit freni sportivo - Frizione e volano sport - Controller bilanciamento freni",
+        "carId": "3344",
+        "carName": "BMW M3 Sport Evolution '89"
       },
       {
         "circuit": "Barcellona – Layout GP – 4,7 km",
@@ -958,7 +960,9 @@
         "tire": "x1",
         "fuel": "x1",
         "types": "Medie",
-        "notes": "Bop No - PP 570 - Potenza (Cavalli) 266 - Peso 1.206 // Pezzi da poter montare: Sport: Computer Sport - Filtro dell'aria Sport - Marmitta Sport - Pastiglia dei freni Sport - Sospensioni da strada - Riduzione peso fase 1 / Sport Club: Albero a camme ad alto sollevamento - Kit freni sportivo - Frizione e volano sport - Controller bilanciamento freni"
+        "notes": "Bop No - PP 570 - Potenza (Cavalli) 266 - Peso 1.206 // Pezzi da poter montare: Sport: Computer Sport - Filtro dell'aria Sport - Marmitta Sport - Pastiglia dei freni Sport - Sospensioni da strada - Riduzione peso fase 1 / Sport Club: Albero a camme ad alto sollevamento - Kit freni sportivo - Frizione e volano sport - Controller bilanciamento freni",
+        "carId": "575",
+        "carName": "Mercedes-Benz 190 E 2.5-16 Evolution II '91"
       },
       {
         "circuit": "Barcellona – Layout GP – 4,7 km",
@@ -970,7 +974,9 @@
         "tire": "x1",
         "fuel": "x1",
         "types": "Dure",
-        "notes": "Danni ridotti - Alfa 155 2.5 V6 TI '93"
+        "notes": "Danni ridotti - Alfa 155 2.5 V6 TI '93",
+        "carId": "365",
+        "carName": "Alfa Romeo 155 2.5 V6 TI '93"
       }
     ],
     "costruttori": false,
