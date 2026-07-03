@@ -1187,6 +1187,8 @@ function buildHTML() {
     const lapsTypeBtn2 = document.getElementById(`rlapstype-${id}`);
     const lapsType = lapsTypeBtn2 ? lapsTypeBtn2.dataset.type : 'giri';
     const weather = getWeatherVal(id);
+    const carId   = (document.getElementById(`rcarid-${id}`)||{}).value||'';
+    const carName  = (document.getElementById(`rcarname-${id}`)||{}).value||'';
     const tire    = val(`rtire-${id}`);
     const fuel    = val(`rfuel-${id}`);
     const fase    = val(`rfase-${id}`);
