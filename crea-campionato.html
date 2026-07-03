@@ -1008,7 +1008,8 @@ let roundCounter = 0;
 
 // ── INIT ──
 // ── MANIFESTO HANDLERS ──
-var manifestoData = {};  // id -> base64 string
+var manifestoData = {};
+  // id -> base64 string
 
 function handleManifesto(id, input) {
   var file = input.files[0];
@@ -1179,7 +1180,7 @@ function roundHTML(id, pos) {
         </div>
         <div class="field">
           <label>Circuito</label>
-          <input type="text" placeholder="es. Autopolis" class="circuit-input" id="rcircuit-${id}" list="gt7-circuits" oninput="syncRound(${id})">
+          <input type="text" placeholder="es. Autopolis" class="circuit-input" id="rcircuit-${id}" list="gt7-circuits" oninput="syncRound(${id});autoFillTrackMap(${id})">
         </div>
         <div class="field">
           <label>Data Gara</label>
@@ -1248,6 +1249,15 @@ function roundHTML(id, pos) {
         <div class="field">
           <label>Note (opzionale)</label>
           <input type="text" placeholder="es. Pit stop obbligatorio" id="rnotes-${id}">
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Mappa Circuito (opzionale)</label>
+          <div class="manifesto-upload" id="trackmap-wrap-${id}">
+            <input type="file" accept="image/*" id="rtrackmap-${id}" style="display:none" onchange="handleTrackMap(${id}, this)">
+            <button type="button" class="btn btn-sm" data-tid="${id}" onclick="document.getElementById('rtrackmap-'+this.dataset.tid).click()">🗺️ Carica mappa</button>
+            <span id="rtrackmap-name-${id}" style="font-size:12px;color:var(--text-dim);margin-left:8px;"></span>
+            <button type="button" class="btn btn-sm" id="rtrackmap-clear-${id}" style="display:none;margin-left:6px;color:var(--red)" onclick="clearTrackMap(${id})">✕ Rimuovi</button>
+          </div>
         </div>
         <div class="field" style="grid-column:1/-1">
           <label>Manifesto Gara (opzionale)</label>
@@ -1452,6 +1462,7 @@ function buildHTML() {
     const notes    = val(`rnotes-${id}`);
     const results  = val(`rresults-${id}`);
     const manifesto = manifestoData[id] || null;
+  const trackMap  = trackMapData[id] || null;
 
     const dateFmt = date
       ? new Date(date).toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'})
@@ -1465,6 +1476,11 @@ function buildHTML() {
       ? `<div class="round-note">📌 ${notes}</div>`
       : '';
 
+    const trackMapHTML = trackMap
+      ? `<div class="round-track-map" onclick="openManifesto(this)" title="Mappa circuito">
+           <img src="${trackMap}" alt="Mappa R${rnum}">
+         </div>`
+      : '';
     const manifestoHTML = manifesto
       ? `<div class="round-manifesto" onclick="openManifesto(this)" title="Clicca per ingrandire">
            <img src="${manifesto}" alt="Manifesto R${rnum}">
@@ -1493,6 +1509,7 @@ function buildHTML() {
         </div>
         ${notesHTML}
       </div>
+      ${trackMapHTML}
       ${manifestoHTML}
     </div>`;
   });
