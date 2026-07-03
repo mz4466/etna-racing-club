@@ -334,30 +334,7 @@
     letter-spacing:1px;
     color:var(--gold);
   }
-
-        /* ── CAR PICKER ── */
-        .car-picker-wrap { position:relative; }
-        .car-search-input { width:100%; padding:10px 12px; background:#0b0b16; border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:var(--cream); font-family:'Barlow Condensed',sans-serif; font-size:14px; }
-        .car-search-input:focus { outline:none; border-color:rgba(201,162,39,0.4); }
-        .car-dropdown { position:absolute; z-index:100; top:calc(100% + 4px); left:0; right:0; background:#0e0e1c; border:1px solid rgba(201,162,39,0.2); border-radius:8px; max-height:220px; overflow-y:auto; display:none; box-shadow:0 8px 24px rgba(0,0,0,0.6); }
-        .car-dropdown.open { display:block; }
-        .car-option { display:flex; align-items:center; gap:10px; padding:8px 12px; cursor:pointer; transition:background 0.15s; }
-        .car-option:hover { background:rgba(201,162,39,0.08); }
-        .car-option img { width:64px; height:40px; object-fit:contain; border-radius:4px; background:#1a1a2a; flex-shrink:0; }
-        .car-option-name { font-size:13px; color:var(--cream); }
-        .car-selected { display:flex; align-items:center; gap:10px; margin-top:8px; padding:8px 12px; background:#0b0b16; border-radius:8px; border:1px solid rgba(201,162,39,0.15); }
-        .car-selected img { width:80px; height:50px; object-fit:contain; border-radius:4px; background:#1a1a2a; cursor:pointer; transition:transform 0.2s; }
-        .car-selected img:hover { transform:scale(1.05); }
-        .car-selected-name { flex:1; font-size:13px; color:var(--cream); }
-        .car-clear { font-size:11px; color:var(--red); cursor:pointer; padding:4px 8px; border-radius:4px; border:1px solid rgba(255,80,20,0.3); background:transparent; }
-        .car-clear:hover { background:rgba(255,80,20,0.1); }
-        #carLightbox { display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.85); align-items:center; justify-content:center; }
-        #carLightbox.open { display:flex; }
-        #carLightbox img { max-width:80vw; max-height:70vh; object-fit:contain; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.8); }
-        #carLightbox-name { position:absolute; bottom:60px; left:50%; transform:translateX(-50%); font-family:'Teko',sans-serif; font-size:18px; letter-spacing:2px; color:#fff; text-align:center; }
-        #carLightbox-close { position:absolute; top:20px; right:24px; font-size:28px; color:#fff; cursor:pointer; opacity:0.7; }
-        #carLightbox-close:hover { opacity:1; }
-        </style>
+</style>
 </head>
 <body>
 
@@ -831,21 +808,13 @@ function populateFromHTML(entry, html) {
       const resultsEl = rc.querySelector('.results-btn:not(.upcoming)');
       const results  = resultsEl ? resultsEl.getAttribute('href') || '' : '';
 
-      // Extract existing images from the round-row (parent of round-card)
-      const roundRow = rc.parentElement;
-      const manifestoImg = roundRow ? roundRow.querySelector('.round-manifesto img') : null;
-      const manifesto = manifestoImg ? manifestoImg.getAttribute('src') : null;
-      const trackMapImg = roundRow ? roundRow.querySelector('.round-track-map img') : null;
-      const trackMap = trackMapImg ? trackMapImg.getAttribute('src') : null;
-
-      let weather='', fase='', tire='x3', fuel='x4', types='', parsedCarName='';
+      let weather='', fase='', tire='x3', fuel='x4', types='';
       pills.forEach(p => {
         if (p.startsWith('🔄') || p.startsWith('⏱')) { /* laps */ }
         else if (p.startsWith('🌅')) fase = p.replace('🌅','').trim();
         else if (p.startsWith('🏎️')) tire = p.replace('🏎️ Gomme','').trim();
         else if (p.startsWith('⛽')) fuel = p.replace('⛽ Carb.','').trim();
         else if (p.startsWith('🔵')) types = p.replace('🔵','').trim();
-        else if (p.startsWith('🚗')) { parsedCarName = p.replace('🚗','').trim(); }
         else weather = weather ? weather + ' + ' + p : p;
       });
 
@@ -860,10 +829,7 @@ function populateFromHTML(entry, html) {
         if (parts.length >= 3) dateVal = `${parts[2]}-${months[parts[1]]||'01'}-${parts[0].padStart(2,'0')}`;
       } catch {}
 
-      // resolve carId from name
-      var _pcn = parsedCarName;
-      var _pcar = _pcn ? allCars.filter(function(c){ return c.displayName === _pcn; })[0] : null;
-      addRoundWithData({ circuit, date: dateVal, laps, lapsType, weather, fase, tire, fuel, types, note, results, manifesto, trackMap, carId: _pcar ? _pcar.id : '', carName: _pcn });
+      addRoundWithData({ circuit, date: dateVal, laps, lapsType, weather, fase, tire, fuel, types, note, results });
     });
   } else {
     // Fallback: use rounds from calendario.json
@@ -929,31 +895,14 @@ function addRoundWithData(data) {
   if (data.fuel)    setVal(`rfuel-${id}`, data.fuel);
   if (data.types)   setVal(`rtypes-${id}`, data.types);
   if (data.fase)    setVal(`rfase-${id}`, data.fase);
-  if (data.carId) {
-    setTimeout(function(){
-      document.getElementById('rcarid-'+id).value = data.carId;
-      document.getElementById('rcarname-'+id).value = data.carName || '';
-      document.getElementById('rcarsearch-'+id).value = data.carName || '';
-      document.getElementById('rcarimg-'+id).src = carImageUrl(data.carId);
-      document.getElementById('rcarlabel-'+id).textContent = data.carName || '';
-      document.getElementById('rcarsel-'+id).style.display = 'flex';
-    }, 50);
-  }
   if (data.manifesto) {
     manifestoData[id] = data.manifesto;
+    if (data.trackMap) { trackMapData[id] = data.trackMap; }
+    else { setTimeout(function(){ autoFillTrackMap(id); }, 100); }
     var nameEl = document.getElementById('rmanifesto-name-' + id);
     var clearEl = document.getElementById('rmanifesto-clear-' + id);
     if (nameEl) nameEl.textContent = '✓ Manifesto presente';
     if (clearEl) clearEl.style.display = 'inline-block';
-  }
-  if (data.trackMap) {
-    trackMapData[id] = data.trackMap;
-    var tmNameEl = document.getElementById('rtrackmap-name-' + id);
-    var tmClearEl = document.getElementById('rtrackmap-clear-' + id);
-    if (tmNameEl) tmNameEl.textContent = '✓ Mappa presente';
-    if (tmClearEl) tmClearEl.style.display = 'inline-block';
-  } else {
-    setTimeout(function(){ autoFillTrackMap(id); }, 100);
   }
 
   syncRound(id);
@@ -1012,20 +961,6 @@ function roundHTML(id, pos, d={}) {
           </select></div>
         <div class="field"><label>Gomme Disponibili</label><input type="text" value="${esc(d.types||'')}" placeholder="Soft / Medium / Hard" id="rtypes-${id}" oninput="syncRound(${id})"></div>
         <div class="field"><label>Note (opzionale)</label><input type="text" value="${esc(d.note||'')}" placeholder="es. Pit stop obbligatorio" id="rnotes-${id}"></div>
-                <div class="field" style="grid-column:1/-1">
-          <label>Auto Gara (opzionale)</label>
-          <div class="car-picker-wrap" id="rcarpicker-${id}">
-            <input type="text" class="car-search-input" id="rcarsearch-${id}" placeholder="Cerca auto..." oninput="filterCars(${id})" onfocus="filterCars(${id})" autocomplete="off">
-            <div class="car-dropdown" id="rcardrop-${id}"></div>
-            <input type="hidden" id="rcarid-${id}">
-            <input type="hidden" id="rcarname-${id}">
-            <div class="car-selected" id="rcarsel-${id}" style="display:none">
-              <img id="rcarimg-${id}" src="" referrerpolicy="no-referrer" alt="" onclick="openCarLightbox(${id})">
-              <div class="car-selected-name" id="rcarlabel-${id}"></div>
-              <button type="button" class="car-clear" onclick="clearCar(${id})">✕</button>
-            </div>
-          </div>
-        </div>
         <div class="field"><label>Link Risultati</label><input type="text" value="${esc(d.results||'')}" placeholder="es. risultati-01.html" id="rresults-${id}"></div>
         <div class="field">
           <label>Mappa Circuito (opzionale)</label>
@@ -1267,6 +1202,13 @@ function buildHTML() {
   .round-manifesto{width:120px;flex-shrink:0;border-radius:10px;overflow:hidden;border:1px solid var(--border-hi);cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;}
   .round-manifesto:hover{border-color:var(--gold);box-shadow:0 4px 20px rgba(201,162,39,0.15);}
   .round-manifesto img{width:100%;height:100%;object-fit:cover;display:block;}
+  @media(max-width:600px){
+    .round-row{flex-direction:column;}
+    .round-track-map{width:100%;height:180px;}
+    .round-track-map img{height:180px;object-fit:contain;}
+    .round-manifesto{width:100%;height:auto;}
+    .round-manifesto img{height:auto;max-height:280px;object-fit:contain;}
+  }
   .round-track-map{width:120px;flex-shrink:0;border-radius:10px;overflow:hidden;border:1px solid rgba(79,195,247,0.2);cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;}
   .round-track-map:hover{border-color:rgba(79,195,247,0.5);box-shadow:0 4px 20px rgba(79,195,247,0.1);}
   .round-track-map img{width:100%;height:100%;object-fit:contain;display:block;background:#080814;}
