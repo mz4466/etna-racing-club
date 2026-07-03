@@ -2045,9 +2045,19 @@ function filterCars(roundId){
   var q = (document.getElementById('rcarsearch-'+roundId).value||'').toLowerCase().trim();
   var drop = document.getElementById('rcardrop-'+roundId);
   drop.innerHTML = '';
-  if(!q || q.length < 2){ drop.classList.remove('open'); return; }
-  var matches = allCars.filter(function(c){ return c.displayName.toLowerCase().indexOf(q) >= 0; }).slice(0,20);
-  if(!matches.length){ drop.classList.remove('open'); return; }
+  if(!allCars.length){
+    drop.innerHTML = '<div style="padding:10px 12px;font-size:13px;color:var(--muted)">⏳ Caricamento auto GT7...</div>';
+    drop.classList.add('open');
+    return;
+  }
+  var matches = q.length < 1
+    ? allCars.slice(0, 30)
+    : allCars.filter(function(c){ return c.displayName.toLowerCase().indexOf(q) >= 0; }).slice(0,30);
+  if(!matches.length){
+    drop.innerHTML = '<div style="padding:10px 12px;font-size:13px;color:var(--muted)">Nessun risultato per "'+q+'"</div>';
+    drop.classList.add('open');
+    return;
+  }
   matches.forEach(function(c){
     var div = document.createElement('div');
     div.className = 'car-option';
