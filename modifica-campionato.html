@@ -841,9 +841,9 @@ function populateFromHTML(entry, html) {
         else weather = weather ? weather + ' + ' + p : p;
       });
 
-      const lapsMatch = pills.find(p => p.startsWith('🔄'));
-      const laps = lapsMatch ? lapsMatch.replace('🔄','').replace('⏱','').replace('giri','').replace('min','').trim() : '17';
+      const lapsMatch = pills.find(p => p.startsWith('🔄') || p.startsWith('⏱'));
       const lapsType = lapsMatch && lapsMatch.startsWith('⏱') ? 'min' : 'giri';
+      const laps = lapsMatch ? lapsMatch.replace('🔄','').replace('⏱','').replace('giri','').replace('min','').trim() : '17';
 
       let dateVal = '';
       try {
@@ -852,7 +852,15 @@ function populateFromHTML(entry, html) {
         if (parts.length >= 3) dateVal = `${parts[2]}-${months[parts[1]]||'01'}-${parts[0].padStart(2,'0')}`;
       } catch {}
 
-      addRoundWithData({ circuit, date: dateVal, laps, lapsType, weather, fase, tire, fuel, types, note, results });
+      // Extract images
+      const roundRow = rc.parentElement;
+      const manifestoImg = roundRow ? roundRow.querySelector('.round-manifesto img') : null;
+      const manifesto = manifestoImg ? manifestoImg.getAttribute('src') : null;
+      const trackMapImg = roundRow ? roundRow.querySelector('.round-track-map img') : null;
+      const trackMap = trackMapImg ? trackMapImg.getAttribute('src') : null;
+      // Resolve car
+      var _pcar = parsedCarName ? (allCars.filter(function(c){return c.displayName===parsedCarName;})[0]||null) : null;
+      addRoundWithData({ circuit, date: dateVal, laps, lapsType, weather, fase, tire, fuel, types, note, results, manifesto, trackMap, carId:_pcar?_pcar.id:'', carName:parsedCarName });
     });
   } else {
     // Fallback: use rounds from calendario.json
@@ -1677,37 +1685,49 @@ var allCars = [];
 function carImageUrl(id){ return 'https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car'+id+'.png'; }
 
 function loadCars(){
-  fetch('https://ddm999.github.io/gt7info/data/db/cars.csv')
-    .then(function(r){ return r.text(); })
-    .then(function(text){
-      var makersMap = {
-        '3':'Alfa Romeo','4':'Aston Martin','5':'Audi','6':'BMW','7':'Chevrolet',
-        '9':'Citroën','10':'Daihatsu','11':'Dodge','12':'Fiat','13':'Ford',
-        '15':'Honda','17':'Jaguar','18':'Lancia','21':'Mazda','22':'Mercedes-Benz',
-        '23':'Mercury','25':'Mitsubishi','26':'Nissan','30':'Pagani',
-        '32':'Peugeot','34':'Renault','36':'Shelby','38':'Subaru','39':'Suzuki',
-        '40':'Toyota','43':'Toyota','44':'TVR','46':'Volkswagen','47':'Volvo',
-        '50':'Lexus','51':'MINI','55':'Plymouth','110':'Ferrari',
-        '112':'Lamborghini','116':'Maserati','117':'McLaren','119':'Tesla',
-        '121':'KTM','125':'Abarth','153':'Mercedes-AMG','2':'Acura','8':'Bugatti',
-        '14':'Genesis','16':'Hyundai','19':'Jeep','33':'Porsche','52':'Lotus',
-        '66':'De Tomaso','82':'McLaren','88':'Porsche','90':'RUF','124':'Toyota'
-      };
-      var lines = text.trim().split('\n');
-      allCars = [];
-      lines.forEach(function(line){
-        var parts = line.split(',');
-        if(parts.length < 3) return;
-        var id = parts[0].trim();
-        if(!id || isNaN(parseInt(id))) return;
-        var shortName = parts.slice(1, parts.length-1).join(',').trim();
-        var makerId = parts[parts.length-1].trim();
-        var mfr = makersMap[makerId] || '';
-        var displayName = (mfr && shortName.toLowerCase().indexOf(mfr.toLowerCase()) === -1)
-          ? mfr + ' ' + shortName : shortName;
-        allCars.push({ id:id, displayName:displayName.trim() });
-      });
-    }).catch(function(){});
+  var CARS_URL = 'https://ddm999.github.io/gt7info/data/db/cars.csv';
+  var CARS_API = 'https://api.github.com/repos/ddm999/gt7info/contents/data/db/cars.csv';
+
+  function parseCsv(text){
+    var makersMap = {
+      '3':'Alfa Romeo','4':'Aston Martin','5':'Audi','6':'BMW','7':'Chevrolet',
+      '9':'Citroën','10':'Daihatsu','11':'Dodge','12':'Fiat','13':'Ford',
+      '15':'Honda','17':'Jaguar','18':'Lancia','21':'Mazda','22':'Mercedes-Benz',
+      '23':'Mercury','25':'Mitsubishi','26':'Nissan','30':'Pagani',
+      '32':'Peugeot','34':'Renault','36':'Shelby','38':'Subaru','39':'Suzuki',
+      '40':'Toyota','43':'Toyota','44':'TVR','46':'Volkswagen','47':'Volvo',
+      '50':'Lexus','51':'MINI','55':'Plymouth','110':'Ferrari',
+      '112':'Lamborghini','116':'Maserati','117':'McLaren','119':'Tesla',
+      '121':'KTM','125':'Abarth','153':'Mercedes-AMG','2':'Acura','8':'Bugatti',
+      '14':'Genesis','16':'Hyundai','19':'Jeep','33':'Porsche','52':'Lotus',
+      '66':'De Tomaso','82':'McLaren','88':'Porsche','90':'RUF','124':'Toyota'
+    };
+    var lines = text.trim().split('\n');
+    allCars = [];
+    lines.forEach(function(line){
+      var parts = line.split(',');
+      if(parts.length < 3) return;
+      var id = parts[0].trim();
+      if(!id || isNaN(parseInt(id))) return;
+      var shortName = parts.slice(1, parts.length-1).join(',').trim();
+      var makerId = parts[parts.length-1].trim();
+      var mfr = makersMap[makerId] || '';
+      var displayName = (mfr && shortName.toLowerCase().indexOf(mfr.toLowerCase()) === -1)
+        ? mfr + ' ' + shortName : shortName;
+      allCars.push({ id:id, displayName:displayName.trim() });
+    });
+  }
+
+  fetch(CARS_URL)
+    .then(function(r){ if(!r.ok) throw new Error('blocked'); return r.text(); })
+    .then(function(text){ parseCsv(text); })
+    .catch(function(){
+      // Fallback: GitHub API with base64 decode
+      fetch(CARS_API, { headers:{ Accept:'application/vnd.github.v3+json' } })
+        .then(function(r){ return r.json(); })
+        .then(function(d){ parseCsv(decodeURIComponent(escape(atob(d.content.replace(/\s/g,''))))); })
+        .catch(function(){});
+    });
 }
 loadCars();
 
