@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>1a Puntata ERL — Etna Racing Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@400;500;600&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07070f;--card:#0e0e1c;--gold:#c9a227;--gold-hi:#e8c547;--text:#e8e0d0;--muted:#c9b8a3;--dim:#5a5470}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:"Barlow Condensed",sans-serif;min-height:100vh}
+.top{background:#050510;border-bottom:1px solid rgba(201,184,163,0.1);padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:8px;font-family:"Teko",sans-serif;font-size:16px;letter-spacing:2px;color:var(--gold-hi);text-decoration:none}
+.back{font-family:"Teko",sans-serif;font-size:12px;letter-spacing:2px;color:var(--gold);text-decoration:none;border:1px solid rgba(201,162,39,0.25);padding:5px 14px;border-radius:6px;text-transform:uppercase}
+.back:hover{background:rgba(201,162,39,0.1)}
+.hdr{max-width:1000px;margin:28px auto 0;padding:0 20px}
+.hdr h1{font-family:"Russo One",sans-serif;font-size:clamp(22px,4vw,36px);color:var(--gold);letter-spacing:2px;text-transform:uppercase;text-shadow:0 0 20px rgba(201,162,39,0.3)}
+.hdr .meta{font-family:"Teko",sans-serif;font-size:13px;letter-spacing:2px;color:var(--dim);margin-top:6px;text-transform:uppercase;display:flex;gap:16px}
+.cv-wrap{max-width:1000px;margin:24px auto 60px;padding:0 20px}
+.cv{position:relative;width:100%;height:0;padding-bottom:58.13%}
+.cb{position:absolute;border-radius:8px;overflow:auto}
+.cb-t{font-family:"Russo One",sans-serif;color:var(--gold-hi);letter-spacing:1px;padding:4px 8px;text-shadow:0 0 12px rgba(201,162,39,0.2)}
+.cb-t.s{font-size:14px}.cb-t.m{font-size:18px}.cb-t.l{font-size:24px}
+.cb-p{background:var(--card);border:1px solid rgba(52,152,219,0.2)}
+.cb-p img{width:100%;height:100%;object-fit:contain;display:block}
+.cb-v{background:var(--card);border:1px solid rgba(231,76,60,0.2)}
+.cb-v iframe,.cb-v video{width:100%;height:100%;border:none}
+.cb-x{background:rgba(39,174,96,0.04);border:1px solid rgba(39,174,96,0.12);border-radius:8px;padding:6px 8px;color:var(--muted);font-size:13px;line-height:1.6;overflow:auto}
+.cb-a{background:rgba(155,89,182,0.05);border:1px solid rgba(155,89,182,0.15);border-radius:8px;padding:6px 8px;display:flex;flex-direction:column;gap:8px}
+.cb-a span{font-family:"Teko",sans-serif;font-size:13px;letter-spacing:1px;color:#9b59b6}
+.cb-a audio{width:100%}
+.cb-n{background:rgba(255,140,66,0.04);border:1px solid rgba(255,140,66,0.12);border-radius:8px;padding:6px 8px;color:#ff8c42;font-style:italic;font-size:12px;line-height:1.5;overflow:auto}
+.cb-e{background:var(--card);border:1px solid rgba(26,188,156,0.15);border-radius:8px;overflow:hidden}
+.cb-e iframe{width:100%;height:100%;border:none}
+@media(max-width:768px){.cv{height:auto!important;padding-bottom:0!important}
+.cb{position:relative!important;left:auto!important;top:auto!important;width:100%!important;height:auto!important;margin-bottom:12px}
+.cb-p img{height:auto;max-height:400px;object-fit:contain;cursor:zoom-in}
+.cb-v{padding-bottom:56.25%;position:relative;height:0!important}.cb-v iframe,.cb-v video{position:absolute;top:0;left:0}}
+/* lightbox */
+.lbx{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out}
+.lbx.open{display:flex}
+.lbx img{max-width:92vw;max-height:92vh;object-fit:contain;border-radius:6px;box-shadow:0 0 60px rgba(0,0,0,.8);cursor:default}
+.lbx-close{position:fixed;top:18px;right:22px;font-size:32px;color:#fff;cursor:pointer;line-height:1;opacity:.7;transition:opacity .15s}
+.lbx-close:hover{opacity:1}
+.cb-p img{cursor:zoom-in}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../social.html" class="logo">◀ ERC Social</a><a href="../../social.html" class="back">← Tutti i Post</a></div>
+<div class="hdr"><h1>1a Puntata ERL</h1><div class="meta"><span>Evento Gr.4 (2026)</span><span>3 luglio 2026</span></div></div>
+<div class="cv-wrap"><div class="cv">
+<div class="cb cb-a" style="left:22.9%;top:2.99%;width:32.63%;height:7.47%"><span>Audio</span><audio controls src="../media/1a-puntata-erl-b6.aac"></audio></div>
+<div class="cb cb-p" style="left:0.82%;top:3.7%;width:21.33%;height:56.13%"><img src="../media/1a-puntata-erl-b0.jpeg" alt="" loading="lazy"></div>
+<div class="cb" style="left:22.43%;top:11.62%;width:76.83%;height:10.63%"><div class="cb-t m">Interviste pre-gara Gr4 - 04.07.26</div></div>
+<div class="cb cb-x" style="left:22.18%;top:22.96%;width:76.93%;height:75.56%"><p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&nbsp;&lt;&lt;Benvenuti a questa prima puntata di Etna Racing Live, è il
+vostro Andrea De Adamich che vi saluta, tra poche ore i piloti
+dell’Etna Racing Club scenderanno in pista per l Evento incredibile
+delle Gr 4 con la Ferrari 458 Italia, macchina nostrana e bellissima
+da guidare; passo immediatamente la parola al mio caro amico ed
+esperto Giorgio Piola per l analisi del circuito&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Ciao
+Andrea e un saluto affettuoso a tutti i telespettatori di questo
+nuovo programma, devo dirti caro Andrea che non vedevo tanto fervore
+nel motorsport da parecchio tempo, ho avuto modo di chiacchierare con
+i due ideatori di questo club e avevano letteralmente le idee che gli
+uscivano dagli occhi, credo proprio che possiamo aspettarci grandi
+gare da loro e da tutto il Team&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Hai
+assolutamente ragione Giorgio, ho avuto la tua stessa impressione
+vedendoli girovagare estasiati i paddock in questi ultimi giorni e
+non sono riuscito a fermarli, scappavano da tutte le parti, ma adesso
+ti lascio la parola, spiegaci cosa ha di particolare la pista di
+oggi&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Grazie,
+la pista di Sainte-Croix è situata nel sud della Francia, a circa
+100 Km da Cannes, il layout B, quello che useranno i piloti oggi, è
+lungo 7 chilometri e 62 metri, ha un dislivello totale di 44 metri,
+14 curve e verrà percorso 13 volte, ha caratteristiche da pista da
+andatura medio veloce grazie ai suoi rapidi saliscendi e per l
+emozionante breve tratto sopra il ponte ma, strano a dirsi, non ha
+tantissimi punti di sorpasso e lì starà nell’abilità dei piloti
+ma anche nello sfruttare gli eventuali errori altrui le probabilità
+di sorpasso&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Grazie
+mille Giorgio, impeccabile come sempre, adesso passerei la linea a
+Giorgia Peroni nel paddock, la vedo già in compagnia di diversi
+piloti, a te Giorgia&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Ciao
+Andrea e grazie per la linea, si qui sono insieme ad un po’ di
+questi ragazzacci che stanno fremendo all’idea di scendere in
+pista, inizio da Antonio, uno dei 2 fondatori di questo Club, Antonio
+sei riuscito a provare questa auto in questa pista? Come ti sei
+trovato?&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Si,
+sono riuscito a provare la Ferrari 458 Italia 2 volte, la prima
+insieme a Pierpaolo e Carmine, loro andavano un po’ meglio perché
+conoscevano meglio di me il tracciato, io sentivo la macchina molto
+scivolosa con guida in stile kart ma su una macchina di 300 cavalli
+da tenere in pista soprattutto nei tornati più stretti e nelle curve
+un po’ più larghe, non sono molto soddisfatto dei tempi che sono
+riuscito a fare ma il divertimento avendo tutti la stessa auto sono
+sicuro sarà al 100% e prevedo che i distacchi saranno minimi
+nonostante io mi veda un po’ più indietro rispetto agli altri a
+causa di questi ultimi mesi in cui ho corso molto meno degli altri&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Grazie
+Antonio, altra domanda per te, hai già deciso la strategia che
+userai?&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Allora,
+la strategia per questa gara non mi è ancora abbastanza chiara
+perché ho ancora poco feeling con questa macchina e dovrò capire il
+mio stile di guida che vedo ancora un po’ troppo aggressivo con
+conseguente consumo delle gomme eccessivo e quindi devo capire se mi
+trovo meglio con le morbide o con le medie e scegliere di conseguenza
+con quali delle due mescole iniziare la gara&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Molto
+chiaro, grazie, ultima domanda per te, cosa ti aspetti da questa
+gara?&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Di
+una cosa sono sicuro, il divertimento sarà assicurato grazie al
+fatto che l auto sarà uguale per tutti e la differenza maggiore la
+farà la nostra guida, è risaputo che ogni pilota ha la sua pista e
+la sua auto preferita e io non vedo l’ora di scendere in pista&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Grazie
+mille Antonio, ora vorrei parlare con Carmine, stesse domande anche a
+te&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Ciao
+Claudia e un saluto a tutti, poso dirti che si, sono riuscito a
+provare l auto e dai tempi che ho visto tra me e i miei compagni
+posso dire che siamo tutti vicini e molto competitivi, per quanto
+riguarda la strategia sono indeciso se partire con medie o morbide,
+probabilmente deciderò durante il warm-up, infine spero di piazzarmi
+tra i primi 3&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Grazie
+Carmine, come sempre di poche parole ma piuttosto precise; mi sposto
+più avanti, vedo che Stefano sta per mettersi il casco e vorrei
+avere delle risposte anche da lui – Ciao Stefano, posso farti delle
+domande al volo?&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Ma
+certo cara Claudia, dimmi pure&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Sei
+riuscito a provare auto e pista?&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Scusami
+se sorrido ma c’è stato un piccolo errore con il mio manager e
+ieri abbiamo provato l auto, ma sul layout sbagliato e speravo quindi
+di riuscire adesso ad entrare in pista per fare qualche giro anche
+perché con l auto ho notato subito un buon feeling e credo potrò
+adattarmi piuttosto velocemente&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Cose
+che possono capitare Stefano, l importante è essere adesso nel posto
+giusto, ma dimmi, riesci ad immaginare che strategia potresti usare o
+lo vedrai tra poco?&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Purtroppo
+no, non so davvero cosa farò, consumi vari mi sono ancora
+sconosciuti&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Capisco
+perfettamente, però dimmi, cosa ti aspetti da questa gara?&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Come
+prima cosa puro divertimento e spero di salire sul podio ehehe&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Chiaro
+come l’acqua il nostro Stefano che lasciamo andare a fare qualche
+giro su questa pista infernale, andiamo avanti, voglio farmi due
+risate con quel mattacchione di Claudio – Ciao e benvenuto, qualche
+domanda al volo, sei riuscito a provare auto e pista?&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Si,
+l’ho provata ed è proprio una bella macchina che si guida bene,
+sembra cattiva ma invece è molto stabile, circuito molto
+interessante, bello e prevedo una gara combattuta&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Hai
+scelto la strategia?&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;La
+strategia giusta è in fase di definizione, conteranno molto anche
+fattori come vento, numero di piloti in pista perché più siamo più
+l’asfalto si riscalda e più si consumano le gomme, quindi vedremo
+cosa succederà&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Non
+ti chiedo altro Claudio, ti vedo piuttosto pensieroso – passiamo a
+qualcun altro, c’è Fabio qui vicino, vorrei sapere da lui se è
+riuscito a provare auto e pista&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Ciao
+Claudia e un caloroso abbraccio a tutti quanti, posso dirti che si,
+sono riuscito a provare l auto in pista, le sensazioni sono positive,
+il tracciato è divertente ma richiede molta precisione soprattutto
+ne punti dove è facile perdere tempo, c’è ancora qualcosa da
+rifinire ma il feeling generale è buono&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Mi
+fa piacere per te Fabio, ti vedo ottimista, ne approfitto per
+chiederti se hai già deciso la strategia da usare&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Ebbene
+si, ho un’idea della strategia ma deciderò gli ultimi dettagli
+poco prima della gara in base a come si evolverà la situazione, l
+obiettivo sarà essere costante e limitare gli errori&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Concordo
+con te, e ti chiedo infine, cosa ti aspetti da questa gara?&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Mi
+aspetto una gara molto combattuta, il livello del Club è alto e
+credo che ogni posizione andrà conquistata giro dopo giro. Se
+riuscirò a mantenere un buon ritmo penso di potermi togliere qualche
+soddisfazione, non pretendo di arrivare tra i primi ma cercherò di
+arrivare tra i primi 10, per me sarebbe già ottimo&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Ringraziamo
+Fabio, è stato molto esaustivo e passiamo al prossimo, vedo Giovanni
+– ehi Gio, volevo chiederti se sei riuscito a provare auto e
+pista&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Si,
+mi sono allenato e la pista mi piace, mi sento competitivo nonostante
+non conosca i tempi degli altri ma penso gireremo su tempi simili,
+credo sarà una bella gara&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Lo
+vedremo, ma vedo che hai le idee piuttosto chiare, quindi ti chiedo,
+hai pensato una strategia? E cosa ti aspetti dalla gara?</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Strategia
+sulla difensiva all inizio visto che ultimamente ho avuto degli
+incidenti proprio poco dopo gli start, credo starò un po’ largo
+anche se dipende anche dalla posizione di partenza che occuperò; mi
+aspetto una bella gara competitiva, ho da poco visto Fabio muoversi
+molto bene in questa pista e credo vada tenuto d occhio&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Grazie
+mille Giovanni, procediamo e solo adesso sono riuscita ad avvicinare
+l'altro fondatore del Club, Pierpaolo e anche a lui vanno le stesse
+domande fatte fino ad ora, sei riuscito a provare pista e auto?&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Buongiorno
+Claudia, che dire, ho provato auto e pista, la pista la conoscevo
+già, anche se non evoca in me ricordi entusiasmanti, l auto invece
+mi ha molto sorpreso positivamente, ha un bel motore e si guida
+piuttosto bene, penso di aver fatto dei tempi più che discreti&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;A
+te non chiederei nemmeno se hai pensato a qualche strategia, immagino
+già tu abbia passato notti in bianco per deciderla&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Ahahaha,
+non ci sei andata tanto lontana, si, penso di aver deciso cosa fare,
+ma penso anche che ci siano altri fattori che possano entrare in
+gioco, come ad esempio il risultato delle qualifiche&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Ben
+detto, quindi cosa ti aspetti da questa gara?&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Mi
+aspetto una vittoria schiacciante, no scherzo, ho visto un livello
+veramente molto alto da parte di tanti piloti, il minimo errore può
+essere decisivo, e io sono famoso per le mie “pierpaolate”&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Grazie
+mille anche a te, credo di aver finito il mio lavoro Andrea, ti
+ripasso la linea&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Grazie
+Claudia, e ottimo lavoro come sempre, riprendo la linea qui in studio
+per chiedere subito a Leo Turrini un veloce pronostico per questa
+gara&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Ciao
+Andrea e grazie per avermi invitato in questo splendido studio, per
+quanto riguarda il pronostico posso azzardare che 2 cose potranno
+decidere il risultato finale, la partenza e l’evitare errori
+grossolani, credo comunque che Carmine abbia qualche possibilità in
+più grazie alla sua guida pulita e priva di errori&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;
+Grazie mille Leo, condivido la tua analisi, e vorrei adesso chiedere
+a Giorgio Terruzzi se ha qualche storia da raccontare su questa
+pista&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm">&lt;&lt;Buongiorno
+mio caro amico Andrea e un affettuoso saluto a tutti i nostri amati
+telespettatori, questa pista non è molto usata nell ambito del
+Motorsport ma l anno scorso è stata sede di una delle più belle e
+accese lotte di questo Club, i primi 4 sono arrivati al traguardo
+distanziati di appena 10 secondi, sintomo che questa pista non
+permette molto facilmente fughe ma anzi è predisposta per lotte
+agguerrite, che è quello che ci aspettiamo per la gara di oggi&gt;&gt;</p>
+<p align="justify" style="line-height: 108%; margin-bottom: 0.28cm"><a name="_GoBack"></a>
+&lt;&lt;Incredibile, ricordo quella gara, è stata spettacolare e
+tutti noi ci auguriamo possa ripetersi una situazione simile; adesso
+dal vostro Andrea De Adamich è veramente tutto, l appuntamento è
+tra poche ore nella pista di Sainte-Croix layout B, che vinca il
+Migliore&gt;&gt;</p></div>
+<div class="cb cb-p" style="left:0.57%;top:61.28%;width:21.24%;height:37.7%"><img src="../media/1a-puntata-erl-b4.jpg" alt="" loading="lazy"></div>
+</div></div>
+<div class="lbx" id="lbx" onclick="this.classList.remove('open')"><span class="lbx-close" onclick="event.stopPropagation();document.getElementById('lbx').classList.remove('open')">&#x2715;</span><img id="lbx-img" src="" alt="" onclick="event.stopPropagation()"></div>
+<script>(function(){document.querySelectorAll('.cb-p img').forEach(function(img){img.addEventListener('click',function(){var lb=document.getElementById('lbx');document.getElementById('lbx-img').src=this.src;lb.classList.add('open');});});document.addEventListener('keydown',function(e){if(e.key==='Escape') document.getElementById('lbx').classList.remove('open');});})();</script>
+</body>
+</html>
