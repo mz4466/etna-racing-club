@@ -912,7 +912,9 @@
         "tire": "x2",
         "fuel": "x4",
         "types": "Medie/Morbide",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       }
     ],
     "costruttori": false,
