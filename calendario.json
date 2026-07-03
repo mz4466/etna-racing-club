@@ -856,7 +856,9 @@
         "tire": "x1",
         "fuel": "x1",
         "types": "Morbide",
-        "notes": "Qualifiche: 10 minuti (valide per tutte le gare)- Bop attivo - Danni ridotti - Aston Martin DB5 '64"
+        "notes": "Qualifiche: 10 minuti (valide per tutte le gare)- Bop attivo - Danni ridotti - Aston Martin DB5 '64",
+        "carId": "3445",
+        "carName": "Aston Martin DB5 '64"
       },
       {
         "circuit": "Brands Hatch – GP – 3,9 km",
@@ -868,7 +870,9 @@
         "tire": "x1",
         "fuel": "x1",
         "types": "Medie",
-        "notes": "Bop attivo - Danni ridotti - Toyota 2000GT '67"
+        "notes": "Bop attivo - Danni ridotti - Toyota 2000GT '67",
+        "carId": "604",
+        "carName": "Toyota 2000GT '67"
       },
       {
         "circuit": "Brands Hatch – GP – 3,9 km",
@@ -880,7 +884,9 @@
         "tire": "x1",
         "fuel": "x1",
         "types": "Dure",
-        "notes": "Bop attivo - Danni ridotti - Bmw Z8 '01"
+        "notes": "Bop attivo - Danni ridotti - Bmw Z8 '01",
+        "carId": "1893",
+        "carName": "BMW Z8 '01"
       }
     ],
     "costruttori": false,
