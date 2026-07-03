@@ -776,7 +776,9 @@
         "tire": "x4",
         "fuel": "x3",
         "types": "Dure/Morbide",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Lago Maggiore – Layout completo – 5,8 km",
@@ -788,7 +790,9 @@
         "tire": "x5",
         "fuel": "x3",
         "types": "Dure/Medie/Morbite",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Circuito di Yas Marina – Layout completo – 5,3 km",
@@ -800,7 +804,9 @@
         "tire": "x5",
         "fuel": "x2",
         "types": "Dure/Medie",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Circuito Gilles Villeneuve – 4,4 km",
@@ -812,7 +818,9 @@
         "tire": "x4",
         "fuel": "x4",
         "types": "Dure/Medie/Morbide",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Alsazia – Villaggio – 5,4 km",
@@ -824,7 +832,9 @@
         "tire": "x4",
         "fuel": "x5",
         "types": "Dure/Medie/morbide",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       }
     ],
     "costruttori": false,
