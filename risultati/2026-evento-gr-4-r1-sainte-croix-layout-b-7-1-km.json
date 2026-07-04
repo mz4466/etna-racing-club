@@ -1,0 +1,223 @@
+{
+  "circuito": "Sainte-Croix – Layout B – 7,1 km",
+  "data": "2026-07-04",
+  "garaNum": "1",
+  "garaTot": "1",
+  "champId": "evento-gr-4-2026",
+  "champIdx": "evento-gr-4-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "auto": "",
+      "tempo": "31'40''533",
+      "bestLap": "02'22''305",
+      "fl": true,
+      "pole": false,
+      "punti": 25,
+      "extra": "1",
+      "totale": 26,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 2,
+      "nome": "Carmine",
+      "psn": "CarmineRafa87",
+      "auto": "",
+      "tempo": "a 1\"037",
+      "bestLap": "02'22''597",
+      "fl": false,
+      "pole": true,
+      "punti": 21,
+      "extra": "1",
+      "totale": 22,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 3,
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "auto": "",
+      "tempo": "a 16\"097",
+      "bestLap": "02'22''905",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 4,
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "auto": "",
+      "tempo": "a 21\"496",
+      "bestLap": "02'23''796",
+      "fl": false,
+      "pole": false,
+      "punti": 16,
+      "extra": "-",
+      "totale": 16,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 5,
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "auto": "",
+      "tempo": "a 25\"755",
+      "bestLap": "02'23''460",
+      "fl": false,
+      "pole": false,
+      "punti": 14,
+      "extra": "-",
+      "totale": 14,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 6,
+      "nome": "Antonio",
+      "psn": "antonioleocataad",
+      "auto": "",
+      "tempo": "a 42\"115",
+      "bestLap": "02'24''240",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok",
+      "note": "Sanzione di 10 secondi inflitta per la collisione con Stefano avvenuta oltre il 50° secondo dalla partenza"
+    },
+    {
+      "pos": 7,
+      "nome": "Matteo Spinotto",
+      "psn": "Sp1n8_Mes",
+      "auto": "",
+      "tempo": "",
+      "bestLap": "02'27''267",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 8,
+      "nome": "Daniele",
+      "psn": "MrSciacca81",
+      "auto": "",
+      "tempo": "",
+      "bestLap": "02'26''376",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 9,
+      "nome": "Fabio",
+      "psn": "fabyus1983",
+      "auto": "",
+      "tempo": "",
+      "bestLap": "02'27''517",
+      "fl": false,
+      "pole": false,
+      "punti": 7,
+      "extra": "-",
+      "totale": 7,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 10,
+      "nome": "William",
+      "psn": "steward_andante",
+      "auto": "",
+      "tempo": "a 1 Giro",
+      "bestLap": "02'30''054",
+      "fl": false,
+      "pole": false,
+      "punti": 6,
+      "extra": "-",
+      "totale": 6,
+      "stato": "ok",
+      "note": ""
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "pts": 26,
+      "pos": 1
+    },
+    {
+      "nome": "Carmine",
+      "psn": "CarmineRafa87",
+      "pts": 22,
+      "pos": 2
+    },
+    {
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "pts": 18,
+      "pos": 3
+    },
+    {
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "pts": 16,
+      "pos": 4
+    },
+    {
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "pts": 14,
+      "pos": 5
+    },
+    {
+      "nome": "Antonio",
+      "psn": "antonioleocataad",
+      "pts": 12,
+      "pos": 6
+    },
+    {
+      "nome": "Matteo Spinotto",
+      "psn": "Sp1n8_Mes",
+      "pts": 10,
+      "pos": 7
+    },
+    {
+      "nome": "Daniele",
+      "psn": "MrSciacca81",
+      "pts": 8,
+      "pos": 8
+    },
+    {
+      "nome": "Fabio",
+      "psn": "fabyus1983",
+      "pts": 7,
+      "pos": 9
+    },
+    {
+      "nome": "William",
+      "psn": "steward_andante",
+      "pts": 6,
+      "pos": 10
+    }
+  ],
+  "bestOf": null
+}
