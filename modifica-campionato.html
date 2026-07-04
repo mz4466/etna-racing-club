@@ -966,12 +966,19 @@ function addRoundWithData(data) {
   }
   if (data.manifesto) {
     manifestoData[id] = data.manifesto;
-    if (data.trackMap) { trackMapData[id] = data.trackMap; }
-    else { setTimeout(function(){ autoFillTrackMap(id); }, 100); }
     var nameEl = document.getElementById('rmanifesto-name-' + id);
     var clearEl = document.getElementById('rmanifesto-clear-' + id);
     if (nameEl) nameEl.textContent = '✓ Manifesto presente';
     if (clearEl) clearEl.style.display = 'inline-block';
+  }
+  if (data.trackMap) {
+    trackMapData[id] = data.trackMap;
+    var tNameEl = document.getElementById('rtrackmap-name-' + id);
+    var tClearEl = document.getElementById('rtrackmap-clear-' + id);
+    if (tNameEl) tNameEl.textContent = '✓ Mappa caricata automaticamente';
+    if (tClearEl) tClearEl.style.display = 'inline-block';
+  } else {
+    setTimeout(function(){ autoFillTrackMap(id); }, 100);
   }
 
   syncRound(id);
