@@ -15,9 +15,9 @@
       "bestLap": "02'22''305",
       "fl": true,
       "pole": false,
-      "punti": 25,
-      "extra": "1",
-      "totale": 26,
+      "punti": 0,
+      "extra": "0",
+      "totale": 0,
       "stato": "ok",
       "note": ""
     },
@@ -29,10 +29,10 @@
       "tempo": "a 1\"037",
       "bestLap": "02'22''597",
       "fl": false,
-      "pole": true,
-      "punti": 21,
-      "extra": "1",
-      "totale": 22,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
       "stato": "ok",
       "note": ""
     },
@@ -45,9 +45,9 @@
       "bestLap": "02'22''905",
       "fl": false,
       "pole": false,
-      "punti": 18,
+      "punti": 0,
       "extra": "-",
-      "totale": 18,
+      "totale": 0,
       "stato": "ok",
       "note": ""
     },
@@ -60,9 +60,9 @@
       "bestLap": "02'23''796",
       "fl": false,
       "pole": false,
-      "punti": 16,
+      "punti": 0,
       "extra": "-",
-      "totale": 16,
+      "totale": 0,
       "stato": "ok",
       "note": ""
     },
@@ -75,9 +75,9 @@
       "bestLap": "02'23''460",
       "fl": false,
       "pole": false,
-      "punti": 14,
+      "punti": 0,
       "extra": "-",
-      "totale": 14,
+      "totale": 0,
       "stato": "ok",
       "note": ""
     },
@@ -90,9 +90,9 @@
       "bestLap": "02'24''240",
       "fl": false,
       "pole": false,
-      "punti": 12,
+      "punti": 0,
       "extra": "-",
-      "totale": 12,
+      "totale": 0,
       "stato": "ok",
       "note": "Sanzione di 10 secondi inflitta per la collisione con Stefano avvenuta oltre il 50° secondo dalla partenza"
     },
@@ -105,9 +105,9 @@
       "bestLap": "02'27''267",
       "fl": false,
       "pole": false,
-      "punti": 10,
+      "punti": 0,
       "extra": "-",
-      "totale": 10,
+      "totale": 0,
       "stato": "ok",
       "note": ""
     },
@@ -120,9 +120,9 @@
       "bestLap": "02'26''376",
       "fl": false,
       "pole": false,
-      "punti": 8,
+      "punti": 0,
       "extra": "-",
-      "totale": 8,
+      "totale": 0,
       "stato": "ok",
       "note": ""
     },
@@ -135,9 +135,9 @@
       "bestLap": "02'27''517",
       "fl": false,
       "pole": false,
-      "punti": 7,
+      "punti": 0,
       "extra": "-",
-      "totale": 7,
+      "totale": 0,
       "stato": "ok",
       "note": ""
     },
@@ -150,9 +150,9 @@
       "bestLap": "02'30''054",
       "fl": false,
       "pole": false,
-      "punti": 6,
+      "punti": 0,
       "extra": "-",
-      "totale": 6,
+      "totale": 0,
       "stato": "ok",
       "note": ""
     }
@@ -161,62 +161,62 @@
     {
       "nome": "Pyer",
       "psn": "PyerStark",
-      "pts": 26,
+      "pts": 0,
       "pos": 1
     },
     {
       "nome": "Carmine",
       "psn": "CarmineRafa87",
-      "pts": 22,
-      "pos": 2
+      "pts": 0,
+      "pos": 1
     },
     {
       "nome": "Giovanni",
       "psn": "mz4461",
-      "pts": 18,
-      "pos": 3
+      "pts": 0,
+      "pos": 1
     },
     {
       "nome": "Stefano",
       "psn": "stefano8923",
-      "pts": 16,
-      "pos": 4
+      "pts": 0,
+      "pos": 1
     },
     {
       "nome": "Claudio",
       "psn": "SybeX26",
-      "pts": 14,
-      "pos": 5
+      "pts": 0,
+      "pos": 1
     },
     {
       "nome": "Antonio",
       "psn": "antonioleocataad",
-      "pts": 12,
-      "pos": 6
+      "pts": 0,
+      "pos": 1
     },
     {
       "nome": "Matteo Spinotto",
       "psn": "Sp1n8_Mes",
-      "pts": 10,
-      "pos": 7
+      "pts": 0,
+      "pos": 1
     },
     {
       "nome": "Daniele",
       "psn": "MrSciacca81",
-      "pts": 8,
-      "pos": 8
+      "pts": 0,
+      "pos": 1
     },
     {
       "nome": "Fabio",
       "psn": "fabyus1983",
-      "pts": 7,
-      "pos": 9
+      "pts": 0,
+      "pos": 1
     },
     {
       "nome": "William",
       "psn": "steward_andante",
-      "pts": 6,
-      "pos": 10
+      "pts": 0,
+      "pos": 1
     }
   ],
   "bestOf": null
