@@ -1630,7 +1630,8 @@ function buildHTML() {
   }
   .back-link:hover{color:var(--text);}
 
-  .round-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+  .round-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;padding:12px;border:1px solid rgba(212,98,42,0.35);border-radius:16px;background:linear-gradient(135deg,rgba(192,57,43,0.05),rgba(201,162,39,0.03));box-shadow:0 0 0 1px rgba(212,98,42,0.06),0 4px 16px rgba(192,57,43,0.10);transition:border-color .25s,box-shadow .25s;}
+  .round-row:hover{border-color:rgba(232,140,60,0.65);box-shadow:0 0 0 1px rgba(232,140,60,0.12),0 6px 22px rgba(212,98,42,0.20);}
   .round-row .round-card{flex:1;margin-bottom:0;}
   .round-manifesto{width:120px;flex-shrink:0;border-radius:10px;overflow:hidden;border:1px solid var(--border-hi);cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;}
   .round-manifesto:hover{border-color:var(--gold);box-shadow:0 4px 20px rgba(201,162,39,0.15);}
