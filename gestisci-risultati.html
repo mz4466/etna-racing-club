@@ -142,6 +142,9 @@
   .pilot-cell input{flex:1;min-width:0;}
   .btn-pick-pilot{flex-shrink:0;background:var(--gold-dim);border:1px solid var(--gold);border-radius:5px;color:var(--gold);cursor:pointer;font-size:13px;padding:6px 8px;transition:background .15s;line-height:1;}
   .btn-pick-pilot:hover{background:var(--gold);color:#000;}
+  .note-btn{width:22px;height:22px;flex-shrink:0;border-radius:50%;border:1px solid rgba(255,255,255,0.25);background:transparent;color:rgba(255,255,255,0.4);font-family:'Russo One',sans-serif;font-size:12px;line-height:1;cursor:pointer;transition:all .15s;}
+  .note-btn:hover{border-color:#e74c3c;color:#e74c3c;}
+  .note-btn.has-note{background:#e74c3c;border-color:#e74c3c;color:#fff;box-shadow:0 0 8px rgba(231,76,60,0.5);}
 
   /* PILOT LIST MODAL */
   .pilot-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:center;justify-content:center;padding:20px;}
@@ -351,6 +354,7 @@ let carNameToId     = {};  // gt7 displayName (lowercase) -> numeric id
 let guestRegistry   = {};  // psnLower -> {nome,psn} : guests seen in past races (not members)
 let previousResults = {};  // champIdx -> { pilotName -> [pts per round] }
 let rowCounter      = 0;
+var noteData        = {};  // rowId -> manual note text, shown as a red ! badge on the public results page
 let currentAcInput  = null;
 
 function getToken(){ return document.getElementById('patInput').value.trim(); }
@@ -700,6 +704,7 @@ function addRow(data={}){
   rowCounter++;
   const id = rowCounter;
   const pos = document.getElementById('resultsBody').children.length + 1;
+  if(data.note) noteData[id] = data.note;
 
   const tr = document.createElement('tr');
   tr.id = `row-${id}`;
@@ -714,6 +719,7 @@ function addRow(data={}){
         <input type="text" placeholder="Nome pilota" value="${esc(data.nome||'')}" id="nome-${id}"
           oninput="onNomeInput(${id},this)" autocomplete="off">
         <button class="btn-pick-pilot" onclick="openPilotPicker(${id})" title="Scegli dalla rosa" type="button">▼</button>
+        <button type="button" class="note-btn${data.note?' has-note':''}" id="notebtn-${id}" onclick="editNote(${id})" title="${esc(data.note||'Aggiungi nota interna')}">!</button>
       </div>
       <input type="text" placeholder="PSN (obbligatorio per ospiti)" value="${esc(data.psn||'')}" id="psn-${id}"
         oninput="onPsnInput(${id})" autocomplete="off"
@@ -816,7 +822,29 @@ function calcTotal(id){
   if(totEl) totEl.value = tot||'';
 }
 
+function editNote(id){
+  var current = noteData[id] || '';
+  var txt = prompt('Nota interna per questo pilota (comparirà con un \'!\' rosso sulla pagina risultati pubblica):', current);
+  if(txt === null) return; // cancelled — leave unchanged
+  txt = txt.trim();
+  noteData[id] = txt;
+  updateNoteBtn(id);
+}
+
+function updateNoteBtn(id){
+  var btn = document.getElementById('notebtn-'+id);
+  if(!btn) return;
+  if(noteData[id]){
+    btn.classList.add('has-note');
+    btn.title = noteData[id];
+  } else {
+    btn.classList.remove('has-note');
+    btn.title = 'Aggiungi nota interna';
+  }
+}
+
 function removeRow(id){
+  delete noteData[id];
   const el = document.getElementById(`row-${id}`);
   if(el){ el.style.opacity='0'; el.style.transform='translateX(20px)'; el.style.transition='.2s'; setTimeout(()=>{el.remove();renumberRows();},220); }
 }
@@ -928,6 +956,7 @@ function collectRows(){
       extra:   ( document.getElementById(`extra-${id}`) ? document.getElementById(`extra-${id}`).value : '').trim()||'-',
       totale:  parseInt(( document.getElementById(`totale-${id}`) ? document.getElementById(`totale-${id}`).value : 0))||0,
       stato:   ( document.getElementById(`stato-${id}`) ? document.getElementById(`stato-${id}`).value : '')||'ok',
+      note:    noteData[id] || '',
     };
   });
 }
@@ -1024,6 +1053,7 @@ function buildHTML(){
     const flClass  = r.fl ? 'best-lap' : '';
     const statoTag = r.stato==='dnf'?'<span class="dnf-tag">DNF</span>':r.stato==='dsq'?'<span class="dsq-tag">DSQ</span>':'';
     const carId    = r.auto ? (carNameToId[r.auto.toLowerCase()] || '') : '';
+    const noteHtml = r.note ? ` <span class="note-flag">!<span class="note-popup">${esc(r.note)}</span></span>` : '';
     const carHtml  = r.auto
       ? `<div style="display:flex;align-items:center;gap:5px;margin-top:3px;">`
         + (carId ? `<img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car${carId}.png" referrerpolicy="no-referrer" style="width:44px;height:26px;object-fit:cover;border-radius:3px;background:#12131a;" onerror="this.style.display='none'">` : '')
@@ -1031,7 +1061,7 @@ function buildHTML(){
       : '';
     return `<tr class="${r.stato!=='ok'?'row-retired':''}">
       <td class="${posClass}">${r.pos}°${statoTag}</td>
-      <td class="${nameClass}" ${r.psn ? `data-psn="${esc(r.psn)}"` : ''}><span class="pilot-name-text">${esc(r.nome)}</span>${carHtml}</td>
+      <td class="${nameClass}" ${r.psn ? `data-psn="${esc(r.psn)}"` : ''}><span class="pilot-name-text">${esc(r.nome)}</span>${noteHtml}${carHtml}</td>
       <td>${esc(r.tempo)}</td>
       <td class="${flClass}">${esc(r.bestLap)}</td>
       ${allZero ? '' : `<td>${r.punti}</td><td>${esc(r.extra)}</td><td><strong>${r.totale}</strong></td>`}
@@ -1120,6 +1150,9 @@ function buildHTML(){
   .dsq-tag{background:rgba(192,57,43,0.2);color:#e74c3c;border:1px solid rgba(192,57,43,0.3);}
   footer{text-align:center;margin-top:50px;color:var(--smoke);font-size:13px;padding-bottom:30px;}
   @media(max-width:768px){header{flex-direction:column;text-align:center;}table{font-size:13px;}th,td{padding:10px 8px;}td:first-child{font-size:18px;}.pilot-name{font-size:16px;}}
+  .note-flag{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:#e74c3c;color:#fff;font-family:'Russo One',sans-serif;font-size:11px;margin-left:6px;cursor:pointer;position:relative;vertical-align:middle;box-shadow:0 0 6px rgba(231,76,60,0.5);}
+  .note-flag .note-popup{position:absolute;bottom:135%;left:50%;transform:translateX(-50%);background:#1a1a1a;color:var(--cream);border:1px solid #e74c3c;border-radius:6px;padding:8px 10px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:400;letter-spacing:.3px;white-space:normal;width:max-content;max-width:220px;text-align:left;opacity:0;pointer-events:none;transition:opacity .15s;z-index:20;box-shadow:0 4px 14px rgba(0,0,0,0.5);}
+  .note-flag:hover .note-popup,.note-flag.show .note-popup{opacity:1;pointer-events:auto;}
 </style>
 </head>
 <body>
@@ -1258,6 +1291,12 @@ ${'<scr'+'ipt>'}
       })
       .then(applyMap);
   }
+
+  document.addEventListener('click', function(e){
+    var flag = e.target.closest ? e.target.closest('.note-flag') : null;
+    document.querySelectorAll('.note-flag.show').forEach(function(f){ if(f!==flag) f.classList.remove('show'); });
+    if(flag){ e.stopPropagation(); flag.classList.toggle('show'); }
+  });
 
   loadSchedeNames().catch(function(){}).then(function(){
     // Map ready → resolve names already in the DOM (results table + static standings spans)
