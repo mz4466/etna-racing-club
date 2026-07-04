@@ -1006,20 +1006,133 @@ const BRANCH = 'main';
 let rounds = [];
 let roundCounter = 0;
 
-// ── INIT ──
+// ── IMAGE FILE HELPERS (track maps & manifesti as real repo files, not inline base64) ──
+function slugifyName(s) {
+  return (s || '')
+    .toString()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'img';
+}
+
+function compressImageDataURL(dataURL, maxDim, quality) {
+  return new Promise(function(resolve) {
+    var img = new Image();
+    img.onload = function() {
+      var w = img.width, h = img.height;
+      if (w > maxDim || h > maxDim) {
+        if (w >= h) { h = Math.round(h * maxDim / w); w = maxDim; }
+        else { w = Math.round(w * maxDim / h); h = maxDim; }
+      }
+      var canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+      ctx.drawImage(img, 0, 0, w, h);
+      resolve(canvas.toDataURL('image/jpeg', quality || 0.85));
+    };
+    img.onerror = function() { resolve(dataURL); };
+    img.src = dataURL;
+  });
+}
+
+async function pushImageFile(token, path, dataURL, message) {
+  try {
+    var base64 = dataURL.split(',')[1] || '';
+    let sha = null;
+    const check = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`, {
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (check.ok) { const d = await check.json(); sha = d.sha; }
+    const body = { message: message, content: base64, branch: BRANCH };
+    if (sha) body.sha = sha;
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+      method: 'PUT',
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!r.ok) {
+      const e = await r.json().catch(function(){ return {}; });
+      toast('Errore upload immagine (' + path + '): ' + (e.message || 'sconosciuto'), 'err');
+      return null;
+    }
+    return path;
+  } catch (e) {
+    toast('Errore di rete upload immagine: ' + e.message, 'err');
+    return null;
+  }
+}
+
+async function pushTrackMapIndexEntry(token, circuitKey, path) {
+  try {
+    let sha = null, idx = {};
+    const check = await fetch(`https://api.github.com/repos/${REPO}/contents/track_maps/index.json?ref=${BRANCH}`, {
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (check.ok) {
+      const d = await check.json();
+      sha = d.sha;
+      try { idx = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\s/g, ''))))); } catch (e) { idx = {}; }
+    }
+    idx[circuitKey] = path;
+    const body = {
+      message: 'Update track map index: ' + circuitKey,
+      content: btoa(unescape(encodeURIComponent(JSON.stringify(idx, null, 2)))),
+      branch: BRANCH
+    };
+    if (sha) body.sha = sha;
+    await fetch(`https://api.github.com/repos/${REPO}/contents/track_maps/index.json`, {
+      method: 'PUT',
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    trackMapIndex[circuitKey] = path;
+  } catch (e) { /* non-fatal */ }
+}
+
+async function resolvePendingImages(token) {
+  var champSlug = slugifyName((document.getElementById('champSlug') && document.getElementById('champSlug').value) || 'campionato');
+  for (var id = 1; id <= roundCounter; id++) {
+    var card = document.getElementById('round-' + id);
+    if (!card) continue;
+
+    if (trackMapData[id] && String(trackMapData[id]).indexOf('data:') === 0) {
+      var circEl = document.getElementById('rcircuit-' + id);
+      var circuitName = circEl ? circEl.value.trim() : '';
+      var slug = slugifyName(circuitName || ('round-' + id));
+      var path = 'track_maps/' + slug + '.jpg';
+      var uploaded = await pushImageFile(token, path, trackMapData[id], 'Add track map: ' + slug);
+      if (uploaded) {
+        trackMapData[id] = '../' + uploaded;
+        if (circuitName) await pushTrackMapIndexEntry(token, circuitName.toLowerCase(), '../' + uploaded);
+      }
+    }
+
+    if (manifestoData[id] && String(manifestoData[id]).indexOf('data:') === 0) {
+      var mpath = 'manifesti/' + champSlug + '-r' + id + '.jpg';
+      var muploaded = await pushImageFile(token, mpath, manifestoData[id], 'Add manifesto: ' + mpath);
+      if (muploaded) manifestoData[id] = '../' + muploaded;
+    }
+  }
+}
+
 // ── MANIFESTO HANDLERS ──
 var manifestoData = {};
-  // id -> base64 string
+  // id -> base64 string (until publish, when it's resolved to a real file path)
 
 function handleManifesto(id, input) {
   var file = input.files[0];
   if (!file) return;
   var reader = new FileReader();
   reader.onload = function(e) {
-    manifestoData[id] = e.target.result; // full data URL
-    document.getElementById('rmanifesto-name-' + id).textContent = file.name;
-    document.getElementById('rmanifesto-clear-' + id).style.display = 'inline-block';
-    syncRound(id);
+    compressImageDataURL(e.target.result, 1400, 0.85).then(function(compressed) {
+      manifestoData[id] = compressed;
+      document.getElementById('rmanifesto-name-' + id).textContent = file.name;
+      document.getElementById('rmanifesto-clear-' + id).style.display = 'inline-block';
+      syncRound(id);
+    });
   };
   reader.readAsDataURL(file);
 }
@@ -1032,6 +1145,60 @@ function clearManifesto(id) {
   document.getElementById('rmanifesto-clear-' + id).style.display = 'none';
   syncRound(id);
 }
+
+// ── TRACK MAP HANDLERS ──
+// (the upload button already existed in the form, but these functions were
+// never implemented, so "Carica mappa" silently did nothing on this page)
+var trackMapData = {};
+var trackMapIndex = {}; // circuit_normalised -> path, loaded from track_maps/index.json
+
+function handleTrackMap(id, input) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    compressImageDataURL(e.target.result, 1400, 0.85).then(function(compressed) {
+      trackMapData[id] = compressed;
+      document.getElementById('rtrackmap-name-' + id).textContent = file.name;
+      document.getElementById('rtrackmap-clear-' + id).style.display = 'inline-block';
+      syncRound(id);
+    });
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearTrackMap(id) {
+  trackMapData[id] = null;
+  var inp = document.getElementById('rtrackmap-' + id);
+  if (inp) inp.value = '';
+  document.getElementById('rtrackmap-name-' + id).textContent = '';
+  document.getElementById('rtrackmap-clear-' + id).style.display = 'none';
+  syncRound(id);
+}
+
+function autoFillTrackMap(id) {
+  var circ = document.getElementById('rcircuit-' + id);
+  if (!circ || trackMapData[id]) return;
+  var ck = (circ.value || '').trim().toLowerCase();
+  if (!ck) return;
+  var url = trackMapIndex[ck];
+  if (url) {
+    trackMapData[id] = url;
+    var nameEl = document.getElementById('rtrackmap-name-' + id);
+    var clearEl = document.getElementById('rtrackmap-clear-' + id);
+    if (nameEl) nameEl.textContent = '✓ Mappa caricata automaticamente';
+    if (clearEl) clearEl.style.display = 'inline-block';
+    syncRound(id);
+  }
+}
+
+function loadTrackMapIndex() {
+  fetch('track_maps/index.json?_=' + Date.now())
+    .then(function(r){ return r.ok ? r.json() : {}; })
+    .then(function(data){ for (var k in data) { if (data.hasOwnProperty(k)) trackMapIndex[k] = data[k]; } })
+    .catch(function(){});
+}
+loadTrackMapIndex();
 
 window.onload = () => {
   var params = new URLSearchParams(window.location.search);
@@ -1769,6 +1936,9 @@ async function verifyToken() {
 async function publish() {
   const token = getToken();
   if (!token) { toast('Token mancante — verifica prima la connessione', 'err'); return; }
+
+  toast('Caricamento immagini…', '');
+  await resolvePendingImages(token);
 
   const html  = buildHTML();
   const fname = document.getElementById('filenameTag').textContent;
