@@ -1,0 +1,223 @@
+{
+  "circuito": "Dragon Trail – Litorale – 5,2 km",
+  "data": "2026-07-05",
+  "garaNum": "1",
+  "garaTot": "5",
+  "champId": "sole-sorpassi-2026",
+  "champIdx": "sole-sorpassi-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Antonio",
+      "psn": "antonioleocataad",
+      "auto": "911 GT3 R (992) '22",
+      "tempo": "41'54''744",
+      "bestLap": "01'40''589",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 2,
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "auto": "Honda NSX Gr.3",
+      "tempo": "a 08\"806",
+      "bestLap": "01'39''810",
+      "fl": false,
+      "pole": false,
+      "punti": 21,
+      "extra": "-",
+      "totale": 21,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 3,
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "auto": "Audi R8 LMS Evo '19",
+      "tempo": "a 11\"322",
+      "bestLap": "01'39''200",
+      "fl": true,
+      "pole": true,
+      "punti": 18,
+      "extra": "1+1",
+      "totale": 20,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 4,
+      "nome": "Carmine",
+      "psn": "CarmineRafa87",
+      "auto": "Audi R8 LMS Evo '19",
+      "tempo": "a 13\"447",
+      "bestLap": "01'39''810",
+      "fl": false,
+      "pole": false,
+      "punti": 16,
+      "extra": "-",
+      "totale": 16,
+      "stato": "ok",
+      "note": "Sanzione di 10 secondi"
+    },
+    {
+      "pos": 5,
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "auto": "BMW M6 GT3 Sprint Model '16",
+      "tempo": "a 32\"553",
+      "bestLap": "01'41''315",
+      "fl": false,
+      "pole": false,
+      "punti": 14,
+      "extra": "-",
+      "totale": 14,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 6,
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "auto": "",
+      "tempo": "a 39\"807",
+      "bestLap": "01'39''857",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok",
+      "note": "Sanzione di 10 secondi"
+    },
+    {
+      "pos": 7,
+      "nome": "Matteo Spinotto",
+      "psn": "Sp1n8_Mes",
+      "auto": "BMW M6 GT3 Sprint Model '16",
+      "tempo": "a 1'20\"394",
+      "bestLap": "01'41''562",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok",
+      "note": "Sanzione di 10 secondi"
+    },
+    {
+      "pos": 8,
+      "nome": "William",
+      "psn": "steward_andante",
+      "auto": "Ferrari 458 Italia GT3 '13",
+      "tempo": "a 1 Giro",
+      "bestLap": "01'42''428",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 9,
+      "nome": "Daniele",
+      "psn": "MrSciacca81",
+      "auto": "Audi R8 LMS Evo '19",
+      "tempo": "a 1 Giro",
+      "bestLap": "01'42''999",
+      "fl": false,
+      "pole": false,
+      "punti": 7,
+      "extra": "-",
+      "totale": 7,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 10,
+      "nome": "Antonio Cola",
+      "psn": "Cola_030696",
+      "auto": "",
+      "tempo": "a 2'47\"303",
+      "bestLap": "01'39''949",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "dsq",
+      "note": "Squalifica per auto errata"
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Antonio",
+      "psn": "antonioleocataad",
+      "pts": 25,
+      "pos": 1
+    },
+    {
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "pts": 21,
+      "pos": 2
+    },
+    {
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "pts": 20,
+      "pos": 3
+    },
+    {
+      "nome": "Carmine",
+      "psn": "CarmineRafa87",
+      "pts": 16,
+      "pos": 4
+    },
+    {
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "pts": 14,
+      "pos": 5
+    },
+    {
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "pts": 12,
+      "pos": 6
+    },
+    {
+      "nome": "Matteo Spinotto",
+      "psn": "Sp1n8_Mes",
+      "pts": 10,
+      "pos": 7
+    },
+    {
+      "nome": "William",
+      "psn": "steward_andante",
+      "pts": 8,
+      "pos": 8
+    },
+    {
+      "nome": "Daniele",
+      "psn": "MrSciacca81",
+      "pts": 7,
+      "pos": 9
+    },
+    {
+      "nome": "Antonio Cola",
+      "psn": "Cola_030696",
+      "pts": 0,
+      "pos": 10
+    }
+  ],
+  "bestOf": 4
+}
