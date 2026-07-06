@@ -151,6 +151,17 @@
         "pending": null,
         "url": ""
       }
+    },
+    {
+      "id": "b13",
+      "type": "embed",
+      "x": 52.45,
+      "y": 61.59,
+      "w": 20.75,
+      "h": 37.2,
+      "content": {
+        "url": "https://etnaracingclub.com/risultati/2026-sole-sorpassi-r1-dragon-trail-litorale-5-2-km.html"
+      }
     }
   ]
 }
