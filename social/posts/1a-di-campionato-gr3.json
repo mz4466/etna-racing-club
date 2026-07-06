@@ -1,0 +1,156 @@
+{
+  "title": "1a Di Campionato Gr3",
+  "slug": "1a-di-campionato-gr3",
+  "date": "2026-07-05",
+  "year": 2026,
+  "campionato": "Sole & Sorpassi (2026)",
+  "blocks": [
+    {
+      "id": "b0",
+      "type": "title",
+      "x": 0.7,
+      "y": 1.34,
+      "w": 34.75,
+      "h": 11.29,
+      "content": {
+        "text": "Tanto rumore per nulla",
+        "size": "medium"
+      }
+    },
+    {
+      "id": "b1",
+      "type": "text",
+      "x": 0.87,
+      "y": 13.11,
+      "w": 34.56,
+      "h": 72.4,
+      "content": {
+        "html": "<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">&nbsp;Si è da poco conclusa gara 1 del campionato Gr 3 nella pista di\nDragon Trail - Litorale, sono stati in 10 i piloti che si sono\ncontesi la vittoria</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Il\nmeteo ci ha regalato un’ottima opportunità per la gara odierna,\nmolto sole e pochissime nuvole nonostante la gara sia partita nelle\nprimissime ore del mattino</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Alla\nfine delle qualifiche a prevalere è stato Giovanni che si è messo\ndietro nell’ordine Carmine, Stefano, Claudio, Antonio, Pierpaolo,\nSpinotto, William, Daniele e Cola</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">La\ngara è partita con qualche contatto nelle prime curve, contatti che\npoi hanno portato a fine gara diverse problematiche tra i piloti, non\nappena la gara si è stabilizzata abbiamo comunque assistito ad una\ngara piena di emozioni, come ad esempio la gara di testa che ha visto\ncoinvolti Giovanni Claudio e Antonio, ma anche le disperate rimonte\ndi Carmine Pierpaolo e Stefano</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Dopo\nuna gara con tanti cambiamenti di posizioni a spuntare vincitore è\nstato Antonio che ha preceduto Pierpaolo di poco meno di 10 secondi,\npoi Giovanni che si è girato dopo l’ultima curva nel tentativo\ndisperato di andare a vincere, quarto è arrivato Carmine, anche se\nin gara era arrivato secondo, ma a causa di una penalità di 10\nsecondi è retrocesso fuori dal podio, a seguire sono arrivati\nClaudio, Stefano, Spinotto, William e Daniele, discorso diverso per\nCola che non ha comunicato in tempo il cambio di vettura venendo\nquindi squalificato dalla gara \n</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">L’appuntamento\nadesso si sposta al Trofeo Super Turismo diviso in 3 manches, ci sarà\nsicuramente da divertirsi</p>"
+      }
+    },
+    {
+      "id": "b2",
+      "type": "photo",
+      "x": 35.98,
+      "y": 1.35,
+      "w": 15.64,
+      "h": 20.43,
+      "content": {
+        "src": "social/media/1a-di-campionato-gr3-b2.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b4",
+      "type": "photo",
+      "x": 36.29,
+      "y": 23.57,
+      "w": 15.35,
+      "h": 20.76,
+      "content": {
+        "src": "social/media/1a-di-campionato-gr3-b4.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b5",
+      "type": "photo",
+      "x": 36.07,
+      "y": 45.06,
+      "w": 15.93,
+      "h": 21.75,
+      "content": {
+        "src": "social/media/1a-di-campionato-gr3-b5.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b6",
+      "type": "photo",
+      "x": 35.81,
+      "y": 67.66,
+      "w": 16.12,
+      "h": 21.42,
+      "content": {
+        "src": "social/media/1a-di-campionato-gr3-b6.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b7",
+      "type": "title",
+      "x": 52.17,
+      "y": 1.68,
+      "w": 20.66,
+      "h": 10.13,
+      "content": {
+        "text": "Interviste",
+        "size": "medium"
+      }
+    },
+    {
+      "id": "b8",
+      "type": "video",
+      "x": 52.14,
+      "y": 12.45,
+      "w": 20.75,
+      "h": 47.99,
+      "content": {
+        "url": "",
+        "caption": "",
+        "src": "social/media/1a-di-campionato-gr3-b8.mp4",
+        "pending": null
+      }
+    },
+    {
+      "id": "b9",
+      "type": "photo",
+      "x": 73.33,
+      "y": 2.39,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/1a-di-campionato-gr3-b9.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b11",
+      "type": "photo",
+      "x": 73.52,
+      "y": 31.43,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/1a-di-campionato-gr3-b11.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b12",
+      "type": "photo",
+      "x": 73.57,
+      "y": 60.49,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/1a-di-campionato-gr3-b12.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    }
+  ]
+}
