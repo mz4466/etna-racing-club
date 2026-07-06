@@ -5,7 +5,19 @@
     "date": "2026-07-05",
     "year": 2026,
     "campionato": "Sole & Sorpassi (2026)",
-    "blockTypes": [],
+    "blockTypes": [
+      "title",
+      "text",
+      "photo",
+      "photo",
+      "photo",
+      "photo",
+      "title",
+      "video",
+      "photo",
+      "photo",
+      "photo"
+    ],
     "created": "2026-07-06T21:55:11.963Z"
   },
   {
