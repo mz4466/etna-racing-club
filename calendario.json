@@ -961,7 +961,7 @@
         "weather": "S15 - 🌫️ Foschia, cielo sereno e piacevole",
         "tire": "x1",
         "fuel": "x1",
-        "types": "Morbide",
+        "types": "Da Corsa: Morbide",
         "notes": "Qualifiche: 10 minuti (valide per tutte le gare)- BoP No - PP 596 - Potenza (Cavalli) 295 - Peso 1.104 Kg // Pezzi da poter montare: Sport: Computer Sport - Filtro dell'aria Sport - Marmitta Sport - Pastiglia dei freni Sport - Sospensioni da strada - Riduzione peso fase 1 / Sport Club: Aumento Alesaggio - Albero a camme ad alto sollevamento - Pistoni ad alta compressione - Kit freni sportivo - Frizione e volano sport - Controller bilanciamento freni - Con pezzi montati arriverete a 295CV, 1.104kg, 595,07PP",
         "carId": "3344",
         "carName": "BMW M3 Sport Evolution '89"
@@ -975,7 +975,7 @@
         "weather": "S13 - ☀️ Sole con poche nubi monsoniche",
         "tire": "x1",
         "fuel": "x1",
-        "types": "Medie",
+        "types": "Da Corsa: Medie",
         "notes": "Bop No - PP 570 - Potenza (Cavalli) 266 - Peso 1.206 // Pezzi da poter montare: Sport: Computer Sport - Filtro dell'aria Sport - Marmitta Sport - Pastiglia dei freni Sport - Sospensioni da strada - Riduzione peso fase 1 / Sport Club: Albero a camme ad alto sollevamento - Kit freni sportivo - Frizione e volano sport - Controller bilanciamento freni - Con i pezzi montati arriverete 266CV, 1.206kg, 570,21PP",
         "carId": "575",
         "carName": "Mercedes-Benz 190 E 2.5-16 Evolution II '91"
@@ -989,7 +989,7 @@
         "weather": "S05 - 🌫️ Nebbioso, sereno e piacevole",
         "tire": "x1",
         "fuel": "x1",
-        "types": "Dure",
+        "types": "Da Corsa: Dure",
         "notes": "Danni ridotti - Bop attivo",
         "carId": "365",
         "carName": "Alfa Romeo 155 2.5 V6 TI '93"
