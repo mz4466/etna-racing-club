@@ -1418,6 +1418,20 @@ function roundHTML(id, pos) {
           <input type="text" placeholder="es. Pit stop obbligatorio" id="rnotes-${id}">
         </div>
         <div class="field" style="grid-column:1/-1">
+          <label>Auto Gara (opzionale)</label>
+          <div class="car-picker-wrap" id="rcarpicker-${id}">
+            <input type="text" class="car-search-input" id="rcarsearch-${id}" placeholder="Cerca auto..." oninput="filterCars(${id})" onfocus="filterCars(${id})" autocomplete="off">
+            <div class="car-dropdown" id="rcardrop-${id}"></div>
+            <input type="hidden" id="rcarid-${id}">
+            <input type="hidden" id="rcarname-${id}">
+            <div class="car-selected" id="rcarsel-${id}" style="display:none">
+              <img id="rcarimg-${id}" src="" referrerpolicy="no-referrer" alt="" onclick="openCarLightbox(${id})">
+              <div class="car-selected-name" id="rcarlabel-${id}"></div>
+              <button type="button" class="car-clear" onclick="clearCar(${id})">✕</button>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="grid-column:1/-1">
           <label>Mappa Circuito (opzionale)</label>
           <div class="manifesto-upload" id="trackmap-wrap-${id}">
             <input type="file" accept="image/*" id="rtrackmap-${id}" style="display:none" onchange="handleTrackMap(${id}, this)">
