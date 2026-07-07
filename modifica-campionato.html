@@ -1208,7 +1208,7 @@ function updateWeatherVal(id){
   var picker = document.getElementById('rweather-'+id);
   if(!picker) return;
   var sel = picker.querySelectorAll('.wp-pill.sel');
-  var parts = Array.from(sel).map(function(p){ return p.dataset.label; });
+  var parts = Array.from(sel).map(function(p){ return p.dataset.code + ' - ' + p.dataset.label; });
   var inp = document.getElementById('rweather-val-'+id);
   if(inp) inp.value = parts.join(' + ');
   var rid = parseInt(id);
@@ -1225,7 +1225,8 @@ function setWeatherVal(id, val){
   if(!val) return;
   var parts = val.split('+').map(function(s){ return s.trim(); });
   picker.querySelectorAll('.wp-pill').forEach(function(p){
-    if(parts.indexOf(p.dataset.label) >= 0 || parts.indexOf(p.dataset.code) >= 0) p.classList.add('sel');
+    var withCode = p.dataset.code + ' - ' + p.dataset.label;
+    if(parts.indexOf(p.dataset.label) >= 0 || parts.indexOf(p.dataset.code) >= 0 || parts.indexOf(withCode) >= 0) p.classList.add('sel');
   });
   updateWeatherVal(id);
 }
