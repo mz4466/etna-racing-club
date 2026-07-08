@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vetture Necessarie — Etna Racing Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@300;400;500;600;700&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07070f;--card:#0e0e1c;--card2:#131320;
+  --border:rgba(201,162,39,0.12);--border-hi:rgba(201,162,39,0.18);
+  --gold:#c9a227;--gold-hi:#e8c547;--gold-dim:rgba(201,162,39,0.10);
+  --text:#e8e0d0;--muted:#8a8098;--dim:#5a5470;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh}
+
+.page-header{
+  background:linear-gradient(180deg,rgba(10,10,24,0.98),var(--bg));
+  border-bottom:2px solid var(--gold);
+  padding:36px 24px 28px;text-align:center;
+}
+.page-header img{width:64px;height:64px;object-fit:contain;margin-bottom:14px;filter:drop-shadow(0 0 12px rgba(201,162,39,0.3));border-radius:8px}
+.page-season{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
+.page-title{font-family:'Russo One',sans-serif;font-size:clamp(24px,5vw,36px);color:var(--text);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px}
+.page-sub{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:3px;color:var(--dim);text-transform:uppercase}
+
+.wrap{max-width:760px;margin:0 auto;padding:24px 20px 60px}
+
+.loading{text-align:center;padding:60px 20px}
+.loading-bar{width:240px;height:6px;background:rgba(201,162,39,0.10);border-radius:3px;margin:16px auto 0;overflow:hidden}
+.loading-fill{height:100%;background:var(--gold);border-radius:3px;width:0%;transition:width 0.3s}
+.loading-text{font-family:'Teko',sans-serif;font-size:16px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-top:10px}
+
+.empty-state{text-align:center;padding:60px 20px;color:var(--dim);font-family:'Teko',sans-serif;font-size:16px;letter-spacing:2px;text-transform:uppercase}
+
+.champ-group{margin-bottom:32px}
+.champ-title{
+  display:flex;align-items:baseline;gap:10px;
+  text-decoration:none;padding:0 4px 10px;
+  border-bottom:1px solid var(--border-hi);margin-bottom:14px;
+}
+.champ-cat{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
+.champ-name{font-family:'Russo One',sans-serif;font-size:18px;color:var(--gold-hi);letter-spacing:0.5px}
+
+.round-card{
+  display:flex;align-items:center;gap:20px;
+  text-decoration:none;color:inherit;
+  padding:16px 20px;margin-bottom:12px;
+  background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%);
+  border:1px solid var(--border-hi);border-radius:14px;
+  transition:all 0.25s;
+}
+.round-card:hover{border-color:rgba(201,162,39,0.4);transform:translateY(-2px);box-shadow:0 8px 26px rgba(201,162,39,0.12)}
+.round-photo{flex-shrink:0;width:180px;height:108px;border-radius:10px;background:#0b0b16;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.round-photo img{width:100%;height:100%;object-fit:contain}
+.round-noimg{
+  flex-shrink:0;width:180px;height:108px;border-radius:10px;
+  background:rgba(201,162,39,0.05);border:1px dashed rgba(201,162,39,0.3);
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;
+  font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;
+}
+.round-info{flex:1;min-width:0}
+.round-car{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:600;color:var(--text);letter-spacing:0.3px}
+.round-circuit{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--muted);margin-top:4px}
+.round-date{font-family:'Teko',sans-serif;font-size:13px;color:var(--gold);letter-spacing:1px;margin-top:6px}
+.round-badge{
+  flex-shrink:0;font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;
+  color:var(--dim);text-transform:uppercase;text-align:right;
+}
+
+@media(max-width:600px){
+  .round-card{padding:12px 14px;gap:14px}
+  .round-photo,.round-noimg{width:110px;height:70px}
+  .round-car{font-size:16px}
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <a href="index.html"><img src="etna-logo.jpg" alt="Etna Racing Club"></a>
+  <div class="page-season">Etna Racing Club</div>
+  <h1 class="page-title">Vetture Necessarie</h1>
+  <div class="page-sub">Le auto richieste nelle prossime gare</div>
+</header>
+
+<div class="wrap">
+
+  <div class="loading" id="loadingBox">
+    <div style="font-family:'Russo One',sans-serif;font-size:18px;color:var(--gold);letter-spacing:2px">Caricamento dati...</div>
+    <div class="loading-bar"><div class="loading-fill" id="loadingFill"></div></div>
+    <div class="loading-text">Recupero calendario...</div>
+  </div>
+
+  <div id="dashboard" style="display:none"></div>
+
+</div>
+
+<script>
+(function(){
+  var MONTHS = ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
+  var DAYS = ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'];
+
+  function parseDate(s){
+    if(!s) return null;
+    var p = s.split('-');
+    if(p.length < 3) return null;
+    return new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2]));
+  }
+  function daysBetween(a, b){
+    return Math.ceil((b.getTime() - a.getTime()) / 86400000);
+  }
+  function formatDate(d){
+    return DAYS[d.getDay()] + ' ' + d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear();
+  }
+  function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  }); }
+
+  var loadingFill = document.getElementById('loadingFill');
+  if(loadingFill) setTimeout(function(){ loadingFill.style.width = '70%'; }, 80);
+
+  fetch('calendario.json?_=' + Date.now())
+    .then(function(r){ return r.json(); })
+    .then(function(cal){
+      var today = new Date();
+      today.setHours(0,0,0,0);
+
+      var groups = [];
+      for(var i=0;i<cal.length;i++){
+        var c = cal[i];
+        var st = (c.status || '').toLowerCase().replace(/-/g,' ').trim();
+        if(st === 'concluso' || st === 'annullato') continue;
+
+        var rounds = c.rounds || [];
+        var completed = parseInt(c.completedRounds) || 0;
+        var upcomingRounds = [];
+
+        for(var ri=0;ri<rounds.length;ri++){
+          var rd = parseDate(rounds[ri].date);
+          if(!rd) continue;
+          if(daysBetween(today, rd) < 0) continue;
+          if(ri < completed) continue;
+
+          upcomingRounds.push({
+            circuit: rounds[ri].circuit || '',
+            date: rd,
+            dateStr: formatDate(rd),
+            roundNum: ri + 1,
+            totalRounds: rounds.length,
+            carId: rounds[ri].carId || '',
+            carName: rounds[ri].carName || ''
+          });
+        }
+
+        if(!upcomingRounds.length) continue;
+        upcomingRounds.sort(function(a,b){ return a.date - b.date; });
+
+        groups.push({
+          champName: c.name || '',
+          cat: c.cat || '',
+          file: c.file || '',
+          earliestDate: upcomingRounds[0].date,
+          rounds: upcomingRounds
+        });
+      }
+
+      if(loadingFill) loadingFill.style.width = '100%';
+
+      var dashboard = document.getElementById('dashboard');
+      var loadingBox = document.getElementById('loadingBox');
+
+      if(!groups.length){
+        setTimeout(function(){
+          loadingBox.style.display = 'none';
+          dashboard.style.display = '';
+          dashboard.innerHTML = '<div class="empty-state">Nessuna gara in programma al momento</div>';
+        }, 200);
+        return;
+      }
+
+      groups.sort(function(a,b){ return a.earliestDate - b.earliestDate; });
+
+      var html = '';
+      for(var g=0; g<groups.length; g++){
+        var grp = groups[g];
+        var href = grp.file || '#';
+        html += '<div class="champ-group">';
+        html += '<a class="champ-title" href="' + esc(href) + '">'
+          + '<span class="champ-cat">' + esc(grp.cat) + '</span>'
+          + '<span class="champ-name">' + esc(grp.champName) + '</span>'
+          + '</a>';
+
+        for(var r=0; r<grp.rounds.length; r++){
+          var rr = grp.rounds[r];
+          var photoHtml = rr.carId
+            ? '<div class="round-photo"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car' + esc(rr.carId) + '.png" referrerpolicy="no-referrer" alt="' + esc(rr.carName) + '" onerror="this.parentElement.outerHTML=\'<div class=&quot;round-noimg&quot;>Clicca qui<br>per dettagli</div>\'"></div>'
+            : '<div class="round-noimg">Clicca qui<br>per dettagli</div>';
+
+          html += '<a class="round-card" href="' + esc(href) + '">'
+            + photoHtml
+            + '<div class="round-info">'
+            + (rr.carName ? '<div class="round-car">' + esc(rr.carName) + '</div>' : '')
+            + '<div class="round-circuit">' + esc(rr.circuit) + '</div>'
+            + '<div class="round-date">' + rr.dateStr + '</div>'
+            + '</div>'
+            + '<div class="round-badge">R' + rr.roundNum + '/' + rr.totalRounds + '</div>'
+            + '</a>';
+        }
+        html += '</div>';
+      }
+
+      setTimeout(function(){
+        loadingBox.style.display = 'none';
+        dashboard.style.display = '';
+        dashboard.innerHTML = html;
+      }, 200);
+    })
+    .catch(function(e){
+      console.warn('Vetture necessarie:', e.message);
+      var loadingBox = document.getElementById('loadingBox');
+      if(loadingBox) loadingBox.innerHTML = '<div class="empty-state">Errore nel caricamento dei dati</div>';
+    });
+})();
+</script>
+
+<script src="nav.js"></script>
+</body>
+</html>
