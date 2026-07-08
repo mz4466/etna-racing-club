@@ -498,6 +498,128 @@
         @media(max-width:600px){
             .recent-card { padding: 12px 16px; gap: 12px; }
         }
+
+        /* ── VETTURE NECESSARIE ── */
+        .cars-needed-wrap {
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            animation: fadeIn 2s ease-out 2.7s both;
+        }
+        .cars-needed-label {
+            font-family: 'Teko', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: rgba(201,162,39,0.8);
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 2px;
+        }
+        .cars-champ-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .cars-champ-title {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            text-decoration: none;
+            padding: 0 4px 6px;
+            border-bottom: 1px solid rgba(201,162,39,0.15);
+        }
+        .cars-champ-cat {
+            font-family: 'Teko', sans-serif;
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: rgba(201,162,39,0.55);
+            text-transform: uppercase;
+        }
+        .cars-champ-name {
+            font-family: 'Russo One', sans-serif;
+            font-size: 15px;
+            color: #e8c547;
+            letter-spacing: 0.5px;
+        }
+        .cars-round-card {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            text-decoration: none;
+            color: inherit;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, rgba(14,14,28,0.95), rgba(19,19,32,0.95));
+            border: 1px solid rgba(201,162,39,0.15);
+            border-radius: 14px;
+            transition: all 0.3s;
+        }
+        .cars-round-card:hover {
+            border-color: rgba(201,162,39,0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(201,162,39,0.12);
+        }
+        .cars-round-photo {
+            flex-shrink: 0;
+            width: 140px;
+            height: 84px;
+            border-radius: 10px;
+            background: #0b0b16;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .cars-round-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .cars-round-noimg {
+            flex-shrink: 0;
+            width: 140px;
+            height: 84px;
+            border-radius: 10px;
+            background: rgba(201,162,39,0.05);
+            border: 1px dashed rgba(201,162,39,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8px;
+            font-family: 'Teko', sans-serif;
+            font-size: 12px;
+            letter-spacing: 1px;
+            color: rgba(201,162,39,0.6);
+            text-transform: uppercase;
+        }
+        .cars-round-info { flex: 1; min-width: 0; }
+        .cars-round-car {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #e8e0d0;
+            letter-spacing: 0.3px;
+        }
+        .cars-round-circuit {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px;
+            color: rgba(232,224,208,0.65);
+            margin-top: 2px;
+        }
+        .cars-round-date {
+            font-family: 'Teko', sans-serif;
+            font-size: 12px;
+            color: #c9a227;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+        @media(max-width:600px){
+            .cars-round-card { padding: 12px 14px; gap: 12px; }
+            .cars-round-photo, .cars-round-noimg { width: 96px; height: 60px; }
+        }
         @media(max-width:600px){
             .upcoming-card { padding: 14px 16px; gap: 12px; }
             .upcoming-days { font-size: 22px; }
@@ -794,6 +916,8 @@
                 </a>
             </div>
 
+            <div class="cars-needed-wrap" id="carsNeeded" style="margin-top:24px;"></div>
+
             <div class="recent-wrap" id="recentResults"></div>
 
             <div class="cta-container">
@@ -928,6 +1052,107 @@
             document.getElementById('upcomingEvents').innerHTML = html;
           })
           .catch(function(e){ console.warn('Upcoming events:', e.message); });
+      })();
+
+      // ── Vetture necessarie (prossime gare, raggruppate per campionato) ──
+      (function(){
+        var MONTHS = ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
+        var DAYS = ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'];
+
+        function parseDate(s){
+          if(!s) return null;
+          var p = s.split('-');
+          if(p.length < 3) return null;
+          return new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2]));
+        }
+        function daysBetween(a, b){
+          return Math.ceil((b.getTime() - a.getTime()) / 86400000);
+        }
+        function formatDate(d){
+          return DAYS[d.getDay()] + ' ' + d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear();
+        }
+        function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){
+          return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+        }); }
+
+        fetch('calendario.json?_=' + Date.now())
+          .then(function(r){ return r.json(); })
+          .then(function(cal){
+            var today = new Date();
+            today.setHours(0,0,0,0);
+
+            var groups = [];
+            for(var i=0;i<cal.length;i++){
+              var c = cal[i];
+              var st = (c.status || '').toLowerCase().replace(/-/g,' ').trim();
+              if(st === 'concluso' || st === 'annullato') continue;
+
+              var rounds = c.rounds || [];
+              var completed = parseInt(c.completedRounds) || 0;
+              var upcomingRounds = [];
+
+              for(var ri=0;ri<rounds.length;ri++){
+                var rd = parseDate(rounds[ri].date);
+                if(!rd) continue;
+                if(daysBetween(today, rd) < 0) continue;
+                if(ri < completed) continue;
+
+                upcomingRounds.push({
+                  circuit: rounds[ri].circuit || '',
+                  date: rd,
+                  dateStr: formatDate(rd),
+                  carId: rounds[ri].carId || '',
+                  carName: rounds[ri].carName || ''
+                });
+              }
+
+              if(!upcomingRounds.length) continue;
+              upcomingRounds.sort(function(a,b){ return a.date - b.date; });
+
+              groups.push({
+                champName: c.name || '',
+                cat: c.cat || '',
+                file: c.file || '',
+                earliestDate: upcomingRounds[0].date,
+                rounds: upcomingRounds
+              });
+            }
+
+            if(!groups.length) return;
+
+            groups.sort(function(a,b){ return a.earliestDate - b.earliestDate; });
+
+            var html = '<div class="cars-needed-label">🏎️ Vetture Necessarie — Prossime Gare</div>';
+            for(var g=0; g<groups.length; g++){
+              var grp = groups[g];
+              var href = grp.file || '#';
+              html += '<div class="cars-champ-group">';
+              html += '<a class="cars-champ-title" href="' + esc(href) + '">'
+                + '<span class="cars-champ-cat">' + esc(grp.cat) + '</span>'
+                + '<span class="cars-champ-name">' + esc(grp.champName) + '</span>'
+                + '</a>';
+
+              for(var r=0; r<grp.rounds.length; r++){
+                var rr = grp.rounds[r];
+                var photoHtml = rr.carId
+                  ? '<div class="cars-round-photo"><img src="https://www.gran-turismo.com/common/dist/gt7/carlist/car_thumbnails/car' + esc(rr.carId) + '.png" referrerpolicy="no-referrer" alt="' + esc(rr.carName) + '" onerror="this.parentElement.outerHTML=\'<div class=&quot;cars-round-noimg&quot;>Clicca qui<br>per dettagli</div>\'"></div>'
+                  : '<div class="cars-round-noimg">Clicca qui<br>per dettagli</div>';
+
+                html += '<a class="cars-round-card" href="' + esc(href) + '">'
+                  + photoHtml
+                  + '<div class="cars-round-info">'
+                  + (rr.carName ? '<div class="cars-round-car">' + esc(rr.carName) + '</div>' : '')
+                  + '<div class="cars-round-circuit">' + esc(rr.circuit) + '</div>'
+                  + '<div class="cars-round-date">' + rr.dateStr + '</div>'
+                  + '</div>'
+                  + '</a>';
+              }
+              html += '</div>';
+            }
+
+            document.getElementById('carsNeeded').innerHTML = html;
+          })
+          .catch(function(e){ console.warn('Vetture necessarie:', e.message); });
       })();
 
       // ── Recent results ──
