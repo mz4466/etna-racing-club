@@ -1,0 +1,102 @@
+{
+  "title": "Super Turismo",
+  "slug": "super-turismo",
+  "date": "2026-07-11",
+  "year": 2026,
+  "campionato": "Trofeo Super Turismo (2026)",
+  "blocks": [
+    {
+      "id": "b0",
+      "type": "title",
+      "x": 15.17,
+      "y": 2.23,
+      "w": 47.59,
+      "h": 11.62,
+      "content": {
+        "text": "Il Super Turismo torna in Italia",
+        "size": "medium"
+      }
+    },
+    {
+      "id": "b1",
+      "type": "text",
+      "x": 15.09,
+      "y": 14.84,
+      "w": 48.17,
+      "h": 82.36,
+      "content": {
+        "html": "<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">&nbsp;Questa domenica andrà in atto una gara diversa dalle altre, sarà\ndivisa in 3 manches da 15 minuti ciascuna, si disputerà nella pista\ndi Barcellona e vedrà i piloti darsi battaglia con auto che hanno\nfatto la storia del Super Turismo degli anni 90, l’Alfa 155, la Bmw\nM3 e la Mercedes 190 E</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Siamo\nriusciti ad intervistare qualcuno dei piloti che scenderanno in pista</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Giovanni\nci ha detto che a lui questo trofeo piace, sia perché crede di\nandare bene sia perché lo vede molto tecnico, prevedere però pochi\nsorpassi, secondo lui Pierpaolo e Carmine (che forse si sta un po’\nnascondendo) potrebbero essere i reali pericoli, Stefano pagherà il\nfatto di non avere a disposizione l’Alfa mentre Cola è un bel\npunto di domanda per il fatto che potrebbe aver impostato\nerroneamente le auto. E’ convinto che ogni piccolo errore apra la\nstrada a tutti, e quindi, che vinca il migliore</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Carmine\ninvece ci ha confessato di essere un po’ preoccupato perché sente\ndi avere delle difficoltà a guidare queste tipo di auto (non da\ncompetizione – ndr), spera almeno di essere un po’ più\ncompetitivo con l’Alfa perché provandole è stata quella con cui è\nriuscito ad avere un passo gara migliore \n</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Stefano\ndal canto suo ci ricorda che nelle ultime gare ha avuto incidenti\npoco dopo il via e che quindi sono state gare difficili per lui, per\nquesta nuova gara avrà invece il “deficit” di poter fare solo 2\nmanches su 3 perché non in possesso della mitica Alfa 155 però ci\nha promesso che avrà lo stesso il coltello tra i denti, i tempi\ncrede di averli, il passo pure quindi spera di essere lì a\ncombattere con i vari Giovanni Pierpaolo e Carmine anche se si\naspetta come sorpresa Claudio</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Daniele\nha voluto dirci inizialmente che ha molto apprezzato questo format\ndell’Etna Racing Club, per quanto riguarda la pista invece è\nriuscito a trovare un buon feeling trovando sensazioni piacevoli e\ndivertenti permettendo di correre con la giusta leggerezza. Ha\nribadito il suo apprezzamento per questo evento facendoci però\nnotare che anche lui non potrà gareggiare con l’Alfa per lo stesso\nproblema di Stefano</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Infine\nabbiamo avuto modo di intervistare anche Pierpaolo che ci ha\nraccontato di come non veda l’ora di accendere i motori per questo\ntrofeo visto che gli ricorda quando lui da ragazzino guardava queste\nauto darsi battaglia e non vede l’ora di fare altrettanto con i\nsuoi avversari</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\"><a name=\"_GoBack\"></a>\nCos altro aggiungere se non che abbiamo avuto la sensazione che i\npiloti intervistati non vedono l’ora di darsi delle sportellate in\nquesta gara che si preannuncia caldissima</p>"
+      }
+    },
+    {
+      "id": "b2",
+      "type": "photo",
+      "x": 0.51,
+      "y": 0.56,
+      "w": 14.19,
+      "h": 39.85,
+      "content": {
+        "src": "social/media/super-turismo-b2.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b3",
+      "type": "photo",
+      "x": 63.84,
+      "y": 16.62,
+      "w": 14.48,
+      "h": 32.05,
+      "content": {
+        "src": "social/media/super-turismo-b3.png",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b4",
+      "type": "photo",
+      "x": 64.36,
+      "y": 45.33,
+      "w": 15.93,
+      "h": 17.27,
+      "content": {
+        "src": "social/media/super-turismo-b4.png",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b5",
+      "type": "photo",
+      "x": 64.32,
+      "y": 63.56,
+      "w": 16.02,
+      "h": 16.11,
+      "content": {
+        "src": "social/media/super-turismo-b5.png",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b6",
+      "type": "photo",
+      "x": 64.19,
+      "y": 80.57,
+      "w": 16.31,
+      "h": 16.61,
+      "content": {
+        "src": "social/media/super-turismo-b6.png",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    }
+  ]
+}
