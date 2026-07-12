@@ -1,0 +1,139 @@
+{
+  "circuito": "Barcellona – Layout GP – 4,7 km",
+  "data": "2026-07-12",
+  "garaNum": "1",
+  "garaTot": "3",
+  "champId": "trofeo-super-turismo-2026",
+  "champIdx": "trofeo-super-turismo-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "auto": "BMW M3 Sport Evolution '89",
+      "tempo": "15'16''670",
+      "bestLap": "01'57''332",
+      "fl": true,
+      "pole": true,
+      "punti": 25,
+      "extra": "1+1",
+      "totale": 27,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 2,
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "auto": "BMW M3 Sport Evolution '89",
+      "tempo": "a 6\"706",
+      "bestLap": "01'57''787",
+      "fl": false,
+      "pole": false,
+      "punti": 21,
+      "extra": "-",
+      "totale": 21,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 3,
+      "nome": "Carmine",
+      "psn": "CarmineRafa87",
+      "auto": "BMW M3 Sport Evolution '89",
+      "tempo": "a 7\"195",
+      "bestLap": "01'57''619",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 4,
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "auto": "BMW M3 Sport Evolution '89",
+      "tempo": "",
+      "bestLap": "0'15''861",
+      "fl": false,
+      "pole": false,
+      "punti": 16,
+      "extra": "-",
+      "totale": 16,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 5,
+      "nome": "William",
+      "psn": "steward_andante",
+      "auto": "BMW M3 Sport Evolution '89",
+      "tempo": "",
+      "bestLap": "01'59''384",
+      "fl": false,
+      "pole": false,
+      "punti": 14,
+      "extra": "-",
+      "totale": 14,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 6,
+      "nome": "Fabio",
+      "psn": "fabyus1983",
+      "auto": "BMW M3 Sport Evolution '89",
+      "tempo": "",
+      "bestLap": "02'03''761",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok",
+      "note": ""
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "pts": 27,
+      "pos": 1
+    },
+    {
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "pts": 21,
+      "pos": 2
+    },
+    {
+      "nome": "Carmine",
+      "psn": "CarmineRafa87",
+      "pts": 18,
+      "pos": 3
+    },
+    {
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "pts": 16,
+      "pos": 4
+    },
+    {
+      "nome": "William",
+      "psn": "steward_andante",
+      "pts": 14,
+      "pos": 5
+    },
+    {
+      "nome": "Fabio",
+      "psn": "fabyus1983",
+      "pts": 12,
+      "pos": 6
+    }
+  ],
+  "bestOf": null
+}
