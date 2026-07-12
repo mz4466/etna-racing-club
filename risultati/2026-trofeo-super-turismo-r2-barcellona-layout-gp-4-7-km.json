@@ -1,0 +1,139 @@
+{
+  "circuito": "Barcellona – Layout GP – 4,7 km",
+  "data": "2026-07-12",
+  "garaNum": "2",
+  "garaTot": "3",
+  "champId": "trofeo-super-turismo-2026",
+  "champIdx": "trofeo-super-turismo-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Carmine",
+      "psn": "CarmineRafa87",
+      "auto": "",
+      "tempo": "",
+      "bestLap": "02'00''138",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 2,
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "auto": "",
+      "tempo": "a 3\"648",
+      "bestLap": "01'59''065",
+      "fl": true,
+      "pole": false,
+      "punti": 21,
+      "extra": "1",
+      "totale": 22,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 3,
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "auto": "",
+      "tempo": "",
+      "bestLap": "01'59''379",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 4,
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "auto": "",
+      "tempo": "",
+      "bestLap": "01'59''524",
+      "fl": false,
+      "pole": false,
+      "punti": 16,
+      "extra": "-",
+      "totale": 16,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 5,
+      "nome": "William",
+      "psn": "steward_andante",
+      "auto": "",
+      "tempo": "a 1 Giro",
+      "bestLap": "02'02''134",
+      "fl": false,
+      "pole": false,
+      "punti": 14,
+      "extra": "-",
+      "totale": 14,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 6,
+      "nome": "Fabio",
+      "psn": "fabyus1983",
+      "auto": "",
+      "tempo": "",
+      "bestLap": "",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "dnf",
+      "note": ""
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Carmine",
+      "psn": "CarmineRafa87",
+      "pts": 25,
+      "pos": 1
+    },
+    {
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "pts": 22,
+      "pos": 2
+    },
+    {
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "pts": 18,
+      "pos": 3
+    },
+    {
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "pts": 16,
+      "pos": 4
+    },
+    {
+      "nome": "William",
+      "psn": "steward_andante",
+      "pts": 14,
+      "pos": 5
+    },
+    {
+      "nome": "Fabio",
+      "psn": "fabyus1983",
+      "pts": 0,
+      "pos": 6
+    }
+  ],
+  "bestOf": null
+}
