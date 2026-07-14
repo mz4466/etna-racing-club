@@ -1,0 +1,172 @@
+{
+  "title": "Super Turismo - The Aftermath",
+  "slug": "super-turismo-the-aftermath",
+  "date": "2026-07-12",
+  "year": 2026,
+  "campionato": "Trofeo Super Turismo (2026)",
+  "blocks": [
+    {
+      "id": "b0",
+      "type": "title",
+      "x": 21.2,
+      "y": 3.71,
+      "w": 43.24,
+      "h": 11.46,
+      "content": {
+        "text": "Giovanni, Re di Spagna",
+        "size": "medium"
+      }
+    },
+    {
+      "id": "b1",
+      "type": "text",
+      "x": 21.41,
+      "y": 16.21,
+      "w": 41.99,
+      "h": 68.25,
+      "content": {
+        "html": "<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">&nbsp;Da poco concluso il Trofeo Super Turismo che ha visto la netta\npredominanza di Giovanni (2 vittorie e 1 secondo posto), a seguire si\nè classificato Carmine (1 vittoria 1 secondo posto e 1 terzo) terzo\nPierpaolo (1 quarto posto e 2 terzi) quarto William (1 quarto posto e\n2 quinti) quinto Stefano (1 secondo e 1 quarto posto) chiude la\nclassifica Fabio (un sesto e un ritiro)</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Le\ngare sono state molto combattute e gli spettatori hanno seguito\nl’evolversi delle sfide con tifo crescente</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">A\nTrofeo concluso siamo riusciti a sentire a caldo le sensazioni di\nalcuni dei partecipanti</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Carmine\nad esempio ci ha detto che lui si è divertito molto e ha elogiato\ntutti per la sportività, si è comunque soffermato ad elogiare\nGiovanni “Re indiscusso di Spagna”, soprattutto ha fatto la\ndifferenza con l’Alfa 155 mentre lui e Pierpaolo hanno battagliato\nper la seconda posizione che lui è riuscito a consolidare grazie\nanche alle varie penalità del suo rivale, inoltre si è dispiaciuto\ndel fatto che Stefano non è riuscito a mettere a moto la sua 155\nsaltando così l’ultima manches. Crede di essere stato fortunato a\nvincere con la Mercedes mentre con la Bmw ha avuto una bellissima\nlotta per 4/5 giri con Giovanni. \n</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Pierpaolo\ninvece è arrivato ai nostri microfoni particolarmente demotivato,\nsin dalla prima gara infatti ha subito capito che non aveva il passo\ndegli altri, si è quasi girato alla fine del secondo giro e poi ha\navuto problemi tecnici durante la gara, nella seconda è riuscito ad\napprofittare di un contatto tra Giovanni e Stefano passando in\nseconda posizione ma Giovanni è riuscito a rimontare e a superarlo\nin perfetto stile Super Turismo, nell’ultima gara ha provato in\ntutti i modi a togliere il secondo posto a Carmine ma non è stato\nmolto incisivo in fase di sorpasso e ha chiuso la gara prendendo\ndiverse penalità che lo hanno solo innervosito</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\"><a name=\"_GoBack\"></a>\nProssimo weekend ci aspetta Gara 2 del Campionato Gr3 a Lago\nMaggiore, si preannuncia una gara da fuochi d’artificio</p>"
+      }
+    },
+    {
+      "id": "b2",
+      "type": "photo",
+      "x": 3.35,
+      "y": 3.9,
+      "w": 16.7,
+      "h": 17.44,
+      "content": {
+        "src": "social/media/super-turismo-the-aftermath-b2.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b3",
+      "type": "photo",
+      "x": 3.13,
+      "y": 22.54,
+      "w": 16.99,
+      "h": 17.6,
+      "content": {
+        "src": "social/media/super-turismo-the-aftermath-b3.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b4",
+      "type": "photo",
+      "x": 3.1,
+      "y": 41.48,
+      "w": 17.28,
+      "h": 18.43,
+      "content": {
+        "src": "social/media/super-turismo-the-aftermath-b4.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b5",
+      "type": "photo",
+      "x": 3.12,
+      "y": 60.83,
+      "w": 17.47,
+      "h": 18.6,
+      "content": {
+        "src": "social/media/super-turismo-the-aftermath-b5.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b6",
+      "type": "photo",
+      "x": 65.01,
+      "y": 5.26,
+      "w": 14.77,
+      "h": 16.94,
+      "content": {
+        "src": "social/media/super-turismo-the-aftermath-b6.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b8",
+      "type": "photo",
+      "x": 64.84,
+      "y": 23.19,
+      "w": 14.77,
+      "h": 16.61,
+      "content": {
+        "src": "social/media/super-turismo-the-aftermath-b8.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b9",
+      "type": "photo",
+      "x": 64.76,
+      "y": 40.98,
+      "w": 14.96,
+      "h": 17.1,
+      "content": {
+        "src": "social/media/super-turismo-the-aftermath-b9.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b10",
+      "type": "photo",
+      "x": 64.78,
+      "y": 59.29,
+      "w": 15.06,
+      "h": 16.44,
+      "content": {
+        "src": "social/media/super-turismo-the-aftermath-b10.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b11",
+      "type": "photo",
+      "x": 2.76,
+      "y": 80.24,
+      "w": 17.86,
+      "h": 17.93,
+      "content": {
+        "src": "social/media/super-turismo-the-aftermath-b11.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b12",
+      "type": "photo",
+      "x": 64.77,
+      "y": 76.59,
+      "w": 15.06,
+      "h": 16.94,
+      "content": {
+        "src": "social/media/super-turismo-the-aftermath-b12.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    }
+  ]
+}
