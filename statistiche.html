@@ -687,8 +687,10 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   function renderStreaks(){
     var filtered = getFilteredPilots();
 
-    var bestList = filtered.slice().sort(function(a,b){ return (streakBest[b.key]||0) - (streakBest[a.key]||0); });
-    var curList = filtered.slice().sort(function(a,b){ return (streakCurrent[b.key]||0) - (streakCurrent[a.key]||0); });
+    var bestList = filtered.filter(function(p){ return (streakBest[p.key]||0) > 0; })
+      .sort(function(a,b){ return (streakBest[b.key]||0) - (streakBest[a.key]||0); });
+    var curList = filtered.filter(function(p){ return (streakCurrent[p.key]||0) > 0; })
+      .sort(function(a,b){ return (streakCurrent[b.key]||0) - (streakCurrent[a.key]||0); });
 
     document.getElementById('streakBestBody').innerHTML = streakRows(bestList, streakBest);
     document.getElementById('streakCurrentBody').innerHTML = streakRows(curList, streakCurrent);
