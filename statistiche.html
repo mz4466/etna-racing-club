@@ -262,9 +262,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   document.addEventListener('click', function(e){
     var pill = e.target.closest('.gare-pill');
     if(pill){ toggleRaceTooltip(pill); return; }
-    if(!e.target.closest('#raceTooltip')){
-      document.getElementById('raceTooltip').classList.remove('open');
-    }
+    document.getElementById('raceTooltip').classList.remove('open');
   });
   window.addEventListener('scroll', function(){
     document.getElementById('raceTooltip').classList.remove('open');
