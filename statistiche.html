@@ -229,20 +229,23 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   function toggleRaceTooltip(pillEl){
     var tt = document.getElementById('raceTooltip');
     var key = pillEl.getAttribute('data-key');
-    var already = tt.classList.contains('open') && tt.getAttribute('data-key') === key;
+    var kind = pillEl.getAttribute('data-kind') || 'best';
+    var idAttr = key + ':' + kind;
+    var already = tt.classList.contains('open') && tt.getAttribute('data-id') === idAttr;
     tt.classList.remove('open');
     if(already) return;
 
-    var p = pilotMap[key];
-    if(!p) return;
-    var list = (p.raceList || []).slice().sort(function(a,b){
+    var list = (kind === 'current' ? streakCurrentRaces[key] : streakBestRaces[key]) || [];
+    list = list.slice().sort(function(a,b){
       if(a.date && b.date) return a.date.localeCompare(b.date);
-      return (a.garaNum || 0) - (b.garaNum || 0);
+      return 0;
     });
-    var html = '<div class="rt-title">Gare disputate</div>' +
-      list.map(function(r){ return '<div class="rt-item">🏁 ' + r.label + '</div>'; }).join('');
+    var title = kind === 'current' ? 'Striscia attuale' : 'Miglior striscia';
+    var html = '<div class="rt-title">' + title + '</div>' +
+      (list.length ? list.map(function(r){ return '<div class="rt-item">🏆 ' + r.label + '</div>'; }).join('')
+                   : '<div class="rt-item">Nessuna gara</div>');
     tt.innerHTML = html;
-    tt.setAttribute('data-key', key);
+    tt.setAttribute('data-id', idAttr);
 
     tt.style.display = 'block';
     var rect = pillEl.getBoundingClientRect();
@@ -288,6 +291,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   var countedRaceObjs = []; /* counted race objects (for chronological streak calc) */
   var streakBest = {};    /* pilotKey -> best-ever consecutive podium streak */
   var streakCurrent = {}; /* pilotKey -> current (ongoing) consecutive podium streak */
+  var streakBestRaces = {};    /* pilotKey -> race list backing the best-ever streak */
+  var streakCurrentRaces = {}; /* pilotKey -> race list backing the current streak */
 
   function fetchPilotStatus(){
     return fetch(BASE + 'piloti_schede/index.json?_=' + Date.now())
@@ -585,21 +590,30 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       return (a._file || '').localeCompare(b._file || '');
     });
 
-    var running = {}; /* pilotKey -> current running streak while scanning */
+    var running = {};     /* pilotKey -> current running streak while scanning */
+    var runningList = {}; /* pilotKey -> race entries backing the current running streak */
     streakBest = {};
     streakCurrent = {};
+    streakBestRaces = {};
+    streakCurrentRaces = {};
 
     /* start every known pilot at 0 so a pilot who never races again correctly shows 0 */
     for(var pk in pilotMap){
       if(!pilotMap.hasOwnProperty(pk)) continue;
       running[pk] = 0;
+      runningList[pk] = [];
       streakBest[pk] = 0;
+      streakBestRaces[pk] = [];
     }
 
     for(var oi=0; oi<ordered.length; oi++){
       var rc = ordered[oi];
       var rws = rc.rows || [];
       var presentThisRace = {};
+      var champId = rc.champId || rc.champIdx || '';
+      var champLabel = champId ? (champNameMap[champId] || champId) : '';
+      var circuit = rc.circuito || 'Sconosciuto';
+      var raceLabel = (champLabel ? champLabel + ' — ' : '') + circuit + (rc.garaNum ? ' (R' + rc.garaNum + ')' : '');
 
       for(var wi=0; wi<rws.length; wi++){
         var rw = rws[wi];
@@ -613,22 +627,28 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
         var podium = (typeof rw.pos === 'number') && rw.pos <= 3;
         if(podium){
           running[wkey] = (running[wkey] || 0) + 1;
-          if(running[wkey] > streakBest[wkey]) streakBest[wkey] = running[wkey];
+          runningList[wkey].push({label: raceLabel, pos: rw.pos, date: rc.data || ''});
+          if(running[wkey] > streakBest[wkey]){
+            streakBest[wkey] = running[wkey];
+            streakBestRaces[wkey] = runningList[wkey].slice();
+          }
         } else {
           running[wkey] = 0;
+          runningList[wkey] = [];
         }
       }
 
       /* anyone NOT in this race also loses their streak — missing a race breaks it */
       for(var pk2 in pilotMap){
         if(!pilotMap.hasOwnProperty(pk2)) continue;
-        if(!presentThisRace[pk2]) running[pk2] = 0;
+        if(!presentThisRace[pk2]){ running[pk2] = 0; runningList[pk2] = []; }
       }
     }
 
     for(var pk3 in pilotMap){
       if(!pilotMap.hasOwnProperty(pk3)) continue;
       streakCurrent[pk3] = running[pk3] || 0;
+      streakCurrentRaces[pk3] = runningList[pk3].slice();
     }
   }
 
@@ -750,15 +770,16 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     var curList = filtered.filter(function(p){ return (streakCurrent[p.key]||0) > 0; })
       .sort(function(a,b){ return (streakCurrent[b.key]||0) - (streakCurrent[a.key]||0); });
 
-    document.getElementById('streakBestBody').innerHTML = streakRows(bestList, streakBest);
-    document.getElementById('streakCurrentBody').innerHTML = streakRows(curList, streakCurrent);
+    document.getElementById('streakBestBody').innerHTML = streakRows(bestList, streakBest, 'best');
+    document.getElementById('streakCurrentBody').innerHTML = streakRows(curList, streakCurrent, 'current');
   }
 
-  function streakRows(list, map){
+  function streakRows(list, map, kind){
     if(!list.length) return '<tr><td colspan="3" class="streak-empty">Nessun dato</td></tr>';
     var html = '';
     for(var i=0;i<list.length;i++){
-      html += '<tr><td>' + (i+1) + '</td><td>' + list[i].nome + '</td><td>' + (map[list[i].key] || 0) + '</td></tr>';
+      html += '<tr><td>' + (i+1) + '</td><td>' + list[i].nome + '</td>' +
+        '<td class="gare-pill" data-key="' + list[i].key + '" data-kind="' + kind + '">' + (map[list[i].key] || 0) + '</td></tr>';
     }
     return html;
   }
@@ -832,7 +853,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       html += '<tr>' +
         '<td class="' + posCls + '">' + (i+1) + '</td>' +
         '<td>' + p.nome + '</td>' +
-        '<td class="gare-pill" data-key="' + p.key + '">' + p.races + '</td>' +
+        '<td>' + p.races + '</td>' +
         '<td class="val-hi">' + p.wins + '</td>' +
         '<td>' + p.podiums + '</td>' +
         '<td>' + p.poles + '</td>' +
