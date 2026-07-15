@@ -97,6 +97,16 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 .circuit-toggle .chev{font-size:11px;line-height:1;transition:transform .25s}
 .circuit-bars.expanded .circuit-toggle .chev{transform:rotate(180deg)}
 
+.gare-pill{cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px;color:var(--gold-hi)}
+.gare-pill:hover{color:var(--gold)}
+#raceTooltip{display:none;position:fixed;background:#0e0e1c;border:1px solid rgba(201,162,39,0.4);border-radius:8px;padding:10px 14px;min-width:260px;max-width:360px;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.7);max-height:280px;overflow-y:auto}
+#raceTooltip.open{display:block}
+.rt-title{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:2px;color:rgba(201,162,39,0.6);text-transform:uppercase;margin-bottom:6px}
+.rt-item{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:0.5px;color:#e8e0d0;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.rt-item:last-child{border-bottom:none}
+#raceTooltip::-webkit-scrollbar{width:4px}
+#raceTooltip::-webkit-scrollbar-track{background:transparent}
+#raceTooltip::-webkit-scrollbar-thumb{background:rgba(201,162,39,0.4);border-radius:4px}
 .streak-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px}
 .streak-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;overflow-x:auto}
 .streak-card-title{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;text-align:center}
@@ -206,12 +216,56 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   </div>
 </div>
 
+<div id="raceTooltip"></div>
+
 <script>
 (function(){
 
   /* ── helpers ── */
   function norm(s){ return (s || '').toLowerCase().replace(/-/g,' ').trim(); }
   function pct(a,b){ return b ? Math.round(a / b * 100) : 0; }
+
+  /* ── race-list tooltip (click on a pilot's "Gare" count) ── */
+  function toggleRaceTooltip(pillEl){
+    var tt = document.getElementById('raceTooltip');
+    var key = pillEl.getAttribute('data-key');
+    var already = tt.classList.contains('open') && tt.getAttribute('data-key') === key;
+    tt.classList.remove('open');
+    if(already) return;
+
+    var p = pilotMap[key];
+    if(!p) return;
+    var list = (p.raceList || []).slice().sort(function(a,b){
+      if(a.date && b.date) return a.date.localeCompare(b.date);
+      return (a.garaNum || 0) - (b.garaNum || 0);
+    });
+    var html = '<div class="rt-title">Gare disputate</div>' +
+      list.map(function(r){ return '<div class="rt-item">🏁 ' + r.label + '</div>'; }).join('');
+    tt.innerHTML = html;
+    tt.setAttribute('data-key', key);
+
+    tt.style.display = 'block';
+    var rect = pillEl.getBoundingClientRect();
+    var ttRect = tt.getBoundingClientRect();
+    var left = rect.left + rect.width/2 - ttRect.width/2;
+    left = Math.max(8, Math.min(left, window.innerWidth - ttRect.width - 8));
+    var top = rect.top - ttRect.height - 10;
+    if(top < 8) top = rect.bottom + 10;
+    tt.style.left = left + 'px';
+    tt.style.top = top + 'px';
+    tt.classList.add('open');
+  }
+
+  document.addEventListener('click', function(e){
+    var pill = e.target.closest('.gare-pill');
+    if(pill){ toggleRaceTooltip(pill); return; }
+    if(!e.target.closest('#raceTooltip')){
+      document.getElementById('raceTooltip').classList.remove('open');
+    }
+  });
+  window.addEventListener('scroll', function(){
+    document.getElementById('raceTooltip').classList.remove('open');
+  }, true);
   function avg(arr){ if(!arr.length) return 0; var s=0; for(var i=0;i<arr.length;i++) s+=arr[i]; return Math.round(s/arr.length*10)/10; }
 
   /* ── fetch all race JSONs ── */
@@ -222,6 +276,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   var carWins = {};
   var seasonMap = {};
   var champYearMap = {}; /* champId -> season year string */
+  var champNameMap = {}; /* champId -> championship display name */
   var champWinners = {};
   var pilotStatus = {};
   var schede = {};      /* psnLower -> { nome: currentName, attivo: bool } */
@@ -357,6 +412,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
             var cid = champ.id || '';
             var status = (champ.status || '').toLowerCase();
             if(cid) champStatusMap[cid] = status;
+            if(cid) champNameMap[cid] = champ.name || cid;
             if(cid && (champ.stagione || champ.year)) champYearMap[cid] = champ.stagione || String(champ.year);
             if(champ.cat === 'Gara Ufficiosa'){
               if(cid) ufficioseIds[cid] = true;
@@ -496,8 +552,10 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
           carWins[r.auto] = (carWins[r.auto] || 0) + 1;
         }
 
-        /* for head-to-head */
-        p.raceList.push({file: race._file, pos: r.pos, stato: stato});
+        /* for head-to-head and race-list tooltip */
+        var champLabel = champId ? (champNameMap[champId] || champId) : '';
+        var raceLabel = (champLabel ? champLabel + ' — ' : '') + circuit + (race.garaNum ? ' (R' + race.garaNum + ')' : '');
+        p.raceList.push({file: race._file, pos: r.pos, stato: stato, label: raceLabel, date: race.data || '', garaNum: parseInt(race.garaNum) || 0});
       }
     }
 
@@ -774,7 +832,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       html += '<tr>' +
         '<td class="' + posCls + '">' + (i+1) + '</td>' +
         '<td>' + p.nome + '</td>' +
-        '<td>' + p.races + '</td>' +
+        '<td class="gare-pill" data-key="' + p.key + '">' + p.races + '</td>' +
         '<td class="val-hi">' + p.wins + '</td>' +
         '<td>' + p.podiums + '</td>' +
         '<td>' + p.poles + '</td>' +
