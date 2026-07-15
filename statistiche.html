@@ -260,7 +260,9 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   }
 
   document.addEventListener('click', function(e){
-    var pill = e.target.closest('.gare-pill');
+    var target = e.target;
+    if(target && target.nodeType === 3) target = target.parentNode; /* Safari can target a text node */
+    var pill = (target && target.closest) ? target.closest('.gare-pill') : null;
     if(pill){ toggleRaceTooltip(pill); return; }
     document.getElementById('raceTooltip').classList.remove('open');
   });
