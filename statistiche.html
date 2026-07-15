@@ -404,10 +404,9 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       /* skip ufficiose championships entirely */
       if(champId && ufficioseIds[champId]) continue;
 
-      /* only count races from concluded championships or standalone single races */
-      var champStatus = champId ? (champStatusMap[champId] || '') : '';
-      var isStandalone = !champId || (parseInt(race.garaTot) === 1);
-      if(!isStandalone && champStatus !== 'concluso') continue;
+      /* count every individual race as soon as it has been played (has results),
+         regardless of whether the parent championship itself has concluded */
+      if(!rows.length) continue;
 
       countedRaces++;
 
