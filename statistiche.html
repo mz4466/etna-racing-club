@@ -97,6 +97,16 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 .circuit-toggle .chev{font-size:11px;line-height:1;transition:transform .25s}
 .circuit-bars.expanded .circuit-toggle .chev{transform:rotate(180deg)}
 
+.streak-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px}
+.streak-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;overflow-x:auto}
+.streak-card-title{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;text-align:center}
+.streak-table{width:100%;border-collapse:collapse;min-width:220px}
+.streak-table td{padding:7px 8px;font-size:14px;border-bottom:1px solid rgba(255,255,255,0.03);color:var(--text)}
+.streak-table td:first-child{color:var(--dim);width:28px;text-align:center;font-family:'Teko',sans-serif}
+.streak-table td:nth-child(2){font-weight:500}
+.streak-table td:last-child{text-align:right;font-family:'Russo One',sans-serif;color:var(--gold-hi)}
+.streak-table tbody tr:hover{background:rgba(201,162,39,0.04)}
+.streak-empty{text-align:center;padding:16px;color:var(--dim);font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px}
 .car-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:32px}
 .car-card{background:var(--card);border:1px solid rgba(201,162,39,0.08);border-radius:8px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
 .car-name{font-size:14px;color:var(--text)}
@@ -115,6 +125,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 @media(max-width:700px){
   .overview-grid{grid-template-columns:repeat(2,1fr)}
   .car-grid{grid-template-columns:1fr}
+  .streak-grid{grid-template-columns:1fr}
   .h2h-result{grid-template-columns:1fr;gap:8px}
   .h2h-details{grid-template-columns:1fr}
   .circuit-name{width:120px;min-width:120px;font-size:11px}
@@ -169,6 +180,18 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       <div id="h2hContent"><div class="h2h-empty">Seleziona due piloti diversi</div></div>
     </div>
 
+    <div class="section-title">Serie di podi consecutivi</div>
+    <div class="streak-grid">
+      <div class="streak-card">
+        <div class="streak-card-title">Miglior striscia (all-time)</div>
+        <table class="streak-table"><tbody id="streakBestBody"></tbody></table>
+      </div>
+      <div class="streak-card">
+        <div class="streak-card-title">Striscia attuale</div>
+        <table class="streak-table"><tbody id="streakCurrentBody"></tbody></table>
+      </div>
+    </div>
+
     <div class="section-title">Circuiti piu frequentati</div>
     <div class="circuit-bars" id="circuitBars"></div>
 
@@ -207,6 +230,9 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   var ufficioseIds = {};   /* champIds to exclude from stats */
   var champStatusMap = {}; /* champId -> status ('concluso','in-corso','prossimo') */
   var countedRaces = 0;   /* races actually counted after filters */
+  var countedRaceObjs = []; /* counted race objects (for chronological streak calc) */
+  var streakBest = {};    /* pilotKey -> best-ever consecutive podium streak */
+  var streakCurrent = {}; /* pilotKey -> current (ongoing) consecutive podium streak */
 
   function fetchPilotStatus(){
     return fetch(BASE + 'piloti_schede/index.json?_=' + Date.now())
@@ -409,6 +435,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       if(!rows.length) continue;
 
       countedRaces++;
+      countedRaceObjs.push(race);
 
       /* count circuit from actual race data (only played races reach here) */
       var cKey = resolveCircuit(circuit);
@@ -485,6 +512,66 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       if(!pilotMap.hasOwnProperty(pn)) continue;
       pilotMap[pn].champsWon = cw[pn] || 0;
     }
+
+    computeStreaks();
+  }
+
+  /* ── consecutive podium streaks ── */
+  function computeStreaks(){
+    /* chronological order across the WHOLE club — every counted race, any series */
+    var ordered = countedRaceObjs.slice().sort(function(a,b){
+      var da = a.data || '', db = b.data || '';
+      if(da !== db) return da < db ? -1 : 1;
+      var ga = parseInt(a.garaNum) || 0, gb = parseInt(b.garaNum) || 0;
+      if(ga !== gb) return ga - gb;
+      return (a._file || '').localeCompare(b._file || '');
+    });
+
+    var running = {}; /* pilotKey -> current running streak while scanning */
+    streakBest = {};
+    streakCurrent = {};
+
+    /* start every known pilot at 0 so a pilot who never races again correctly shows 0 */
+    for(var pk in pilotMap){
+      if(!pilotMap.hasOwnProperty(pk)) continue;
+      running[pk] = 0;
+      streakBest[pk] = 0;
+    }
+
+    for(var oi=0; oi<ordered.length; oi++){
+      var rc = ordered[oi];
+      var rws = rc.rows || [];
+      var presentThisRace = {};
+
+      for(var wi=0; wi<rws.length; wi++){
+        var rw = rws[wi];
+        var wname = rw.nome || '';
+        if(!wname) continue;
+        var wpsn = (rw.psn || '').toLowerCase().trim();
+        var wkey = wpsn || norm(wname);
+        if(!pilotMap.hasOwnProperty(wkey)) continue; /* safety: unknown key */
+        presentThisRace[wkey] = true;
+
+        var podium = (typeof rw.pos === 'number') && rw.pos <= 3;
+        if(podium){
+          running[wkey] = (running[wkey] || 0) + 1;
+          if(running[wkey] > streakBest[wkey]) streakBest[wkey] = running[wkey];
+        } else {
+          running[wkey] = 0;
+        }
+      }
+
+      /* anyone NOT in this race also loses their streak — missing a race breaks it */
+      for(var pk2 in pilotMap){
+        if(!pilotMap.hasOwnProperty(pk2)) continue;
+        if(!presentThisRace[pk2]) running[pk2] = 0;
+      }
+    }
+
+    for(var pk3 in pilotMap){
+      if(!pilotMap.hasOwnProperty(pk3)) continue;
+      streakCurrent[pk3] = running[pk3] || 0;
+    }
   }
 
   /* ── render ── */
@@ -554,6 +641,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
     renderPilotTable();
     renderH2HSelectors();
+    renderStreaks();
     renderCars();
     renderSeasons();
   }
@@ -587,12 +675,32 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     renderPilotTable();
     renderSortPills();
     renderH2HSelectors();
+    renderStreaks();
     renderCircuits();
     renderCars();
     renderSeasons();
 
     document.getElementById('footerNote').textContent =
       'Dati calcolati automaticamente da ' + countedRaces + ' risultati pubblicati';
+  }
+
+  function renderStreaks(){
+    var filtered = getFilteredPilots();
+
+    var bestList = filtered.slice().sort(function(a,b){ return (streakBest[b.key]||0) - (streakBest[a.key]||0); });
+    var curList = filtered.slice().sort(function(a,b){ return (streakCurrent[b.key]||0) - (streakCurrent[a.key]||0); });
+
+    document.getElementById('streakBestBody').innerHTML = streakRows(bestList, streakBest);
+    document.getElementById('streakCurrentBody').innerHTML = streakRows(curList, streakCurrent);
+  }
+
+  function streakRows(list, map){
+    if(!list.length) return '<tr><td colspan="3" class="streak-empty">Nessun dato</td></tr>';
+    var html = '';
+    for(var i=0;i<list.length;i++){
+      html += '<tr><td>' + (i+1) + '</td><td>' + list[i].nome + '</td><td>' + (map[list[i].key] || 0) + '</td></tr>';
+    }
+    return html;
   }
 
   function ovCard(num, label){
