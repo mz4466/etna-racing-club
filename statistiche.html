@@ -97,20 +97,22 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 .circuit-toggle .chev{font-size:11px;line-height:1;transition:transform .25s}
 .circuit-bars.expanded .circuit-toggle .chev{transform:rotate(180deg)}
 
-.gare-pill{cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px;color:var(--gold-hi)}
+.gare-pill{position:relative;cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px;color:var(--gold-hi)}
 .gare-pill:hover{color:var(--gold)}
-#raceTooltip{display:none;position:fixed;background:#0e0e1c;border:1px solid rgba(201,162,39,0.4);border-radius:8px;padding:10px 14px;min-width:260px;max-width:360px;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.7);max-height:280px;overflow-y:auto}
-#raceTooltip.open{display:block}
+.rt-popup{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#0e0e1c;border:1px solid rgba(201,162,39,0.4);border-radius:8px;padding:10px 14px;min-width:260px;max-width:320px;z-index:999;box-shadow:0 8px 24px rgba(0,0,0,0.7);max-height:260px;overflow-y:auto;text-align:left;white-space:normal}
+.rt-popup::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:rgba(201,162,39,0.4)}
+.gare-pill.open .rt-popup{display:block}
+.gare-pill.open{color:var(--gold)}
 .rt-title{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:2px;color:rgba(201,162,39,0.6);text-transform:uppercase;margin-bottom:6px;padding-right:24px}
 .rt-close{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;border:1px solid rgba(201,162,39,0.3);background:rgba(255,255,255,0.03);color:var(--gold-hi);font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s,border-color 0.15s}
 .rt-close:hover{background:rgba(201,162,39,0.15);border-color:rgba(201,162,39,0.5)}
 .rt-item{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:0.5px;color:#e8e0d0;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
 .rt-item:last-child{border-bottom:none}
-#raceTooltip::-webkit-scrollbar{width:4px}
-#raceTooltip::-webkit-scrollbar-track{background:transparent}
-#raceTooltip::-webkit-scrollbar-thumb{background:rgba(201,162,39,0.4);border-radius:4px}
+.rt-popup::-webkit-scrollbar{width:4px}
+.rt-popup::-webkit-scrollbar-track{background:transparent}
+.rt-popup::-webkit-scrollbar-thumb{background:rgba(201,162,39,0.4);border-radius:4px}
 .streak-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px}
-.streak-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;overflow-x:auto}
+.streak-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px}
 .streak-card-title{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;text-align:center}
 .streak-table{width:100%;border-collapse:collapse;min-width:220px}
 .streak-table td{padding:7px 8px;font-size:14px;border-bottom:1px solid rgba(255,255,255,0.03);color:var(--text)}
@@ -233,8 +235,6 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   </div>
 </div>
 
-<div id="raceTooltip"></div>
-
 <script>
 (function(){
 
@@ -249,98 +249,35 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     return parts[2] + '/' + parts[1] + '/' + parts[0];
   }
 
-  /* ── race-list tooltip (hover over a pilot's streak count) ── */
-  var tooltipHideTimer = null;
-
-  function renderTooltipContent(pillEl){
-    var tt = document.getElementById('raceTooltip');
-    var key = pillEl.getAttribute('data-key');
-    var kind = pillEl.getAttribute('data-kind') || 'best';
-
-    var raceMap = {best: streakBestRaces, current: streakCurrentRaces, winBest: winStreakBestRaces, winCurrent: winStreakCurrentRaces};
-    var list = (raceMap[kind] && raceMap[kind][key]) || [];
-    list = list.slice().sort(function(a,b){
-      if(a.date && b.date) return a.date.localeCompare(b.date);
-      return 0;
-    });
-    var titles = {best: 'Miglior striscia', current: 'Striscia attuale', winBest: 'Miglior striscia vittorie', winCurrent: 'Striscia vittorie attuale'};
-    var title = titles[kind] || 'Striscia';
-    var icon = (kind === 'winBest' || kind === 'winCurrent') ? '🥇' : '🏆';
-    var html = '<button type="button" class="rt-close" aria-label="Chiudi">✕</button>' +
-      '<div class="rt-title">' + title + '</div>' +
-      (list.length ? list.map(function(r){ return '<div class="rt-item">' + icon + ' ' + r.label + '</div>'; }).join('')
-                   : '<div class="rt-item">Nessuna gara</div>');
-    tt.innerHTML = html;
-    tt.setAttribute('data-id', key + ':' + kind);
-
-    var closeBtn = tt.querySelector('.rt-close');
-    if(closeBtn){
-      closeBtn.addEventListener('click', function(e){
-        e.stopPropagation();
-        hideTooltipNow();
-      });
-    }
-
-    tt.style.display = 'block';
-    var rect = pillEl.getBoundingClientRect();
-    var ttRect = tt.getBoundingClientRect();
-    var left = rect.left + rect.width/2 - ttRect.width/2;
-    left = Math.max(8, Math.min(left, window.innerWidth - ttRect.width - 8));
-    var top = rect.top - ttRect.height - 10;
-    if(top < 8) top = rect.bottom + 10;
-    tt.style.left = left + 'px';
-    tt.style.top = top + 'px';
+  /* ── race-list popup (click a pilot's streak count) — same pattern as the piloti page's stat-pill ── */
+  function toggleGarePill(pillEl){
+    var isOpen = pillEl.classList.contains('open');
+    var all = document.querySelectorAll('.gare-pill.open');
+    for(var i=0;i<all.length;i++) all[i].classList.remove('open');
+    if(!isOpen) pillEl.classList.add('open');
   }
 
-  function showTooltipFor(pillEl){
-    clearTimeout(tooltipHideTimer);
-    renderTooltipContent(pillEl);
-    document.getElementById('raceTooltip').classList.add('open');
-  }
-
-  function hideTooltipNow(){
-    document.getElementById('raceTooltip').classList.remove('open');
-  }
-
-  function scheduleHideTooltip(){
-    clearTimeout(tooltipHideTimer);
-    tooltipHideTimer = setTimeout(hideTooltipNow, 250);
-  }
-
-  /* wire up hover (desktop) + tap (touch) on every pill, delegated so it works for dynamically re-rendered tables */
-  document.addEventListener('mouseover', function(e){
-    var target = e.target;
-    if(target && target.nodeType === 3) target = target.parentNode;
-    var pill = (target && target.closest) ? target.closest('.gare-pill') : null;
-    if(pill) showTooltipFor(pill);
-  });
-  document.addEventListener('mouseout', function(e){
-    var target = e.target;
-    if(target && target.nodeType === 3) target = target.parentNode;
-    var pill = (target && target.closest) ? target.closest('.gare-pill') : null;
-    if(pill) scheduleHideTooltip();
-  });
   document.addEventListener('click', function(e){
     var target = e.target;
     if(target && target.nodeType === 3) target = target.parentNode; /* Safari can target a text node */
-    var pill = (target && target.closest) ? target.closest('.gare-pill') : null;
-    if(pill){ showTooltipFor(pill); return; } /* tap on touch devices, where hover never fires */
-    if(!target || !target.closest || !target.closest('#raceTooltip')){
-      hideTooltipNow();
+    if(!target || !target.closest) return;
+
+    var closeBtn = target.closest('.rt-close');
+    if(closeBtn){
+      var parentPill = closeBtn.closest('.gare-pill');
+      if(parentPill) parentPill.classList.remove('open');
+      return;
     }
+
+    if(target.closest('.rt-popup')) return; /* clicking inside the popup itself (e.g. to scroll) does nothing */
+
+    var pill = target.closest('.gare-pill');
+    if(pill){ toggleGarePill(pill); return; }
+
+    var all = document.querySelectorAll('.gare-pill.open');
+    for(var i=0;i<all.length;i++) all[i].classList.remove('open');
   });
 
-  /* keep the tooltip open while the pointer is over it (e.g. scrolling the list), close when it leaves */
-  document.getElementById('raceTooltip').addEventListener('mouseenter', function(){
-    clearTimeout(tooltipHideTimer);
-  });
-  document.getElementById('raceTooltip').addEventListener('mouseleave', function(){
-    scheduleHideTooltip();
-  });
-
-  window.addEventListener('scroll', function(){
-    hideTooltipNow();
-  }, true);
   function avg(arr){ if(!arr.length) return 0; var s=0; for(var i=0;i<arr.length;i++) s+=arr[i]; return Math.round(s/arr.length*10)/10; }
 
   /* ── fetch all race JSONs ── */
@@ -880,19 +817,19 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     var curList = filtered.filter(function(p){ return (streakCurrent[p.key]||0) > 0; })
       .sort(function(a,b){ return (streakCurrent[b.key]||0) - (streakCurrent[a.key]||0); });
 
-    renderStreakCard('streakBestContainer', bestList, streakBest, 'best');
-    renderStreakCard('streakCurrentContainer', curList, streakCurrent, 'current');
+    renderStreakCard('streakBestContainer', bestList, streakBest, 'best', streakBestRaces);
+    renderStreakCard('streakCurrentContainer', curList, streakCurrent, 'current', streakCurrentRaces);
 
     var winBestList = filtered.filter(function(p){ return (winStreakBest[p.key]||0) > 0; })
       .sort(function(a,b){ return (winStreakBest[b.key]||0) - (winStreakBest[a.key]||0); });
     var winCurList = filtered.filter(function(p){ return (winStreakCurrent[p.key]||0) > 0; })
       .sort(function(a,b){ return (winStreakCurrent[b.key]||0) - (winStreakCurrent[a.key]||0); });
 
-    renderStreakCard('winStreakBestContainer', winBestList, winStreakBest, 'winBest');
-    renderStreakCard('winStreakCurrentContainer', winCurList, winStreakCurrent, 'winCurrent');
+    renderStreakCard('winStreakBestContainer', winBestList, winStreakBest, 'winBest', winStreakBestRaces);
+    renderStreakCard('winStreakCurrentContainer', winCurList, winStreakCurrent, 'winCurrent', winStreakCurrentRaces);
   }
 
-  function renderStreakCard(containerId, list, map, kind){
+  function renderStreakCard(containerId, list, map, kind, racesMap){
     var container = document.getElementById(containerId);
     container.classList.remove('expanded');
 
@@ -901,11 +838,27 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       return;
     }
 
+    var titles = {best: 'Miglior striscia', current: 'Striscia attuale', winBest: 'Miglior striscia vittorie', winCurrent: 'Striscia vittorie attuale'};
+    var title = titles[kind] || 'Striscia';
+    var icon = (kind === 'winBest' || kind === 'winCurrent') ? '🥇' : '🏆';
+
     var rowsHtml = '';
     for(var i=0;i<list.length;i++){
       var rowCls = i >= STREAK_TOP_N ? ' class="extra-streak-row"' : '';
+      var pKey = list[i].key;
+      var races = (racesMap && racesMap[pKey]) || [];
+      races = races.slice().sort(function(a,b){
+        if(a.date && b.date) return a.date.localeCompare(b.date);
+        return 0;
+      });
+      var popupHtml = '<div class="rt-popup">' +
+        '<button type="button" class="rt-close" aria-label="Chiudi">✕</button>' +
+        '<div class="rt-title">' + title + '</div>' +
+        (races.length ? races.map(function(r){ return '<div class="rt-item">' + icon + ' ' + r.label + '</div>'; }).join('')
+                      : '<div class="rt-item">Nessuna gara</div>') +
+        '</div>';
       rowsHtml += '<tr' + rowCls + '><td>' + (i+1) + '</td><td>' + list[i].nome + '</td>' +
-        '<td class="gare-pill" data-key="' + list[i].key + '" data-kind="' + kind + '">' + (map[list[i].key] || 0) + '</td></tr>';
+        '<td class="gare-pill">' + (map[pKey] || 0) + popupHtml + '</td></tr>';
     }
     var html = '<table class="streak-table"><tbody>' + rowsHtml + '</tbody></table>';
     if(list.length > STREAK_TOP_N){
