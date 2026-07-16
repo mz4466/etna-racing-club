@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<link rel="icon" type="image/png" href="./favicon.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Registra la tua Clip - Etna Racing Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@300,400,500,600,700&family=Russo+One&family=Roboto:wght@300,400,700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+    --volcano-red: #ff5014;
+    --lava-orange: #ff8c42;
+    --fire-yellow: #ffa500;
+    --deep-maroon: #4a0e0e;
+    --dark-brown: #2d0a0a;
+    --cream: #fff5e6;
+    --smoke: #c9b8a3;
+    --pure-black: #000000;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: var(--pure-black);
+    color: var(--cream);
+    min-height: 100vh;
+    padding-bottom: 60px;
+}
+
+.page-backdrop {
+    position: fixed; inset: 0;
+    background:
+        radial-gradient(ellipse at 50% 120%, rgba(255,80,20,0.25) 0%, transparent 55%),
+        linear-gradient(to bottom, #000000 0%, #1a0505 60%, #2d0a0a 100%);
+    z-index: -1;
+}
+
+.page-head {
+    text-align: center;
+    padding: 36px 20px 20px;
+}
+
+.page-head .eyebrow {
+    font-family: 'Russo One', sans-serif;
+    font-size: 12px;
+    letter-spacing: 5px;
+    color: var(--fire-yellow);
+    text-transform: uppercase;
+}
+
+.page-head h1 {
+    font-family: 'Teko', sans-serif;
+    font-weight: 600;
+    font-size: clamp(32px, 7vw, 52px);
+    letter-spacing: 1px;
+    color: var(--cream);
+    text-shadow: 0 0 20px rgba(255,80,20,0.35);
+    margin-top: 4px;
+}
+
+.page-head p {
+    max-width: 480px;
+    margin: 10px auto 0;
+    color: var(--smoke);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* ── config bar ── */
+.config-bar {
+    max-width: 420px;
+    margin: 22px auto 0;
+    padding: 0 20px;
+    display: grid;
+    gap: 10px;
+}
+
+.config-bar label {
+    display: block;
+    font-family: 'Russo One', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--lava-orange);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.config-bar input {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,140,66,0.35);
+    color: var(--cream);
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    outline: none;
+}
+.config-bar input:focus { border-color: var(--volcano-red); background: rgba(255,80,20,0.08); }
+
+/* ── the card ── */
+.card-wrap {
+    max-width: 420px;
+    margin: 24px auto 0;
+    padding: 0 20px;
+    position: relative;
+}
+
+.card-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    background: #050505;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,80,20,0.3);
+}
+
+.card-frame canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.idle-overlay {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 18px;
+    background: linear-gradient(180deg, #120404 0%, #2d0a0a 100%);
+    text-align: center;
+    padding: 30px;
+}
+
+.idle-overlay .cam-icon {
+    width: 54px; height: 54px;
+    opacity: 0.8;
+}
+
+.idle-overlay p {
+    color: var(--smoke);
+    font-size: 13px;
+    max-width: 260px;
+    line-height: 1.5;
+}
+
+/* ── buttons ── */
+.btn {
+    font-family: 'Russo One', sans-serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 16px 34px;
+    cursor: pointer;
+    background: linear-gradient(135deg, var(--volcano-red), var(--deep-maroon));
+    box-shadow: 0 10px 30px rgba(255,80,20,0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn:active { transform: scale(0.96); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-secondary {
+    background: transparent;
+    border: 2px solid rgba(255,140,66,0.4);
+    box-shadow: none;
+}
+
+.controls {
+    max-width: 420px;
+    margin: 22px auto 0;
+    padding: 0 20px;
+    display: flex; flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.record-row { display: flex; align-items: center; gap: 22px; }
+
+.rec-btn {
+    width: 78px; height: 78px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    background: var(--volcano-red);
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 0 0 4px rgba(255,80,20,0.25), 0 10px 30px rgba(0,0,0,0.5);
+    transition: border-radius 0.25s ease, background 0.25s ease;
+}
+.rec-btn.recording {
+    background: #fff;
+    border-radius: 16px;
+    width: 36px; height: 36px;
+    margin: 21px;
+}
+
+.flip-btn {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,140,66,0.4);
+    background: rgba(255,255,255,0.05);
+    color: var(--cream);
+    font-size: 20px;
+    cursor: pointer;
+    display:flex;align-items:center;justify-content:center;
+}
+
+.timer {
+    font-family: 'Teko', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--fire-yellow);
+    min-height: 28px;
+}
+
+.status {
+    max-width: 420px;
+    margin: 10px auto 0;
+    padding: 0 20px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--smoke);
+    min-height: 18px;
+}
+.status.error { color: var(--volcano-red); font-weight: bold; }
+
+.result-row {
+    display: flex; gap: 14px; flex-wrap: wrap;
+    justify-content: center;
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 30px;
+    color: var(--smoke);
+    font-size: 13px;
+    text-decoration: none;
+}
+.back-link:hover { color: var(--fire-yellow); }
+
+@media (max-width: 480px) {
+    .card-wrap { padding: 0 14px; }
+}
+</style>
+</head>
+<body>
+<div class="page-backdrop"></div>
+
+<div class="page-head">
+    <div class="eyebrow">Etna Racing Club</div>
+    <h1>Registra la tua Clip</h1>
+    <p>Inquadrati con la fotocamera, personalizza la card e registra un video con la cornice del club già incorporata. Al termine potrai scaricarlo direttamente sul telefono.</p>
+</div>
+
+<div class="config-bar">
+    <div>
+        <label for="cfgTrofeo">Nome Trofeo</label>
+        <input type="text" id="cfgTrofeo" value="Trofeo Super Turismo" maxlength="40">
+    </div>
+    <div>
+        <label for="cfgCircuito">Circuito</label>
+        <input type="text" id="cfgCircuito" value="Barcellona" maxlength="30">
+    </div>
+    <div>
+        <label for="cfgPilota">Pilota</label>
+        <input type="text" id="cfgPilota" value="Giovanni" maxlength="30">
+    </div>
+</div>
+
+<div class="card-wrap">
+    <div class="card-frame" id="cardFrame">
+        <canvas id="canvas" width="720" height="1280"></canvas>
+        <div class="idle-overlay" id="idleOverlay">
+            <svg class="cam-icon" viewBox="0 0 24 24" fill="none" stroke="#ff8c42" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <p>Attiva la fotocamera per vedere l'anteprima con la cornice del club.</p>
+            <button class="btn" id="startCamBtn">Attiva Fotocamera</button>
+        </div>
+    </div>
+</div>
+
+<div class="controls" id="controlsBox" style="display:none;">
+    <div class="record-row">
+        <button class="flip-btn" id="flipBtn" title="Cambia fotocamera">⟳</button>
+        <button class="rec-btn" id="recBtn" title="Registra"></button>
+        <div style="width:46px"></div>
+    </div>
+    <div class="timer" id="timerLabel"></div>
+</div>
+
+<div class="status" id="statusLine"></div>
+
+<div class="controls" id="resultBox" style="display:none;">
+    <div class="result-row">
+        <a class="btn" id="downloadBtn" download="etna-racing-club-clip.mp4">Scarica Video</a>
+        <button class="btn btn-secondary" id="resetBtn">Registra di Nuovo</button>
+    </div>
+</div>
+
+<a class="back-link" href="index.html">← Torna alla Home</a>
+
+<script src="copyright.js"></script>
+<script src="nav.js"></script>
+
+<script>
+(function(){
+
+/* ============================================================
+   ETNA RACING CLUB — Camera Frame Recorder
+   ------------------------------------------------------------
+   Draws the live camera feed + club frame (logo bar, borders,
+   trophy/circuit/driver text) onto a canvas every frame, then
+   records that canvas directly — so the exported clip already
+   has the frame baked in.
+
+   Two code paths, chosen automatically depending on what the
+   browser supports:
+     - LIVE PATH: canvas.captureStream() is recorded directly
+       while the person films (works on modern Chrome/Android
+       and recent Safari/iOS).
+     - FALLBACK PATH: for older browsers without a reliable
+       canvas.captureStream + MediaRecorder combo. Records the
+       raw camera first, then replays it back through the same
+       draw loop to bake the frame in as a second, invisible
+       pass.
+   Both paths end at the same "Scarica Video" button.
+   ============================================================ */
+
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+var CW = canvas.width, CH = canvas.height;
+
+var idleOverlay = document.getElementById('idleOverlay');
+var startCamBtn = document.getElementById('startCamBtn');
+var controlsBox = document.getElementById('controlsBox');
+var recBtn = document.getElementById('recBtn');
+var flipBtn = document.getElementById('flipBtn');
+var timerLabel = document.getElementById('timerLabel');
+var statusLine = document.getElementById('statusLine');
+var resultBox = document.getElementById('resultBox');
+var downloadBtn = document.getElementById('downloadBtn');
+var resetBtn = document.getElementById('resetBtn');
+
+var cfgTrofeo = document.getElementById('cfgTrofeo');
+var cfgCircuito = document.getElementById('cfgCircuito');
+var cfgPilota = document.getElementById('cfgPilota');
+
+var logoImg = new Image();
+logoImg.src = 'etna-logo.jpg';
+
+var rawStream = null;
+var videoEl = document.createElement('video');
+videoEl.muted = true; videoEl.playsInline = true; videoEl.autoplay = true;
+
+var facingMode = 'user';
+var drawing = false;
+var recording = false;
+var recorder = null;
+var chunks = [];
+var mimeType = '';
+var recordStartTime = 0;
+var maxDurationMs = 30000;
+var recTimeoutId = null;
+var timerIntervalId = null;
+
+var LIGHT_COUNT = 5;
+var lightsState = 0; // how many lights are lit during countdown, -1 = "go" flash
+
+/* ---------- helpers ---------- */
+
+function setStatus(msg, isError){
+    statusLine.textContent = msg || '';
+    statusLine.className = 'status' + (isError ? ' error' : '');
+}
+
+function pickMimeType(){
+    if (!window.MediaRecorder) return '';
+    var candidates = [
+        'video/mp4;codecs=avc1',
+        'video/mp4',
+        'video/webm;codecs=vp9,opus',
+        'video/webm;codecs=vp8,opus',
+        'video/webm'
+    ];
+    for (var i=0;i<candidates.length;i++){
+        if (MediaRecorder.isTypeSupported(candidates[i])) return candidates[i];
+    }
+    return '';
+}
+
+function extForMime(m){
+    if (m.indexOf('mp4') !== -1) return 'mp4';
+    return 'webm';
+}
+
+function supportsLiveCapture(){
+    return !!(canvas.captureStream && window.MediaRecorder && mimeType);
+}
+
+/* draw a video element into a rect using "cover" fit, optionally mirrored */
+function drawCover(video, dx, dy, dw, dh, mirror){
+    var vw = video.videoWidth, vh = video.videoHeight;
+    if (!vw || !vh) return;
+    var srcRatio = vw / vh, dstRatio = dw / dh;
+    var sx, sy, sw, sh;
+    if (srcRatio > dstRatio){
+        sh = vh; sw = vh * dstRatio;
+        sx = (vw - sw) / 2; sy = 0;
+    } else {
+        sw = vw; sh = vw / dstRatio;
+        sx = 0; sy = (vh - sh) / 2;
+    }
+    ctx.save();
+    if (mirror){
+        ctx.translate(dx + dw, dy);
+        ctx.scale(-1, 1);
+        ctx.drawImage(video, sx, sy, sw, sh, 0, 0, dw, dh);
+    } else {
+        ctx.drawImage(video, sx, sy, sw, sh, dx, dy, dw, dh);
+    }
+    ctx.restore();
+}
+
+/* ---------- frame layout (in canvas px, 720x1280) ---------- */
+var HEADER_H = 150;
+var FOOTER_H = 260;
+var WINDOW_Y = HEADER_H;
+var WINDOW_H = CH - HEADER_H - FOOTER_H;
+
+function drawFrame(){
+    // background
+    ctx.fillStyle = '#050505';
+    ctx.fillRect(0,0,CW,CH);
+
+    // camera window
+    if (videoEl.readyState >= 2){
+        drawCover(videoEl, 0, WINDOW_Y, CW, WINDOW_H, facingMode === 'user');
+    } else {
+        ctx.fillStyle = '#111';
+        ctx.fillRect(0, WINDOW_Y, CW, WINDOW_H);
+    }
+
+    // header bar
+    var headerGrad = ctx.createLinearGradient(0,0,0,HEADER_H);
+    headerGrad.addColorStop(0,'#000000');
+    headerGrad.addColorStop(1,'#1a0505');
+    ctx.fillStyle = headerGrad;
+    ctx.fillRect(0,0,CW,HEADER_H);
+
+    if (logoImg.complete && logoImg.naturalWidth){
+        var lh = 88, lw = logoImg.naturalWidth * (lh/logoImg.naturalHeight);
+        ctx.drawImage(logoImg, CW/2 - lw/2, 14, lw, lh);
+    }
+    ctx.fillStyle = '#fff5e6';
+    ctx.font = '600 22px Teko, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('ETNA RACING CLUB', CW/2, HEADER_H - 12);
+
+    // side accent borders around the window
+    ctx.strokeStyle = 'rgba(255,80,20,0.6)';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(1.5, WINDOW_Y+1.5, CW-3, WINDOW_H-3);
+
+    // corner chevrons (racing accent)
+    drawCorner(8, WINDOW_Y+8, 1, 1);
+    drawCorner(CW-8, WINDOW_Y+8, -1, 1);
+    drawCorner(8, WINDOW_Y+WINDOW_H-8, 1, -1);
+    drawCorner(CW-8, WINDOW_Y+WINDOW_H-8, -1, -1);
+
+    // footer bar
+    var footY = CH - FOOTER_H;
+    var footGrad = ctx.createLinearGradient(0,footY,0,CH);
+    footGrad.addColorStop(0,'#1a0505');
+    footGrad.addColorStop(1,'#000000');
+    ctx.fillStyle = footGrad;
+    ctx.fillRect(0,footY,CW,FOOTER_H);
+    ctx.strokeStyle = 'rgba(255,140,66,0.5)';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(0,footY); ctx.lineTo(CW,footY); ctx.stroke();
+
+    ctx.fillStyle = '#ffa500';
+    ctx.font = '600 46px Teko, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText((cfgTrofeo.value || 'TROFEO').toUpperCase(), CW/2, footY + 66);
+
+    ctx.strokeStyle = 'rgba(255,245,230,0.25)';
+    ctx.beginPath(); ctx.moveTo(CW/2-90,footY+84); ctx.lineTo(CW/2+90,footY+84); ctx.stroke();
+
+    ctx.fillStyle = '#fff5e6';
+    ctx.font = '400 26px Teko, sans-serif';
+    ctx.fillText((cfgCircuito.value||'').toUpperCase() + '   •   ' + (cfgPilota.value||'').toUpperCase(), CW/2, footY + 122);
+
+    ctx.fillStyle = '#c9b8a3';
+    ctx.font = '300 15px Roboto, sans-serif';
+    ctx.fillText('GT7 SIM RACING', CW/2, footY + 160);
+
+    // recording indicator
+    if (recording){
+        var t = (Date.now() - recordStartTime)/1000;
+        var blink = Math.floor(t*2)%2===0;
+        if (blink){
+            ctx.fillStyle = '#ff2020';
+            ctx.beginPath(); ctx.arc(40, WINDOW_Y+34, 9, 0, Math.PI*2); ctx.fill();
+        }
+        ctx.fillStyle = '#fff';
+        ctx.font = '600 24px Teko, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(formatTime(t), 58, WINDOW_Y+42);
+    }
+
+    // countdown lights
+    if (lightsState !== 0){
+        drawStartLights();
+    }
+}
+
+function drawCorner(x,y,dirX,dirY){
+    ctx.strokeStyle = '#ff5014';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(x, y + 26*dirY);
+    ctx.lineTo(x, y);
+    ctx.lineTo(x + 26*dirX, y);
+    ctx.stroke();
+}
+
+function drawStartLights(){
+    var n = LIGHT_COUNT;
+    var r = 16, gap = 14;
+    var totalW = n*r*2 + (n-1)*gap;
+    var startX = CW/2 - totalW/2 + r;
+    var y = WINDOW_Y + 60;
+    ctx.fillStyle = 'rgba(0,0,0,0.55)';
+    ctx.fillRect(CW/2-totalW/2-16, y-r-14, totalW+32, r*2+28);
+    for (var i=0;i<n;i++){
+        var cx = startX + i*(r*2+gap);
+        var lit = lightsState > 0 && i < lightsState;
+        ctx.beginPath();
+        ctx.arc(cx, y, r, 0, Math.PI*2);
+        ctx.fillStyle = lit ? '#ff1e1e' : '#3a0808';
+        ctx.fill();
+        if (lit){
+            ctx.save();
+            ctx.shadowColor = '#ff1e1e'; ctx.shadowBlur = 18;
+            ctx.fill(); ctx.restore();
+        }
+    }
+    if (lightsState === -1){
+        ctx.fillStyle = '#7CFC00';
+        ctx.font = '600 40px Teko, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('VIA!', CW/2, y+64);
+    }
+}
+
+function formatTime(s){
+    var m = Math.floor(s/60), sec = Math.floor(s%60);
+    return (m<10?'0':'')+m+':'+(sec<10?'0':'')+sec;
+}
+
+function loop(){
+    if (!drawing) return;
+    drawFrame();
+    requestAnimationFrame(loop);
+}
+
+/* ---------- camera setup ---------- */
+
+function startCamera(){
+    setStatus('Richiesta accesso alla fotocamera...');
+    var constraints = {
+        audio: true,
+        video: { facingMode: facingMode, width: {ideal:720}, height:{ideal:1280} }
+    };
+    navigator.mediaDevices.getUserMedia(constraints).then(function(stream){
+        rawStream = stream;
+        videoEl.srcObject = stream;
+        videoEl.play();
+        drawing = true;
+        idleOverlay.style.display = 'none';
+        controlsBox.style.display = 'flex';
+        mimeType = pickMimeType();
+        if (!mimeType){
+            setStatus('Il browser non supporta la registrazione video. Prova con Chrome o Safari aggiornati.', true);
+        } else if (!window.isSecureContext){
+            setStatus('Questa pagina deve essere aperta in HTTPS per usare la fotocamera.', true);
+        } else {
+            setStatus('');
+        }
+        requestAnimationFrame(loop);
+    }).catch(function(err){
+        setStatus('Impossibile accedere alla fotocamera: ' + err.message, true);
+    });
+}
+
+function stopCamera(){
+    if (rawStream){
+        rawStream.getTracks().forEach(function(t){ t.stop(); });
+        rawStream = null;
+    }
+}
+
+flipBtn.addEventListener('click', function(){
+    facingMode = (facingMode === 'user') ? 'environment' : 'user';
+    stopCamera();
+    startCamera();
+});
+
+startCamBtn.addEventListener('click', startCamera);
+
+/* ---------- recording: live path ---------- */
+
+function startLiveRecording(){
+    var canvasStream = canvas.captureStream(30);
+    var audioTracks = rawStream ? rawStream.getAudioTracks() : [];
+    audioTracks.forEach(function(t){ canvasStream.addTrack(t); });
+
+    chunks = [];
+    recorder = new MediaRecorder(canvasStream, { mimeType: mimeType });
+    recorder.ondataavailable = function(e){ if (e.data && e.data.size) chunks.push(e.data); };
+    recorder.onstop = function(){ finishRecording(); };
+    recorder.start();
+    recordStartTime = Date.now();
+    recording = true;
+    beginTimerUI();
+}
+
+/* ---------- recording: fallback path (record raw, then re-bake) ---------- */
+
+function startFallbackRecording(){
+    var rawRecorder = new MediaRecorder(rawStream);
+    var rawChunks = [];
+    rawRecorder.ondataavailable = function(e){ if (e.data && e.data.size) rawChunks.push(e.data); };
+    rawRecorder.onstop = function(){
+        setStatus('Elaborazione della clip in corso...');
+        var rawBlob = new Blob(rawChunks, { type: rawRecorder.mimeType || 'video/webm' });
+        reprocessRawClip(rawBlob);
+    };
+    rawRecorder.start();
+    recorder = rawRecorder;
+    recordStartTime = Date.now();
+    recording = true;
+    beginTimerUI();
+}
+
+function reprocessRawClip(rawBlob){
+    var playback = document.createElement('video');
+    playback.src = URL.createObjectURL(rawBlob);
+    playback.muted = false;
+    playback.playsInline = true;
+
+    playback.onloadedmetadata = function(){
+        var pbCanvasStream = canvas.captureStream(30);
+        var pbAudioStream = (playback.captureStream ? playback.captureStream() : null);
+        if (pbAudioStream){
+            pbAudioStream.getAudioTracks().forEach(function(t){ pbCanvasStream.addTrack(t); });
+        }
+        chunks = [];
+        var finalRecorder = new MediaRecorder(pbCanvasStream, { mimeType: mimeType || 'video/webm' });
+        finalRecorder.ondataavailable = function(e){ if (e.data && e.data.size) chunks.push(e.data); };
+        finalRecorder.onstop = function(){ finishRecording(); };
+
+        // swap the live camera element for the recorded playback in the draw loop
+        videoEl = playback;
+        finalRecorder.start();
+        playback.play();
+        playback.onended = function(){ finalRecorder.stop(); };
+    };
+}
+
+/* ---------- shared recording UI/state ---------- */
+
+function beginTimerUI(){
+    recBtn.classList.add('recording');
+    timerIntervalId = setInterval(function(){
+        timerLabel.textContent = formatTime((Date.now()-recordStartTime)/1000);
+    }, 200);
+    recTimeoutId = setTimeout(function(){ stopRecording(); }, maxDurationMs);
+}
+
+function finishRecording(){
+    recording = false;
+    clearInterval(timerIntervalId);
+    clearTimeout(recTimeoutId);
+    recBtn.classList.remove('recording');
+    timerLabel.textContent = '';
+    setStatus('');
+
+    var blob = new Blob(chunks, { type: mimeType || 'video/webm' });
+    var url = URL.createObjectURL(blob);
+    downloadBtn.href = url;
+    downloadBtn.download = 'etna-racing-club-' + Date.now() + '.' + extForMime(mimeType || 'video/webm');
+    controlsBox.style.display = 'none';
+    resultBox.style.display = 'flex';
+}
+
+function startRecording(){
+    lightsState = 1;
+    var interval = setInterval(function(){
+        lightsState++;
+        if (lightsState > LIGHT_COUNT){
+            clearInterval(interval);
+            lightsState = -1;
+            setTimeout(function(){
+                lightsState = 0;
+                if (supportsLiveCapture()){
+                    startLiveRecording();
+                } else {
+                    startFallbackRecording();
+                }
+            }, 500);
+        }
+    }, 350);
+}
+
+function stopRecording(){
+    if (recorder && recorder.state !== 'inactive') recorder.stop();
+}
+
+recBtn.addEventListener('click', function(){
+    if (!mimeType){ setStatus('Registrazione non supportata su questo browser.', true); return; }
+    if (recording){
+        stopRecording();
+    } else {
+        startRecording();
+    }
+});
+
+resetBtn.addEventListener('click', function(){
+    resultBox.style.display = 'none';
+    controlsBox.style.display = 'flex';
+    if (videoEl.srcObject !== rawStream){
+        videoEl = document.createElement('video');
+        videoEl.muted = true; videoEl.playsInline = true; videoEl.autoplay = true;
+        videoEl.srcObject = rawStream;
+        videoEl.play();
+    }
+});
+
+})();
+</script>
+</body>
+</html>
