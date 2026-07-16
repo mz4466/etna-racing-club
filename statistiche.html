@@ -249,15 +249,13 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     return parts[2] + '/' + parts[1] + '/' + parts[0];
   }
 
-  /* ── race-list tooltip (click on a pilot's "Gare" count) ── */
-  function toggleRaceTooltip(pillEl){
+  /* ── race-list tooltip (hover over a pilot's streak count) ── */
+  var tooltipHideTimer = null;
+
+  function renderTooltipContent(pillEl){
     var tt = document.getElementById('raceTooltip');
     var key = pillEl.getAttribute('data-key');
     var kind = pillEl.getAttribute('data-kind') || 'best';
-    var idAttr = key + ':' + kind;
-    var already = tt.classList.contains('open') && tt.getAttribute('data-id') === idAttr;
-    tt.classList.remove('open');
-    if(already) return;
 
     var raceMap = {best: streakBestRaces, current: streakCurrentRaces, winBest: winStreakBestRaces, winCurrent: winStreakCurrentRaces};
     var list = (raceMap[kind] && raceMap[kind][key]) || [];
@@ -273,13 +271,13 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       (list.length ? list.map(function(r){ return '<div class="rt-item">' + icon + ' ' + r.label + '</div>'; }).join('')
                    : '<div class="rt-item">Nessuna gara</div>');
     tt.innerHTML = html;
-    tt.setAttribute('data-id', idAttr);
+    tt.setAttribute('data-id', key + ':' + kind);
 
     var closeBtn = tt.querySelector('.rt-close');
     if(closeBtn){
       closeBtn.addEventListener('click', function(e){
         e.stopPropagation();
-        tt.classList.remove('open');
+        hideTooltipNow();
       });
     }
 
@@ -292,18 +290,56 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     if(top < 8) top = rect.bottom + 10;
     tt.style.left = left + 'px';
     tt.style.top = top + 'px';
-    tt.classList.add('open');
   }
 
+  function showTooltipFor(pillEl){
+    clearTimeout(tooltipHideTimer);
+    renderTooltipContent(pillEl);
+    document.getElementById('raceTooltip').classList.add('open');
+  }
+
+  function hideTooltipNow(){
+    document.getElementById('raceTooltip').classList.remove('open');
+  }
+
+  function scheduleHideTooltip(){
+    clearTimeout(tooltipHideTimer);
+    tooltipHideTimer = setTimeout(hideTooltipNow, 250);
+  }
+
+  /* wire up hover (desktop) + tap (touch) on every pill, delegated so it works for dynamically re-rendered tables */
+  document.addEventListener('mouseover', function(e){
+    var target = e.target;
+    if(target && target.nodeType === 3) target = target.parentNode;
+    var pill = (target && target.closest) ? target.closest('.gare-pill') : null;
+    if(pill) showTooltipFor(pill);
+  });
+  document.addEventListener('mouseout', function(e){
+    var target = e.target;
+    if(target && target.nodeType === 3) target = target.parentNode;
+    var pill = (target && target.closest) ? target.closest('.gare-pill') : null;
+    if(pill) scheduleHideTooltip();
+  });
   document.addEventListener('click', function(e){
     var target = e.target;
     if(target && target.nodeType === 3) target = target.parentNode; /* Safari can target a text node */
     var pill = (target && target.closest) ? target.closest('.gare-pill') : null;
-    if(pill){ toggleRaceTooltip(pill); return; }
-    document.getElementById('raceTooltip').classList.remove('open');
+    if(pill){ showTooltipFor(pill); return; } /* tap on touch devices, where hover never fires */
+    if(!target || !target.closest || !target.closest('#raceTooltip')){
+      hideTooltipNow();
+    }
   });
+
+  /* keep the tooltip open while the pointer is over it (e.g. scrolling the list), close when it leaves */
+  document.getElementById('raceTooltip').addEventListener('mouseenter', function(){
+    clearTimeout(tooltipHideTimer);
+  });
+  document.getElementById('raceTooltip').addEventListener('mouseleave', function(){
+    scheduleHideTooltip();
+  });
+
   window.addEventListener('scroll', function(){
-    document.getElementById('raceTooltip').classList.remove('open');
+    hideTooltipNow();
   }, true);
   function avg(arr){ if(!arr.length) return 0; var s=0; for(var i=0;i<arr.length;i++) s+=arr[i]; return Math.round(s/arr.length*10)/10; }
 
