@@ -117,6 +117,9 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 .streak-table td:last-child{text-align:right;font-family:'Russo One',sans-serif;color:var(--gold-hi)}
 .streak-table tbody tr:hover{background:rgba(201,162,39,0.04)}
 .streak-empty{text-align:center;padding:16px;color:var(--dim);font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px}
+.streak-table tr.extra-streak-row{display:none}
+.streak-container.expanded tr.extra-streak-row{display:table-row}
+.streak-toggle-row{display:flex;justify-content:center;margin-top:10px}
 .car-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:32px}
 .car-card{background:var(--card);border:1px solid rgba(201,162,39,0.08);border-radius:8px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
 .car-name{font-size:14px;color:var(--text)}
@@ -194,11 +197,11 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     <div class="streak-grid">
       <div class="streak-card">
         <div class="streak-card-title">Miglior striscia (all-time)</div>
-        <table class="streak-table"><tbody id="streakBestBody"></tbody></table>
+        <div class="streak-container" id="streakBestContainer"></div>
       </div>
       <div class="streak-card">
         <div class="streak-card-title">Striscia attuale</div>
-        <table class="streak-table"><tbody id="streakCurrentBody"></tbody></table>
+        <div class="streak-container" id="streakCurrentContainer"></div>
       </div>
     </div>
 
@@ -206,11 +209,11 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     <div class="streak-grid">
       <div class="streak-card">
         <div class="streak-card-title">Miglior striscia (all-time)</div>
-        <table class="streak-table"><tbody id="winStreakBestBody"></tbody></table>
+        <div class="streak-container" id="winStreakBestContainer"></div>
       </div>
       <div class="streak-card">
         <div class="streak-card-title">Striscia attuale</div>
-        <table class="streak-table"><tbody id="winStreakCurrentBody"></tbody></table>
+        <div class="streak-container" id="winStreakCurrentContainer"></div>
       </div>
     </div>
 
@@ -820,6 +823,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       'Dati calcolati automaticamente da ' + countedRaces + ' risultati pubblicati';
   }
 
+  var STREAK_TOP_N = 3;
+
   function renderStreaks(){
     var filtered = getFilteredPilots();
 
@@ -828,26 +833,48 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     var curList = filtered.filter(function(p){ return (streakCurrent[p.key]||0) > 0; })
       .sort(function(a,b){ return (streakCurrent[b.key]||0) - (streakCurrent[a.key]||0); });
 
-    document.getElementById('streakBestBody').innerHTML = streakRows(bestList, streakBest, 'best');
-    document.getElementById('streakCurrentBody').innerHTML = streakRows(curList, streakCurrent, 'current');
+    renderStreakCard('streakBestContainer', bestList, streakBest, 'best');
+    renderStreakCard('streakCurrentContainer', curList, streakCurrent, 'current');
 
     var winBestList = filtered.filter(function(p){ return (winStreakBest[p.key]||0) > 0; })
       .sort(function(a,b){ return (winStreakBest[b.key]||0) - (winStreakBest[a.key]||0); });
     var winCurList = filtered.filter(function(p){ return (winStreakCurrent[p.key]||0) > 0; })
       .sort(function(a,b){ return (winStreakCurrent[b.key]||0) - (winStreakCurrent[a.key]||0); });
 
-    document.getElementById('winStreakBestBody').innerHTML = streakRows(winBestList, winStreakBest, 'winBest');
-    document.getElementById('winStreakCurrentBody').innerHTML = streakRows(winCurList, winStreakCurrent, 'winCurrent');
+    renderStreakCard('winStreakBestContainer', winBestList, winStreakBest, 'winBest');
+    renderStreakCard('winStreakCurrentContainer', winCurList, winStreakCurrent, 'winCurrent');
   }
 
-  function streakRows(list, map, kind){
-    if(!list.length) return '<tr><td colspan="3" class="streak-empty">Nessun dato</td></tr>';
-    var html = '';
+  function renderStreakCard(containerId, list, map, kind){
+    var container = document.getElementById(containerId);
+    container.classList.remove('expanded');
+
+    if(!list.length){
+      container.innerHTML = '<table class="streak-table"><tbody><tr><td colspan="3" class="streak-empty">Nessun dato</td></tr></tbody></table>';
+      return;
+    }
+
+    var rowsHtml = '';
     for(var i=0;i<list.length;i++){
-      html += '<tr><td>' + (i+1) + '</td><td>' + list[i].nome + '</td>' +
+      var rowCls = i >= STREAK_TOP_N ? ' class="extra-streak-row"' : '';
+      rowsHtml += '<tr' + rowCls + '><td>' + (i+1) + '</td><td>' + list[i].nome + '</td>' +
         '<td class="gare-pill" data-key="' + list[i].key + '" data-kind="' + kind + '">' + (map[list[i].key] || 0) + '</td></tr>';
     }
-    return html;
+    var html = '<table class="streak-table"><tbody>' + rowsHtml + '</tbody></table>';
+    if(list.length > STREAK_TOP_N){
+      html += '<div class="streak-toggle-row"><button type="button" class="circuit-toggle streak-toggle-btn">' +
+        '<span class="ct-label">Mostra tutti (' + list.length + ')</span><span class="chev">\u25BE</span></button></div>';
+    }
+    container.innerHTML = html;
+
+    var btn = container.querySelector('.streak-toggle-btn');
+    if(btn){
+      btn.addEventListener('click', function(){
+        var expanded = container.classList.toggle('expanded');
+        var lbl = btn.querySelector('.ct-label');
+        if(lbl) lbl.textContent = expanded ? 'Mostra meno' : 'Mostra tutti (' + list.length + ')';
+      });
+    }
   }
 
   function ovCard(num, label){
