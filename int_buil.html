@@ -268,6 +268,17 @@ body {
         <label for="cfgPilota">Pilota</label>
         <input type="text" id="cfgPilota" value="Giovanni" maxlength="30">
     </div>
+    <div>
+        <label>Sfondo</label>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <button class="btn btn-secondary" id="bgPickBtn" style="padding:10px 22px;font-size:12px;">Scegli dalla Galleria</button>
+            <label style="display:flex;align-items:center;gap:8px;font-family:'Roboto',sans-serif;font-size:12px;color:var(--smoke);text-transform:none;letter-spacing:0;">
+                <input type="checkbox" id="removeBgToggle" checked style="width:16px;height:16px;">
+                Rimuovi sfondo
+            </label>
+        </div>
+        <input type="file" id="bgFileInput" accept="image/*" style="display:none;">
+    </div>
 </div>
 
 <div class="card-wrap">
@@ -303,6 +314,8 @@ body {
 
 <script src="copyright.js"></script>
 <script src="nav.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"></script>
 
 <script>
 (function(){
@@ -346,6 +359,18 @@ var resetBtn = document.getElementById('resetBtn');
 var cfgTrofeo = document.getElementById('cfgTrofeo');
 var cfgCircuito = document.getElementById('cfgCircuito');
 var cfgPilota = document.getElementById('cfgPilota');
+
+var bgPickBtn = document.getElementById('bgPickBtn');
+var bgFileInput = document.getElementById('bgFileInput');
+var removeBgToggle = document.getElementById('removeBgToggle');
+
+var bgImage = null;          // Image chosen from the phone gallery
+var selfieSegmentation = null;
+var latestMask = null;       // most recent segmentation mask from MediaPipe
+var segmentationReady = false;
+
+var personCanvas = document.createElement('canvas');
+var personCtx = personCanvas.getContext('2d');
 
 var logoImg = new Image();
 logoImg.src = 'etna-logo.jpg';
@@ -399,28 +424,76 @@ function supportsLiveCapture(){
     return !!(canvas.captureStream && window.MediaRecorder && mimeType);
 }
 
-/* draw a video element into a rect using "cover" fit, optionally mirrored */
-function drawCover(video, dx, dy, dw, dh, mirror){
-    var vw = video.videoWidth, vh = video.videoHeight;
-    if (!vw || !vh) return;
-    var srcRatio = vw / vh, dstRatio = dw / dh;
+/* shared "object-fit: cover" crop math, reused for video, mask and stills */
+function computeCoverRect(srcW, srcH, dw, dh){
+    var srcRatio = srcW / srcH, dstRatio = dw / dh;
     var sx, sy, sw, sh;
     if (srcRatio > dstRatio){
-        sh = vh; sw = vh * dstRatio;
-        sx = (vw - sw) / 2; sy = 0;
+        sh = srcH; sw = srcH * dstRatio;
+        sx = (srcW - sw) / 2; sy = 0;
     } else {
-        sw = vw; sh = vw / dstRatio;
-        sx = 0; sy = (vh - sh) / 2;
+        sw = srcW; sh = srcW / dstRatio;
+        sx = 0; sy = (srcH - sh) / 2;
     }
-    ctx.save();
+    return { sx:sx, sy:sy, sw:sw, sh:sh };
+}
+
+/* draw a video element into a rect on a given context using "cover" fit, optionally mirrored */
+function drawCover(targetCtx, video, dx, dy, dw, dh, mirror){
+    var vw = video.videoWidth || video.naturalWidth, vh = video.videoHeight || video.naturalHeight;
+    if (!vw || !vh) return;
+    var c = computeCoverRect(vw, vh, dw, dh);
+    targetCtx.save();
     if (mirror){
-        ctx.translate(dx + dw, dy);
-        ctx.scale(-1, 1);
-        ctx.drawImage(video, sx, sy, sw, sh, 0, 0, dw, dh);
+        targetCtx.translate(dx + dw, dy);
+        targetCtx.scale(-1, 1);
+        targetCtx.drawImage(video, c.sx, c.sy, c.sw, c.sh, 0, 0, dw, dh);
     } else {
-        ctx.drawImage(video, sx, sy, sw, sh, dx, dy, dw, dh);
+        targetCtx.drawImage(video, c.sx, c.sy, c.sw, c.sh, dx, dy, dw, dh);
     }
-    ctx.restore();
+    targetCtx.restore();
+}
+
+/* ---------- background removal (MediaPipe Selfie Segmentation) ---------- */
+
+function initSegmentation(){
+    if (segmentationReady) return;
+    if (typeof SelfieSegmentation === 'undefined'){
+        setStatus('La rimozione sfondo non è disponibile su questo browser (proseguo senza).', true);
+        return;
+    }
+    selfieSegmentation = new SelfieSegmentation({
+        locateFile: function(file){ return 'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/' + file; }
+    });
+    selfieSegmentation.setOptions({ modelSelection: 1, selfieMode: true });
+    selfieSegmentation.onResults(function(results){ latestMask = results.segmentationMask; });
+    segmentationReady = true;
+}
+
+/* draws the live camera person cut-out over bgImage into the main canvas window */
+function drawWithBackground(mirror){
+    personCanvas.width = CW;
+    personCanvas.height = WINDOW_H;
+
+    // 1) background photo, cover-fit
+    var bc = computeCoverRect(bgImage.naturalWidth, bgImage.naturalHeight, CW, WINDOW_H);
+    ctx.drawImage(bgImage, bc.sx, bc.sy, bc.sw, bc.sh, 0, WINDOW_Y, CW, WINDOW_H);
+
+    if (!latestMask){
+        // mask not ready yet (first second or two) - just show camera plain on top
+        drawCover(ctx, videoEl, 0, WINDOW_Y, CW, WINDOW_H, mirror);
+        return;
+    }
+
+    // 2) masked person cut-out, built on an offscreen canvas so it composites cleanly
+    personCtx.clearRect(0,0,CW,WINDOW_H);
+    drawCover(personCtx, videoEl, 0, 0, CW, WINDOW_H, mirror);
+    personCtx.globalCompositeOperation = 'destination-in';
+    drawCover(personCtx, latestMask, 0, 0, CW, WINDOW_H, mirror);
+    personCtx.globalCompositeOperation = 'source-over';
+
+    // 3) person on top of the chosen background
+    ctx.drawImage(personCanvas, 0, WINDOW_Y);
 }
 
 /* ---------- frame layout (in canvas px, 720x1280) ---------- */
@@ -435,8 +508,13 @@ function drawFrame(){
     ctx.fillRect(0,0,CW,CH);
 
     // camera window
+    var mirror = (facingMode === 'user');
     if (videoEl.readyState >= 2){
-        drawCover(videoEl, 0, WINDOW_Y, CW, WINDOW_H, facingMode === 'user');
+        if (bgImage && removeBgToggle.checked && segmentationReady){
+            drawWithBackground(mirror);
+        } else {
+            drawCover(ctx, videoEl, 0, WINDOW_Y, CW, WINDOW_H, mirror);
+        }
     } else {
         ctx.fillStyle = '#111';
         ctx.fillRect(0, WINDOW_Y, CW, WINDOW_H);
@@ -562,6 +640,9 @@ function formatTime(s){
 
 function loop(){
     if (!drawing) return;
+    if (bgImage && removeBgToggle.checked && segmentationReady && videoEl.readyState >= 2){
+        selfieSegmentation.send({ image: videoEl });
+    }
     drawFrame();
     requestAnimationFrame(loop);
 }
@@ -601,6 +682,22 @@ function stopCamera(){
         rawStream = null;
     }
 }
+
+bgPickBtn.addEventListener('click', function(){ bgFileInput.click(); });
+
+bgFileInput.addEventListener('change', function(e){
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+    var img = new Image();
+    img.onload = function(){
+        bgImage = img;
+        latestMask = null;
+        initSegmentation();
+        setStatus(segmentationReady ? '' : '');
+    };
+    img.onerror = function(){ setStatus('Non sono riuscito a caricare questa immagine.', true); };
+    img.src = URL.createObjectURL(file);
+});
 
 flipBtn.addEventListener('click', function(){
     facingMode = (facingMode === 'user') ? 'environment' : 'user';
