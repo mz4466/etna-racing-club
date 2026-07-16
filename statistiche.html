@@ -202,6 +202,18 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       </div>
     </div>
 
+    <div class="section-title">Serie di vittorie consecutive</div>
+    <div class="streak-grid">
+      <div class="streak-card">
+        <div class="streak-card-title">Miglior striscia (all-time)</div>
+        <table class="streak-table"><tbody id="winStreakBestBody"></tbody></table>
+      </div>
+      <div class="streak-card">
+        <div class="streak-card-title">Striscia attuale</div>
+        <table class="streak-table"><tbody id="winStreakCurrentBody"></tbody></table>
+      </div>
+    </div>
+
     <div class="section-title">Circuiti piu frequentati</div>
     <div class="circuit-bars" id="circuitBars"></div>
 
@@ -225,6 +237,13 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   function norm(s){ return (s || '').toLowerCase().replace(/-/g,' ').trim(); }
   function pct(a,b){ return b ? Math.round(a / b * 100) : 0; }
 
+  function formatDateIT(iso){
+    if(!iso) return '';
+    var parts = iso.split('-');
+    if(parts.length !== 3) return iso;
+    return parts[2] + '/' + parts[1] + '/' + parts[0];
+  }
+
   /* ── race-list tooltip (click on a pilot's "Gare" count) ── */
   function toggleRaceTooltip(pillEl){
     var tt = document.getElementById('raceTooltip');
@@ -235,14 +254,17 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     tt.classList.remove('open');
     if(already) return;
 
-    var list = (kind === 'current' ? streakCurrentRaces[key] : streakBestRaces[key]) || [];
+    var raceMap = {best: streakBestRaces, current: streakCurrentRaces, winBest: winStreakBestRaces, winCurrent: winStreakCurrentRaces};
+    var list = (raceMap[kind] && raceMap[kind][key]) || [];
     list = list.slice().sort(function(a,b){
       if(a.date && b.date) return a.date.localeCompare(b.date);
       return 0;
     });
-    var title = kind === 'current' ? 'Striscia attuale' : 'Miglior striscia';
+    var titles = {best: 'Miglior striscia', current: 'Striscia attuale', winBest: 'Miglior striscia vittorie', winCurrent: 'Striscia vittorie attuale'};
+    var title = titles[kind] || 'Striscia';
+    var icon = (kind === 'winBest' || kind === 'winCurrent') ? '🥇' : '🏆';
     var html = '<div class="rt-title">' + title + '</div>' +
-      (list.length ? list.map(function(r){ return '<div class="rt-item">🏆 ' + r.label + '</div>'; }).join('')
+      (list.length ? list.map(function(r){ return '<div class="rt-item">' + icon + ' ' + r.label + '</div>'; }).join('')
                    : '<div class="rt-item">Nessuna gara</div>');
     tt.innerHTML = html;
     tt.setAttribute('data-id', idAttr);
@@ -293,6 +315,10 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   var streakCurrent = {}; /* pilotKey -> current (ongoing) consecutive podium streak */
   var streakBestRaces = {};    /* pilotKey -> race list backing the best-ever streak */
   var streakCurrentRaces = {}; /* pilotKey -> race list backing the current streak */
+  var winStreakBest = {};    /* pilotKey -> best-ever consecutive win streak */
+  var winStreakCurrent = {}; /* pilotKey -> current (ongoing) consecutive win streak */
+  var winStreakBestRaces = {};    /* pilotKey -> race list backing the best-ever win streak */
+  var winStreakCurrentRaces = {}; /* pilotKey -> race list backing the current win streak */
 
   function fetchPilotStatus(){
     return fetch(BASE + 'piloti_schede/index.json?_=' + Date.now())
@@ -560,6 +586,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
         /* for head-to-head and race-list tooltip */
         var champLabel = champId ? (champNameMap[champId] || champId) : '';
         var raceLabel = (champLabel ? champLabel + ' — ' : '') + circuit + (race.garaNum ? ' (R' + race.garaNum + ')' : '');
+        var raceDateITp = formatDateIT(race.data || '');
+        if(raceDateITp) raceLabel = raceDateITp + ' — ' + raceLabel;
         p.raceList.push({file: race._file, pos: r.pos, stato: stato, label: raceLabel, date: race.data || '', garaNum: parseInt(race.garaNum) || 0});
       }
     }
@@ -590,12 +618,18 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       return (a._file || '').localeCompare(b._file || '');
     });
 
-    var running = {};     /* pilotKey -> current running streak while scanning */
-    var runningList = {}; /* pilotKey -> race entries backing the current running streak */
+    var running = {};     /* pilotKey -> current running podium streak while scanning */
+    var runningList = {}; /* pilotKey -> race entries backing the current running podium streak */
+    var winRunning = {};     /* pilotKey -> current running win streak while scanning */
+    var winRunningList = {}; /* pilotKey -> race entries backing the current running win streak */
     streakBest = {};
     streakCurrent = {};
     streakBestRaces = {};
     streakCurrentRaces = {};
+    winStreakBest = {};
+    winStreakCurrent = {};
+    winStreakBestRaces = {};
+    winStreakCurrentRaces = {};
 
     /* start every known pilot at 0 so a pilot who never races again correctly shows 0 */
     for(var pk in pilotMap){
@@ -604,6 +638,10 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       runningList[pk] = [];
       streakBest[pk] = 0;
       streakBestRaces[pk] = [];
+      winRunning[pk] = 0;
+      winRunningList[pk] = [];
+      winStreakBest[pk] = 0;
+      winStreakBestRaces[pk] = [];
     }
 
     for(var oi=0; oi<ordered.length; oi++){
@@ -614,6 +652,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       var champLabel = champId ? (champNameMap[champId] || champId) : '';
       var circuit = rc.circuito || 'Sconosciuto';
       var raceLabel = (champLabel ? champLabel + ' — ' : '') + circuit + (rc.garaNum ? ' (R' + rc.garaNum + ')' : '');
+      var raceDateIT = formatDateIT(rc.data || '');
+      if(raceDateIT) raceLabel = raceDateIT + ' — ' + raceLabel;
 
       for(var wi=0; wi<rws.length; wi++){
         var rw = rws[wi];
@@ -636,12 +676,28 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
           running[wkey] = 0;
           runningList[wkey] = [];
         }
+
+        var isWin = (typeof rw.pos === 'number') && rw.pos === 1;
+        if(isWin){
+          winRunning[wkey] = (winRunning[wkey] || 0) + 1;
+          winRunningList[wkey].push({label: raceLabel, pos: rw.pos, date: rc.data || ''});
+          if(winRunning[wkey] > winStreakBest[wkey]){
+            winStreakBest[wkey] = winRunning[wkey];
+            winStreakBestRaces[wkey] = winRunningList[wkey].slice();
+          }
+        } else {
+          winRunning[wkey] = 0;
+          winRunningList[wkey] = [];
+        }
       }
 
       /* anyone NOT in this race also loses their streak — missing a race breaks it */
       for(var pk2 in pilotMap){
         if(!pilotMap.hasOwnProperty(pk2)) continue;
-        if(!presentThisRace[pk2]){ running[pk2] = 0; runningList[pk2] = []; }
+        if(!presentThisRace[pk2]){
+          running[pk2] = 0; runningList[pk2] = [];
+          winRunning[pk2] = 0; winRunningList[pk2] = [];
+        }
       }
     }
 
@@ -649,6 +705,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       if(!pilotMap.hasOwnProperty(pk3)) continue;
       streakCurrent[pk3] = running[pk3] || 0;
       streakCurrentRaces[pk3] = runningList[pk3].slice();
+      winStreakCurrent[pk3] = winRunning[pk3] || 0;
+      winStreakCurrentRaces[pk3] = winRunningList[pk3].slice();
     }
   }
 
@@ -772,6 +830,14 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
     document.getElementById('streakBestBody').innerHTML = streakRows(bestList, streakBest, 'best');
     document.getElementById('streakCurrentBody').innerHTML = streakRows(curList, streakCurrent, 'current');
+
+    var winBestList = filtered.filter(function(p){ return (winStreakBest[p.key]||0) > 0; })
+      .sort(function(a,b){ return (winStreakBest[b.key]||0) - (winStreakBest[a.key]||0); });
+    var winCurList = filtered.filter(function(p){ return (winStreakCurrent[p.key]||0) > 0; })
+      .sort(function(a,b){ return (winStreakCurrent[b.key]||0) - (winStreakCurrent[a.key]||0); });
+
+    document.getElementById('winStreakBestBody').innerHTML = streakRows(winBestList, winStreakBest, 'winBest');
+    document.getElementById('winStreakCurrentBody').innerHTML = streakRows(winCurList, winStreakCurrent, 'winCurrent');
   }
 
   function streakRows(list, map, kind){
