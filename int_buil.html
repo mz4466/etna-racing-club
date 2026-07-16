@@ -643,12 +643,67 @@ function initSegmentation(){
         locateFile: function(file){ return 'https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/' + file; }
     });
     selfieSegmentation.setOptions({ modelSelection: 1, selfieMode: true });
-    selfieSegmentation.onResults(function(results){ latestMaskForFinalize = results.segmentationMask; });
+    selfieSegmentation.onResults(function(results){
+        if (pendingMaskResolve){ var r = pendingMaskResolve; pendingMaskResolve = null; r(results.segmentationMask); }
+    });
     segmentationReady = true;
 }
 
-var latestMaskForFinalize = null;
-var pendingSegPromise = null;
+/* ---------- mask precompute cache ----------
+   Segmentation is async: asking for a mask "live" while the clip plays
+   means the result always arrives a frame or two late, which is exactly
+   the ghosting/old-background bleed-through you saw when moving. Since
+   finalize already has no time pressure, we instead scrub through the
+   clip once beforehand, wait for the *exact* mask that matches each
+   sampled instant, and cache it. The real-time pass afterwards just
+   looks up the nearest cached mask - no lag, because nothing is being
+   awaited live anymore. */
+
+var pendingMaskResolve = null;
+var maskCache = [];             // [{ t, canvas }]
+var MASK_SAMPLE_FPS = 10;
+var MASK_STORE_W = 160;
+
+function seekTo(video, t){
+    return new Promise(function(resolve){
+        function onSeeked(){ video.removeEventListener('seeked', onSeeked); resolve(); }
+        video.addEventListener('seeked', onSeeked);
+        video.currentTime = t;
+    });
+}
+
+function getMaskForCurrentFrame(video){
+    return new Promise(function(resolve){
+        pendingMaskResolve = resolve;
+        selfieSegmentation.send({ image: video });
+    });
+}
+
+async function precomputeMasks(video, duration, onProgress){
+    maskCache = [];
+    var storeH = Math.round(MASK_STORE_W * (WINDOW_H / CW));
+    var step = 1 / MASK_SAMPLE_FPS;
+    for (var t = 0; t <= duration; t += step){
+        var clamped = Math.min(t, Math.max(duration - 0.02, 0));
+        await seekTo(video, clamped);
+        var mask = await getMaskForCurrentFrame(video);
+        var c = document.createElement('canvas');
+        c.width = MASK_STORE_W; c.height = storeH;
+        drawCover(c.getContext('2d'), mask, 0, 0, MASK_STORE_W, storeH, false);
+        maskCache.push({ t: clamped, canvas: c });
+        if (onProgress) onProgress(Math.min(1, t/duration));
+    }
+}
+
+function nearestMask(t){
+    if (!maskCache.length) return null;
+    var best = maskCache[0], bestDiff = Math.abs(t - best.t);
+    for (var i=1;i<maskCache.length;i++){
+        var d = Math.abs(t - maskCache[i].t);
+        if (d < bestDiff){ bestDiff = d; best = maskCache[i]; }
+    }
+    return best.canvas;
+}
 
 finalizeBtn.addEventListener('click', function(){
     finalizeBtn.disabled = true;
@@ -662,12 +717,25 @@ finalizeBtn.addEventListener('click', function(){
 function runFinalizePass(){
     var playback = document.createElement('video');
     playback.src = URL.createObjectURL(rawBlob);
-    playback.muted = false;
+    playback.muted = true;   // muted during the scrubbing/analysis phase to avoid garbled audio
     playback.playsInline = true;
     var useBg = !!(bgImage && segmentationReady);
 
-    playback.onloadedmetadata = function(){
-        var duration = playback.duration || (maxDurationMs/1000);
+    playback.onloadedmetadata = async function(){
+        var duration = isFinite(playback.duration) ? playback.duration : (maxDurationMs/1000);
+
+        if (useBg){
+            setStatus('Analisi dello sfondo...');
+            await precomputeMasks(playback, duration, function(p){
+                progressBar.style.width = (p*45) + '%';
+                setStatus('Analisi dello sfondo... ' + Math.round(p*100) + '%');
+            });
+            await seekTo(playback, 0);
+        }
+
+        setStatus('Registrazione finale in corso...');
+        playback.muted = false; // unmuted now so captureStream() carries real audio
+
         var outStream = canvas.captureStream(30);
         if (playback.captureStream){
             playback.captureStream().getAudioTracks().forEach(function(t){ outStream.addTrack(t); });
@@ -683,21 +751,22 @@ function runFinalizePass(){
 
         function renderTick(){
             if (playback.paused || playback.ended) return;
-            progressBar.style.width = Math.min(100, (playback.currentTime/duration)*100) + '%';
+            var phase2Pct = Math.min(100, (playback.currentTime/duration)*100);
+            progressBar.style.width = (useBg ? (45 + phase2Pct*0.55) : phase2Pct) + '%';
 
             ctx.fillStyle = '#050505';
             ctx.fillRect(0,0,CW,CH);
 
             if (useBg){
-                selfieSegmentation.send({ image: playback });
                 var bc = computeCoverRect(bgImage.naturalWidth, bgImage.naturalHeight, CW, WINDOW_H);
                 ctx.drawImage(bgImage, bc.sx, bc.sy, bc.sw, bc.sh, 0, WINDOW_Y, CW, WINDOW_H);
-                if (latestMaskForFinalize){
+                var maskCanvas = nearestMask(playback.currentTime);
+                if (maskCanvas){
                     personCanvas.width = CW; personCanvas.height = WINDOW_H;
                     personCtx.clearRect(0,0,CW,WINDOW_H);
                     drawCover(personCtx, playback, 0, 0, CW, WINDOW_H, false);
                     personCtx.globalCompositeOperation = 'destination-in';
-                    drawCover(personCtx, latestMaskForFinalize, 0, 0, CW, WINDOW_H, false);
+                    personCtx.drawImage(maskCanvas, 0, 0, CW, WINDOW_H);
                     personCtx.globalCompositeOperation = 'source-over';
                     ctx.drawImage(personCanvas, 0, WINDOW_Y);
                 } else {
