@@ -357,6 +357,13 @@ var FOOTER_H = 260;
 var WINDOW_Y = HEADER_H;
 var WINDOW_H = CH - HEADER_H - FOOTER_H;
 
+/* the window is much taller/narrower than a typical camera frame, so a
+   plain "cover" crop zooms in tight to fill it. This factor samples a
+   wider region of the camera frame instead, so more of the scene (and
+   more distance from the lens) shows up - a software stand-in for
+   physically stepping back. Raise it for an even wider view. */
+var CAMERA_ZOOM_OUT = 1.35;
+
 /* ---------- small helpers ---------- */
 
 function setStatus(msg, isError){
@@ -381,19 +388,28 @@ function pickMimeType(candidatesAudioVideo){
 
 function extForMime(m){ return (m && m.indexOf('mp4') !== -1) ? 'mp4' : 'webm'; }
 
-function computeCoverRect(srcW, srcH, dw, dh){
+function computeCoverRect(srcW, srcH, dw, dh, zoomOut){
+    zoomOut = zoomOut || 1;
     var srcRatio = srcW / srcH, dstRatio = dw / dh;
     var sx, sy, sw, sh;
     if (srcRatio > dstRatio){ sh = srcH; sw = srcH * dstRatio; sx = (srcW - sw) / 2; sy = 0; }
     else { sw = srcW; sh = srcW / dstRatio; sx = 0; sy = (srcH - sh) / 2; }
+    if (zoomOut !== 1){
+        var newSw = Math.min(srcW, sw*zoomOut);
+        var newSh = Math.min(srcH, sh*zoomOut);
+        sx -= (newSw - sw)/2; sy -= (newSh - sh)/2;
+        sx = Math.max(0, Math.min(sx, srcW-newSw));
+        sy = Math.max(0, Math.min(sy, srcH-newSh));
+        sw = newSw; sh = newSh;
+    }
     return { sx:sx, sy:sy, sw:sw, sh:sh };
 }
 
-function drawCover(targetCtx, media, dx, dy, dw, dh, mirror){
+function drawCover(targetCtx, media, dx, dy, dw, dh, mirror, zoomOut){
     var w = media.videoWidth || media.naturalWidth || media.width;
     var h = media.videoHeight || media.naturalHeight || media.height;
     if (!w || !h) return;
-    var c = computeCoverRect(w, h, dw, dh);
+    var c = computeCoverRect(w, h, dw, dh, zoomOut);
     targetCtx.save();
     if (mirror){
         targetCtx.translate(dx + dw, dy);
@@ -518,7 +534,7 @@ function livePreviewLoop(){
     ctx.fillRect(0,0,CW,CH);
     var mirror = (facingMode === 'user');
     if (liveVideoEl.readyState >= 2){
-        drawCover(ctx, liveVideoEl, 0, WINDOW_Y, CW, WINDOW_H, mirror);
+        drawCover(ctx, liveVideoEl, 0, WINDOW_Y, CW, WINDOW_H, mirror, CAMERA_ZOOM_OUT);
     } else {
         ctx.fillStyle = '#111'; ctx.fillRect(0, WINDOW_Y, CW, WINDOW_H);
     }
@@ -689,7 +705,7 @@ async function precomputeMasks(video, duration, onProgress){
         var mask = await getMaskForCurrentFrame(video);
         var c = document.createElement('canvas');
         c.width = MASK_STORE_W; c.height = storeH;
-        drawCover(c.getContext('2d'), mask, 0, 0, MASK_STORE_W, storeH, false);
+        drawCover(c.getContext('2d'), mask, 0, 0, MASK_STORE_W, storeH, false, CAMERA_ZOOM_OUT);
         maskCache.push({ t: clamped, canvas: c });
         if (onProgress) onProgress(Math.min(1, t/duration));
     }
@@ -764,16 +780,16 @@ function runFinalizePass(){
                 if (maskCanvas){
                     personCanvas.width = CW; personCanvas.height = WINDOW_H;
                     personCtx.clearRect(0,0,CW,WINDOW_H);
-                    drawCover(personCtx, playback, 0, 0, CW, WINDOW_H, false);
+                    drawCover(personCtx, playback, 0, 0, CW, WINDOW_H, false, CAMERA_ZOOM_OUT);
                     personCtx.globalCompositeOperation = 'destination-in';
                     personCtx.drawImage(maskCanvas, 0, 0, CW, WINDOW_H);
                     personCtx.globalCompositeOperation = 'source-over';
                     ctx.drawImage(personCanvas, 0, WINDOW_Y);
                 } else {
-                    drawCover(ctx, playback, 0, WINDOW_Y, CW, WINDOW_H, false);
+                    drawCover(ctx, playback, 0, WINDOW_Y, CW, WINDOW_H, false, CAMERA_ZOOM_OUT);
                 }
             } else {
-                drawCover(ctx, playback, 0, WINDOW_Y, CW, WINDOW_H, false);
+                drawCover(ctx, playback, 0, WINDOW_Y, CW, WINDOW_H, false, CAMERA_ZOOM_OUT);
             }
 
             drawClubFrame(false, 0);
