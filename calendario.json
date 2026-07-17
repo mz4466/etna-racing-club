@@ -494,73 +494,101 @@
     "rounds": [
       {
         "circuit": "Circuito di Yas Marina – Layout completo – 5,3 km",
-        "date": "",
+        "date": "2026-02-15",
         "laps": "58",
+        "fase": "",
+        "lapsType": "giri",
         "weather": "",
         "tire": "x1",
         "fuel": "x1",
         "types": "Dure/Medie/Morbite",
-        "notes": "Tutte e tre le mescole"
+        "notes": "Tutte e tre le mescole",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Circuito Gilles Villeneuve – 4,4 km",
-        "date": "",
+        "date": "2026-03-15",
         "laps": "70",
+        "fase": "",
+        "lapsType": "giri",
         "weather": "",
         "tire": "x1",
         "fuel": "x1",
         "types": "Dure/Medie/Morbite",
-        "notes": "Tutte e tre le mescole"
+        "notes": "Tutte e tre le mescole",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Barcellona – Layout GP senza chicane – 4,7 km",
         "date": "2026-03-22",
         "laps": "65",
+        "fase": "",
+        "lapsType": "giri",
         "weather": "",
         "tire": "x1",
         "fuel": "x1",
         "types": "Dure/Medie/Morbite",
-        "notes": "Tutte e tre le mescole"
+        "notes": "Tutte e tre le mescole",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Monza – Layout completo – 5,8 km",
         "date": "2026-04-19",
         "laps": "53",
+        "fase": "",
+        "lapsType": "giri",
         "weather": "",
         "tire": "x1",
         "fuel": "x1",
         "types": "Dure/Medie/Morbide",
-        "notes": "Tutte e tre le mescole"
+        "notes": "Tutte e tre le mescole",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Red Bull Ring – Layout completo – 4,3 km",
         "date": "2026-05-03",
         "laps": "71",
+        "fase": "",
+        "lapsType": "giri",
         "weather": "",
         "tire": "x3",
         "fuel": "x4",
         "types": "Dure/Medie/morbide",
-        "notes": "Tutte e tre le mescole"
+        "notes": "Tutte e tre le mescole",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Spa-Francorchamps – Layout completo – 7,0 km",
         "date": "2026-05-17",
         "laps": "44",
+        "fase": "",
+        "lapsType": "giri",
         "weather": "",
         "tire": "x3",
         "fuel": "x5",
         "types": "Dure/Medie/morbide",
-        "notes": "Tutte e tre le mescole"
+        "notes": "Tutte e tre le mescole",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Suzuka – Layout completo – 5,8 km",
         "date": "2026-05-31",
         "laps": "70",
+        "fase": "",
+        "lapsType": "giri",
         "weather": "",
         "tire": "x3",
         "fuel": "x4",
         "types": "",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       }
     ],
     "costruttori": true,
