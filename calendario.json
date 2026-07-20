@@ -893,8 +893,8 @@
         "weather": "S06 - 💧 Umido, sereno e piacevole",
         "tire": "x1",
         "fuel": "x1",
-        "types": "Morbide",
-        "notes": "Qualifiche: 10 minuti (valide per tutte le gare)- Bop attivo - Danni ridotti - Aston Martin DB5 '64",
+        "types": "Corsa Morbide",
+        "notes": "Qualifiche: 10 minuti (valide per tutte le gare)- Danni ridotti - Aston Martin DB5 '64",
         "carId": "3445",
         "carName": "Aston Martin DB5 '64"
       },
@@ -907,8 +907,8 @@
         "weather": "S08 - 🌥️ Umido, soleggiato e nuvoloso",
         "tire": "x1",
         "fuel": "x1",
-        "types": "Medie",
-        "notes": "Bop attivo - Danni ridotti - Toyota 2000GT '67",
+        "types": "Corsa Medie",
+        "notes": "Danni ridotti - Toyota 2000GT '67",
         "carId": "604",
         "carName": "Toyota 2000GT '67"
       },
@@ -921,8 +921,8 @@
         "weather": "S10 - 🌫️ Nebbioso, soleggiato con molte nuvole",
         "tire": "x1",
         "fuel": "x1",
-        "types": "Dure",
-        "notes": "Bop attivo - Danni ridotti - Bmw Z8 '01",
+        "types": "Corsa Dure",
+        "notes": "Danni ridotti - Bmw Z8 '01",
         "carId": "1893",
         "carName": "BMW Z8 '01"
       }
