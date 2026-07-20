@@ -39,10 +39,10 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
 .section-title{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:4px;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:14px}
 
-.sort-pills{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-.sort-pill{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.12);color:var(--muted);cursor:pointer;transition:all 0.15s;background:transparent}
-.sort-pill:hover{border-color:rgba(201,162,39,0.3);color:var(--muted)}
-.sort-pill.active{background:var(--gold-dim);border-color:rgba(201,162,39,0.3);color:var(--gold-hi)}
+.stats-table th.sortable-th{cursor:pointer;user-select:none;transition:color 0.15s}
+.stats-table th.sortable-th:hover{color:var(--gold-hi)}
+.stats-table th.sortable-th.active{color:var(--gold-hi)}
+.sort-arrow{font-size:10px;color:var(--gold-hi)}
 
 .status-filter{display:flex;gap:8px;margin-bottom:20px;align-items:center}
 .status-label{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-right:4px}
@@ -150,8 +150,6 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 }
 @media(max-width:480px){
   .overview-grid{grid-template-columns:1fr 1fr}
-  .sort-pills{gap:4px}
-  .sort-pill{padding:4px 10px;font-size:11px}
 }
 </style>
 </head>
@@ -179,7 +177,6 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
     <div class="section-title">Classifica piloti all-time</div>
     <div class="status-filter" id="statusFilter"></div>
-    <div class="sort-pills" id="sortPills"></div>
     <div class="stats-table-wrap">
       <table class="stats-table">
         <thead id="tableHead"></thead>
@@ -699,6 +696,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
   /* ── render ── */
   var currentSort = 'wins';
+  var sortDir = 'desc';
   var allPilots = [];
 
   function pilotActiveByName(nome){
@@ -796,7 +794,6 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
     renderStatusFilter();
     renderPilotTable();
-    renderSortPills();
     renderH2HSelectors();
     renderStreaks();
     renderCircuits();
@@ -881,35 +878,28 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     return '<div class="ov-card"><div class="ov-num">' + num + '</div><div class="ov-label">' + label + '</div></div>';
   }
 
-  /* ── sort pills ── */
-  var sortOptions = [
-    {key:'wins', label:'Vittorie'},
-    {key:'podiums', label:'Podi'},
-    {key:'winPct', label:'% Vittorie'},
-    {key:'avgPos', label:'Pos. Media'},
-    {key:'champsWon', label:'Titoli'},
-    {key:'poles', label:'Pole'},
-    {key:'fastLaps', label:'Giri veloci'},
-    {key:'races', label:'Gare'}
-  ];
+  /* ── sortable column headers ── */
+  /* defaultDir = which direction shows "best" first the moment a column is selected */
+  var sortMeta = {
+    races:     {label:'Gare',        defaultDir:'desc'},
+    wins:      {label:'Vitt.',       defaultDir:'desc'},
+    podiums:   {label:'Podi',        defaultDir:'desc'},
+    poles:     {label:'Pole',        defaultDir:'desc'},
+    fastLaps:  {label:'FL',          defaultDir:'desc'},
+    champsWon: {label:'Titoli',      defaultDir:'desc'},
+    winPct:    {label:'% Vitt.',     defaultDir:'desc'},
+    avgPos:    {label:'Pos. Media',  defaultDir:'asc'}
+  };
 
-  function renderSortPills(){
-    var html = '';
-    for(var i=0;i<sortOptions.length;i++){
-      var o = sortOptions[i];
-      var cls = o.key === currentSort ? ' active' : '';
-      html += '<button class="sort-pill' + cls + '" data-sort="' + o.key + '">' + o.label + '</button>';
+  function onHeaderSort(key){
+    if(!sortMeta[key]) return;
+    if(currentSort === key){
+      sortDir = sortDir === 'desc' ? 'asc' : 'desc';
+    } else {
+      currentSort = key;
+      sortDir = sortMeta[key].defaultDir;
     }
-    var el = document.getElementById('sortPills');
-    el.innerHTML = html;
-    var btns = el.querySelectorAll('.sort-pill');
-    for(var j=0;j<btns.length;j++){
-      btns[j].addEventListener('click', function(){
-        currentSort = this.getAttribute('data-sort');
-        renderSortPills();
-        renderPilotTable();
-      });
-    }
+    renderPilotTable();
   }
 
   /* ── pilot table ── */
@@ -921,21 +911,50 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       if(currentSort === 'avgPos'){
         va = a.positions.length ? avg(a.positions) : 999;
         vb = b.positions.length ? avg(b.positions) : 999;
-        return va - vb;
-      }
-      if(currentSort === 'winPct'){
+      } else if(currentSort === 'winPct'){
         va = a.races ? a.wins / a.races : 0;
         vb = b.races ? b.wins / b.races : 0;
-        return vb - va;
+      } else {
+        va = a[currentSort] || 0;
+        vb = b[currentSort] || 0;
       }
-      va = a[currentSort] || 0;
-      vb = b[currentSort] || 0;
-      if(vb !== va) return vb - va;
+      var diff = sortDir === 'asc' ? (va - vb) : (vb - va);
+      if(diff !== 0) return diff;
       return (b.wins || 0) - (a.wins || 0);
     });
 
-    document.getElementById('tableHead').innerHTML =
-      '<tr><th>#</th><th>Pilota</th><th>Gare</th><th>Vitt.</th><th>Podi</th><th>Pole</th><th>FL</th><th>DNF</th><th>Titoli</th><th>% Vitt.</th><th>Pos. Media</th></tr>';
+    var headerCols = [
+      {label:'#', key:null},
+      {label:'Pilota', key:null},
+      {label:'Gare', key:'races'},
+      {label:'Vitt.', key:'wins'},
+      {label:'Podi', key:'podiums'},
+      {label:'Pole', key:'poles'},
+      {label:'FL', key:'fastLaps'},
+      {label:'DNF', key:null},
+      {label:'Titoli', key:'champsWon'},
+      {label:'% Vitt.', key:'winPct'},
+      {label:'Pos. Media', key:'avgPos'}
+    ];
+    var headHtml = '<tr>';
+    for(var h=0;h<headerCols.length;h++){
+      var col = headerCols[h];
+      if(col.key){
+        var isActive = currentSort === col.key;
+        var arrow = isActive ? (' <span class="sort-arrow">' + (sortDir === 'asc' ? '\u25B2' : '\u25BC') + '</span>') : '';
+        headHtml += '<th class="sortable-th' + (isActive ? ' active' : '') + '" data-sort="' + col.key + '">' + col.label + arrow + '</th>';
+      } else {
+        headHtml += '<th>' + col.label + '</th>';
+      }
+    }
+    headHtml += '</tr>';
+    document.getElementById('tableHead').innerHTML = headHtml;
+    var sortableThs = document.querySelectorAll('#tableHead .sortable-th');
+    for(var s=0;s<sortableThs.length;s++){
+      sortableThs[s].addEventListener('click', function(){
+        onHeaderSort(this.getAttribute('data-sort'));
+      });
+    }
 
     var html = '';
     for(var i=0;i<sorted.length;i++){
