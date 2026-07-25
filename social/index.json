@@ -5,7 +5,12 @@
     "date": "2026-07-25",
     "year": 2026,
     "campionato": "Licence To Race (2026)",
-    "blockTypes": [],
+    "blockTypes": [
+      "title",
+      "photo",
+      "embed",
+      "photo"
+    ],
     "created": "2026-07-25T18:17:43.523Z"
   },
   {
