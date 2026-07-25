@@ -1110,7 +1110,7 @@
         "laps": "60",
         "fase": "Sera",
         "lapsType": "min",
-        "weather": "🌤️ Asciutto, nuvoloso e soleggiato + 💧 Umido e piacevole, scarsa nuvolosità + 🌫️ Nebbioso, soleggiato con molte nuvole + ☀️ Sole con poche nubi monsoniche + 🌫️ Foschia, sole con poche nuvole + 🌤️ Nuvoloso e luminoso + ☁️ Nuvoloso e scuro + ☁️ Nuvoloso e fresco + 🌑 Nubi dense",
+        "weather": "S04 - 🌤️ Asciutto, nuvoloso e soleggiato + S07 - 💧 Umido e piacevole, scarsa nuvolosità + S10 - 🌫️ Nebbioso, soleggiato con molte nuvole + S13 - ☀️ Sole con poche nubi monsoniche + S16 - 🌫️ Foschia, sole con poche nuvole + C01 - 🌤️ Nuvoloso e luminoso + C03 - ☁️ Nuvoloso e scuro + C04 - ☁️ Nuvoloso e fresco + C06 - 🌑 Nubi dense",
         "tire": "x4",
         "fuel": "x2",
         "types": "Dure/Medie/Morbite",
