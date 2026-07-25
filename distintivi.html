@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Distintivi Pilota - Etna Racing Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@300,400,500,600,700&family=Russo+One&family=Roboto:wght@300,400,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07070a; --card:#121318; --accent:#ff5014; --accent2:#ff8c42; --muted:#c9b8a3; --cream:#fff5e6;
+    --gold:#c9a227; --gold2:#e8c547; --line:rgba(255,255,255,0.06);
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; font-family:'Roboto',sans-serif; background:linear-gradient(180deg,#020203 0%,#0b0b0d 60%); color:var(--cream); min-height:100vh; }
+  a{color:inherit;}
+  header{ padding:28px; display:flex; align-items:center; justify-content:space-between; gap:20px; max-width:1200px; margin:0 auto; }
+  header .brand{ display:flex; gap:18px; align-items:center; }
+  header .brand img{ width:56px; height:auto; border-radius:8px; box-shadow:0 6px 18px rgba(255,80,20,0.2); }
+  header h1{ font-family:'Russo One',sans-serif; font-size:24px; margin:0; letter-spacing:2px; color:var(--accent2); }
+  .back-link{ font-family:'Teko',sans-serif; font-size:16px; letter-spacing:1px; text-decoration:none; color:var(--muted); border:1px solid var(--line); padding:8px 16px; border-radius:20px; transition:all .2s; }
+  .back-link:hover{ color:var(--cream); border-color:rgba(255,80,20,0.4); }
+
+  .container{ max-width:1080px; margin:0 auto; padding:0 20px 80px; }
+
+  .profile{
+    display:flex; gap:22px; align-items:center; padding:20px; border-radius:20px;
+    background:linear-gradient(180deg,rgba(18,19,24,0.95),rgba(8,8,10,0.96));
+    border:1px solid var(--line); margin-bottom:36px;
+  }
+  .profile img{ width:96px; height:96px; border-radius:14px; object-fit:cover; flex-shrink:0; box-shadow:0 6px 18px rgba(0,0,0,0.4); }
+  .profile .fallback{ width:96px; height:96px; border-radius:14px; flex-shrink:0; background:linear-gradient(135deg,#0d0d1a,#1a1a2e); display:flex; align-items:center; justify-content:center; font-size:36px; opacity:.4; }
+  .profile-name{ font-family:'Teko',sans-serif; font-size:34px; letter-spacing:1px; line-height:1; margin:0 0 4px; }
+  .profile-psn{ color:var(--gold); font-size:15px; font-family:'Teko',sans-serif; letter-spacing:1px; }
+  .profile-sub{ color:var(--muted); font-size:13px; margin-top:6px; }
+
+  .state{ text-align:center; color:var(--muted); padding:60px 20px; font-family:'Teko',sans-serif; font-size:20px; letter-spacing:1px; }
+
+  .section{ margin-top:34px; }
+  .section-head{ display:flex; align-items:baseline; gap:12px; border-bottom:1px solid var(--line); padding-bottom:10px; margin-bottom:20px; }
+  .section-head .n{ color:var(--accent); font-family:'Teko',sans-serif; font-size:17px; font-weight:600; }
+  .section-head h2{ font-family:'Russo One',sans-serif; font-size:16px; margin:0; color:var(--cream); letter-spacing:0.5px; }
+
+  .badge-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:16px; }
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 16px; display:flex; flex-direction:column; gap:12px; }
+  .card-top{ display:flex; align-items:center; gap:12px; }
+  .card h3{ font-family:'Teko',sans-serif; font-size:22px; margin:0; color:var(--cream); letter-spacing:0.5px; font-weight:500; }
+  .card .desc{ color:var(--muted); font-size:12px; line-height:1.4; margin:0; }
+
+  .medal{ --ring:var(--gold); width:56px; height:56px; flex:0 0 auto; position:relative; display:flex; align-items:center; justify-content:center;
+    clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);
+    background:radial-gradient(circle at 50% 40%,#1a1b22 0%,#0e0e12 60%,#000 100%);
+    box-shadow:inset 0 0 0 2px var(--ring), 0 0 12px rgba(0,0,0,0.5); }
+  .medal .core{ width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(circle at 35% 30%,#26232a,#0d0c0e 75%); font-family:'Teko',sans-serif; font-weight:600; font-size:15px; color:var(--ring); }
+  .medal.locked{ --ring:rgba(255,255,255,0.15); }
+  .medal.bronzo{ --ring:#c98a4d; }
+  .medal.argento{ --ring:#c9c6bd; }
+  .medal.oro{ --ring:var(--gold2); }
+  .medal.platino{ --ring:var(--accent2); box-shadow:inset 0 0 0 2px var(--accent2), 0 0 14px rgba(255,140,66,0.5); }
+
+  .tiers{ display:flex; gap:6px; }
+  .tier-dot{ width:20px; height:20px; clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%); background:rgba(255,255,255,0.08); }
+  .tier-dot.bronzo{ background:linear-gradient(160deg,#c98a4d,#8a5426); }
+  .tier-dot.argento{ background:linear-gradient(160deg,#e7e4db,#9d9a91); }
+  .tier-dot.oro{ background:linear-gradient(160deg,var(--gold2),var(--gold)); }
+  .tier-dot.platino{ background:linear-gradient(160deg,#ffd8ad,var(--accent2)); box-shadow:0 0 8px rgba(255,140,66,0.5); }
+
+  .stat-line{ display:flex; justify-content:space-between; font-size:11px; color:var(--muted); font-family:'Teko',sans-serif; letter-spacing:0.5px; }
+  .stat-line b{ color:var(--gold2); font-weight:600; font-size:13px; }
+  .progress{ height:4px; background:rgba(255,255,255,0.08); border-radius:2px; overflow:hidden; }
+  .progress > div{ height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); }
+
+  footer{ text-align:center; color:var(--muted); font-size:11px; margin-top:50px; padding-top:20px; border-top:1px solid var(--line); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <img src="etna-logo.jpg" alt="ERC" onerror="this.style.display='none'">
+    <h1>Distintivi Pilota</h1>
+  </div>
+  <a class="back-link" href="piloti_gt7.html">&larr; Torna ai Piloti</a>
+</header>
+
+<div class="container">
+  <div id="root"><div class="state">Caricamento dati pilota...</div></div>
+</div>
+
+<script>
+const BASE_RAW = 'https://raw.githubusercontent.com/mz4466/etna-racing-club/main';
+
+const params   = new URLSearchParams(location.search);
+const qPsn     = (params.get('psn')  || '').toLowerCase().trim();
+const qNome    = (params.get('nome') || '').toLowerCase().trim();
+
+const root = document.getElementById('root');
+
+function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+async function fetchBatched(urls, fetchFn, batchSize, delayMs){
+  var results = [];
+  for (var i = 0; i < urls.length; i += batchSize) {
+    var batch = urls.slice(i, i + batchSize);
+    var batchResults = await Promise.all(batch.map(fetchFn));
+    results = results.concat(batchResults);
+    if (i + batchSize < urls.length) await new Promise(function(r){ setTimeout(r, delayMs); });
+  }
+  return results;
+}
+
+function daysBetween(d1, d2){ return Math.abs(d2 - d1) / 86400000; }
+
+// ---- Tier definitions: [nome, desc, thresholds[4], unit] ----
+const BADGE_DEFS = [
+  { key:'anzianita', nome:'Veterano ERC', desc:'Anni di iscrizione al club', thresholds:[1,3,5,10], unit:'anni' },
+  { key:'gare',       nome:'Habitué di Pista', desc:'Gare totali disputate', thresholds:[1,25,50,100], unit:'gare' },
+  { key:'costanza',   nome:'Costanza', desc:'Miglior serie di gare consecutive senza ritiro', thresholds:[3,8,15,25], unit:'gare' },
+  { key:'campionati', nome:'Campionati Completati', desc:'Campionati/trofei/formula portati a termine', thresholds:[1,3,6,10], unit:'campionati' },
+  { key:'trofei',     nome:'Collezionista di Trofei', desc:'Titoli vinti (1° posto in classifica finale)', thresholds:[1,4,8,15], unit:'trofei' },
+  { key:'eventi',     nome:'Cacciatore di Eventi', desc:'Partecipazioni a eventi speciali', thresholds:[1,3,6,10], unit:'eventi' },
+  { key:'vittorie',   nome:'Vincitore', desc:'Numero di 1° posti in gara', thresholds:[1,5,10,25], unit:'vittorie' },
+  { key:'podi',       nome:'Podio Totale', desc:'Somma podi (1°-3°) in carriera', thresholds:[5,15,30,50], unit:'podi' },
+  { key:'giroveloce', nome:'Giro Veloce', desc:'Numero di giri veloci ottenuti', thresholds:[1,3,6,10], unit:'giri veloci' },
+  { key:'pole',       nome:'Poleman', desc:'Numero di pole position', thresholds:[1,3,6,10], unit:'pole' },
+];
+
+function tierFor(value, thresholds){
+  var t = 0;
+  for (var i = 0; i < thresholds.length; i++) if (value >= thresholds[i]) t = i + 1;
+  return t; // 0=nessuno,1=bronzo,2=argento,3=oro,4=platino
+}
+const TIER_NAMES = ['locked','bronzo','argento','oro','platino'];
+
+function initials(name){
+  return String(name||'').split(/\s+/).filter(Boolean).slice(0,2).map(function(w){ return w[0]; }).join('').toUpperCase();
+}
+
+function renderBadgeCard(def, value){
+  var tier = tierFor(value, def.thresholds);
+  var tierName = TIER_NAMES[tier];
+  var nextThreshold = def.thresholds[tier]; // undefined if maxed
+  var progressPct = 100;
+  var nextLabel = 'Livello massimo raggiunto';
+  if (nextThreshold !== undefined) {
+    var prevThreshold = tier > 0 ? def.thresholds[tier - 1] : 0;
+    progressPct = Math.max(4, Math.min(100, Math.round(((value - prevThreshold) / (nextThreshold - prevThreshold)) * 100)));
+    nextLabel = 'Prossimo: ' + nextThreshold + ' ' + def.unit;
+  }
+  var tiersHtml = def.thresholds.map(function(th, i){
+    var reached = value >= th;
+    var cls = reached ? TIER_NAMES[i+1] : '';
+    return '<div class="tier-dot ' + cls + '" title="' + th + ' ' + esc(def.unit) + '"></div>';
+  }).join('');
+
+  return ''
+    + '<div class="card">'
+    +   '<div class="card-top">'
+    +     '<div class="medal ' + tierName + '"><div class="core">' + initials(def.nome) + '</div></div>'
+    +     '<div><h3>' + esc(def.nome) + '</h3></div>'
+    +   '</div>'
+    +   '<p class="desc">' + esc(def.desc) + '</p>'
+    +   '<div class="tiers">' + tiersHtml + '</div>'
+    +   '<div class="stat-line"><span>' + nextLabel + '</span><b>' + value + ' ' + esc(def.unit) + '</b></div>'
+    +   '<div class="progress"><div style="width:' + progressPct + '%"></div></div>'
+    + '</div>';
+}
+
+async function main(){
+  if (!qPsn && !qNome) {
+    root.innerHTML = '<div class="state">Nessun pilota specificato.<br>Apri questa pagina da un profilo pilota su <a href="piloti_gt7.html">Piloti GT7</a>.</div>';
+    return;
+  }
+
+  try {
+    // ---- 1. Find the pilot's own scheda (for nome/foto) ----
+    var idxRes = await fetch(BASE_RAW + '/piloti_schede/index.json?_=' + Date.now());
+    var pilotFiles = idxRes.ok ? await idxRes.json() : [];
+    pilotFiles = (pilotFiles || []).filter(function(n){ return n.endsWith('.json') && n !== 'psn-map.json' && n !== 'index.json'; });
+
+    var pilotDocs = await fetchBatched(pilotFiles, async function(name){
+      try { var r = await fetch(BASE_RAW + '/piloti_schede/' + name); if(!r.ok) return null; return await r.json(); }
+      catch(e){ return null; }
+    }, 5, 250);
+
+    var pilot = pilotDocs.filter(Boolean).find(function(p){
+      var pPsn  = (p.psn  || '').toLowerCase().trim();
+      var pNome = (p.nome || p.name || '').toLowerCase().trim();
+      return (qPsn && pPsn === qPsn) || (qNome && pNome === qNome);
+    });
+
+    if (!pilot) {
+      root.innerHTML = '<div class="state">Pilota non trovato.<br>Controlla il link o torna a <a href="piloti_gt7.html">Piloti GT7</a>.</div>';
+      return;
+    }
+
+    var targetPsn  = (pilot.psn || '').toLowerCase().trim();
+    var targetNome = (pilot.nome || pilot.name || '').toLowerCase().trim();
+
+    // ---- 2. Load calendario + risultati ----
+    var calendario = [];
+    try {
+      var calRes = await fetch(BASE_RAW + '/calendario.json?_=' + Date.now());
+      if (calRes.ok) calendario = await calRes.json();
+    } catch(e) {}
+
+    var rIndexRes = await fetch(BASE_RAW + '/risultati/index.json?_=' + Date.now());
+    var raceFiles = rIndexRes.ok ? await rIndexRes.json() : [];
+    raceFiles = (raceFiles || []).filter(function(n){ return n.endsWith('.json'); });
+
+    var races = await fetchBatched(raceFiles, async function(name){
+      try { var r = await fetch(BASE_RAW + '/risultati/' + name); if(!r.ok) return null; return await r.json(); }
+      catch(e){ return null; }
+    }, 5, 250);
+    races = races.filter(function(r){ return r && Array.isArray(r.rows); });
+
+    var ufficioseIds = {};
+    calendario.forEach(function(c){ if (c.cat === 'Gara Ufficiosa' && c.id) ufficioseIds[c.id] = true; });
+
+    // Resolve psn per champ (rows carry both nome + psn) — same pattern used site-wide
+    var psnByNameInChamp = {}, psnByNameGlobal = {};
+    races.forEach(function(race){
+      var cid = race.champId || '';
+      (race.rows || []).forEach(function(row){
+        if (!row.nome) return;
+        var nk = row.nome.toLowerCase().trim();
+        var ps = (row.psn || '').toLowerCase().trim();
+        if (!ps) return;
+        if (cid) { if (!psnByNameInChamp[cid]) psnByNameInChamp[cid] = {}; psnByNameInChamp[cid][nk] = ps; }
+        psnByNameGlobal[nk] = ps;
+      });
+    });
+    function resolvePsn(champId, nome){
+      var nk = (nome || '').toLowerCase().trim();
+      if (!nk) return '';
+      if (champId && psnByNameInChamp[champId] && psnByNameInChamp[champId][nk]) return psnByNameInChamp[champId][nk];
+      if (psnByNameGlobal[nk]) return psnByNameGlobal[nk];
+      return '';
+    }
+    function isTarget(rowNome, rowPsn){
+      var ps = (rowPsn || '').toLowerCase().trim();
+      var nm = (rowNome || '').toLowerCase().trim();
+      if (targetPsn && ps === targetPsn) return true;
+      if (!ps && targetNome && nm === targetNome) return true;
+      if (targetPsn && !ps && nm === targetNome) return true; // no psn on row, match by name
+      return false;
+    }
+
+    var stats = { gare:0, vittorie:0, podi:0, giroveloce:0, pole:0, eventi:0 };
+    var champParticipated = {};   // champId -> earliest date
+    var completedChampIds = {};   // champId set (participated in final round)
+    var raceLog = [];             // { date, stato } for streak calc
+
+    races.forEach(function(race){
+      var champId = race.champId || '';
+      if (champId && ufficioseIds[champId]) return;
+
+      var champ = null;
+      if (champId) champ = calendario.find(function(c){ return c.id === champId; }) || null;
+      if (!champ && race.champIdx !== undefined) { var idx = parseInt(race.champIdx); if(!isNaN(idx)) champ = calendario[idx] || null; }
+
+      var garaNum = parseInt(race.garaNum) || 0;
+      var garaTot = parseInt(race.garaTot) || 0;
+      var isFinal = garaNum > 0 && garaNum === garaTot;
+
+      (race.rows || []).forEach(function(row){
+        if (!isTarget(row.nome, row.psn)) return;
+        stats.gare++;
+        if (parseInt(row.pos) === 1) stats.vittorie++;
+        if (parseInt(row.pos) >= 1 && parseInt(row.pos) <= 3) stats.podi++;
+        if (row.fl === true) stats.giroveloce++;
+        if (row.pole === true) stats.pole++;
+        if (champ && champ.cat === 'Evento') stats.eventi++;
+        raceLog.push({ date: race.data || '', stato: row.stato || 'ok' });
+        if (champId) {
+          var d = race.data || '9999';
+          if (!champParticipated[champId] || d < champParticipated[champId]) champParticipated[champId] = d;
+          if (isFinal) completedChampIds[champId] = true;
+        }
+      });
+
+      // Title (trofeo) — championship win, based on final standings
+      if (isFinal && champ && champ.trophy) {
+        var standings = race.standings || [];
+        var champion = standings.find(function(s){ return parseInt(s.pos) === 1; });
+        if (!champion && race.rows && race.rows.length) champion = { nome: race.rows[0].nome };
+        if (champion && champion.nome) {
+          var champPsn = resolvePsn(champId, champion.nome) || champion.nome.toLowerCase().trim();
+          if (champPsn === targetPsn || (!targetPsn && champion.nome.toLowerCase().trim() === targetNome)) {
+            stats._trofei = (stats._trofei || 0) + 1;
+          }
+        }
+      }
+    });
+    stats.campionati = Object.keys(completedChampIds).length;
+    stats.trofei = stats._trofei || 0;
+
+    // ---- Streak: best run of consecutive races with stato 'ok', sorted by date ----
+    raceLog = raceLog.filter(function(r){ return r.date; }).sort(function(a,b){ return a.date < b.date ? -1 : 1; });
+    var best = 0, cur = 0;
+    raceLog.forEach(function(r){
+      if (r.stato === 'ok') { cur++; if (cur > best) best = cur; }
+      else cur = 0;
+    });
+    stats.costanza = best;
+
+    // ---- Anzianità: years since earliest race ----
+    var earliestDate = null;
+    Object.values(champParticipated).forEach(function(d){
+      if (d && d !== '9999' && (!earliestDate || d < earliestDate)) earliestDate = d;
+    });
+    raceLog.forEach(function(r){ if (r.date && (!earliestDate || r.date < earliestDate)) earliestDate = r.date; });
+    stats.anzianita = earliestDate ? Math.floor(daysBetween(new Date(earliestDate), new Date()) / 365.25) : 0;
+
+    // ---- Render ----
+    var nome     = pilot.nome || pilot.name || '—';
+    var psnDisp  = pilot.psn || '';
+    var foto     = pilot.foto || pilot.photo || null;
+    var photoHtml = foto
+      ? '<img src="' + esc(foto) + '" alt="' + esc(nome) + '">'
+      : '<div class="fallback">🪖</div>';
+
+    var html = ''
+      + '<div class="profile">'
+      +   photoHtml
+      +   '<div>'
+      +     '<div class="profile-name">' + esc(nome) + '</div>'
+      +     (psnDisp ? '<div class="profile-psn">' + esc(psnDisp) + '</div>' : '')
+      +     '<div class="profile-sub">' + stats.gare + ' gare disputate · ' + stats.vittorie + ' vittorie · ' + stats.podi + ' podi</div>'
+      +   '</div>'
+      + '</div>';
+
+    html += '<div class="section"><div class="section-head"><span class="n">★</span><h2>Distintivi</h2></div>';
+    html += '<div class="badge-grid">';
+    BADGE_DEFS.forEach(function(def){ html += renderBadgeCard(def, stats[def.key] || 0); });
+    html += '</div></div>';
+
+    html += '<footer>Distintivi calcolati automaticamente dai risultati gara pubblicati sul sito.</footer>';
+
+    root.innerHTML = html;
+
+  } catch (err) {
+    console.error(err);
+    root.innerHTML = '<div class="state">Impossibile caricare i dati dei distintivi.<br>Riprova più tardi.</div>';
+  }
+}
+
+main();
+</script>
+</body>
+</html>
