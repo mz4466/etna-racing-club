@@ -1,0 +1,139 @@
+{
+  "circuito": "Brands Hatch – GP – 3,9 km",
+  "data": "2026-07-25",
+  "garaNum": "1",
+  "garaTot": "3",
+  "champId": "licence-to-race-2026",
+  "champIdx": "licence-to-race-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "auto": "Aston Martin DB5 '64",
+      "tempo": "16'22''461",
+      "bestLap": "01'34''736",
+      "fl": true,
+      "pole": true,
+      "punti": 25,
+      "extra": "1+1",
+      "totale": 27,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 2,
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "auto": "Aston Martin DB5 '64",
+      "tempo": "a 0\"097",
+      "bestLap": "01'35''520",
+      "fl": false,
+      "pole": false,
+      "punti": 21,
+      "extra": "-",
+      "totale": 21,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 3,
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "auto": "Aston Martin DB5 '64",
+      "tempo": "a 9\"200",
+      "bestLap": "01'35''419",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 4,
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "auto": "Aston Martin DB5 '64",
+      "tempo": "a 1 Giro",
+      "bestLap": "01'37''072",
+      "fl": false,
+      "pole": false,
+      "punti": 16,
+      "extra": "-",
+      "totale": 16,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 5,
+      "nome": "William",
+      "psn": "steward_andante",
+      "auto": "Aston Martin DB5 '64",
+      "tempo": "a 1 Giro",
+      "bestLap": "01'41''354",
+      "fl": false,
+      "pole": false,
+      "punti": 14,
+      "extra": "-",
+      "totale": 14,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 6,
+      "nome": "Daniele",
+      "psn": "MrSciacca81",
+      "auto": "Aston Martin DB5 '64",
+      "tempo": "a 1 Giro",
+      "bestLap": "01'45''053",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok",
+      "note": ""
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "pts": 27,
+      "pos": 1
+    },
+    {
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "pts": 21,
+      "pos": 2
+    },
+    {
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "pts": 18,
+      "pos": 3
+    },
+    {
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "pts": 16,
+      "pos": 4
+    },
+    {
+      "nome": "William",
+      "psn": "steward_andante",
+      "pts": 14,
+      "pos": 5
+    },
+    {
+      "nome": "Daniele",
+      "psn": "MrSciacca81",
+      "pts": 12,
+      "pos": 6
+    }
+  ],
+  "bestOf": null
+}
