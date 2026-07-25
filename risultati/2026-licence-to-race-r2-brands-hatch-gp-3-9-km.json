@@ -1,0 +1,139 @@
+{
+  "circuito": "Brands Hatch – GP – 3,9 km",
+  "data": "2026-07-25",
+  "garaNum": "2",
+  "garaTot": "3",
+  "champId": "licence-to-race-2026",
+  "champIdx": "licence-to-race-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "auto": "Toyota 2000GT '67",
+      "tempo": "15'13''842",
+      "bestLap": "01'38''253",
+      "fl": true,
+      "pole": false,
+      "punti": 25,
+      "extra": "1",
+      "totale": 26,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 2,
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "auto": "Toyota 2000GT '67",
+      "tempo": "a 1\"127",
+      "bestLap": "01'38''408",
+      "fl": false,
+      "pole": false,
+      "punti": 21,
+      "extra": "-",
+      "totale": 21,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 3,
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "auto": "Toyota 2000GT '67",
+      "tempo": "a 18\"460",
+      "bestLap": "01'39''378",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 4,
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "auto": "Toyota 2000GT '67",
+      "tempo": "a 20\"679",
+      "bestLap": "01'41''281",
+      "fl": false,
+      "pole": false,
+      "punti": 16,
+      "extra": "-",
+      "totale": 16,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 5,
+      "nome": "William",
+      "psn": "steward_andante",
+      "auto": "Toyota 2000GT '67",
+      "tempo": "a 1 Giro",
+      "bestLap": "01'43''385",
+      "fl": false,
+      "pole": false,
+      "punti": 14,
+      "extra": "-",
+      "totale": 14,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 6,
+      "nome": "Daniele",
+      "psn": "MrSciacca81",
+      "auto": "Toyota 2000GT '67",
+      "tempo": "a 1 Giro",
+      "bestLap": "01'48''573",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok",
+      "note": ""
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "pts": 26,
+      "pos": 1
+    },
+    {
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "pts": 21,
+      "pos": 2
+    },
+    {
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "pts": 18,
+      "pos": 3
+    },
+    {
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "pts": 16,
+      "pos": 4
+    },
+    {
+      "nome": "William",
+      "psn": "steward_andante",
+      "pts": 14,
+      "pos": 5
+    },
+    {
+      "nome": "Daniele",
+      "psn": "MrSciacca81",
+      "pts": 12,
+      "pos": 6
+    }
+  ],
+  "bestOf": null
+}
