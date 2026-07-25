@@ -32,17 +32,6 @@
       }
     },
     {
-      "id": "b2",
-      "type": "embed",
-      "x": 33.34,
-      "y": 56.29,
-      "w": 66.02,
-      "h": 41.51,
-      "content": {
-        "url": "https://www.youtube.com/watch?v=_6ozvVixAp4"
-      }
-    },
-    {
       "id": "b3",
       "type": "photo",
       "x": 33.47,
@@ -54,6 +43,18 @@
         "caption": "",
         "pending": null,
         "url": ""
+      }
+    },
+    {
+      "id": "b4",
+      "type": "video",
+      "x": 33.45,
+      "y": 54.96,
+      "w": 65.35,
+      "h": 44.01,
+      "content": {
+        "url": "https://www.youtube.com/watch?v=_6ozvVixAp4&feature=youtu.be",
+        "caption": ""
       }
     }
   ]
