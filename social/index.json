@@ -8,8 +8,8 @@
     "blockTypes": [
       "title",
       "photo",
-      "embed",
-      "photo"
+      "photo",
+      "video"
     ],
     "created": "2026-07-25T18:17:43.523Z"
   },
