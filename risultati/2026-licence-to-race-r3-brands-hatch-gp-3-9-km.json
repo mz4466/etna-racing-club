@@ -1,0 +1,139 @@
+{
+  "circuito": "Brands Hatch – GP – 3,9 km",
+  "data": "2026-07-25",
+  "garaNum": "3",
+  "garaTot": "3",
+  "champId": "licence-to-race-2026",
+  "champIdx": "licence-to-race-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "auto": "BMW Z8 '01",
+      "tempo": "16'02''907",
+      "bestLap": "01'32''978",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 2,
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "auto": "BMW Z8 '01",
+      "tempo": "a 23\"946",
+      "bestLap": "01'33''801",
+      "fl": false,
+      "pole": false,
+      "punti": 21,
+      "extra": "-",
+      "totale": 21,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 3,
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "auto": "BMW Z8 '01",
+      "tempo": "a 24\"984",
+      "bestLap": "01'32''062",
+      "fl": true,
+      "pole": false,
+      "punti": 18,
+      "extra": "1",
+      "totale": 19,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 4,
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "auto": "BMW Z8 '01",
+      "tempo": "a 40\"646",
+      "bestLap": "01'33''634",
+      "fl": false,
+      "pole": false,
+      "punti": 16,
+      "extra": "-",
+      "totale": 16,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 5,
+      "nome": "William",
+      "psn": "steward_andante",
+      "auto": "BMW Z8 '01",
+      "tempo": "a 1 Giro",
+      "bestLap": "01'35''409",
+      "fl": false,
+      "pole": false,
+      "punti": 14,
+      "extra": "-",
+      "totale": 14,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 6,
+      "nome": "Daniele",
+      "psn": "MrSciacca81",
+      "auto": "BMW Z8 '01",
+      "tempo": "a 3 Giro",
+      "bestLap": "01'50''029",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok",
+      "note": ""
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "pts": 72,
+      "pos": 1
+    },
+    {
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "pts": 67,
+      "pos": 2
+    },
+    {
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "pts": 53,
+      "pos": 3
+    },
+    {
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "pts": 52,
+      "pos": 4
+    },
+    {
+      "nome": "William",
+      "psn": "steward_andante",
+      "pts": 42,
+      "pos": 5
+    },
+    {
+      "nome": "Daniele",
+      "psn": "MrSciacca81",
+      "pts": 36,
+      "pos": 6
+    }
+  ],
+  "bestOf": null
+}
