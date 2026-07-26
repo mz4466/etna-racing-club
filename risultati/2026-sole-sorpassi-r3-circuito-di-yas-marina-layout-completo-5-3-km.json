@@ -1,0 +1,220 @@
+{
+  "circuito": "Circuito di Yas Marina – Layout completo – 5,3 km",
+  "data": "2026-07-26",
+  "garaNum": "3",
+  "garaTot": "5",
+  "champId": "sole-sorpassi-2026",
+  "champIdx": "sole-sorpassi-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "auto": "Mercedes-AMG GT3 '20",
+      "tempo": "47'20''215",
+      "bestLap": "01'56''600",
+      "fl": false,
+      "pole": true,
+      "punti": 25,
+      "extra": "1",
+      "totale": 26,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 2,
+      "nome": "Carmine",
+      "psn": "CarmineRafa87",
+      "auto": "Audi R8 LMS Evo '19",
+      "tempo": "a 21\"374",
+      "bestLap": "01'56''249",
+      "fl": true,
+      "pole": false,
+      "punti": 21,
+      "extra": "1",
+      "totale": 22,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 3,
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "auto": "Audi R8 LMS Evo '19",
+      "tempo": "a 37\"426",
+      "bestLap": "01'56''253",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 4,
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "auto": "BMW M6 GT3 Sprint Model '16",
+      "tempo": "a 49\"714",
+      "bestLap": "01'57''926",
+      "fl": false,
+      "pole": false,
+      "punti": 16,
+      "extra": "-",
+      "totale": 16,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 5,
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "auto": "Honda NSX Gr.3",
+      "tempo": "a 1'00\"667",
+      "bestLap": "01'57''602",
+      "fl": false,
+      "pole": false,
+      "punti": 14,
+      "extra": "-",
+      "totale": 14,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 6,
+      "nome": "Antonio",
+      "psn": "antonioleocataad",
+      "auto": "911 GT3 R (992) '22",
+      "tempo": "a 1'04\"978",
+      "bestLap": "01'58''243",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 7,
+      "nome": "Daniele",
+      "psn": "MrSciacca81",
+      "auto": "Audi R8 LMS Evo '19",
+      "tempo": "a 1'49\"508",
+      "bestLap": "01'58''509",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 8,
+      "nome": "Nicola",
+      "psn": "taeniko85",
+      "auto": "911 GT3 R (992) '22",
+      "tempo": "a 2'02\"424",
+      "bestLap": "01'59''548",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 9,
+      "nome": "William",
+      "psn": "steward_andante",
+      "auto": "Ferrari 458 Italia GT3 '13",
+      "tempo": "a 1 Giro",
+      "bestLap": "01'59''084",
+      "fl": false,
+      "pole": false,
+      "punti": 7,
+      "extra": "-",
+      "totale": 7,
+      "stato": "ok",
+      "note": ""
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "pts": 64,
+      "pos": 1
+    },
+    {
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "pts": 60,
+      "pos": 2
+    },
+    {
+      "nome": "Carmine",
+      "psn": "CarmineRafa87",
+      "pts": 56,
+      "pos": 3
+    },
+    {
+      "nome": "Antonio",
+      "psn": "antonioleocataad",
+      "pts": 53,
+      "pos": 4
+    },
+    {
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "pts": 47,
+      "pos": 5
+    },
+    {
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "pts": 44,
+      "pos": 6
+    },
+    {
+      "nome": "William",
+      "psn": "steward_andante",
+      "pts": 23,
+      "pos": 7
+    },
+    {
+      "nome": "Daniele",
+      "psn": "MrSciacca81",
+      "pts": 17,
+      "pos": 8
+    },
+    {
+      "nome": "Nicola",
+      "psn": "taeniko85",
+      "pts": 15,
+      "pos": 9
+    },
+    {
+      "nome": "Matteo Spinotto",
+      "psn": "Sp1n8_Mes",
+      "pts": 10,
+      "pos": 10
+    },
+    {
+      "nome": "Gaetano",
+      "psn": "Fizzarrinho",
+      "pts": 10,
+      "pos": 10
+    },
+    {
+      "nome": "Antonio Cola",
+      "psn": "Cola_030696",
+      "pts": 0,
+      "pos": 12
+    }
+  ],
+  "bestOf": 4
+}
