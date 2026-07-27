@@ -19,8 +19,8 @@
     {
       "id": "b1",
       "type": "photo",
-      "x": 23.91,
-      "y": 1.27,
+      "x": 74.97,
+      "y": 59.22,
       "w": 25,
       "h": 28,
       "content": {
@@ -126,6 +126,20 @@
         "caption": "",
         "pending": null,
         "url": ""
+      }
+    },
+    {
+      "id": "b9",
+      "type": "video",
+      "x": 23.94,
+      "y": 0.92,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "url": "",
+        "caption": "",
+        "src": "social/media/l-emiro-stefano-e-i-suoi-sudditi-b9.mp4",
+        "pending": null
       }
     }
   ]
