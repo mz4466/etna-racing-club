@@ -1,0 +1,132 @@
+{
+  "title": "L'Emiro Stefano e i suoi sudditi",
+  "slug": "l-emiro-stefano-e-i-suoi-sudditi",
+  "date": "2026-07-27",
+  "year": 2026,
+  "campionato": "Sole & Sorpassi (2026)",
+  "blocks": [
+    {
+      "id": "b0",
+      "type": "text",
+      "x": 0.33,
+      "y": 1.15,
+      "w": 23.07,
+      "h": 95.48,
+      "content": {
+        "html": "<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\"><a name=\"_GoBack\"></a>Si è da poco conclusa Gara 3 del campionato Gr3 \n</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Questa\ngara ha visto la netta supremazia di un indomito Stefano capace di\nprendersi la Pole Position, la Vittoria e la Gara tutta in testa, gli\nè mancato solo il Giro veloce per completare il “Grand Chelem”</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Alle\nsue spalle dopo la partenza di è presto formato un trenino con\nClaudio in seconda posizione seguito da Carmine, Antonio, Pierpaolo e\nGiovanni</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Un\nerrore a metà gara di Pierpaolo gli precludeva ogni possibilità di\npodio costringendolo ad una difficilissima rimonta su Antonio\n(anch’egli vittima di un testacoda)</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Al\nTraguardo Carmine è comunque riuscito a piazzarsi in seconda\nposizione, Claudio è stato superato anche da un Giovanni oggi\nparticolarmente falloso alla guida, a seguire Pierpaolo è riuscito a\nmeno di 2 giri dal termine ad approfittare di una piccola indecisione\ndi Antonio per chiudere in quinta posizione, più indietro si sono\nclassificati un positivo Daniele, Nicola e William, doppiato</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Dopo\n3 Gare Stefano conduce in classifica con 4 punti di vantaggio su\nGiovanni e 8 su Carmine, molto accesa anche la lotta per il 4° posto\ncon Antonio che deve gestire 6 punti su Pierpaolo e 9 su Claudio</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Prossimo\nweekend ci aspetta il Trofeo Endurance, nella pista di Laguna Seca,\ngara per stomaci forti</p>"
+      }
+    },
+    {
+      "id": "b1",
+      "type": "photo",
+      "x": 23.91,
+      "y": 1.27,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/l-emiro-stefano-e-i-suoi-sudditi-b1.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b2",
+      "type": "photo",
+      "x": 23.81,
+      "y": 30.46,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/l-emiro-stefano-e-i-suoi-sudditi-b2.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b3",
+      "type": "photo",
+      "x": 75,
+      "y": 30.57,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/l-emiro-stefano-e-i-suoi-sudditi-b3.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b4",
+      "type": "photo",
+      "x": 75,
+      "y": 1.06,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/l-emiro-stefano-e-i-suoi-sudditi-b4.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b5",
+      "type": "photo",
+      "x": 49.45,
+      "y": 30.56,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/l-emiro-stefano-e-i-suoi-sudditi-b5.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b6",
+      "type": "photo",
+      "x": 49.43,
+      "y": 1.21,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/l-emiro-stefano-e-i-suoi-sudditi-b6.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b7",
+      "type": "photo",
+      "x": 23.85,
+      "y": 59.04,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/l-emiro-stefano-e-i-suoi-sudditi-b7.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b8",
+      "type": "photo",
+      "x": 49.37,
+      "y": 59.1,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/l-emiro-stefano-e-i-suoi-sudditi-b8.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    }
+  ]
+}
