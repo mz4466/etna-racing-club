@@ -150,9 +150,9 @@
       "bestLap": "02'02''776",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 6,
       "extra": "-",
-      "totale": 0,
+      "totale": 6,
       "stato": "dnf",
       "note": ""
     },
@@ -165,79 +165,79 @@
       "bestLap": "02'13''349",
       "fl": false,
       "pole": false,
-      "punti": 0,
+      "punti": 5,
       "extra": "-",
-      "totale": 0,
+      "totale": 5,
       "stato": "dnf",
       "note": ""
     }
   ],
   "standings": [
     {
-      "nome": "Giovanni",
-      "psn": "mz4461",
-      "pts": 42,
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "pts": 64,
       "pos": 1
     },
     {
-      "nome": "Antonio",
-      "psn": "antonioleocataad",
-      "pts": 41,
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "pts": 60,
       "pos": 2
-    },
-    {
-      "nome": "Stefano",
-      "psn": "stefano8923",
-      "pts": 38,
-      "pos": 3
     },
     {
       "nome": "Carmine",
       "psn": "CarmineRafa87",
-      "pts": 34,
+      "pts": 56,
+      "pos": 3
+    },
+    {
+      "nome": "Antonio",
+      "psn": "antonioleocataad",
+      "pts": 53,
       "pos": 4
     },
     {
       "nome": "Pyer",
       "psn": "PyerStark",
-      "pts": 33,
+      "pts": 47,
       "pos": 5
     },
     {
       "nome": "Claudio",
       "psn": "SybeX26",
-      "pts": 28,
+      "pts": 44,
       "pos": 6
     },
     {
       "nome": "William",
       "psn": "steward_andante",
-      "pts": 16,
+      "pts": 23,
       "pos": 7
+    },
+    {
+      "nome": "Daniele",
+      "psn": "MrSciacca81",
+      "pts": 22,
+      "pos": 8
     },
     {
       "nome": "Matteo Spinotto",
       "psn": "Sp1n8_Mes",
-      "pts": 10,
-      "pos": 8
+      "pts": 16,
+      "pos": 9
+    },
+    {
+      "nome": "Nicola",
+      "psn": "taeniko85",
+      "pts": 15,
+      "pos": 10
     },
     {
       "nome": "Gaetano",
       "psn": "Fizzarrinho",
       "pts": 10,
-      "pos": 8
-    },
-    {
-      "nome": "Daniele",
-      "psn": "MrSciacca81",
-      "pts": 7,
-      "pos": 10
-    },
-    {
-      "nome": "Nicola",
-      "psn": "taeniko85",
-      "pts": 7,
-      "pos": 10
+      "pos": 11
     },
     {
       "nome": "Antonio Cola",
