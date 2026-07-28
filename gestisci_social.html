@@ -648,6 +648,17 @@ document.addEventListener('mousedown',function(e){
   }
 });
 
+function firstPhotoSrc(bks){
+  for(var i=0;i<bks.length;i++){
+    var b=bks[i];
+    if(b.type==='photo'){
+      var src=b.content&&b.content.src;
+      if(src&&src.indexOf('data:')!==0) return src;
+    }
+  }
+  return '';
+}
+
 async function savePostData(){
   if(!currentPost||!token){toast('Connetti e seleziona un post','err');return;}
   toast('Salvataggio...','');
@@ -657,6 +668,7 @@ async function savePostData(){
     };
     await ghPut('social/posts/'+currentPost.slug+'.json',JSON.stringify(data,null,2),'Save draft: '+currentPost.slug);
     currentPost.blockTypes=blocks.map(function(b){return b.type;});
+    currentPost.cover=firstPhotoSrc(blocks);
     await saveIndex();
     toast('Bozza salvata \u2713','ok');
   }catch(e){toast('Errore: '+e.message,'err');}
@@ -688,6 +700,7 @@ async function publishPost(){
     var html=generatePostHTML(currentPost,blocks,canvasRatio);
     await ghPut('social/posts/'+currentPost.slug+'.html',html,'Publish: '+currentPost.slug);
     currentPost.blockTypes=blocks.map(function(b){return b.type;});
+    currentPost.cover=firstPhotoSrc(blocks);
     await saveIndex();
     toast('Pubblicato \u2713','ok');
   }catch(e){toast('Errore: '+e.message,'err');}
