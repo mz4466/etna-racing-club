@@ -6,7 +6,8 @@
     "year": 2026,
     "campionato": "",
     "blockTypes": [],
-    "created": "2026-07-27T18:12:50.014Z"
+    "created": "2026-07-27T18:12:50.014Z",
+    "cover": "social/media/pagelle-luglio-2026-b1.png"
   },
   {
     "title": "L'Emiro Stefano e i suoi sudditi",
@@ -26,7 +27,8 @@
       "photo",
       "video"
     ],
-    "created": "2026-07-27T17:54:46.049Z"
+    "created": "2026-07-27T17:54:46.049Z",
+    "cover": "social/media/l-emiro-stefano-e-i-suoi-sudditi-b1.jpg"
   },
   {
     "title": "Il nuovo 007 e' stato assegnato",
@@ -40,7 +42,8 @@
       "photo",
       "video"
     ],
-    "created": "2026-07-25T18:17:43.523Z"
+    "created": "2026-07-25T18:17:43.523Z",
+    "cover": "social/media/il-nuovo-007-e-stato-assegnato-b1.png"
   },
   {
     "title": "Gr3 - Gara 2 - Sole & Sorpassi",
@@ -59,7 +62,8 @@
       "photo",
       "photo"
     ],
-    "created": "2026-07-19T18:58:27.194Z"
+    "created": "2026-07-19T18:58:27.194Z",
+    "cover": "social/media/gr3-gara-2-sole-sorpassi-b2.jpeg"
   },
   {
     "title": "Super Turismo - The Aftermath",
@@ -81,7 +85,8 @@
       "photo",
       "photo"
     ],
-    "created": "2026-07-14T21:47:03.731Z"
+    "created": "2026-07-14T21:47:03.731Z",
+    "cover": "social/media/super-turismo-the-aftermath-b2.jpeg"
   },
   {
     "title": "Super Turismo",
@@ -98,7 +103,8 @@
       "photo",
       "photo"
     ],
-    "created": "2026-07-11T07:55:43.038Z"
+    "created": "2026-07-11T07:55:43.038Z",
+    "cover": "social/media/super-turismo-b2.jpeg"
   },
   {
     "title": "1a Di Campionato Gr3",
@@ -120,7 +126,8 @@
       "photo",
       "photo"
     ],
-    "created": "2026-07-06T21:55:11.963Z"
+    "created": "2026-07-06T21:55:11.963Z",
+    "cover": "social/media/1a-di-campionato-gr3-b2.jpeg"
   },
   {
     "title": "Evento - Gr.4 - The Outcome",
@@ -140,7 +147,8 @@
       "photo",
       "photo"
     ],
-    "created": "2026-07-05T06:16:06.082Z"
+    "created": "2026-07-05T06:16:06.082Z",
+    "cover": "social/media/evento-gr-4-the-outcome-b4.jpeg"
   },
   {
     "title": "Dragon Trail: Le Voci dei Protagonisti alla Vigilia del Campionato",
@@ -154,7 +162,8 @@
       "photo",
       "photo"
     ],
-    "created": "2026-07-04T08:34:23.280Z"
+    "created": "2026-07-04T08:34:23.280Z",
+    "cover": "social/media/dragon-trail-le-voci-dei-protagonisti-alla-vigilia-del-campionato-b2.jpeg"
   },
   {
     "title": "1a Puntata ERL",
@@ -169,7 +178,8 @@
       "photo",
       "audio"
     ],
-    "created": "2026-07-03T17:37:05.989Z"
+    "created": "2026-07-03T17:37:05.989Z",
+    "cover": "social/media/1a-puntata-erl-b0.jpeg"
   },
   {
     "title": "Etna Racing Day - The Outcome",
@@ -190,7 +200,8 @@
       "photo",
       "photo"
     ],
-    "created": "2026-06-29T19:30:31.139Z"
+    "created": "2026-06-29T19:30:31.139Z",
+    "cover": "social/media/etna-racing-day-the-outcome-b5.png"
   },
   {
     "title": "Risveglio dei motori 2026 - Finale",
@@ -206,7 +217,8 @@
       "photo",
       "photo"
     ],
-    "created": "2026-06-14T20:42:23.586Z"
+    "created": "2026-06-14T20:42:23.586Z",
+    "cover": "social/media/risveglio-dei-motori-2026-finale-b9.jpg"
   },
   {
     "title": "Anniversario",
@@ -218,7 +230,8 @@
       "title",
       "photo"
     ],
-    "created": "2026-05-29T21:23:07.805Z"
+    "created": "2026-05-29T21:23:07.805Z",
+    "cover": "social/media/anniversario-b1.jpeg"
   },
   {
     "title": "Comunicazione di servizio - Riunione",
@@ -230,7 +243,8 @@
       "title",
       "text"
     ],
-    "created": "2026-05-29T21:20:08.563Z"
+    "created": "2026-05-29T21:20:08.563Z",
+    "cover": ""
   },
   {
     "title": "Stagione in Arrivo - 2026/2027",
@@ -242,6 +256,7 @@
       "title",
       "video"
     ],
-    "created": "2026-05-29T21:16:54.688Z"
+    "created": "2026-05-29T21:16:54.688Z",
+    "cover": ""
   }
 ]
