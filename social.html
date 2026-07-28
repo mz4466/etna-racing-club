@@ -23,9 +23,23 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 .side-col{display:flex;flex-direction:column;gap:0}
 .badge-latest{display:inline-flex;align-items:center;gap:4px;font-family:'Teko',sans-serif;font-size:10px;letter-spacing:2px;padding:3px 10px;border-radius:10px;background:var(--gold-dim);border:1px solid rgba(201,162,39,0.25);color:var(--gold-hi);text-transform:uppercase;margin-bottom:8px}
 .section-label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:10px}
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:2px}
+.filter-pill{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1.5px;padding:6px 14px;border-radius:20px;border:1px solid rgba(201,162,39,0.2);background:rgba(255,255,255,0.02);color:var(--muted);cursor:pointer;transition:all .15s;text-transform:uppercase}
+.filter-pill:hover{border-color:rgba(201,162,39,0.4);color:var(--text)}
+.filter-pill.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold-hi)}
 .post-card{background:var(--card);border:1px solid var(--border-hi);border-radius:10px;overflow:hidden;position:relative;cursor:pointer;transition:border-color .2s;text-decoration:none;color:inherit;display:block}
 .post-card:hover{border-color:rgba(201,162,39,0.35)}
+.post-card.featured{display:grid;grid-template-columns:220px 1fr}
+.post-thumb{width:100%;height:100%;object-fit:cover;display:block;background:linear-gradient(135deg,#161626,#0a0a16)}
+.post-card:not(.featured) .post-thumb{height:130px}
+.post-thumb-sm{width:84px;height:84px;object-fit:cover;border-radius:8px;flex-shrink:0;background:linear-gradient(135deg,#161626,#0a0a16)}
 .post-card-body{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.load-more{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-hi);background:rgba(201,162,39,0.06);border:1px solid rgba(201,162,39,0.25);border-radius:8px;padding:12px;text-align:center;cursor:pointer;transition:all .15s}
+.load-more:hover{background:rgba(201,162,39,0.14)}
+.skeleton-card{background:var(--card);border:1px solid var(--border);border-radius:10px;height:90px;overflow:hidden;position:relative}
+.skeleton-card::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(201,162,39,0.06),transparent);animation:sk-shimmer 1.4s infinite}
+@keyframes sk-shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.year-pills{display:none}
 .post-card-info{flex:1;min-width:0}
 .post-card-title{font-family:'Teko',sans-serif;font-size:18px;letter-spacing:0.5px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .post-card-title.big{font-size:22px}
@@ -71,8 +85,12 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 .lightbox-close:hover{background:rgba(201,162,39,0.25);transform:scale(1.05);color:#fff}
 @media(max-width:880px){
   .social-layout{grid-template-columns:1fr}
-  .side-col{order:-1}
   .archive-section{position:static}
+  .post-card.featured{grid-template-columns:1fr}
+  .post-thumb{height:150px}
+  .year-pills{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+  .year-pills::-webkit-scrollbar{display:none}
+  .year-pill{flex-shrink:0;font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1.5px;padding:6px 16px;border-radius:20px;border:1px solid rgba(201,162,39,0.25);background:rgba(201,162,39,0.06);color:var(--gold-hi);white-space:nowrap;text-decoration:none}
 }
 @media(max-width:550px){
   .recent-row{grid-template-columns:1fr}
@@ -96,7 +114,13 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
 <div class="social-layout">
   <div class="main-col" id="mainCol">
-    <div class="loading" id="loadingMsg">Caricamento...</div>
+    <div class="year-pills" id="yearPills"></div>
+    <div id="filterBarWrap"></div>
+    <div id="feedWrap">
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
   </div>
   <div class="side-col" id="sideCol"></div>
 </div>
@@ -227,37 +251,91 @@ function closeLightbox() {
   }, 300);
 }
 
+// Stato filtro / paginazione
+var currentFilter = 'all';
+var allVisibleCount = 6; // quanti post mostrare in "Tutti i Post" prima del load-more
+var FILTERS = [
+  {key:'all', label:'Tutti'},
+  {key:'photo', label:'📷 Foto'},
+  {key:'video', label:'🎬 Video'},
+  {key:'text', label:'📝 Testo'}
+];
+
+function coverUrl(cover) {
+  if(!cover) return '';
+  return RAW + '/' + cover;
+}
+
+function thumbImg(p, cls) {
+  var url = coverUrl(p.cover);
+  if(!url) return '<div class="'+cls+'"></div>';
+  return '<img class="'+cls+'" src="'+url.replace(/"/g,'&quot;')+'" alt="" loading="lazy" onerror="this.style.visibility=\'hidden\'">';
+}
+
 // Carica indice e renderizza
 async function init() {
-  var loadingMsg = document.getElementById('loadingMsg');
+  var feedWrap = document.getElementById('feedWrap');
   try {
     var idx = await fetchJSONSafe('social/index.json');
     if(!idx || !Array.isArray(idx) || idx.length === 0) {
-      loadingMsg.innerHTML = '<span class="empty-icon">📭</span>Nessun post disponibile<br><span style="font-size:10px">Connettiti con GitHub tramite gestisci_social.html</span>';
+      feedWrap.innerHTML = '<div class="empty"><span class="empty-icon">📭</span>Nessun post disponibile<br><span style="font-size:10px">Connettiti con GitHub tramite gestisci_social.html</span></div>';
       return;
     }
     socialIndex = idx.slice().sort(function(a,b){
       return (b.date||'').localeCompare(a.date||'');
     });
-    loadingMsg.style.display = 'none';
+    renderFilterBar();
     renderMain();
     renderArchive();
   } catch(err) {
     console.error(err);
-    loadingMsg.innerHTML = '<span class="empty-icon">⚠️</span>Errore caricamento<br><span style="font-size:10px">Verifica connessione o repository</span>';
+    feedWrap.innerHTML = '<div class="empty"><span class="empty-icon">⚠️</span>Errore caricamento<br><span style="font-size:10px">Verifica connessione o repository</span></div>';
   }
 }
 
+function renderFilterBar() {
+  var wrap = document.getElementById('filterBarWrap');
+  var html = '<div class="filter-bar">';
+  FILTERS.forEach(function(f){
+    html += '<div class="filter-pill'+(currentFilter===f.key?' active':'')+'" onclick="setFilter(\''+f.key+'\')">'+esc(f.label)+'</div>';
+  });
+  html += '</div>';
+  wrap.innerHTML = html;
+}
+
+window.setFilter = function(key) {
+  currentFilter = key;
+  allVisibleCount = 6;
+  renderFilterBar();
+  renderMain();
+};
+
+window.loadMorePosts = function() {
+  allVisibleCount += 6;
+  renderMain();
+};
+
 function renderMain() {
-  var col = document.getElementById('mainCol');
+  var col = document.getElementById('feedWrap');
   var html = '';
-  
-  // Post in evidenza (ultimo)
-  if(socialIndex.length > 0) {
-    var p = socialIndex[0];
+
+  var list = currentFilter === 'all' ? socialIndex
+    : socialIndex.filter(function(p){ return (p.blockTypes||[]).indexOf(currentFilter) > -1; });
+
+  if(!list.length) {
+    col.innerHTML = '<div class="empty"><span class="empty-icon">📭</span>Nessun post in questa categoria</div>';
+    return;
+  }
+
+  var startIdx = 0;
+
+  // Post in evidenza (ultimo) — solo quando non è applicato un filtro
+  if(currentFilter === 'all' && list.length > 0) {
+    var p = list[0];
     var types = countTypes(p.blockTypes);
     html += '<div><div class="badge-latest">⭐ Ultimo Post</div>';
-    html += '<a href="'+postUrl(p.slug)+'" class="post-card">';
+    html += '<a href="'+postUrl(p.slug)+'" class="post-card featured">';
+    html += thumbImg(p, 'post-thumb');
     html += '<div class="post-card-body">';
     html += '<div class="post-card-info">';
     html += '<div class="post-card-title big">'+esc(p.title)+'</div>';
@@ -269,52 +347,61 @@ function renderMain() {
     html += '</div></div>';
     html += '<div class="expand-btn">↗</div>';
     html += '</div></a></div>';
-  }
-  
-  // 2 successivi
-  if(socialIndex.length > 1) {
-    html += '<div><div class="section-label">Post Recenti</div>';
-    html += '<div class="recent-row">';
-    var limit = Math.min(3, socialIndex.length);
-    for(var i=1; i<limit; i++) {
-      var p = socialIndex[i];
-      var types = countTypes(p.blockTypes);
-      html += '<a href="'+postUrl(p.slug)+'" class="post-card">';
-      html += '<div class="post-card-body">';
-      html += '<div class="post-card-info">';
-      html += '<div class="post-card-title">'+esc(p.title)+'</div>';
-      html += '<div class="post-card-meta"><span>'+formatDate(p.date)+'</span></div>';
-      html += '<div class="post-badges">';
-      types.forEach(function(t){ html += '<span class="post-badge '+badgeClass(t.type)+'">'+esc(t.label)+'</span>'; });
+    startIdx = 1;
+
+    // 2 successivi
+    if(list.length > 1) {
+      html += '<div><div class="section-label">Post Recenti</div>';
+      html += '<div class="recent-row">';
+      var limit = Math.min(3, list.length);
+      for(var i=1; i<limit; i++) {
+        var p2 = list[i];
+        var types2 = countTypes(p2.blockTypes);
+        html += '<a href="'+postUrl(p2.slug)+'" class="post-card">';
+        html += thumbImg(p2, 'post-thumb');
+        html += '<div class="post-card-body">';
+        html += '<div class="post-card-info">';
+        html += '<div class="post-card-title">'+esc(p2.title)+'</div>';
+        html += '<div class="post-card-meta"><span>'+formatDate(p2.date)+'</span></div>';
+        html += '<div class="post-badges">';
+        types2.forEach(function(t){ html += '<span class="post-badge '+badgeClass(t.type)+'">'+esc(t.label)+'</span>'; });
+        html += '</div></div>';
+        html += '<div class="expand-btn" style="width:28px;height:28px;font-size:13px">↗</div>';
+        html += '</div></a>';
+      }
       html += '</div></div>';
-      html += '<div class="expand-btn" style="width:28px;height:28px;font-size:13px">↗</div>';
-      html += '</div></a>';
+      startIdx = limit;
     }
-    html += '</div></div>';
   }
-  
-  // Tutti i post rimanenti
-  if(socialIndex.length > 3) {
-    html += '<div><div class="section-label">Tutti i Post</div>';
-    for(var i=3; i<socialIndex.length; i++) {
-      var p = socialIndex[i];
-      var types = countTypes(p.blockTypes);
-      html += '<a href="'+postUrl(p.slug)+'" class="post-card" style="margin-bottom:8px">';
+
+  // Post rimanenti (o tutti i post, se un filtro è attivo), con paginazione
+  if(list.length > startIdx) {
+    html += '<div><div class="section-label">'+(currentFilter==='all'?'Tutti i Post':'Risultati')+'</div>';
+    var endIdx = Math.min(list.length, startIdx + allVisibleCount);
+    for(var j=startIdx; j<endIdx; j++) {
+      var p3 = list[j];
+      var types3 = countTypes(p3.blockTypes);
+      var thumb = thumbImg(p3, 'post-thumb-sm');
+      html += '<a href="'+postUrl(p3.slug)+'" class="post-card" style="margin-bottom:8px">';
       html += '<div class="post-card-body" style="padding:10px 14px">';
+      if(thumb) html += thumb;
       html += '<div class="post-card-info">';
-      html += '<div class="post-card-title" style="font-size:15px">'+esc(p.title)+'</div>';
-      html += '<div class="post-card-meta"><span>'+formatDate(p.date)+'</span>';
-      if(p.campionato) html += '<span>'+esc(p.campionato)+'</span>';
+      html += '<div class="post-card-title" style="font-size:15px">'+esc(p3.title)+'</div>';
+      html += '<div class="post-card-meta"><span>'+formatDate(p3.date)+'</span>';
+      if(p3.campionato) html += '<span>'+esc(p3.campionato)+'</span>';
       html += '</div>';
       html += '<div class="post-badges">';
-      types.forEach(function(t){ html += '<span class="post-badge '+badgeClass(t.type)+'">'+esc(t.label)+'</span>'; });
+      types3.forEach(function(t){ html += '<span class="post-badge '+badgeClass(t.type)+'">'+esc(t.label)+'</span>'; });
       html += '</div></div>';
       html += '<div class="expand-btn" style="width:26px;height:26px;font-size:12px">↗</div>';
       html += '</div></a>';
     }
     html += '</div>';
+    if(endIdx < list.length) {
+      html += '<div class="load-more" onclick="loadMorePosts()">Carica altri post ▾ ('+(list.length-endIdx)+' rimanenti)</div>';
+    }
   }
-  
+
   if(html === '') html = '<div class="empty"><span class="empty-icon">📭</span>Nessun post disponibile</div>';
   col.innerHTML = html;
 }
@@ -332,8 +419,10 @@ function renderArchive() {
   var html = '<div class="archive-section">';
   html += '<div class="section-label">Archivio</div>';
   
+  var pillsHtml = '';
   years.forEach(function(y){
-    html += '<div class="year-group">';
+    pillsHtml += '<a href="#year-'+esc(y)+'" class="year-pill">'+esc(y)+'</a>';
+    html += '<div class="year-group" id="year-'+esc(y)+'">';
     html += '<div class="year-label" onclick="toggleYear(this)">'+esc(y)+'<span class="year-arrow">▼</span></div>';
     html += '<div class="year-content">';
     
@@ -365,6 +454,8 @@ function renderArchive() {
   });
   html += '</div>';
   side.innerHTML = html;
+  var pillsWrap = document.getElementById('yearPills');
+  if(pillsWrap) pillsWrap.innerHTML = pillsHtml;
 }
 
 window.toggleYear = function(el) {
@@ -390,8 +481,9 @@ document.addEventListener('click', function(e) {
   var target = e.target;
   // Se l'immagine è dentro un link? evita doppio effetto, ma vogliamo lightbox anche se dentro <a>
   if(target.tagName === 'IMG') {
-    // Evita se è già nel lightbox o se è un'icona minuscola
+    // Evita se è già nel lightbox o se è una thumbnail del feed (deve navigare al post)
     if(target.closest('.lightbox')) return;
+    if(target.classList.contains('post-thumb') || target.classList.contains('post-thumb-sm')) return;
     var imgSrc = target.src;
     if(imgSrc && (imgSrc.startsWith('http') || imgSrc.startsWith('social/') || imgSrc.startsWith('../media/'))) {
       e.preventDefault();
