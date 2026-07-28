@@ -348,30 +348,6 @@ function renderMain() {
     html += '<div class="expand-btn">↗</div>';
     html += '</div></a></div>';
     startIdx = 1;
-
-    // 2 successivi
-    if(list.length > 1) {
-      html += '<div><div class="section-label">Post Recenti</div>';
-      html += '<div class="recent-row">';
-      var limit = Math.min(3, list.length);
-      for(var i=1; i<limit; i++) {
-        var p2 = list[i];
-        var types2 = countTypes(p2.blockTypes);
-        html += '<a href="'+postUrl(p2.slug)+'" class="post-card">';
-        html += thumbImg(p2, 'post-thumb');
-        html += '<div class="post-card-body">';
-        html += '<div class="post-card-info">';
-        html += '<div class="post-card-title">'+esc(p2.title)+'</div>';
-        html += '<div class="post-card-meta"><span>'+formatDate(p2.date)+'</span></div>';
-        html += '<div class="post-badges">';
-        types2.forEach(function(t){ html += '<span class="post-badge '+badgeClass(t.type)+'">'+esc(t.label)+'</span>'; });
-        html += '</div></div>';
-        html += '<div class="expand-btn" style="width:28px;height:28px;font-size:13px">↗</div>';
-        html += '</div></a>';
-      }
-      html += '</div></div>';
-      startIdx = limit;
-    }
   }
 
   // Post rimanenti (o tutti i post, se un filtro è attivo), con paginazione
