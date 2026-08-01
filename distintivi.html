@@ -47,12 +47,6 @@
   .card h3{ font-family:'Teko',sans-serif; font-size:22px; margin:0; color:var(--cream); letter-spacing:0.5px; font-weight:500; }
   .card .desc{ color:var(--muted); font-size:12px; line-height:1.4; margin:0; }
 
-  .hero-legend{ text-align:center; margin-bottom:36px; }
-  .hero-legend .legend-title{ font-family:'Teko',sans-serif; font-size:13px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:18px; }
-  .legend-row{ display:flex; justify-content:center; gap:28px; flex-wrap:wrap; }
-  .legend-item{ display:flex; flex-direction:column; align-items:center; gap:8px; }
-  .legend-item .legend-label{ font-family:'Teko',sans-serif; font-size:12px; letter-spacing:2px; color:var(--muted); }
-
   .ring-wrap{ position:relative; display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto; }
   .ring-wrap svg{ display:block; transform:rotate(-90deg); }
   .ring-wrap .ring-track{ stroke:rgba(255,255,255,0.08); }
@@ -98,11 +92,6 @@
 </header>
 
 <div class="container">
-  <div class="hero-legend">
-    <div class="legend-title">Legenda Livelli</div>
-    <div class="legend-row" id="legendRow"></div>
-  </div>
-
   <div id="root"><div class="state">Caricamento dati pilota...</div></div>
 </div>
 
@@ -206,13 +195,6 @@ function ringMedal(percent, tierName, label, size){
     +   '<div class="ring-label" style="width:' + labelSize + 'px;height:' + labelSize + 'px;font-size:' + fontSize + 'px;color:' + color + ';">' + label + '</div>'
     + '</div>';
 }
-
-(function renderLegend(){
-  var tiers = [ ['bronzo','01',25], ['argento','05',50], ['oro','10',75], ['platino','★',100] ];
-  document.getElementById('legendRow').innerHTML = tiers.map(function(t){
-    return '<div class="legend-item">' + ringMedal(t[2], t[0], t[1], 84) + '<div class="legend-label">' + t[0].toUpperCase() + '</div></div>';
-  }).join('');
-})();
 
 function renderTieredCard(def, value){
   var tier = tierFor(value, def.thresholds);
