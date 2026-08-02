@@ -361,7 +361,7 @@ async function main(){
 
         var circuito = race.circuito || race.circuit || race.track || '';
         if (circuito) circuitiSet[circuito.toLowerCase().trim()] = true;
-        if (champ && champ.cars) categorieSet[String(champ.cars).toLowerCase().trim()] = true;
+        if (champ && champ.catAuto) categorieSet[String(champ.catAuto).toLowerCase().trim()] = true;
 
         raceLog.push({ date: race.data || '', stato: row.stato || 'ok' });
 
