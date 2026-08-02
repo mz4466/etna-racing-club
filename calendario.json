@@ -338,16 +338,21 @@
         "circuit": "Lago Maggiore – Centro – 1,7 km",
         "date": "2025-11-01",
         "laps": "20",
+        "fase": "",
+        "lapsType": "giri",
         "weather": "",
         "tire": "x1",
         "fuel": "x1",
         "types": "",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       }
     ],
     "costruttori": false,
     "teams": [],
-    "stagione": "Stagione 1"
+    "stagione": "Stagione 1",
+    "catAuto": "Kart"
   },
   {
     "id": "traiettorie-gelate-2026",
