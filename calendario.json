@@ -18,54 +18,75 @@
         "circuit": "Dragon Trail – Litorale – 5,2 km",
         "date": "2025-06-20",
         "laps": "15",
-        "weather": "🌤️ Nuvoloso e luminoso",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "C01 - 🌤️ Nuvoloso e luminoso",
         "tire": "x2",
         "fuel": "x2",
         "types": "Dure/Morbide",
-        "notes": "Pit 1"
+        "notes": "Pit 1",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Lago Maggiore – Layout completo – 5,8 km",
         "date": "2025-07-13",
         "laps": "14",
-        "weather": "☀️ Asciutto, sereno e piacevole",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "S01 - ☀️ Asciutto, sereno e piacevole",
         "tire": "x3",
         "fuel": "x2",
         "types": "Dure/Medie",
-        "notes": "Pit 1"
+        "notes": "Pit 1",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Daytona – Tri-ovale – 4,0 km",
         "date": "2025-07-27",
         "laps": "24",
-        "weather": "🌫️ Nebbioso, sereno e piacevole",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "S05 - 🌫️ Nebbioso, sereno e piacevole",
         "tire": "x1",
         "fuel": "x1",
         "types": "Medie/Morbide",
-        "notes": "Pit 1"
+        "notes": "Pit 1",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Le Mans – Layout completo – 13,6 km",
         "date": "2025-08-31",
         "laps": "6",
-        "weather": "⛅ Umido, soleggiato con molte nuvole",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "S09 - ⛅ Umido, soleggiato con molte nuvole",
         "tire": "x3",
         "fuel": "x4",
         "types": "Dure/Morbide",
-        "notes": "1 pit"
+        "notes": "1 pit",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Alsazia – Villaggio – 5,4 km",
         "date": "2025-09-14",
         "laps": "15",
-        "weather": "⛅ Asciutto, nuvoloso e piacevole",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "S03 - ⛅ Asciutto, nuvoloso e piacevole",
         "tire": "x3",
         "fuel": "x2",
         "types": "Dure/Medie/morbide",
-        "notes": "Pit 2"
+        "notes": "Pit 2",
+        "carId": "",
+        "carName": ""
       }
     ],
-    "stagione": "Stagione 1"
+    "stagione": "Stagione 1",
+    "catAuto": "Gr3"
   },
   {
     "id": "autunno-2025",
