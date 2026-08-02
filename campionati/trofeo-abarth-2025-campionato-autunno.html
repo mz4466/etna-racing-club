@@ -34,11 +34,28 @@
   .back-link{display:block;text-align:center;margin-top:28px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:var(--text-dim);text-decoration:none;text-transform:uppercase;transition:color 0.2s;}
   .back-link:hover{color:var(--text);}
 
-  .round-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+  .round-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;padding:12px;border:1px solid rgba(212,98,42,0.35);border-radius:16px;background:linear-gradient(135deg,rgba(192,57,43,0.05),rgba(201,162,39,0.03));box-shadow:0 0 0 1px rgba(212,98,42,0.06),0 4px 16px rgba(192,57,43,0.10);transition:border-color .25s,box-shadow .25s;}
+  .round-row:hover{border-color:rgba(232,140,60,0.65);box-shadow:0 0 0 1px rgba(232,140,60,0.12),0 6px 22px rgba(212,98,42,0.20);}
   .round-row .round-card{flex:1;margin-bottom:0;}
   .round-manifesto{width:120px;flex-shrink:0;border-radius:10px;overflow:hidden;border:1px solid var(--border-hi);cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;}
   .round-manifesto:hover{border-color:var(--gold);box-shadow:0 4px 20px rgba(201,162,39,0.15);}
   .round-manifesto img{width:100%;height:100%;object-fit:cover;display:block;}
+  @media(max-width:600px){
+    .round-row{flex-direction:column;}
+    .round-track-map{width:100%;height:180px;}
+    .round-track-map img{height:180px;object-fit:contain;}
+    .round-manifesto{width:100%;height:auto;}
+    .round-manifesto img{height:auto;max-height:280px;object-fit:contain;}
+  }
+  .round-track-map{width:120px;flex-shrink:0;border-radius:10px;overflow:hidden;border:1px solid rgba(79,195,247,0.2);cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;}
+  .round-track-map:hover{border-color:rgba(79,195,247,0.5);box-shadow:0 4px 20px rgba(79,195,247,0.1);}
+  .round-track-map img{width:100%;height:100%;object-fit:contain;display:block;background:#080814;}
+  #carLbx{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.88);align-items:center;justify-content:center;cursor:zoom-out;}
+  #carLbx.open{display:flex;}
+  #carLbx img{max-width:80vw;max-height:70vh;object-fit:contain;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.8);}
+  #carLbx-name{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);font-family:'Teko',sans-serif;font-size:18px;letter-spacing:2px;color:#fff;text-align:center;white-space:nowrap;}
+  #carLbx-close{position:absolute;top:20px;right:24px;font-size:28px;color:#fff;cursor:pointer;opacity:0.7;}
+  #carLbx-close:hover{opacity:1;}
 
   .manifesto-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out;}
   .manifesto-lightbox.open{display:flex;}
@@ -54,12 +71,13 @@
   <div class="champ-name">Trofeo Abarth</div>
   <div class="champ-sub">Abarth 500 '09</div>
   
-  <div class="cat-badge">Trofeo · 2025</div>
+  <div class="cat-badge">Trofeo · City Car · 2025</div>
 </header>
 <div class="wrap">
   <div class="section-title">📅 Calendario — 1 round</div>
   
     <div class="round-row">
+      
       <div class="round-card">
         <div class="round-header">
           <div class="round-num">R1</div>
@@ -70,11 +88,13 @@
           <a href="../risultati/2025-abarth-r1-monza-5-793-m-.html" class="results-btn">📋 Risultati</a>
         </div>
         <div class="round-details">
-          <div class="detail-pill">🏔️ Sole con foschia alpina</div>
+          <div class="detail-pill">S11 - 🏔️ Sole con foschia alpina</div>
+          
           <div class="detail-pill">🔄 14 giri</div>
           <div class="detail-pill">🏎️ Gomme x2</div>
           <div class="detail-pill">⛽ Carb. x4</div>
           <div class="detail-pill">🔵 Medie/Morbide</div>
+          
         </div>
         <div class="round-note">📌 1 Pit - 15 min Qualifiche</div>
       </div>
@@ -85,6 +105,11 @@
 <div class="manifesto-lightbox" id="manifestoLightbox" onclick="closeManifesto()">
   <span class="manifesto-lightbox-close" onclick="closeManifesto()">&#10005;</span>
   <img id="manifestoLightboxImg" src="" alt="Manifesto">
+</div>
+<div id="carLbx" onclick="closeCarLbx()">
+  <span id="carLbx-close" onclick="event.stopPropagation();closeCarLbx()">&#x2715;</span>
+  <img id="carLbx-img" src="" referrerpolicy="no-referrer" alt="" onclick="event.stopPropagation()">
+  <div id="carLbx-name"></div>
 </div>
 <script>
 function openManifesto(el){
@@ -97,7 +122,13 @@ function closeManifesto(){
 }
 document.addEventListener("keydown",function(e){if(e.key==="Escape")closeManifesto();});
 </script>
+<script>
+function openCarLbx(el){var img=el.tagName==='IMG'?el:el.querySelector('img');if(!img)return;document.getElementById('carLbx-img').src=img.src;var pill=el.closest?el.closest('.detail-pill'):el;document.getElementById('carLbx-name').textContent=pill?pill.textContent.replace('🚗','').trim():'';document.getElementById('carLbx').classList.add('open');}
+function closeCarLbx(){document.getElementById('carLbx').classList.remove('open');}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeCarLbx();});
+</script>
 <script src="copyright.js"></script>
 <script src="../nav.js"></script>
+
 </body>
 </html>
