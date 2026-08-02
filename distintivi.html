@@ -78,6 +78,11 @@
   .manual-tag.assegnato{ background:rgba(255,140,66,0.15); color:var(--accent2); border:1px solid rgba(255,140,66,0.35); }
   .manual-tag.non-assegnato{ background:rgba(255,255,255,0.05); color:var(--muted); border:1px solid var(--line); }
 
+  .cat-chips{ display:flex; flex-wrap:wrap; gap:5px; }
+  .cat-chip{ font-family:'Teko',sans-serif; font-size:11px; letter-spacing:0.5px; padding:2px 8px; border-radius:10px;
+    background:rgba(255,255,255,0.04); color:var(--muted); border:1px solid var(--line); opacity:0.6; }
+  .cat-chip.got{ background:rgba(201,162,39,0.15); color:var(--gold2); border:1px solid rgba(201,162,39,0.4); opacity:1; }
+
   footer{ text-align:center; color:var(--muted); font-size:11px; margin-top:50px; padding-top:20px; border-top:1px solid var(--line); }
 </style>
 </head>
@@ -119,6 +124,17 @@ async function fetchBatched(urls, fetchFn, batchSize, delayMs){
 
 function daysBetween(d1, d2){ return Math.abs(d2 - d1) / 86400000; }
 function initials(name){ return String(name||'').split(/\s+/).filter(Boolean).slice(0,2).map(function(w){ return w[0]; }).join('').toUpperCase(); }
+
+// Elenco canonico "Categoria Auto" — deve rispecchiare le option in crea/modifica-campionato.html
+const CATEGORIA_AUTO_LIST = ['Gr1','Gr2','Gr3','Gr4','Monoposto','Sportive Stradali','Storiche','Super Turismo','Kart','City Car','Rally','Ultraleggere'];
+
+function renderCatAutoChips(achievedSet){
+  var chips = CATEGORIA_AUTO_LIST.map(function(c){
+    var got = !!achievedSet[c.toLowerCase().trim()];
+    return '<span class="cat-chip' + (got ? ' got' : '') + '">' + (got ? '✓ ' : '') + esc(c) + '</span>';
+  }).join('');
+  return '<div class="cat-chips">' + chips + '</div>';
+}
 
 // ============================================================
 // CATALOGO DISTINTIVI — rispecchia esattamente la tabella fornita
@@ -196,7 +212,7 @@ function ringMedal(percent, tierName, label, size){
     + '</div>';
 }
 
-function renderTieredCard(def, value){
+function renderTieredCard(def, value, extraHtml){
   var tier = tierFor(value, def.thresholds);
   var tierName = TIER_NAMES[tier];
   var nextThreshold = def.thresholds[tier];
@@ -216,6 +232,7 @@ function renderTieredCard(def, value){
     + '<div class="card">'
     +   '<div class="card-top">' + ringMedal(progressPct, tierName, initials(def.nome), 56) + '<div><h3>' + esc(def.nome) + '</h3></div></div>'
     +   '<p class="desc">' + esc(def.desc) + '</p>'
+    +   (extraHtml || '')
     +   '<div class="tiers">' + tiersHtml + '</div>'
     +   '<div class="stat-line"><span>' + nextLabel + '</span><b>' + value + ' ' + esc(def.unit) + '</b></div>'
     +   '<div class="progress"><div style="width:' + progressPct + '%"></div></div>'
@@ -444,7 +461,7 @@ async function main(){
       html += '<div class="section"><div class="section-head"><span class="n">' + String(si+1).padStart(2,'0') + '</span><h2>' + esc(section.cat) + '</h2><span class="sub">' + section.items.length + ' distintivi</span></div>';
       html += '<div class="badge-grid">';
       section.items.forEach(function(def){
-        if (def.type === 'tiered') html += renderTieredCard(def, stats[def.key] || 0);
+        if (def.type === 'tiered') html += renderTieredCard(def, stats[def.key] || 0, def.key === 'multicat' ? renderCatAutoChips(categorieSet) : '');
         else if (def.type === 'auto') html += renderUnicaCard(def, !!autoUnica[def.key]);
         else html += renderUnicaCard(def, pilotBadges.indexOf(def.key) !== -1);
       });
