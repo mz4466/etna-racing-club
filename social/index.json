@@ -5,8 +5,20 @@
     "date": "2026-08-02",
     "year": 2026,
     "campionato": "Trofeo Endurance (2026)",
-    "blockTypes": [],
-    "created": "2026-08-02T16:54:55.179Z"
+    "blockTypes": [
+      "title",
+      "video",
+      "photo",
+      "photo",
+      "photo",
+      "photo",
+      "photo",
+      "photo",
+      "photo",
+      "photo"
+    ],
+    "created": "2026-08-02T16:54:55.179Z",
+    "cover": "social/media/60-minuti-per-la-vittora-b2.jpg"
   },
   {
     "title": "Pagelle Luglio 2026",
