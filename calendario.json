@@ -233,16 +233,21 @@
         "circuit": "Tsukuba – 2,0 km",
         "date": "2025-10-25",
         "laps": "30",
+        "fase": "",
+        "lapsType": "giri",
         "weather": "",
         "tire": "x1",
         "fuel": "x1",
         "types": "",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       }
     ],
     "costruttori": false,
     "teams": [],
-    "stagione": "Stagione 1"
+    "stagione": "Stagione 1",
+    "catAuto": "Kart"
   },
   {
     "id": "trofeo-formula-autunno-2025",
