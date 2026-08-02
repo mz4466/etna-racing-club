@@ -1196,10 +1196,10 @@
     "trophy": "endurance_trophy.jpg",
     "cars": "Bac Mono '16",
     "desc": "Laguna Seca: La Maratona dei 60 Minuti",
-    "status": "prossimo",
+    "status": "concluso",
     "file": "campionati/trofeo-endurance-2026-trofeo-trofeo-endurance.html",
     "totalRounds": 1,
-    "completedRounds": 0,
+    "completedRounds": 1,
     "bestOf": null,
     "rounds": [
       {
