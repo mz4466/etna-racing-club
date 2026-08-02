@@ -523,19 +523,39 @@ function updateOutputFilename(){
   document.getElementById('outputFilename').textContent = slug;
 }
 
+// ── FETCH IN LIMITED BATCHES ──
+// Firing 20-100+ parallel fetch() calls at once to the GitHub API can trip
+// connection limits (ERR_CONNECTION_CLOSED) or silent failures. This runs
+// `worker` over `items` a few at a time instead of all at once.
+async function fetchInBatches(items, batchSize, worker){
+  var results = [];
+  for(var i=0; i<items.length; i+=batchSize){
+    var batch = items.slice(i, i+batchSize);
+    var batchResults = await Promise.all(batch.map(worker));
+    results = results.concat(batchResults);
+  }
+  return results;
+}
+
 // ── LOAD PILOTS ──
 async function loadPilots(){
   try {
     const r = await fetch(`https://api.github.com/repos/${REPO}/contents/piloti_schede?ref=${BRANCH}`,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
-    if(!r.ok) return;
+    if(!r.ok){ toast('Impossibile caricare l\'elenco piloti (HTTP '+r.status+')','err'); return; }
     const files = await r.json();
     const jsons = files.filter(f=>f.name.endsWith('.json') && f.name!=='index.json' && f.name!=='psn-map.json');
-    const pilots = await Promise.all(jsons.map(async f=>{
-      const jr = await fetch(f.url, {headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
-      if(!jr.ok) return null;
-      const meta = await jr.json();
-      return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
-    }));
+    const pilots = await fetchInBatches(jsons, 6, async function(f){
+      try {
+        const jr = await fetch(f.url, {headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
+        if(!jr.ok) return null;
+        const meta = await jr.json();
+        return JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
+      } catch(e){ return null; }
+    });
+    const failedCount = pilots.filter(p=>p===null).length;
+    if(failedCount>0){
+      toast(`⚠ ${failedCount} sched${failedCount===1?'a pilota non caricata':'e piloti non caricate'} — riprova a connetterti`,'err');
+    }
     pilotNames = pilots.filter(Boolean).filter(p=>p.attivo !== false).map(p=>p.nome||p.name||p.psn||'').filter(Boolean);
     pilots.filter(Boolean).filter(p=>p.attivo !== false).forEach(function(p){
       var nome = p.nome||p.name||p.psn||'';
@@ -547,7 +567,10 @@ async function loadPilots(){
       }
     });
     loadGT7Cars();
-  } catch {}
+  } catch(e) {
+    toast('Errore caricamento piloti: '+e.message,'err');
+    console.error('loadPilots failed:', e);
+  }
 }
 
 // ── LOAD GUESTS (harvest {nome,psn} from past race rows; members excluded) ──
@@ -555,10 +578,10 @@ async function loadGuests(){
   guestRegistry = {};
   try {
     const r = await fetch(`https://api.github.com/repos/${REPO}/contents/risultati?ref=${BRANCH}&_=${Date.now()}`,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
-    if(!r.ok) return;
+    if(!r.ok){ toast('Impossibile leggere lo storico risultati (HTTP '+r.status+')','err'); return; }
     const all = await r.json();
     const jsons = all.filter(f=>f.name.endsWith('.json') && f.name!=='index.json');
-    await Promise.all(jsons.map(async f=>{
+    await fetchInBatches(jsons, 6, async function(f){
       try {
         const jr = await fetch(f.url,{headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
         if(!jr.ok) return;
@@ -572,8 +595,11 @@ async function loadGuests(){
           guestRegistry[key] = { nome: nome, psn: psn };
         });
       } catch(e){}
-    }));
-  } catch(e){}
+    });
+  } catch(e){
+    toast('Errore caricamento storico ospiti: '+e.message,'err');
+    console.error('loadGuests failed:', e);
+  }
 }
 
 // Combined, de-duped suggestion list (members + remembered guests), keyed by PSN
