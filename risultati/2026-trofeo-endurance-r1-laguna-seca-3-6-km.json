@@ -1,0 +1,181 @@
+{
+  "circuito": "Laguna Seca – 3,6 km",
+  "data": "2026-08-02",
+  "garaNum": "1",
+  "garaTot": "1",
+  "champId": "trofeo-endurance-2026",
+  "champIdx": "trofeo-endurance-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "auto": "",
+      "tempo": "100'23''137",
+      "bestLap": "01'24''847",
+      "fl": false,
+      "pole": true,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 2,
+      "nome": "Carmine",
+      "psn": "CarmineRafa87",
+      "auto": "",
+      "tempo": "a 0\"319",
+      "bestLap": "01'24''895",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 3,
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "auto": "",
+      "tempo": "a 7\"269",
+      "bestLap": "01'24''841",
+      "fl": true,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 4,
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "auto": "",
+      "tempo": "a 37\"224",
+      "bestLap": "01'25''543",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 5,
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "auto": "",
+      "tempo": "a 1 Giro",
+      "bestLap": "01'26''693",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 6,
+      "nome": "Matteo Spinotto",
+      "psn": "Sp1n8_Mes",
+      "auto": "",
+      "tempo": "a 1 Giro",
+      "bestLap": "01'25''881",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 7,
+      "nome": "Matteo Pareschi",
+      "psn": "Pare1988",
+      "auto": "",
+      "tempo": "a 1 Giro",
+      "bestLap": "01'25''609",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 8,
+      "nome": "William",
+      "psn": "steward_andante",
+      "auto": "",
+      "tempo": "",
+      "bestLap": "01'29''731",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "dnf",
+      "note": ""
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "pts": 0,
+      "pos": 1
+    },
+    {
+      "nome": "Carmine",
+      "psn": "CarmineRafa87",
+      "pts": 0,
+      "pos": 1
+    },
+    {
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "pts": 0,
+      "pos": 1
+    },
+    {
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "pts": 0,
+      "pos": 1
+    },
+    {
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "pts": 0,
+      "pos": 1
+    },
+    {
+      "nome": "Matteo Spinotto",
+      "psn": "Sp1n8_Mes",
+      "pts": 0,
+      "pos": 1
+    },
+    {
+      "nome": "Matteo Pareschi",
+      "psn": "Pare1988",
+      "pts": 0,
+      "pos": 1
+    },
+    {
+      "nome": "William",
+      "psn": "steward_andante",
+      "pts": 0,
+      "pos": 1
+    }
+  ],
+  "bestOf": null
+}
