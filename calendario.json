@@ -107,56 +107,77 @@
         "circuit": "Bathurst – Mount Panorama – 6,2 km",
         "date": "2025-09-28",
         "laps": "13",
-        "weather": "🌤️ Asciutto, nuvoloso e soleggiato",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "S04 - 🌤️ Asciutto, nuvoloso e soleggiato",
         "tire": "x1",
         "fuel": "x3",
         "types": "Dure/Medie",
-        "notes": "1 Pit - 15 min Qualifiche"
+        "notes": "1 Pit - 15 min Qualifiche",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Trial Mountain – 5,4 km",
         "date": "2025-10-18",
         "laps": "14",
-        "weather": "☁️ Completamente nuvoloso",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "C05 - ☁️ Completamente nuvoloso",
         "tire": "x2",
         "fuel": "x1",
         "types": "Medie/Morbide",
-        "notes": "1 Pit - 15 min Qualifiche"
+        "notes": "1 Pit - 15 min Qualifiche",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Spa-Francorchamps – Layout completo – 7,0 km",
         "date": "2025-11-02",
         "laps": "11",
-        "weather": "⛅ Sole con molte nubi monsoniche (più coperto) + ☁️ Nuvoloso e scuro + ☁️ Completamente nuvoloso + 🌧️ Pioggia leggera",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "S14 - ⛅ Sole con molte nubi monsoniche (più coperto) + C03 - ☁️ Nuvoloso e scuro + C05 - ☁️ Completamente nuvoloso",
         "tire": "x4",
         "fuel": "x2",
         "types": "Medie",
-        "notes": "1 Pit - 15 min Qualifiche"
+        "notes": "1 Pit - 15 min Qualifiche",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Sardegna – Tracciato stradale Layout A – 5,1 km",
         "date": "2025-11-16",
         "laps": "15",
-        "weather": "☀️ Asciutto, sereno e piacevole",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "S01 - ☀️ Asciutto, sereno e piacevole",
         "tire": "x4",
         "fuel": "x3",
         "types": "Dure/Medie/Morbide",
-        "notes": "1 Pit - 15 min Qualifiche"
+        "notes": "1 Pit - 15 min Qualifiche",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Laguna Seca – 3,6 km",
         "date": "2025-11-30",
         "laps": "22",
-        "weather": "🌫️ Foschia, nuvoloso e soleggiato",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "S17 - 🌫️ Foschia, nuvoloso e soleggiato",
         "tire": "x3",
         "fuel": "x3",
         "types": "Medie/Morbide",
-        "notes": "1 Pit - 15 min Qualifiche"
+        "notes": "1 Pit - 15 min Qualifiche",
+        "carId": "",
+        "carName": ""
       }
     ],
     "costruttori": false,
     "teams": [],
-    "stagione": "Stagione 1"
+    "stagione": "Stagione 1",
+    "catAuto": "Gr3"
   },
   {
     "id": "trofeo-abarth-2025",
