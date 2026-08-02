@@ -854,15 +854,18 @@
         "laps": "15",
         "fase": "Tarda mattinata",
         "lapsType": "giri",
-        "weather": "🌤️ Asciutto e piacevole, scarsa nuvolosità",
+        "weather": "S02 - 🌤️ Asciutto e piacevole, scarsa nuvolosità",
         "tire": "x3",
         "fuel": "x3",
         "types": "Morbide",
-        "notes": "1 Pit obbligatorio"
+        "notes": "1 Pit obbligatorio",
+        "carId": "",
+        "carName": ""
       }
     ],
     "costruttori": false,
-    "teams": []
+    "teams": [],
+    "catAuto": "City Car"
   },
   {
     "id": "sole-sorpassi-2026",
