@@ -1,0 +1,145 @@
+{
+  "title": "60 minuti per la vittora",
+  "slug": "60-minuti-per-la-vittora",
+  "date": "2026-08-02",
+  "year": 2026,
+  "campionato": "Trofeo Endurance (2026)",
+  "blocks": [
+    {
+      "id": "b0",
+      "type": "title",
+      "x": 0.54,
+      "y": 1.64,
+      "w": 25,
+      "h": 12.12,
+      "content": {
+        "text": "Trofeo Endurance",
+        "size": "medium"
+      }
+    },
+    {
+      "id": "b1",
+      "type": "video",
+      "x": 26.27,
+      "y": 2.8,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "url": "https://youtu.be/H5xcJ40VWws",
+        "caption": ""
+      }
+    },
+    {
+      "id": "b2",
+      "type": "photo",
+      "x": 0.57,
+      "y": 71.94,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/60-minuti-per-la-vittora-b2.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b3",
+      "type": "photo",
+      "x": 0.65,
+      "y": 43.79,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/60-minuti-per-la-vittora-b3.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b4",
+      "type": "photo",
+      "x": 0.73,
+      "y": 14.65,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/60-minuti-per-la-vittora-b4.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b5",
+      "type": "photo",
+      "x": 28.43,
+      "y": 31.75,
+      "w": 19.79,
+      "h": 47.99,
+      "content": {
+        "src": "social/media/60-minuti-per-la-vittora-b5.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b6",
+      "type": "photo",
+      "x": 52.14,
+      "y": 10.29,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/60-minuti-per-la-vittora-b6.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b7",
+      "type": "photo",
+      "x": 52.01,
+      "y": 68.07,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/60-minuti-per-la-vittora-b7.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b8",
+      "type": "photo",
+      "x": 52.07,
+      "y": 39.24,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/60-minuti-per-la-vittora-b8.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b9",
+      "type": "photo",
+      "x": 28.47,
+      "y": 81.07,
+      "w": 19.69,
+      "h": 17.93,
+      "content": {
+        "src": "social/media/60-minuti-per-la-vittora-b9.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    }
+  ]
+}
