@@ -443,7 +443,7 @@
       <div class="card">
         <div class="card-title">⚙️ Informazioni Campionato</div>
 
-        <div class="form-row col3">
+        <div class="form-row col4">
           <div class="field" style="grid-column:1/-1"><label>Stagione Ufficiale</label><input type="text" id="champStagione" placeholder="es. Stagione 1 · Primavera 2026" oninput="updateAll()"></div>
           <div class="field"><label>Nome Campionato</label><input type="text" id="champName" oninput="updateAll()"></div>
           <div class="field"><label>Anno</label><input type="number" id="champYear" min="2020" max="2099" oninput="updateAll()"></div>
@@ -457,6 +457,23 @@
               <option>Crono</option>
               <option>Evento</option>
             <option>Gara Ufficiosa</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Categoria Auto</label>
+            <select id="champCatAuto" onchange="updateAll()">
+              <option>Gr1</option>
+              <option>Gr2</option>
+              <option>Gr3</option>
+              <option>Gr4</option>
+              <option>Monoposto</option>
+              <option>Sportive Stradali</option>
+              <option>Storiche</option>
+              <option>Super Turismo</option>
+              <option>Kart</option>
+              <option>City Car</option>
+              <option>Rally</option>
+              <option>Ultraleggere</option>
             </select>
           </div>
         </div>
@@ -924,6 +941,10 @@ function populateFromHTML(entry, html) {
   const catSel = document.getElementById('champCat');
   for (let o of catSel.options) { if (o.value === entry.cat) { o.selected = true; break; } }
 
+  // Set car category
+  const catAutoSel = document.getElementById('champCatAuto');
+  if (catAutoSel) { for (let o of catAutoSel.options) { if (o.value === entry.catAuto) { o.selected = true; break; } } }
+
   // Parse rounds from HTML
   document.getElementById('racesList').innerHTML = '';
   roundCounter = 0;
@@ -1303,6 +1324,7 @@ function buildHTML() {
   const name = document.getElementById('champName').value.trim() || 'Campionato';
   const year = document.getElementById('champYear').value || '2026';
   const cat  = document.getElementById('champCat').value;
+  const catAuto = document.getElementById('champCatAuto').value;
   const cars = document.getElementById('champCars').value.trim();
   const desc = document.getElementById('champDesc').value.trim();
   const cards = document.querySelectorAll('.race-card');
@@ -1442,7 +1464,7 @@ function buildHTML() {
   <div class="champ-name">${name}</div>
   <div class="champ-sub">${cars || cat}</div>
   ${desc ? `<div class="champ-desc">${desc}</div>` : ''}
-  <div class="cat-badge">${cat} · ${year}</div>
+  <div class="cat-badge">${cat}${catAuto ? ' · ' + catAuto : ''} · ${year}</div>
 </header>
 <div class="wrap">
   <div class="section-title">📅 Calendario — ${cards.length} round${cards.length!==1?'s':''}</div>
@@ -1550,6 +1572,7 @@ async function updateCalendarioEntry(token, fname) {
       list[idx].name  = document.getElementById('champName').value.trim();
       list[idx].year  = document.getElementById('champYear').value;
       list[idx].cat   = document.getElementById('champCat').value;
+      list[idx].catAuto = document.getElementById('champCatAuto').value;
       list[idx].stagione = document.getElementById('champStagione').value.trim() || null;
       list[idx].cars  = document.getElementById('champCars').value.trim();
       list[idx].desc  = document.getElementById('champDesc').value.trim();
