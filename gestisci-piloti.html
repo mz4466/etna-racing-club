@@ -601,17 +601,27 @@ async function loadPilots(){
 
     if(!jsonFiles.length){ allPilots=[]; renderGrid(); toast('Nessun pilota trovato',''); return; }
 
-    const results = await Promise.all(jsonFiles.map(async f=>{
-      const fr = await fetch(f.url, {
-        headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
-      });
-      if(!fr.ok) return null;
-      const meta = await fr.json();
-      const data = JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
-      return { slug: f.name.replace('.json',''), data };
-    }));
+    const results = await fetchInBatches(jsonFiles, 6, async function(f){
+      try {
+        const fr = await fetch(f.url, {
+          headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}
+        });
+        if(!fr.ok) return { slug: f.name.replace('.json',''), error: true };
+        const meta = await fr.json();
+        const data = JSON.parse(decodeURIComponent(escape(atob(meta.content.replace(/\s/g,'')))));
+        return { slug: f.name.replace('.json',''), data };
+      } catch(e){
+        return { slug: f.name.replace('.json',''), error: true };
+      }
+    });
 
-    allPilots = results.filter(Boolean);
+    const failed = results.filter(r=>r && r.error);
+    if(failed.length){
+      const names = failed.map(r=>r.slug).join(', ');
+      toast(`⚠ ${failed.length} sched${failed.length===1?'a':'e'} non caricat${failed.length===1?'a':'e'} (${names}) — probabilmente file troppo grande, riprova o controlla la foto`,'err');
+    }
+
+    allPilots = results.filter(function(r){ return r && r.data; });
     filterPilots();
     document.getElementById('statTotal').textContent = allPilots.length;
     toast(`✓ ${allPilots.length} piloti caricati`,'ok');
@@ -620,6 +630,19 @@ async function loadPilots(){
     allPilots=[];
     renderGrid();
   }
+}
+
+// Fetch a list of items with limited concurrency, to avoid tripping GitHub/browser
+// connection limits when there are many files, and so a single oversized/broken
+// file returns an isolated failure instead of aborting the whole batch.
+async function fetchInBatches(items, batchSize, worker){
+  var results = [];
+  for(var i=0; i<items.length; i+=batchSize){
+    var batch = items.slice(i, i+batchSize);
+    var batchResults = await Promise.all(batch.map(worker));
+    results = results.concat(batchResults);
+  }
+  return results;
 }
 
 // ── RENDER ──
@@ -832,13 +855,14 @@ async function handlePhoto2Upload(input){
   const preview = document.getElementById('photo2Preview');
   status.textContent = 'Elaborazione...';
 
-  const GIF_MAX_BYTES = 2 * 1024 * 1024; // 2MB cap for GIFs (no quality slider to fall back on)
+  const GIF_MAX_BYTES = 400 * 1024; // 400KB cap for GIFs — the whole pilot JSON (foto + foto2 + testo)
+                                     // must stay well under GitHub's ~1MB single-file Contents API read limit
 
   try {
     let base64;
     if(file.type === 'image/gif'){
       if(file.size > GIF_MAX_BYTES){
-        throw new Error(`GIF troppo pesante (${Math.round(file.size/1024)} KB, max ${GIF_MAX_BYTES/1024/1024}MB). Comprimilo prima di caricarlo.`);
+        throw new Error(`GIF troppo pesante (${Math.round(file.size/1024)} KB, max ${Math.round(GIF_MAX_BYTES/1024)} KB). Comprimilo prima di caricarlo.`);
       }
       base64 = await readFileAsDataURL(file); // keep raw, preserves animation
     } else {
