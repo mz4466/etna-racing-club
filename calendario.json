@@ -359,6 +359,7 @@
     "name": "Traiettorie Gelate",
     "year": "2026",
     "cat": "Campionato",
+    "catAuto": "Gr3",
     "slug": "traiettorie-gelate",
     "trophy": "GR3_Championship_Winner.png",
     "cars": "Gr.3",
@@ -370,86 +371,66 @@
     "bestOf": 4,
     "rounds": [
       {
-        "circuit": "Autopolis (4.674 m)",
+        "circuit": "Autopolis – Layout completo – 4,7 km",
         "date": "2026-01-11",
         "laps": "17",
-        "fase": "",
-        "lapsType": "giri",
-        "weather": "S18 - 🌫️ Foschia, nuvoloso e soleggiato (più coperto) + C04 - ☁️ Nuvoloso e fresco + C05 - ☁️ Completamente nuvoloso + R04 - 🌧️ Nuvoloso con pioggia + R06 - ⛈️ Nubi dense con pioggia",
+        "weather": "🌫️ Foschia, nuvoloso e soleggiato (più coperto) + ☁️ Nuvoloso e fresco + ☁️ Completamente nuvoloso + 🌧️ Nuvoloso con pioggia + ⛈️ Nubi dense con pioggia",
         "tire": "x1",
         "fuel": "x2",
         "types": "Morbide",
-        "notes": "1 Pit - 15 min Qualifiche",
-        "carId": "",
-        "carName": ""
+        "notes": "1 Pit - 15 min Qualifiche"
       },
       {
         "circuit": "Interlagos – 4,3 km",
         "date": "2026-01-25",
         "laps": "18",
-        "fase": "",
-        "lapsType": "giri",
-        "weather": "C04 - ☁️ Nuvoloso e fresco",
+        "weather": "☁️ Nuvoloso e fresco",
         "tire": "x2",
         "fuel": "x3",
         "types": "Dure/Medie/Morbide",
-        "notes": "",
-        "carId": "",
-        "carName": ""
+        "notes": ""
       },
       {
         "circuit": "Red Bull Ring – Layout completo – 4,3 km",
         "date": "2026-02-01",
         "laps": "18",
-        "fase": "",
-        "lapsType": "giri",
-        "weather": "C04 - ☁️ Nuvoloso e fresco + C05 - ☁️ Completamente nuvoloso + C06 - 🌑 Nubi dense + R04 - 🌧️ Nuvoloso con pioggia",
+        "weather": "☁️ Nuvoloso e fresco + ☁️ Completamente nuvoloso + 🌑 Nubi dense + 🌧️ Nuvoloso con pioggia + 🌧️ Nuvoloso con pioggia (copertura uniforme)",
         "tire": "x3",
         "fuel": "x4",
         "types": "",
-        "notes": "",
-        "carId": "",
-        "carName": ""
+        "notes": ""
       },
       {
         "circuit": "Deep Forest Raceway – 4,3 km",
         "date": "2026-02-22",
         "laps": "18",
-        "fase": "",
-        "lapsType": "giri",
-        "weather": "C02 - 🌥️ Nuvoloso e mite",
+        "weather": "🌥️ Nuvoloso e mite",
         "tire": "x3",
         "fuel": "x1",
         "types": "Dure/Medie/Morbide",
-        "notes": "",
-        "carId": "",
-        "carName": ""
+        "notes": ""
       },
       {
         "circuit": "Suzuka – Layout completo – 5,8 km",
         "date": "2026-03-08",
         "laps": "14",
-        "fase": "",
-        "lapsType": "giri",
-        "weather": "S10 - 🌫️ Nebbioso, soleggiato con molte nuvole + S12 - 🌤️ Sole con molte nubi monsoniche + R04 - 🌧️ Nuvoloso con pioggia",
+        "weather": "🌫️ Nebbioso, soleggiato con molte nuvole + 🌤️ Sole con molte nubi monsoniche + 🌧️ Nuvoloso con pioggia + 🌧️ Nuvoloso con pioggia (copertura uniforme)",
         "tire": "x3",
         "fuel": "x5",
         "types": "Dure",
-        "notes": "",
-        "carId": "",
-        "carName": ""
+        "notes": ""
       }
     ],
     "costruttori": false,
     "teams": [],
-    "stagione": "Stagione 1",
-    "catAuto": "Gr3"
+    "stagione": "Stagione 1"
   },
   {
     "id": "risveglio-dei-motori-2026",
     "name": "Risveglio dei Motori",
     "year": "2026",
     "cat": "Campionato",
+    "catAuto": "Gr3",
     "slug": "risveglio-dei-motori",
     "trophy": "GR3_Championship_Winner.png",
     "cars": "Gr.3",
@@ -743,6 +724,7 @@
     "name": "1 Trofeo auto d'epoca 60/70",
     "year": "2026",
     "cat": "Trofeo",
+    "catAuto": "Storiche",
     "slug": "1-trofeo-auto-d-epoca-60-70",
     "trophy": "Classic_Vintage.png",
     "cars": "Gara 1: Abarth 500 '70 - Gara 2: Alfa Giulia sprint '67 - Gara 3: Ferrari 512 bb '76 o Lamborghini countach Lp400 '74 o Porsche 911 Carrera RS (901) '73",
@@ -793,6 +775,7 @@
     "name": "1 Trofeo Auto Storiche 80/90",
     "year": "2025",
     "cat": "Trofeo",
+    "catAuto": "Storiche",
     "stagione": "Stagione 1",
     "slug": "1-trofeo-auto-storiche-80-90",
     "trophy": "Classic_Vintage.png",
@@ -808,20 +791,15 @@
         "circuit": "Barcellona – Layout GP – 4,7 km",
         "date": "2025-12-14",
         "laps": "18",
-        "fase": "",
-        "lapsType": "giri",
         "weather": "",
         "tire": "x3",
         "fuel": "x4",
         "types": "",
-        "notes": "",
-        "carId": "",
-        "carName": ""
+        "notes": ""
       }
     ],
     "costruttori": false,
-    "teams": [],
-    "catAuto": "Storiche"
+    "teams": []
   },
   {
     "id": "trofeo-gr1-manche-1-2026",
@@ -898,6 +876,7 @@
     "name": "Sole & Sorpassi",
     "year": "2026",
     "cat": "Campionato",
+    "catAuto": "Gr3",
     "stagione": "Stagione 2",
     "slug": "sole-sorpassi",
     "trophy": "GR3_Championship_Winner.png",
@@ -981,8 +960,7 @@
       }
     ],
     "costruttori": false,
-    "teams": [],
-    "catAuto": "Gr3"
+    "teams": []
   },
   {
     "id": "licence-to-race-2026",
@@ -1052,6 +1030,7 @@
     "name": "Evento Gr.4",
     "year": "2026",
     "cat": "Evento",
+    "catAuto": "Gr4",
     "stagione": "Stagione 2",
     "slug": "evento-gr-4",
     "trophy": "evento_winner.png",
@@ -1086,6 +1065,7 @@
     "name": "Trofeo Super Turismo",
     "year": "2026",
     "cat": "Trofeo",
+    "catAuto": "Super Turismo",
     "stagione": "Stagione 2",
     "slug": "trofeo-super-turismo",
     "trophy": "superT_trophy.jpg",
@@ -1148,6 +1128,7 @@
     "name": "Asian Street Legends",
     "year": "2026",
     "cat": "Evento",
+    "catAuto": "Sportive Stradali",
     "stagione": "Stagione 2",
     "slug": "asian-street-legends",
     "trophy": "evento_winner.png",
