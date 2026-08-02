@@ -198,16 +198,21 @@
         "circuit": "Monza – Layout completo – 5,8 km",
         "date": "2025-10-05",
         "laps": "14",
-        "weather": "🏔️ Sole con foschia alpina",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "S11 - 🏔️ Sole con foschia alpina",
         "tire": "x2",
         "fuel": "x4",
         "types": "Medie/Morbide",
-        "notes": "1 Pit - 15 min Qualifiche"
+        "notes": "1 Pit - 15 min Qualifiche",
+        "carId": "",
+        "carName": ""
       }
     ],
     "costruttori": false,
     "teams": [],
-    "stagione": "Stagione 1"
+    "stagione": "Stagione 1",
+    "catAuto": "City Car"
   },
   {
     "id": "trofeo-kart-autunno-2025",
