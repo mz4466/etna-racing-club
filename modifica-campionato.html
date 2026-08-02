@@ -1703,6 +1703,7 @@ async function executeDelete() {
            (f.url + base64 — works behind Zscaler, unlike download_url/raw). */
         const jsonFiles = allFiles.filter(f => f.name.endsWith('.json') && f.name !== 'index.json');
         let scanned = 0;
+        let unreadable = 0;
         for (const f of jsonFiles) {
           scanned++;
           setProgress(`🔍 Ricerca file risultati… ${scanned}/${jsonFiles.length}`);
@@ -1710,12 +1711,15 @@ async function executeDelete() {
             const cr = await fetch(`${f.url}${f.url.indexOf('?') === -1 ? '?' : '&'}_=${Date.now()}`, {
               headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
             });
-            if (!cr.ok) continue;
+            if (!cr.ok) { unreadable++; continue; }
             const cd = await cr.json();
             const race = JSON.parse(decodeURIComponent(escape(atob((cd.content || '').replace(/\s/g,'')))));
             const rcid = race.champId || race.champIdx || '';
             if (rcid && rcid === champ.id) resultFiles.push(f);
-          } catch(e) { /* unreadable/odd file — skip */ }
+          } catch(e) { unreadable++; /* unreadable/odd file — skip */ }
+        }
+        if (unreadable > 0) {
+          toast(`⚠ ${unreadable} file in risultati/ non leggibili durante la scansione — controlla manualmente eventuali file orfani`, 'err');
         }
       }
     } catch(e) { console.warn('Could not list risultati:', e.message); }
