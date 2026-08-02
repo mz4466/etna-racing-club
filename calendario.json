@@ -303,16 +303,21 @@
         "circuit": "Bathurst – Mount Panorama – 6,2 km",
         "date": "2025-11-25",
         "laps": "3",
+        "fase": "",
+        "lapsType": "giri",
         "weather": "",
         "tire": "x1",
         "fuel": "x1",
         "types": "Morbide",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       }
     ],
     "costruttori": false,
     "teams": [],
-    "stagione": "Stagione 1"
+    "stagione": "Stagione 1",
+    "catAuto": "Ultraleggere"
   },
   {
     "id": "trofeo-kart-2-0-2025",
