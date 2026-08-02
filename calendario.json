@@ -268,16 +268,21 @@
         "circuit": "Nürburgring – 24h – 25,4 km",
         "date": "2025-11-09",
         "laps": "4",
-        "weather": "⛅ Umido, soleggiato con molte nuvole",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "S09 - ⛅ Umido, soleggiato con molte nuvole",
         "tire": "x4",
         "fuel": "x2",
         "types": "Dure/Morbide",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       }
     ],
     "costruttori": false,
     "teams": [],
-    "stagione": "Stagione 1"
+    "stagione": "Stagione 1",
+    "catAuto": "Monoposto"
   },
   {
     "id": "trofeo-cronoscalata-autunno-2025",
