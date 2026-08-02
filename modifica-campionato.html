@@ -462,6 +462,7 @@
           <div class="field">
             <label>Categoria Auto</label>
             <select id="champCatAuto" onchange="updateAll()">
+              <option value="">— non impostata —</option>
               <option>Gr1</option>
               <option>Gr2</option>
               <option>Gr3</option>
@@ -941,9 +942,15 @@ function populateFromHTML(entry, html) {
   const catSel = document.getElementById('champCat');
   for (let o of catSel.options) { if (o.value === entry.cat) { o.selected = true; break; } }
 
-  // Set car category
+  // Set car category — always reset first so an old selection can't leak
+  // into a championship whose catAuto is empty/unset.
   const catAutoSel = document.getElementById('champCatAuto');
-  if (catAutoSel) { for (let o of catAutoSel.options) { if (o.value === entry.catAuto) { o.selected = true; break; } } }
+  if (catAutoSel) {
+    catAutoSel.value = '';
+    if (entry.catAuto) {
+      for (let o of catAutoSel.options) { if (o.value === entry.catAuto) { o.selected = true; break; } }
+    }
+  }
 
   // Parse rounds from HTML
   document.getElementById('racesList').innerHTML = '';
