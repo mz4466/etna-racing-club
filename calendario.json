@@ -817,15 +817,20 @@
         "circuit": "Le Mans – Layout completo – 13,6 km",
         "date": "2026-06-15",
         "laps": "7",
-        "weather": "☀️ Asciutto, sereno e piacevole",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "S01 - ☀️ Asciutto, sereno e piacevole",
         "tire": "x5",
         "fuel": "x4",
         "types": "Medie/Morbide",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       }
     ],
     "costruttori": false,
-    "teams": []
+    "teams": [],
+    "catAuto": "Gr1"
   },
   {
     "id": "etna-racing-day-2026",
