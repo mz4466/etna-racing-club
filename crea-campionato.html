@@ -775,7 +775,7 @@
     <!-- Championship Info -->
     <div class="card">
       <div class="card-title">⚙️ Informazioni Campionato</div>
-      <div class="form-row col3">
+      <div class="form-row col4">
         <div class="field" style="grid-column:1/-1">
           <label>Stagione Ufficiale</label>
           <input type="text" id="champStagione" placeholder="es. Stagione 1 · Primavera 2026" oninput="updateAll()">
@@ -798,6 +798,23 @@
             <option>Crono</option>
             <option>Evento</option>
             <option>Gara Ufficiosa</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Categoria Auto</label>
+          <select id="champCatAuto" onchange="updateAll()">
+            <option>Gr1</option>
+            <option>Gr2</option>
+            <option>Gr3</option>
+            <option>Gr4</option>
+            <option>Monoposto</option>
+            <option>Sportive Stradali</option>
+            <option>Storiche</option>
+            <option>Super Turismo</option>
+            <option>Kart</option>
+            <option>City Car</option>
+            <option>Rally</option>
+            <option>Ultraleggere</option>
           </select>
         </div>
       </div>
@@ -1559,6 +1576,7 @@ function updateAll() {
   const name = val('champName') || 'campionato';
   const year = val('champYear') || '2026';
   const cat  = val('champCat')  || 'c1';
+  const catAuto = val('champCatAuto');
   const slug = val('champSlug');
 
   const nameSlug = name.toLowerCase()
@@ -1622,6 +1640,7 @@ function buildHTML() {
   const name  = document.getElementById('champName').value.trim() || 'Campionato';
   const year  = document.getElementById('champYear').value || '2026';
   const cat   = document.getElementById('champCat').value;
+  const catAuto = document.getElementById('champCatAuto').value;
   const cars  = document.getElementById('champCars').value.trim();
   const desc  = document.getElementById('champDesc').value.trim();
 
@@ -1841,7 +1860,7 @@ function buildHTML() {
   <div class="champ-name">${name}</div>
   <div class="champ-sub">${cars || cat}</div>
   ${desc ? `<div class="champ-desc">${desc}</div>` : ''}
-  <div class="cat-badge">${cat} · ${year}</div>
+  <div class="cat-badge">${cat}${catAuto ? ' · ' + catAuto : ''} · ${year}</div>
 </header>
 
 <div class="wrap">
@@ -2039,6 +2058,7 @@ async function updateCalendario(token, fname, champPath) {
   const name  = document.getElementById('champName').value.trim() || 'Campionato';
   const year  = document.getElementById('champYear').value || '2026';
   const cat   = document.getElementById('champCat').value;
+  const catAuto = document.getElementById('champCatAuto').value;
   const cars  = document.getElementById('champCars').value.trim();
   const desc  = document.getElementById('champDesc').value.trim();
   const slug   = document.getElementById('champSlug').value.trim();
@@ -2077,7 +2097,7 @@ async function updateCalendario(token, fname, champPath) {
 
   const newEntry = {
     id: null, // will be set below — stable unique ID, never changes after creation
-    name, year, cat,
+    name, year, cat, catAuto,
     stagione: document.getElementById('champStagione').value.trim() || null,
     slug: slug || cat,
     trophy: document.getElementById('champTrophy').value || null,
