@@ -808,15 +808,20 @@
         "circuit": "Barcellona – Layout GP – 4,7 km",
         "date": "2025-12-14",
         "laps": "18",
+        "fase": "",
+        "lapsType": "giri",
         "weather": "",
         "tire": "x3",
         "fuel": "x4",
         "types": "",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       }
     ],
     "costruttori": false,
-    "teams": []
+    "teams": [],
+    "catAuto": "Storiche"
   },
   {
     "id": "trofeo-gr1-manche-1-2026",
