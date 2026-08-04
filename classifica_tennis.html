@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classifica Tennis — Etna Racing Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@300;400;500;600;700&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07070f;--card:#0e0e1c;--card2:#0a0a16;
+  --border:rgba(201,162,39,0.12);--border-hi:rgba(201,162,39,0.25);
+  --gold:#c9a227;--gold-hi:#e8c547;--gold-dim:rgba(201,162,39,0.10);
+  --text:#e8e0d0;--muted:#8a8098;--dim:#5a5470;
+  --red:#ff5014;--orange:#ff8c42;
+  --silver:#c9c9d4;--bronze:#c98a4b;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh}
+
+.page-header{position:relative;text-align:center;padding:40px 20px 0}
+.page-header img{width:64px;height:64px;object-fit:contain;margin-bottom:14px;filter:drop-shadow(0 0 12px rgba(201,162,39,0.3));border-radius:8px}
+.page-season{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
+.page-title{font-family:'Russo One',sans-serif;font-size:clamp(24px,5vw,36px);color:var(--text);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px}
+.page-sub{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:3px;color:var(--dim);text-transform:uppercase}
+
+.wrap{max-width:900px;margin:0 auto;padding:24px 20px 60px}
+
+.loading{text-align:center;padding:60px 20px}
+.loading-bar{width:240px;height:6px;background:rgba(201,162,39,0.10);border-radius:3px;margin:16px auto 0;overflow:hidden}
+.loading-fill{height:100%;background:var(--gold);border-radius:3px;width:0%;transition:width 0.3s}
+.loading-text{font-family:'Teko',sans-serif;font-size:16px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-top:10px}
+
+.legend-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:24px;font-size:14px;color:var(--muted);line-height:1.6}
+.legend-box b{color:var(--gold-hi);font-weight:600}
+.legend-scale{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.legend-pt{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;padding:3px 9px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--muted)}
+
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:24px}
+.filter-label{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-right:4px}
+.cat-pill{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,0.12);color:var(--muted);cursor:pointer;transition:all 0.15s;background:transparent}
+.cat-pill:hover{border-color:rgba(201,162,39,0.3)}
+.cat-pill.active{background:var(--gold-dim);border-color:rgba(201,162,39,0.4);color:var(--gold-hi)}
+
+.overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
+.ov-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 12px;text-align:center}
+.ov-num{font-family:'Russo One',sans-serif;font-size:clamp(20px,5vw,28px);color:var(--gold-hi);line-height:1}
+.ov-label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:6px}
+
+.pts-table-wrap{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow-x:auto;margin-bottom:32px}
+.pts-table{width:100%;border-collapse:collapse;min-width:560px}
+.pts-table thead{background:rgba(201,162,39,0.06)}
+.pts-table th{font-family:'Teko',sans-serif;font-size:13px;font-weight:500;letter-spacing:2px;color:var(--gold);text-transform:uppercase;padding:10px 12px;text-align:center;border-bottom:1px solid var(--border-hi);white-space:nowrap}
+.pts-table th:nth-child(2){text-align:left}
+.pts-table td{padding:11px 12px;font-size:15px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.03);color:var(--text);white-space:nowrap}
+.pts-table td:nth-child(2){text-align:left;color:var(--text);font-weight:500}
+.pts-table tbody tr:hover{background:rgba(201,162,39,0.04)}
+.pts-table .rank{font-family:'Russo One',sans-serif;font-size:15px}
+.pts-table tr.r1 .rank{color:var(--gold)}
+.pts-table tr.r2 .rank{color:var(--silver)}
+.pts-table tr.r3 .rank{color:var(--bronze)}
+.pts-table .points-val{color:var(--gold-hi);font-family:'Russo One',sans-serif;font-weight:700;font-size:16px}
+.empty-state{text-align:center;padding:50px 20px;color:var(--muted);font-family:'Teko',sans-serif;font-size:16px;letter-spacing:2px;text-transform:uppercase}
+
+.section-title{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:4px;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:14px}
+
+.event-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:10px}
+.event-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.event-name{font-family:'Teko',sans-serif;font-size:17px;letter-spacing:1px;color:var(--text)}
+.event-tags{display:flex;gap:6px;flex-wrap:wrap}
+.event-tag{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:1px;padding:2px 9px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--muted)}
+.event-tag.defended{background:rgba(201,162,39,0.12);border-color:rgba(201,162,39,0.35);color:var(--gold-hi)}
+.event-tag.pending{background:rgba(255,140,66,0.12);border-color:rgba(255,140,66,0.35);color:var(--orange)}
+.event-podium{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.event-podium span b{color:var(--text)}
+
+.back-link{display:block;text-align:center;margin:0 0 24px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:var(--dim);text-decoration:none;text-transform:uppercase}
+.back-link:hover{color:var(--gold-hi)}
+
+@media(max-width:600px){
+  .overview-grid{grid-template-columns:repeat(3,1fr);gap:8px}
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <a href="index.html"><img src="etna-logo.jpg" alt="Etna Racing Club"></a>
+  <div class="page-season">Etna Racing Club</div>
+  <h1 class="page-title">Classifica Tennis</h1>
+  <div class="page-sub">Ranking a punti, stile ATP — chi non difende, perde</div>
+</header>
+
+<div class="wrap">
+  <a href="index.html" class="back-link">← Torna alla home</a>
+
+  <div id="loading" class="loading">
+    <div class="loading-text">Caricamento risultati…</div>
+    <div class="loading-bar"><div class="loading-fill" id="loadingFill"></div></div>
+    <div class="loading-text" id="loadingText">0 / 0</div>
+  </div>
+
+  <div id="content" style="display:none">
+
+    <div class="legend-box">
+      Ogni campionato/trofeo/evento assegna punti in base alla <b>classifica finale</b> di quell'edizione (non gara per gara). Quando lo <b>stesso evento torna</b> (stessa denominazione esatta) in una stagione successiva, i punti della vecchia edizione vengono <b>sostituiti integralmente</b> da quelli della nuova, appena questa si conclude — anche se un pilota non vi partecipa: in quel caso perde semplicemente quei punti, esattamente come nel ranking ATP. Solo piloti <b>attualmente attivi</b>. Le Gare Ufficiose non sono incluse.
+      <div class="legend-scale" id="legendScale"></div>
+    </div>
+
+    <div class="filters" id="catFilters">
+      <span class="filter-label">Categoria</span>
+      <button class="cat-pill active" data-cat="tutti">Tutti</button>
+      <button class="cat-pill" data-cat="campionati">Campionati</button>
+      <button class="cat-pill" data-cat="trofei">Trofei</button>
+      <button class="cat-pill" data-cat="formula">Formula</button>
+      <button class="cat-pill" data-cat="eventi">Eventi</button>
+    </div>
+
+    <div class="overview-grid">
+      <div class="ov-card"><div class="ov-num" id="ovPiloti">–</div><div class="ov-label">Piloti in classifica</div></div>
+      <div class="ov-card"><div class="ov-num" id="ovEventi">–</div><div class="ov-label">Eventi conteggiati</div></div>
+      <div class="ov-card"><div class="ov-num" id="ovLeader">–</div><div class="ov-label">Leader</div></div>
+    </div>
+
+    <div class="pts-table-wrap">
+      <table class="pts-table">
+        <thead>
+          <tr>
+            <th>Pos</th>
+            <th>Pilota</th>
+            <th>Punti</th>
+            <th>Titoli</th>
+            <th>Podi</th>
+            <th>Eventi a Punti</th>
+          </tr>
+        </thead>
+        <tbody id="ptsBody"></tbody>
+      </table>
+    </div>
+    <div id="emptyState" class="empty-state" style="display:none">Nessun risultato per questo filtro</div>
+
+    <div class="section-title">Eventi Conteggiati</div>
+    <div id="eventsBreakdown"></div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  var BASE = '';
+  var races = [];
+  var champs = [];              // raw calendario entries
+  var schede = {};               // psnLower -> { nome, attivo }
+  var racesByChamp = {};          // champId -> [races]
+  var nmeToPsnGlobal = {};        // normalized nome -> psn (fallback across whole club)
+  var psnInChamp = {};             // champId -> { normalized nome -> psn }
+  var contributions = [];          // {psn, points, pos, name, editionId, cat, stagione, year, editionsCount}
+  var eventsSummary = [];          // one entry per name-group, for the breakdown section
+  var currentCat = 'tutti';
+
+  var CAT_FILTERS = {
+    tutti:      ['Campionato','Trofeo','Formula','Evento'],
+    campionati: ['Campionato'],
+    trofei:     ['Trofeo'],
+    formula:    ['Formula'],
+    eventi:     ['Evento']
+  };
+
+  // Position -> points for a championship's FINAL standings (tournament-style,
+  // bigger prize than a single race). Easy to retune here.
+  var POINTS_TABLE = {1:100,2:70,3:50,4:35,5:25,6:20,7:15,8:10,9:5,10:3};
+  function pointsForPos(pos){ return POINTS_TABLE[pos] || 0; }
+
+  function fetchInBatches(items, batchSize, worker){
+    var results = [];
+    var i = 0;
+    function next(){
+      if(i >= items.length) return Promise.resolve(results);
+      var batch = items.slice(i, i + batchSize);
+      i += batchSize;
+      return Promise.all(batch.map(worker)).then(function(r){
+        results = results.concat(r);
+        return next();
+      });
+    }
+    return next();
+  }
+
+  function norm(s){ return (s||'').toLowerCase().trim(); }
+
+  function fetchCalendario(){
+    return fetch(BASE + 'calendario.json?_=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(list){ champs = list || []; })
+      .catch(function(){ champs = []; });
+  }
+
+  function fetchPilotStatus(){
+    return fetch(BASE + 'piloti_schede/index.json?_=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(list){
+        var files = list.filter(function(f){ return f !== 'index.json' && f !== 'psn-map.json'; });
+        return fetchInBatches(files, 6, function(file){
+          return fetch(BASE + 'piloti_schede/' + file + '?_=' + Date.now())
+            .then(function(r){ return r.ok ? r.json() : null; })
+            .then(function(d){
+              if(!d) return;
+              var psn = norm(d.psn);
+              if(psn) schede[psn] = { nome: d.nome || file.replace('.json',''), attivo: d.attivo !== false };
+            })
+            .catch(function(){});
+        });
+      })
+      .catch(function(){});
+  }
+
+  function fetchIndex(){
+    return fetch(BASE + 'risultati/index.json?_=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(list){ return list.filter(function(f){ return f !== 'index.json'; }); });
+  }
+
+  function fetchRace(file, onProgress){
+    return fetch(BASE + 'risultati/' + file + '?_=' + Date.now())
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .catch(function(){ return null; })
+      .then(function(d){ if(onProgress) onProgress(); return d; });
+  }
+
+  function chronoKey(c){
+    var y = parseInt(c.year) || 0;
+    var m = (c.stagione || '').match(/\d+/);
+    var s = m ? parseInt(m[0]) : 0;
+    return y * 100 + s;
+  }
+
+  function resolvePsn(cid, nome){
+    var nk = norm(nome);
+    if(!nk) return '';
+    if(psnInChamp[cid] && psnInChamp[cid][nk]) return psnInChamp[cid][nk];
+    return nmeToPsnGlobal[nk] || '';
+  }
+
+  function buildPsnMaps(){
+    for(var i=0;i<races.length;i++){
+      var r = races[i];
+      if(!r) continue;
+      var cid = r.champId || r.champIdx || '';
+      if(!racesByChamp[cid]) racesByChamp[cid] = [];
+      racesByChamp[cid].push(r);
+      var rows = r.rows || [];
+      for(var j=0;j<rows.length;j++){
+        var nk = norm(rows[j].nome);
+        var psn = norm(rows[j].psn);
+        if(!nk || !psn) continue;
+        nmeToPsnGlobal[nk] = psn;
+        if(!psnInChamp[cid]) psnInChamp[cid] = {};
+        psnInChamp[cid][nk] = psn;
+      }
+    }
+  }
+
+  function findFinalRace(cid){
+    var list = racesByChamp[cid] || [];
+    if(!list.length) return null;
+    for(var i=0;i<list.length;i++){
+      if(String(list[i].garaNum) === String(list[i].garaTot)) return list[i];
+    }
+    // fallback: highest garaNum
+    var best = list[0];
+    for(var j=1;j<list.length;j++){
+      if((parseInt(list[j].garaNum)||0) > (parseInt(best.garaNum)||0)) best = list[j];
+    }
+    return best;
+  }
+
+  function processData(){
+    buildPsnMaps();
+
+    var byName = {};
+    for(var i=0;i<champs.length;i++){
+      var c = champs[i];
+      var nm = c.name || '';
+      if(!nm) continue;
+      if(!byName[nm]) byName[nm] = [];
+      byName[nm].push(c);
+    }
+
+    contributions = [];
+    eventsSummary = [];
+
+    for(var name in byName){
+      if(!byName.hasOwnProperty(name)) continue;
+      var editions = byName[name].slice().sort(function(a,b){ return chronoKey(a) - chronoKey(b); });
+      var concluded = editions.filter(function(e){
+        return (e.status || '').toLowerCase().replace(/-/g,' ').trim() === 'concluso';
+      });
+      if(!concluded.length) continue;
+
+      var current = concluded[concluded.length - 1];
+      if(current.cat === 'Gara Ufficiosa') continue;
+
+      var finalRace = findFinalRace(current.id);
+      if(!finalRace || !finalRace.standings || !finalRace.standings.length) continue;
+
+      // is there a newer, not-yet-concluded edition already scheduled? (points "pending defense")
+      var pending = false;
+      for(var k=0;k<editions.length;k++){
+        if(chronoKey(editions[k]) > chronoKey(current) &&
+           (editions[k].status||'').toLowerCase().replace(/-/g,' ').trim() !== 'concluso'){
+          pending = true; break;
+        }
+      }
+
+      var podium = [];
+      var standings = finalRace.standings;
+      for(var s=0;s<standings.length;s++){
+        var st = standings[s];
+        var psn = resolvePsn(current.id, st.nome);
+        var pts = pointsForPos(st.pos);
+        if(psn){
+          contributions.push({
+            psn: psn, points: pts, pos: st.pos,
+            name: name, editionId: current.id, cat: current.cat,
+            stagione: current.stagione || '', year: current.year || '',
+            editionsCount: editions.length
+          });
+        }
+        if(st.pos <= 3){
+          var scheda = psn ? schede[psn] : null;
+          podium.push({ pos: st.pos, nome: scheda ? scheda.nome : st.nome, pts: pts });
+        }
+      }
+
+      eventsSummary.push({
+        name: name, cat: current.cat, stagione: current.stagione || '', year: current.year || '',
+        editionsCount: editions.length, defended: editions.length > 1, pending: pending,
+        podium: podium
+      });
+    }
+  }
+
+  function renderLegendScale(){
+    var order = [1,2,3,4,5,6,7,8,9,10];
+    var html = '';
+    for(var i=0;i<order.length;i++){
+      html += '<span class="legend-pt">' + order[i] + '° · ' + POINTS_TABLE[order[i]] + ' pt</span>';
+    }
+    document.getElementById('legendScale').innerHTML = html;
+  }
+
+  function escHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+    });
+  }
+
+  function render(){
+    var allowedCats = CAT_FILTERS[currentCat] || CAT_FILTERS.tutti;
+    var agg = {};
+    var eventsCounted = 0;
+    var countedEventNames = {};
+
+    for(var i=0;i<contributions.length;i++){
+      var e = contributions[i];
+      if(allowedCats.indexOf(e.cat) === -1) continue;
+      var scheda = schede[e.psn];
+      if(!scheda || !scheda.attivo) continue;
+
+      if(!countedEventNames[e.name]){ countedEventNames[e.name] = true; eventsCounted++; }
+
+      if(!agg[e.psn]) agg[e.psn] = { nome: scheda.nome, points: 0, titoli: 0, podi: 0, eventiPunti: 0 };
+      agg[e.psn].points += e.points;
+      if(e.pos === 1) agg[e.psn].titoli++;
+      if(e.pos <= 3) agg[e.psn].podi++;
+      if(e.points > 0) agg[e.psn].eventiPunti++;
+    }
+
+    var list = [];
+    for(var k in agg){ if(agg.hasOwnProperty(k)) list.push(agg[k]); }
+    list.sort(function(a,b){
+      return b.points - a.points || b.titoli - a.titoli || b.podi - a.podi || a.nome.localeCompare(b.nome);
+    });
+
+    document.getElementById('ovPiloti').textContent = list.length;
+    document.getElementById('ovEventi').textContent = eventsCounted;
+    document.getElementById('ovLeader').textContent = list.length ? list[0].nome : '—';
+
+    var tbody = document.getElementById('ptsBody');
+    var emptyState = document.getElementById('emptyState');
+    if(!list.length){
+      tbody.innerHTML = '';
+      emptyState.style.display = 'block';
+    } else {
+      emptyState.style.display = 'none';
+      var medals = ['🥇','🥈','🥉'];
+      var html = '';
+      for(var idx=0; idx<list.length; idx++){
+        var p = list[idx];
+        var rankCls = idx===0 ? 'r1' : idx===1 ? 'r2' : idx===2 ? 'r3' : '';
+        var rankDisplay = idx < 3 ? medals[idx] : (idx+1) + '°';
+        html += '<tr class="' + rankCls + '">'
+          + '<td class="rank">' + rankDisplay + '</td>'
+          + '<td>' + escHtml(p.nome) + '</td>'
+          + '<td class="points-val">' + p.points + '</td>'
+          + '<td>' + p.titoli + '</td>'
+          + '<td>' + p.podi + '</td>'
+          + '<td>' + p.eventiPunti + '</td>'
+          + '</tr>';
+      }
+      tbody.innerHTML = html;
+    }
+
+    renderBreakdown(allowedCats);
+  }
+
+  function renderBreakdown(allowedCats){
+    var filtered = eventsSummary.filter(function(ev){ return allowedCats.indexOf(ev.cat) !== -1; });
+    filtered.sort(function(a,b){
+      var ya = parseInt(a.year)||0, yb = parseInt(b.year)||0;
+      if(yb !== ya) return yb - ya;
+      return (b.stagione||'').localeCompare(a.stagione||'');
+    });
+
+    var wrap = document.getElementById('eventsBreakdown');
+    if(!filtered.length){ wrap.innerHTML = ''; return; }
+
+    var html = '';
+    for(var i=0;i<filtered.length;i++){
+      var ev = filtered[i];
+      var tags = '<span class="event-tag">' + escHtml(ev.cat) + '</span>'
+               + '<span class="event-tag">' + escHtml(ev.stagione) + ' · ' + escHtml(String(ev.year)) + '</span>';
+      if(ev.defended) tags += '<span class="event-tag defended">🎾 ' + ev.editionsCount + ' edizioni</span>';
+      if(ev.pending) tags += '<span class="event-tag pending">⏳ prossima edizione in corso</span>';
+
+      var podiumHtml = ev.podium.map(function(pd){
+        var medal = pd.pos===1?'🥇':pd.pos===2?'🥈':'🥉';
+        return '<span>' + medal + ' <b>' + escHtml(pd.nome) + '</b> (' + pd.pts + 'pt)</span>';
+      }).join('');
+
+      html += '<div class="event-card">'
+        + '<div class="event-top"><div class="event-name">' + escHtml(ev.name) + '</div><div class="event-tags">' + tags + '</div></div>'
+        + '<div class="event-podium">' + podiumHtml + '</div>'
+        + '</div>';
+    }
+    wrap.innerHTML = html;
+  }
+
+  function bindFilters(){
+    var pills = document.querySelectorAll('.cat-pill');
+    for(var i=0;i<pills.length;i++){
+      pills[i].addEventListener('click', function(){
+        for(var j=0;j<pills.length;j++) pills[j].classList.remove('active');
+        this.classList.add('active');
+        currentCat = this.getAttribute('data-cat');
+        render();
+      });
+    }
+  }
+
+  function init(){
+    renderLegendScale();
+    fetchCalendario().then(function(){
+      return fetchIndex();
+    }).then(function(files){
+      var total = files.length;
+      var done = 0;
+      function onProgress(){
+        done++;
+        var pct = total ? Math.round(done/total*100) : 100;
+        document.getElementById('loadingFill').style.width = pct + '%';
+        document.getElementById('loadingText').textContent = done + ' / ' + total;
+      }
+      return fetchInBatches(files, 6, function(f){ return fetchRace(f, onProgress); });
+    }).then(function(results){
+      races = results.filter(Boolean);
+      return fetchPilotStatus();
+    }).then(function(){
+      processData();
+      bindFilters();
+      render();
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('content').style.display = 'block';
+    }).catch(function(e){
+      document.getElementById('loadingText').textContent = 'Errore nel caricamento';
+      console.error('Classifica tennis — errore:', e);
+    });
+  }
+
+  init();
+})();
+</script>
+
+</body>
+</html>
