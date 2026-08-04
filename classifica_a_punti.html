@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classifica a Punti — Etna Racing Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Teko:wght@300;400;500;600;700&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07070f;--card:#0e0e1c;--card2:#0a0a16;
+  --border:rgba(201,162,39,0.12);--border-hi:rgba(201,162,39,0.25);
+  --gold:#c9a227;--gold-hi:#e8c547;--gold-dim:rgba(201,162,39,0.10);
+  --text:#e8e0d0;--muted:#8a8098;--dim:#5a5470;
+  --red:#ff5014;--orange:#ff8c42;
+  --silver:#c9c9d4;--bronze:#c98a4b;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;min-height:100vh}
+
+.page-header{position:relative;text-align:center;padding:40px 20px 0}
+.page-header img{width:64px;height:64px;object-fit:contain;margin-bottom:14px;filter:drop-shadow(0 0 12px rgba(201,162,39,0.3));border-radius:8px}
+.page-season{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
+.page-title{font-family:'Russo One',sans-serif;font-size:clamp(24px,5vw,36px);color:var(--text);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px}
+.page-sub{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:3px;color:var(--dim);text-transform:uppercase}
+
+.wrap{max-width:900px;margin:0 auto;padding:24px 20px 60px}
+
+.loading{text-align:center;padding:60px 20px}
+.loading-bar{width:240px;height:6px;background:rgba(201,162,39,0.10);border-radius:3px;margin:16px auto 0;overflow:hidden}
+.loading-fill{height:100%;background:var(--gold);border-radius:3px;width:0%;transition:width 0.3s}
+.loading-text{font-family:'Teko',sans-serif;font-size:16px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-top:10px}
+
+.legend-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:24px;font-size:14px;color:var(--muted);line-height:1.6}
+.legend-box b{color:var(--gold-hi);font-weight:600}
+.legend-scale{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.legend-pt{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:1px;padding:3px 9px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text-dim,var(--muted))}
+
+.filters{display:flex;flex-wrap:wrap;gap:20px;align-items:center;margin-bottom:24px;justify-content:space-between}
+.filter-group{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filter-label{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-right:2px}
+.cat-pill{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,0.12);color:var(--muted);cursor:pointer;transition:all 0.15s;background:transparent}
+.cat-pill:hover{border-color:rgba(201,162,39,0.3)}
+.cat-pill.active{background:var(--gold-dim);border-color:rgba(201,162,39,0.4);color:var(--gold-hi)}
+.season-select{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--text);background:var(--card);border:1px solid var(--border-hi);border-radius:8px;padding:7px 14px;cursor:pointer}
+.season-select:focus{outline:none;border-color:var(--gold)}
+
+.overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
+.ov-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 12px;text-align:center}
+.ov-num{font-family:'Russo One',sans-serif;font-size:clamp(20px,5vw,28px);color:var(--gold-hi);line-height:1}
+.ov-label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:6px}
+
+.pts-table-wrap{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow-x:auto;margin-bottom:32px}
+.pts-table{width:100%;border-collapse:collapse;min-width:520px}
+.pts-table thead{background:rgba(201,162,39,0.06)}
+.pts-table th{font-family:'Teko',sans-serif;font-size:13px;font-weight:500;letter-spacing:2px;color:var(--gold);text-transform:uppercase;padding:10px 12px;text-align:center;border-bottom:1px solid var(--border-hi);white-space:nowrap}
+.pts-table th:nth-child(2){text-align:left}
+.pts-table td{padding:11px 12px;font-size:15px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.03);color:var(--text);white-space:nowrap}
+.pts-table td:nth-child(2){text-align:left;color:var(--text);font-weight:500}
+.pts-table tbody tr:hover{background:rgba(201,162,39,0.04)}
+.pts-table .rank{font-family:'Russo One',sans-serif;font-size:15px}
+.pts-table tr.r1 .rank{color:var(--gold)}
+.pts-table tr.r2 .rank{color:var(--silver)}
+.pts-table tr.r3 .rank{color:var(--bronze)}
+.pts-table .points-val{color:var(--gold-hi);font-family:'Russo One',sans-serif;font-weight:700;font-size:16px}
+.empty-state{text-align:center;padding:50px 20px;color:var(--muted);font-family:'Teko',sans-serif;font-size:16px;letter-spacing:2px;text-transform:uppercase}
+
+.back-link{display:block;text-align:center;margin:0 0 24px;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:var(--dim);text-decoration:none;text-transform:uppercase}
+.back-link:hover{color:var(--gold-hi)}
+
+@media(max-width:600px){
+  .overview-grid{grid-template-columns:repeat(3,1fr);gap:8px}
+  .filters{flex-direction:column;align-items:flex-start;gap:14px}
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <a href="index.html"><img src="etna-logo.jpg" alt="Etna Racing Club"></a>
+  <div class="page-season">Etna Racing Club</div>
+  <h1 class="page-title">Classifica a Punti</h1>
+  <div class="page-sub">Punteggio per posizione, su tutte le stagioni</div>
+</header>
+
+<div class="wrap">
+  <a href="index.html" class="back-link">← Torna alla home</a>
+
+  <div id="loading" class="loading">
+    <div class="loading-text">Caricamento risultati…</div>
+    <div class="loading-bar"><div class="loading-fill" id="loadingFill"></div></div>
+    <div class="loading-text" id="loadingText">0 / 0</div>
+  </div>
+
+  <div id="content" style="display:none">
+
+    <div class="legend-box">
+      Il punteggio si basa <b>solo sulla posizione di arrivo</b> in ogni gara, indipendentemente dal sistema punti del singolo campionato: 1° posto = 10 punti, a scendere fino a 1 punto per il 10° posto. Oltre la 10ª posizione non si guadagnano punti. Contano solo i risultati con esito valido (escluse squalifiche e ritiri), i soli piloti <b>attualmente attivi</b> nel roster, e sono escluse le Gare Ufficiose.
+      <div class="legend-scale">
+        <span class="legend-pt">1° · 10 pt</span>
+        <span class="legend-pt">2° · 9 pt</span>
+        <span class="legend-pt">3° · 8 pt</span>
+        <span class="legend-pt">4° · 7 pt</span>
+        <span class="legend-pt">5° · 6 pt</span>
+        <span class="legend-pt">6° · 5 pt</span>
+        <span class="legend-pt">7° · 4 pt</span>
+        <span class="legend-pt">8° · 3 pt</span>
+        <span class="legend-pt">9° · 2 pt</span>
+        <span class="legend-pt">10° · 1 pt</span>
+      </div>
+    </div>
+
+    <div class="filters">
+      <div class="filter-group" id="catFilters">
+        <span class="filter-label">Categoria</span>
+        <button class="cat-pill active" data-cat="tutti">Tutti</button>
+        <button class="cat-pill" data-cat="campionati">Campionati</button>
+        <button class="cat-pill" data-cat="trofei">Trofei</button>
+        <button class="cat-pill" data-cat="formula">Formula</button>
+        <button class="cat-pill" data-cat="eventi">Eventi</button>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Stagione</span>
+        <select class="season-select" id="seasonSelect">
+          <option value="tutte">Tutte le stagioni</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <div class="ov-card"><div class="ov-num" id="ovPiloti">–</div><div class="ov-label">Piloti in classifica</div></div>
+      <div class="ov-card"><div class="ov-num" id="ovGare">–</div><div class="ov-label">Gare conteggiate</div></div>
+      <div class="ov-card"><div class="ov-num" id="ovLeader">–</div><div class="ov-label">Leader</div></div>
+    </div>
+
+    <div class="pts-table-wrap">
+      <table class="pts-table">
+        <thead>
+          <tr>
+            <th>Pos</th>
+            <th>Pilota</th>
+            <th>Punti</th>
+            <th>Vittorie</th>
+            <th>Podi</th>
+            <th>Gare</th>
+          </tr>
+        </thead>
+        <tbody id="ptsBody"></tbody>
+      </table>
+    </div>
+    <div id="emptyState" class="empty-state" style="display:none">Nessun risultato per questo filtro</div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  var BASE = '';
+  var races = [];
+  var schede = {};              // psnLower -> { nome, attivo }
+  var champCatMap = {};         // champId -> cat
+  var champStagioneMap = {};    // champId -> stagione string
+  var champStatusMap = {};      // champId -> status
+  var entries = [];             // flat list of {psn, cat, stagione, pos}
+  var currentCat = 'tutti';
+  var currentStagione = 'tutte';
+
+  var CAT_FILTERS = {
+    tutti:      ['Campionato','Trofeo','Formula','Evento'],
+    campionati: ['Campionato'],
+    trofei:     ['Trofeo'],
+    formula:    ['Formula'],
+    eventi:     ['Evento']
+  };
+
+  // Fetch a list of items with limited concurrency, avoids tripping GitHub/browser
+  // connection limits and isolates a single broken/oversized file's failure.
+  function fetchInBatches(items, batchSize, worker){
+    var results = [];
+    var i = 0;
+    function next(){
+      if(i >= items.length) return Promise.resolve(results);
+      var batch = items.slice(i, i + batchSize);
+      i += batchSize;
+      return Promise.all(batch.map(worker)).then(function(r){
+        results = results.concat(r);
+        return next();
+      });
+    }
+    return next();
+  }
+
+  function posToPoints(pos){
+    var scale = [10,9,8,7,6,5,4,3,2,1];
+    if(pos >= 1 && pos <= 10) return scale[pos-1];
+    return 0;
+  }
+
+  function fetchCalendario(){
+    return fetch(BASE + 'calendario.json?_=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(champs){
+        for(var i=0;i<champs.length;i++){
+          var c = champs[i];
+          var cid = c.id || '';
+          if(!cid) continue;
+          champCatMap[cid] = c.cat || '';
+          champStagioneMap[cid] = c.stagione || (c.year ? String(c.year) : 'N/D');
+          champStatusMap[cid] = (c.status || '').toLowerCase().replace(/-/g,' ').trim();
+        }
+      })
+      .catch(function(){});
+  }
+
+  function fetchPilotStatus(){
+    return fetch(BASE + 'piloti_schede/index.json?_=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(list){
+        var files = list.filter(function(f){ return f !== 'index.json' && f !== 'psn-map.json'; });
+        return fetchInBatches(files, 6, function(file){
+          return fetch(BASE + 'piloti_schede/' + file + '?_=' + Date.now())
+            .then(function(r){ return r.ok ? r.json() : null; })
+            .then(function(d){
+              if(!d) return;
+              var psn = (d.psn || '').toLowerCase().trim();
+              if(psn) schede[psn] = { nome: d.nome || file.replace('.json',''), attivo: d.attivo !== false };
+            })
+            .catch(function(){});
+        });
+      })
+      .catch(function(){});
+  }
+
+  function fetchIndex(){
+    return fetch(BASE + 'risultati/index.json?_=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(list){
+        return list.filter(function(f){ return f !== 'index.json'; });
+      });
+  }
+
+  function fetchRace(file, onProgress){
+    return fetch(BASE + 'risultati/' + file + '?_=' + Date.now())
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .catch(function(){ return null; })
+      .then(function(d){ if(onProgress) onProgress(); return d; });
+  }
+
+  function processData(){
+    entries = [];
+    for(var i=0;i<races.length;i++){
+      var race = races[i];
+      if(!race) continue;
+      var cid = race.champId || race.champIdx || '';
+      if(!cid || !champCatMap[cid]) continue;          // orphan/unresolved file -> skip
+      if(champStatusMap[cid] === 'annullato') continue; // cancelled championship -> skip
+      var cat = champCatMap[cid];
+      if(cat === 'Gara Ufficiosa') continue;             // always excluded
+
+      var stagione = champStagioneMap[cid] || 'N/D';
+      var rows = race.rows || [];
+      for(var j=0;j<rows.length;j++){
+        var row = rows[j];
+        if((row.stato || '').toLowerCase() !== 'ok') continue;
+        var psn = (row.psn || '').trim().toLowerCase();
+        if(!psn) continue;
+        var pos = parseInt(row.pos);
+        if(!pos) continue;
+        entries.push({ psn: psn, cat: cat, stagione: stagione, pos: pos });
+      }
+    }
+  }
+
+  function populateSeasonSelect(){
+    var seen = {};
+    var seasons = [];
+    for(var cid in champStagioneMap){
+      if(!champStagioneMap.hasOwnProperty(cid)) continue;
+      var s = champStagioneMap[cid];
+      if(!seen[s]){ seen[s] = true; seasons.push(s); }
+    }
+    seasons.sort(function(a,b){
+      var na = parseInt((a.match(/\d+/)||[])[0]);
+      var nb = parseInt((b.match(/\d+/)||[])[0]);
+      if(!isNaN(na) && !isNaN(nb) && na !== nb) return na - nb;
+      return a.localeCompare(b);
+    });
+    var sel = document.getElementById('seasonSelect');
+    for(var k=0;k<seasons.length;k++){
+      var opt = document.createElement('option');
+      opt.value = seasons[k];
+      opt.textContent = seasons[k];
+      sel.appendChild(opt);
+    }
+  }
+
+  function render(){
+    var allowedCats = CAT_FILTERS[currentCat] || CAT_FILTERS.tutti;
+    var agg = {};
+    var gareCount = 0;
+
+    for(var i=0;i<entries.length;i++){
+      var e = entries[i];
+      if(allowedCats.indexOf(e.cat) === -1) continue;
+      if(currentStagione !== 'tutte' && e.stagione !== currentStagione) continue;
+      var scheda = schede[e.psn];
+      if(!scheda || !scheda.attivo) continue;
+
+      if(!agg[e.psn]) agg[e.psn] = { nome: scheda.nome, points: 0, wins: 0, podi: 0, gare: 0 };
+      var pts = posToPoints(e.pos);
+      agg[e.psn].points += pts;
+      agg[e.psn].gare++;
+      if(e.pos === 1) agg[e.psn].wins++;
+      if(e.pos <= 3) agg[e.psn].podi++;
+      gareCount++;
+    }
+
+    var list = [];
+    for(var k in agg){ if(agg.hasOwnProperty(k)) list.push(agg[k]); }
+    list.sort(function(a,b){
+      return b.points - a.points || b.wins - a.wins || b.podi - a.podi || a.nome.localeCompare(b.nome);
+    });
+
+    document.getElementById('ovPiloti').textContent = list.length;
+    document.getElementById('ovGare').textContent = gareCount;
+    document.getElementById('ovLeader').textContent = list.length ? list[0].nome : '—';
+
+    var tbody = document.getElementById('ptsBody');
+    var emptyState = document.getElementById('emptyState');
+    if(!list.length){
+      tbody.innerHTML = '';
+      emptyState.style.display = 'block';
+      return;
+    }
+    emptyState.style.display = 'none';
+
+    var medals = ['🥇','🥈','🥉'];
+    var html = '';
+    for(var idx=0; idx<list.length; idx++){
+      var p = list[idx];
+      var rankCls = idx===0 ? 'r1' : idx===1 ? 'r2' : idx===2 ? 'r3' : '';
+      var rankDisplay = idx < 3 ? medals[idx] : (idx+1) + '°';
+      html += '<tr class="' + rankCls + '">'
+        + '<td class="rank">' + rankDisplay + '</td>'
+        + '<td>' + escHtml(p.nome) + '</td>'
+        + '<td class="points-val">' + p.points + '</td>'
+        + '<td>' + p.wins + '</td>'
+        + '<td>' + p.podi + '</td>'
+        + '<td>' + p.gare + '</td>'
+        + '</tr>';
+    }
+    tbody.innerHTML = html;
+  }
+
+  function escHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+    });
+  }
+
+  function bindFilters(){
+    var pills = document.querySelectorAll('.cat-pill');
+    for(var i=0;i<pills.length;i++){
+      pills[i].addEventListener('click', function(){
+        for(var j=0;j<pills.length;j++) pills[j].classList.remove('active');
+        this.classList.add('active');
+        currentCat = this.getAttribute('data-cat');
+        render();
+      });
+    }
+    document.getElementById('seasonSelect').addEventListener('change', function(){
+      currentStagione = this.value;
+      render();
+    });
+  }
+
+  function init(){
+    fetchCalendario().then(function(){
+      return fetchIndex();
+    }).then(function(files){
+      var total = files.length;
+      var done = 0;
+      function onProgress(){
+        done++;
+        var pct = total ? Math.round(done/total*100) : 100;
+        document.getElementById('loadingFill').style.width = pct + '%';
+        document.getElementById('loadingText').textContent = done + ' / ' + total;
+      }
+      return fetchInBatches(files, 6, function(f){ return fetchRace(f, onProgress); });
+    }).then(function(results){
+      races = results.filter(Boolean);
+      return fetchPilotStatus();
+    }).then(function(){
+      processData();
+      populateSeasonSelect();
+      bindFilters();
+      render();
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('content').style.display = 'block';
+    }).catch(function(e){
+      document.getElementById('loadingText').textContent = 'Errore nel caricamento';
+      console.error('Classifica a punti — errore:', e);
+    });
+  }
+
+  init();
+})();
+</script>
+
+</body>
+</html>
