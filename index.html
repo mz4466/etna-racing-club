@@ -876,16 +876,18 @@
 
               var rounds = c.rounds || [];
               var completed = parseInt(c.completedRounds) || 0;
-              var found = false;
+              var seenDates = {};
 
               for(var ri=0;ri<rounds.length;ri++){
-                if(found) break;
                 var rd = parseDate(rounds[ri].date);
                 if(!rd) continue;
                 if(daysBetween(today, rd) < 0) continue;
                 if(ri < completed) continue;
 
-                found = true;
+                var dateKey = rd.getFullYear() + '-' + rd.getMonth() + '-' + rd.getDate();
+                if(seenDates[dateKey]) continue; // same championship, same date -> keep only the first
+                seenDates[dateKey] = true;
+
                 upcoming.push({
                   champName: c.name || '',
                   cat: c.cat || '',
@@ -905,8 +907,7 @@
 
             if(!upcoming.length) return;
 
-            upcoming = upcoming.slice(0, 3);
-            var html = '<div class="recent-label">Prossimi 3 eventi</div>';
+            var html = '<div class="recent-label">Prossimi Eventi</div>';
             for(var j=0;j<upcoming.length;j++){
               var ev = upcoming[j];
               var isToday = ev.days === 0;
