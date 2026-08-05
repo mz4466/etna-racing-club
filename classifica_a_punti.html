@@ -128,7 +128,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 
     <div class="overview-grid">
       <div class="ov-card"><div class="ov-num" id="ovPiloti">–</div><div class="ov-label">Piloti in classifica</div></div>
-      <div class="ov-card"><div class="ov-num" id="ovGare">–</div><div class="ov-label">Gare conteggiate</div></div>
+      <div class="ov-card"><div class="ov-num" id="ovMaxPts">–</div><div class="ov-label">Punti Possibili</div></div>
       <div class="ov-card"><div class="ov-num" id="ovLeader">–</div><div class="ov-label">Leader</div></div>
     </div>
 
@@ -265,7 +265,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
         if(!psn) continue;
         var pos = parseInt(row.pos);
         if(!pos) continue;
-        entries.push({ psn: psn, cat: cat, stagione: stagione, pos: pos });
+        entries.push({ psn: psn, cat: cat, stagione: stagione, pos: pos, raceIdx: i });
       }
     }
   }
@@ -296,7 +296,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   function render(){
     var allowedCats = CAT_FILTERS[currentCat] || CAT_FILTERS.tutti;
     var agg = {};
-    var gareCount = 0;
+    var raceSet = {};
 
     for(var i=0;i<entries.length;i++){
       var e = entries[i];
@@ -311,8 +311,9 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       agg[e.psn].gare++;
       if(e.pos === 1) agg[e.psn].wins++;
       if(e.pos <= 3) agg[e.psn].podi++;
-      gareCount++;
+      raceSet[e.raceIdx] = true;
     }
+    var maxPossible = Object.keys(raceSet).length * 10;
 
     var list = [];
     for(var k in agg){ if(agg.hasOwnProperty(k)) list.push(agg[k]); }
@@ -321,7 +322,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     });
 
     document.getElementById('ovPiloti').textContent = list.length;
-    document.getElementById('ovGare').textContent = gareCount;
+    document.getElementById('ovMaxPts').textContent = maxPossible;
     document.getElementById('ovLeader').textContent = list.length ? list[0].nome : '—';
 
     var tbody = document.getElementById('ptsBody');
