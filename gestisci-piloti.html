@@ -137,6 +137,13 @@
 
   .photo-preview{width:100%;height:120px;object-fit:cover;border-radius:8px;border:1px solid var(--border);margin-top:6px;display:none;background:var(--bg-input);}
 
+  .history-row{display:flex;align-items:center;gap:8px;background:var(--bg-input);border:1px solid var(--border);border-radius:7px;padding:8px 10px;margin-bottom:6px;}
+  .history-row input[type="date"]{background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:'Barlow Condensed',sans-serif;padding:5px 8px;}
+  .history-row select{background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:'Teko',sans-serif;letter-spacing:1px;padding:5px 8px;}
+  .history-row .hist-remove{margin-left:auto;background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:16px;line-height:1;padding:2px 6px;}
+  .history-row .hist-remove:hover{color:var(--red);}
+  .history-empty{font-family:'Teko',sans-serif;font-size:13px;color:var(--text-dim);letter-spacing:1px;padding:4px 0 8px;}
+
   .btn-github{background:linear-gradient(135deg,#196327,#238636);border-color:#2ea043;color:#fff;font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;padding:9px 22px;border-radius:7px;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:6px;}
   .btn-github:hover{background:linear-gradient(135deg,#238636,#2ea043);}
   .btn-cancel{background:transparent;border:1px solid var(--border-hi);color:var(--text-mid);font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;padding:9px 22px;border-radius:7px;cursor:pointer;transition:border-color .2s,color .2s;}
@@ -280,6 +287,11 @@
           <label>Auto Preferita</label>
           <input type="text" id="fAuto" placeholder="es. Ferrari 296 GT3 Gr.3">
         </div>
+        <div class="field">
+          <label>Data Iscrizione</label>
+          <input type="date" id="fDataIscrizione">
+          <div style="font-size:11px;color:var(--text-dim);margin-top:3px;">Da quando il pilota è considerato attivo nel club — usata per il distintivo Veterano.</div>
+        </div>
 
         <div class="form-section">Profilo di Guida</div>
         <div class="field">
@@ -330,6 +342,15 @@
           <input type="text" id="fNumero" placeholder="es. 44" style="max-width:120px;">
         </div>
 
+        <div class="form-section" style="grid-column:1/-1">Storico Attività</div>
+        <div style="grid-column:1/-1;font-size:11px;color:var(--text-dim);margin-bottom:8px;">
+          Registra qui i cambi di stato Attivo/Non Attivo avvenuti nel tempo (il primo giorno di attività è la Data Iscrizione sopra). I cambi fatti con il toggle rapido nella griglia vengono registrati qui automaticamente — usa questo editor solo per correggere o inserire cambi passati.
+        </div>
+        <div style="grid-column:1/-1" id="historyList"></div>
+        <div style="grid-column:1/-1;margin-bottom:6px;">
+          <button type="button" class="upload-btn" onclick="addHistoryEntry()">＋ Aggiungi Cambio Stato</button>
+        </div>
+
         <div class="form-section">File</div>
         <div class="field" style="grid-column:1/-1">
           <label>Slug (nome file) *</label>
@@ -361,6 +382,7 @@ let allPilots  = [];  // [{slug, data}, ...]
 let editingSlug = null;
 let calendarioData = [];   // championships from calendario.json
 let selectedCarsMap = {};  // champId -> [carName, ...]
+let currentHistory = [];   // [{date, attivo}, ...] activity status change log for the pilot being edited
 let gt7CarsLoaded = true; // pre-populated; set to true so search works immediately
 
 // Pre-populated car list (augmented from ddm999 if available)
@@ -751,6 +773,9 @@ function openModal(slug){
     document.getElementById('fNumero').value  = d.numero  || '';
     document.getElementById('fSlug').value    = slug;
     document.getElementById('fSlug').readOnly = true;
+    document.getElementById('fDataIscrizione').value = d.dataIscrizione || '';
+    currentHistory = (d.statusHistory || []).slice().sort(function(a,b){ return (a.date||'') < (b.date||'') ? -1 : 1; });
+    renderHistoryList();
     if(d.foto){
       const prev = document.getElementById('photoPreview');
       prev.src = d.foto; prev.style.display='block';
@@ -787,6 +812,9 @@ function openModal(slug){
   } else {
     document.getElementById('modalTitle').textContent = 'Aggiungi Pilota';
     document.getElementById('fSlug').readOnly = false;
+    document.getElementById('fDataIscrizione').value = new Date().toISOString().slice(0,10);
+    currentHistory = [];
+    renderHistoryList();
     // New pilot: all active championships start empty
     selectedCarsMap = {};
     var activeIds = calendarioData
@@ -810,10 +838,53 @@ function closeModal(){
   editingSlug=null;
 }
 
+// ── STORICO ATTIVITÀ (activity status history editor) ──
+function renderHistoryList(){
+  var wrap = document.getElementById('historyList');
+  if(!currentHistory.length){
+    wrap.innerHTML = '<div class="history-empty">Nessun cambio di stato registrato — il pilota è considerato attivo dalla Data Iscrizione.</div>';
+    return;
+  }
+  var html = '';
+  currentHistory.forEach(function(h, i){
+    html += '<div class="history-row">'
+      + '<input type="date" value="' + (h.date||'') + '" onchange="updateHistoryEntry(' + i + ',\'date\',this.value)">'
+      + '<select onchange="updateHistoryEntry(' + i + ',\'attivo\',this.value===\'true\')">'
+      +   '<option value="false"' + (h.attivo===false?' selected':'') + '>→ Non Attivo</option>'
+      +   '<option value="true"'  + (h.attivo===true ?' selected':'') + '>→ Attivo</option>'
+      + '</select>'
+      + '<button type="button" class="hist-remove" onclick="removeHistoryEntry(' + i + ')" title="Rimuovi">✕</button>'
+      + '</div>';
+  });
+  wrap.innerHTML = html;
+}
+
+function addHistoryEntry(){
+  currentHistory.push({ date: new Date().toISOString().slice(0,10), attivo: false });
+  currentHistory.sort(function(a,b){ return (a.date||'') < (b.date||'') ? -1 : 1; });
+  renderHistoryList();
+}
+
+function updateHistoryEntry(idx, field, value){
+  if(!currentHistory[idx]) return;
+  currentHistory[idx][field] = value;
+  if(field === 'date'){
+    currentHistory.sort(function(a,b){ return (a.date||'') < (b.date||'') ? -1 : 1; });
+  }
+  renderHistoryList();
+}
+
+function removeHistoryEntry(idx){
+  currentHistory.splice(idx, 1);
+  renderHistoryList();
+}
+
 function clearForm(){
-  ['fNome','fPsn','fRegione','fAuto','fStile','fPistaAma','fPistaOdia','fBio','fBadges','fFoto','fFoto2','fNumero','fSlug'].forEach(id=>{
+  ['fNome','fPsn','fRegione','fAuto','fStile','fPistaAma','fPistaOdia','fBio','fBadges','fFoto','fFoto2','fNumero','fSlug','fDataIscrizione'].forEach(id=>{
     document.getElementById(id).value='';
   });
+  currentHistory = [];
+  renderHistoryList();
   document.getElementById('fFotoFile').value = '';
   document.getElementById('fotoStatus').textContent = '';
   document.getElementById('fotoStatus').style.color = '';
@@ -966,6 +1037,7 @@ async function savePilot(){
     psn:       document.getElementById('fPsn').value.trim(),
     nazione:   document.getElementById('fRegione').value.trim(),
     auto:      document.getElementById('fAuto').value.trim(),
+    dataIscrizione: document.getElementById('fDataIscrizione').value || '',
     stile:     document.getElementById('fStile').value.trim(),
     pistaAma:  document.getElementById('fPistaAma').value.trim(),
     pistaOdia: document.getElementById('fPistaOdia').value.trim(),
@@ -975,6 +1047,7 @@ async function savePilot(){
     foto2:     document.getElementById('fFoto2').value.trim(),
     numero:    document.getElementById('fNumero').value.trim(),
     campionati: campionatiPayload,
+    statusHistory: currentHistory.slice().sort(function(a,b){ return (a.date||'') < (b.date||'') ? -1 : 1; }),
     attivo: editingSlug ? (allPilots.find(p=>p.slug===editingSlug)?.data?.attivo !== false) : true,
   };
 
@@ -1029,8 +1102,22 @@ async function toggleActive(slug, checkbox){
   const pilot = allPilots.find(p=>p.slug===slug);
   if(!pilot){ toast('Pilota non trovato','err'); return; }
 
+  const wasActive = pilot.data.attivo !== false;
+
   // Update local state
   pilot.data.attivo = isActive;
+
+  // Auto-log the change in statusHistory, so the Veterano badge can later
+  // reconstruct cumulative active time. If today's date already has an entry
+  // (e.g. toggled twice in one session) just update it instead of duplicating.
+  if(isActive !== wasActive){
+    if(!Array.isArray(pilot.data.statusHistory)) pilot.data.statusHistory = [];
+    var today = new Date().toISOString().slice(0,10);
+    var todayEntry = pilot.data.statusHistory.find(function(h){ return h.date === today; });
+    if(todayEntry){ todayEntry.attivo = isActive; }
+    else { pilot.data.statusHistory.push({ date: today, attivo: isActive }); }
+    pilot.data.statusHistory.sort(function(a,b){ return (a.date||'') < (b.date||'') ? -1 : 1; });
+  }
 
   const label = checkbox.closest('.toggle-wrap').querySelector('.toggle-label');
   label.textContent = isActive ? 'Attivo' : 'Non Attivo';
@@ -1046,6 +1133,10 @@ async function toggleActive(slug, checkbox){
   } catch(e){
     // Revert on failure
     pilot.data.attivo = !isActive;
+    if(isActive !== wasActive && Array.isArray(pilot.data.statusHistory)){
+      var today = new Date().toISOString().slice(0,10);
+      pilot.data.statusHistory = pilot.data.statusHistory.filter(function(h){ return h.date !== today; });
+    }
     checkbox.checked = !isActive;
     label.textContent = !isActive ? 'Attivo' : 'Non Attivo';
     label.className = 'toggle-label ' + (!isActive ? 'on' : 'off');
