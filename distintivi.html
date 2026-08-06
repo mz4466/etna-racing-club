@@ -123,6 +123,39 @@ async function fetchBatched(urls, fetchFn, batchSize, delayMs){
 }
 
 function daysBetween(d1, d2){ return Math.abs(d2 - d1) / 86400000; }
+
+// Somma i periodi in cui il pilota è stato "Attivo", ignorando i gap "Non Attivo".
+// Modello dati (pilot.json):
+//   dataIscrizione: "YYYY-MM-DD"           -> da qui il pilota è considerato Attivo
+//   statusHistory: [{date, attivo}, ...]   -> cambi di stato successivi, in ordine cronologico
+// Se questi campi non sono ancora stati impostati per un pilota (dati storici),
+// si ricade sul comportamento precedente: anni dalla prima gara disputata,
+// contati per intero se il pilota è attualmente attivo.
+function computeVeteranoAnni(pilot, earliestRaceDate){
+  var joinDateStr = pilot.dataIscrizione || null;
+  var history = Array.isArray(pilot.statusHistory)
+    ? pilot.statusHistory.filter(function(h){ return h && h.date; }).slice().sort(function(a,b){ return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); })
+    : [];
+
+  if (!joinDateStr) {
+    // Nessuna Data Iscrizione impostata -> fallback al vecchio comportamento
+    if (!earliestRaceDate) return 0;
+    if (pilot.attivo === false) return 0; // non sappiamo da quando è inattivo, meglio non sovrastimare
+    return Math.floor(daysBetween(new Date(earliestRaceDate), new Date()) / 365.25);
+  }
+
+  var segments = [{ date: joinDateStr, attivo: true }].concat(history);
+  var totalDays = 0;
+  var today = new Date();
+  for (var i = 0; i < segments.length; i++) {
+    var start = new Date(segments[i].date);
+    var end = (i + 1 < segments.length) ? new Date(segments[i + 1].date) : today;
+    if (segments[i].attivo !== false && end > start) {
+      totalDays += daysBetween(start, end);
+    }
+  }
+  return Math.floor(totalDays / 365.25);
+}
 function initials(name){ return String(name||'').split(/\s+/).filter(Boolean).slice(0,2).map(function(w){ return w[0]; }).join('').toUpperCase(); }
 
 // Elenco canonico "Categoria Auto" — deve rispecchiare le option in crea/modifica-campionato.html
@@ -418,10 +451,12 @@ async function main(){
     });
     stats.costanza = best;
 
-    // Veterano: anni dalla prima gara disputata
+    // Veterano: anni di appartenenza CUMULATIVI da attivo — i periodi in cui il
+    // pilota è stato "Non Attivo" non contano. Se torna attivo, il conteggio
+    // riprende da dove era rimasto (non riparte da zero).
     var earliestDate = null;
     raceLog.forEach(function(r){ if (r.date && (!earliestDate || r.date < earliestDate)) earliestDate = r.date; });
-    stats.veterano = earliestDate ? Math.floor(daysBetween(new Date(earliestDate), new Date()) / 365.25) : 0;
+    stats.veterano = computeVeteranoAnni(pilot, earliestDate);
 
     var autoUnica = {
       primaVittoriaPersonale: stats.vittorie >= 1
