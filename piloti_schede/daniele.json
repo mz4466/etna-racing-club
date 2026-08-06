@@ -3,6 +3,7 @@
   "psn": "MrSciacca81",
   "nazione": "",
   "auto": "",
+  "dataIscrizione": "2026-02-16",
   "stile": "Guida turistica in cerca di parcheggio",
   "pistaAma": "Yas Marina",
   "pistaOdia": "Montreal",
@@ -16,14 +17,8 @@
       "cars": [
         "Audi R8 LMS Evo '19"
       ]
-    },
-    "licence-to-race-2026": {
-      "cars": [
-        "Aston Martin DB5 '64",
-        "Toyota 2000GT '67",
-        "BMW Z8 '01"
-      ]
     }
   },
+  "statusHistory": [],
   "attivo": true
 }
