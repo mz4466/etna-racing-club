@@ -145,11 +145,9 @@ function renderCatAutoChips(achievedSet){
 const CATALOG = [
   { cat:'Anzianità nel Club', items:[
     { key:'veterano',  nome:'Veterano',  desc:'Sale ogni anno',        type:'tiered', thresholds:[1,2,3,5], unit:'anni' },
-    { key:'fondatore', nome:'Fondatore', desc:'Membri Fondatori',      type:'manual' },
-    { key:'pioniere',  nome:'Pioniere',  desc:'Primi 10 iscritti',     type:'manual' },
   ]},
   { cat:'Partecipazione Gare', items:[
-    { key:'gare',            nome:'Habitué di Pista',   desc:'Gare Totali Corse',           type:'tiered', thresholds:[5,25,50,100], unit:'gare' },
+    { key:'gare',            nome:'Habitué di Pista',   desc:'Gare Totali Corse',           type:'tiered', thresholds:[10,30,60,100], unit:'gare' },
     { key:'costanza',        nome:'Costanza',           desc:'Gare Consecutive',            type:'tiered', thresholds:[3,8,15,25], unit:'gare' },
     { key:'presenzaPerfetta',nome:'Presenza Perfetta',  desc:'100% Presenze in Stagione',    type:'tiered', thresholds:[1,2,3,5], unit:'stagioni' },
     { key:'globetrotter',    nome:'Globetrotter',       desc:'Circuiti Diversi Corsi',       type:'tiered', thresholds:[10,16,22,30], unit:'circuiti' },
@@ -170,8 +168,7 @@ const CATALOG = [
     { key:'grandSlam',  nome:'Grand Slam',  desc:'Vittoria+Pole+Giro Veloce',   type:'tiered', thresholds:[1,2,3,5], unit:'grand slam' },
   ]},
   { cat:'Speciali', items:[
-    { key:'primaVittoriaClub',      nome:'1ª Vittoria',            desc:'1ª Assoluta del Club',              type:'auto' },
-    { key:'primaVittoriaPersonale', nome:'1ª Vittoria Personale',  desc:'Per chi ha vinto almeno 1 Gara',    type:'auto' },
+    { key:'primaVittoriaPersonale', nome:'1ª Vittoria',            desc:'Per chi ha vinto almeno 1 Gara',    type:'auto' },
     { key:'pilota-stagione',        nome:'Pilota della Stagione',  desc:'Miglior pilota della stagione',     type:'manual' },
     { key:'pilota-anno',            nome:'Pilota dell\'Anno',      desc:'Miglior pilota dell\'anno',         type:'manual' },
     { key:'sfortunato',             nome:'Sfortunato',             desc:'N° di Dnf',                          type:'tiered', thresholds:[1,3,5,10], unit:'dnf' },
@@ -342,15 +339,6 @@ async function main(){
     var champRounds = {};          // champId -> Set(garaNum) partecipati dal target
     var champTotalRounds = {};     // champId -> totalRounds (da calendario, o garaTot come fallback)
 
-    // sort races chronologically once, for the club's historic first race/winner
-    var sortedRaces = races.slice().filter(function(r){ return r.data; }).sort(function(a,b){ return a.data < b.data ? -1 : (a.data > b.data ? 1 : 0); });
-    var primaVittoriaClub = false;
-    if (sortedRaces.length) {
-      var firstRace = sortedRaces[0];
-      var firstWinnerRow = (firstRace.rows || []).find(function(r){ return parseInt(r.pos) === 1; });
-      if (firstWinnerRow) primaVittoriaClub = isTarget(firstWinnerRow.nome, firstWinnerRow.psn);
-    }
-
     races.forEach(function(race){
       var champId = race.champId || '';
       if (champId && ufficioseIds[champId]) return;
@@ -436,7 +424,6 @@ async function main(){
     stats.veterano = earliestDate ? Math.floor(daysBetween(new Date(earliestDate), new Date()) / 365.25) : 0;
 
     var autoUnica = {
-      primaVittoriaClub: primaVittoriaClub,
       primaVittoriaPersonale: stats.vittorie >= 1
     };
     var pilotBadges = (pilot.badges || []).map(function(b){ return String(b).toLowerCase().trim(); });
