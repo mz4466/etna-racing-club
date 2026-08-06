@@ -3,6 +3,7 @@
   "psn": "fl4m3_moT0r",
   "nazione": "",
   "auto": "",
+  "dataIscrizione": "2026-01-05",
   "stile": "",
   "pistaAma": "",
   "pistaOdia": "",
@@ -12,5 +13,6 @@
   "foto2": "",
   "numero": "",
   "campionati": {},
+  "statusHistory": [],
   "attivo": false
 }
