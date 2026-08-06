@@ -3,6 +3,7 @@
   "psn": "FRT-Morzeus96",
   "nazione": "",
   "auto": "",
+  "dataIscrizione": "2026-02-21",
   "stile": "",
   "pistaAma": "",
   "pistaOdia": "",
@@ -18,5 +19,6 @@
       ]
     }
   },
+  "statusHistory": [],
   "attivo": true
 }
