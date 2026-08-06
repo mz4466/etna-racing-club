@@ -3,6 +3,7 @@
   "psn": "Sand_ro83",
   "nazione": "",
   "auto": "",
+  "dataIscrizione": "2026-01-06",
   "stile": "",
   "pistaAma": "",
   "pistaOdia": "",
@@ -12,5 +13,6 @@
   "foto2": "",
   "numero": "",
   "campionati": {},
+  "statusHistory": [],
   "attivo": false
 }
