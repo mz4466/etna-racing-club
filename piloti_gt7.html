@@ -764,6 +764,7 @@ function renderPilot(p, calendario) {
   var foto     = p.foto   || p.photo || null;  // old format: photo is filename in root; new format: foto is base64
   var foto2    = p.foto2  || null;
   var numero   = p.numero || '';
+  var dataIscrizione = p.dataIscrizione || '';
   var locationStr = nazione ? '🌍 <span style="opacity:0.5;font-size:11px">Da:</span> ' + esc(nazione) : '';
   if (p.location) locationStr += ' • 📍 ' + esc(p.location);
 
@@ -1024,6 +1025,7 @@ function renderPilot(p, calendario) {
     +   (isActive
           ? '<div class="info">'
           +   (locationStr ? locationStr + '<br>' : '')
+          +   (dataIscrizione ? '🗓️ <span style="opacity:0.5;font-size:11px">Membro dal:</span> ' + esc(formatJoinDate(dataIscrizione)) + '<br>' : '')
           +   (auto ? '🚗 <span style="opacity:0.5;font-size:11px">Auto preferita:</span> ' + esc(auto) + '<br>' : '')
           +   (p.dr || p.sr ? '📊 <span style="opacity:0.5;font-size:11px">Rating:</span> DR: ' + esc(p.dr||'-') + ' • SR: ' + esc(p.sr||'-') + '<br>' : '')
           +   (stile ? '💪 <span style="opacity:0.5;font-size:11px">Stile:</span> ' + esc(stile) + '<br>' : '')
@@ -1043,6 +1045,15 @@ function renderPilot(p, calendario) {
 }
 
 function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function formatJoinDate(dateStr){
+  if(!dateStr) return '';
+  var parts = String(dateStr).split('-');
+  if(parts.length < 2) return dateStr;
+  var mesi = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+  var m = parseInt(parts[1], 10);
+  var mese = (m >= 1 && m <= 12) ? mesi[m-1] : '';
+  return mese ? (mese + ' ' + parts[0]) : dateStr;
+}
 
 function buildNumberRoster(pilots){
   var sel = document.getElementById('numberRoster');
