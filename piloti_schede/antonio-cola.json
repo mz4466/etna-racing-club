@@ -3,6 +3,7 @@
   "psn": "Cola_030696",
   "nazione": "Campania",
   "auto": "Nissan GTR 35 GT3",
+  "dataIscrizione": "2026-12-04",
   "stile": "Aggressivo",
   "pistaAma": "Monza",
   "pistaOdia": "",
@@ -18,5 +19,6 @@
       ]
     }
   },
+  "statusHistory": [],
   "attivo": true
 }
