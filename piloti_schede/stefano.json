@@ -3,6 +3,7 @@
   "psn": "stefano8923",
   "nazione": "Umbria, Foligno",
   "auto": "Amg",
+  "dataIscrizione": "2026-01-07",
   "stile": "Staccata all’ultimo sangue",
   "pistaAma": "Monza",
   "pistaOdia": "Tokyo (cittadino)",
@@ -16,14 +17,8 @@
       "cars": [
         "Mercedes-AMG GT3 '20"
       ]
-    },
-    "licence-to-race-2026": {
-      "cars": [
-        "Aston Martin DB5 '64",
-        "Toyota 2000GT '67",
-        "BMW Z8 '01"
-      ]
     }
   },
+  "statusHistory": [],
   "attivo": true
 }
