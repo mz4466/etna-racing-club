@@ -3,6 +3,7 @@
   "psn": "taeniko85",
   "nazione": "",
   "auto": "",
+  "dataIscrizione": "2026-06-12",
   "stile": "",
   "pistaAma": "",
   "pistaOdia": "",
@@ -18,5 +19,6 @@
       ]
     }
   },
+  "statusHistory": [],
   "attivo": true
 }
