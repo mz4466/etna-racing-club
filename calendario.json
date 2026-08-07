@@ -378,59 +378,80 @@
     "bestOf": 4,
     "rounds": [
       {
-        "circuit": "Autopolis – Layout completo – 4,7 km",
+        "circuit": "Autopolis (4.674 m)",
         "date": "2026-01-11",
         "laps": "17",
-        "weather": "🌫️ Foschia, nuvoloso e soleggiato (più coperto) + ☁️ Nuvoloso e fresco + ☁️ Completamente nuvoloso + 🌧️ Nuvoloso con pioggia + ⛈️ Nubi dense con pioggia",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "S18 - 🌫️ Foschia, nuvoloso e soleggiato (più coperto) + C04 - ☁️ Nuvoloso e fresco + C05 - ☁️ Completamente nuvoloso + R04 - 🌧️ Nuvoloso con pioggia + R06 - ⛈️ Nubi dense con pioggia",
         "tire": "x1",
         "fuel": "x2",
         "types": "Morbide",
-        "notes": "1 Pit - 15 min Qualifiche"
+        "notes": "1 Pit - 15 min Qualifiche",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Interlagos – 4,3 km",
         "date": "2026-01-25",
         "laps": "18",
-        "weather": "☁️ Nuvoloso e fresco",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "C04 - ☁️ Nuvoloso e fresco",
         "tire": "x2",
         "fuel": "x3",
         "types": "Dure/Medie/Morbide",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Red Bull Ring – Layout completo – 4,3 km",
         "date": "2026-02-01",
         "laps": "18",
-        "weather": "☁️ Nuvoloso e fresco + ☁️ Completamente nuvoloso + 🌑 Nubi dense + 🌧️ Nuvoloso con pioggia + 🌧️ Nuvoloso con pioggia (copertura uniforme)",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "C04 - ☁️ Nuvoloso e fresco + C05 - ☁️ Completamente nuvoloso + C06 - 🌑 Nubi dense + R04 - 🌧️ Nuvoloso con pioggia",
         "tire": "x3",
         "fuel": "x4",
         "types": "",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Deep Forest Raceway – 4,3 km",
         "date": "2026-02-22",
         "laps": "18",
-        "weather": "🌥️ Nuvoloso e mite",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "C02 - 🌥️ Nuvoloso e mite",
         "tire": "x3",
         "fuel": "x1",
         "types": "Dure/Medie/Morbide",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Suzuka – Layout completo – 5,8 km",
         "date": "2026-03-08",
         "laps": "14",
-        "weather": "🌫️ Nebbioso, soleggiato con molte nuvole + 🌤️ Sole con molte nubi monsoniche + 🌧️ Nuvoloso con pioggia + 🌧️ Nuvoloso con pioggia (copertura uniforme)",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "S10 - 🌫️ Nebbioso, soleggiato con molte nuvole + S12 - 🌤️ Sole con molte nubi monsoniche + R04 - 🌧️ Nuvoloso con pioggia",
         "tire": "x3",
         "fuel": "x5",
         "types": "Dure",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       }
     ],
     "costruttori": false,
     "teams": [],
-    "stagione": "Stagione 1"
+    "stagione": "Stagione 1",
+    "campagna": "Invernale"
   },
   {
     "id": "risveglio-dei-motori-2026",
