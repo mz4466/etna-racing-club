@@ -190,7 +190,7 @@ const CATALOG = [
     { key:'campVinti',      nome:'Camp. Vinti',      desc:'Campionati Vinti',      type:'tiered', thresholds:[1,3,6,10], unit:'titoli' },
   ]},
   { cat:'Eventi & Trofei', items:[
-    { key:'eventi',     nome:'Cacciatore di Eventi',    desc:'N° di Partecipazioni', type:'tiered', thresholds:[1,3,5,10], unit:'eventi' },
+    { key:'eventi',     nome:'Cacciatore di Eventi/Trofei', desc:'N° di Partecipazioni', type:'tiered', thresholds:[1,3,5,10], unit:'eventi' },
     { key:'trofeiVinti',nome:'Collezionista di Trofei', desc:'Trofei/Eventi Vinti',  type:'tiered', thresholds:[1,2,3,5], unit:'trofei' },
   ]},
   { cat:'Risultati', items:[
@@ -393,7 +393,7 @@ async function main(){
         if (row.fl === true) stats.giroveloce++;
         if (row.pole === true) stats.pole++;
         if (pos === 1 && row.fl === true && row.pole === true) stats.grandSlam++;
-        if (champ && champ.cat === 'Evento') stats.eventi++;
+        if (champ && (champ.cat === 'Evento' || champ.cat === 'Trofeo')) stats.eventi++;
         if (row.stato === 'dnf') stats.sfortunato++;
 
         var circuito = race.circuito || race.circuit || race.track || '';
