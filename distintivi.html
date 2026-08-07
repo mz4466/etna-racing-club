@@ -182,7 +182,7 @@ const CATALOG = [
   { cat:'Partecipazione Gare', items:[
     { key:'gare',            nome:'Habitué di Pista',   desc:'Gare Totali Corse',           type:'tiered', thresholds:[10,30,60,100], unit:'gare' },
     { key:'costanza',        nome:'Costanza',           desc:'Gare Consecutive',            type:'tiered', thresholds:[3,8,15,25], unit:'gare' },
-    { key:'presenzaPerfetta',nome:'Presenza Perfetta',  desc:'100% Presenze in Stagione',    type:'tiered', thresholds:[1,2,3,5], unit:'stagioni' },
+    { key:'presenzaPerfetta',nome:'Presenza Perfetta',  desc:'100% Presenze in Campagna',    type:'tiered', thresholds:[1,2,3,5], unit:'campagne' },
     { key:'globetrotter',    nome:'Globetrotter',       desc:'Circuiti Diversi Corsi',       type:'tiered', thresholds:[10,16,22,30], unit:'circuiti' },
   ]},
   { cat:'Campionati', items:[
@@ -433,14 +433,28 @@ async function main(){
     stats.globetrotter = Object.keys(circuitiSet).length;
     stats.multicat = Object.keys(categorieSet).length;
 
-    // Presenza Perfetta: stagioni (Campionato/Formula) completate al 100% dei round
+    // Presenza Perfetta: CAMPAGNE (Campionato/Formula) completate al 100% dei
+    // round, dove una campagna può comprendere più campionati con lo stesso
+    // valore "campagna" + stessa Stagione Ufficiale (es. "Estiva" + "Stagione
+    // 2"). Serve 100% di presenza su TUTTI i round di TUTTI i campionati di
+    // quella campagna. Campionati senza "campagna" impostata vengono ignorati
+    // (dato non ancora migrato) — non contano né a favore né contro.
+    var campagnaGroups = {}; // key -> { total, attended }
     Object.keys(champRounds).forEach(function(cid){
       var champ = calendario.find(function(c){ return c.id === cid; });
       if (!champ || (champ.cat !== 'Campionato' && champ.cat !== 'Formula')) return;
-      var total = champTotalRounds[cid] || 0;
-      var attended = Object.keys(champRounds[cid]).length;
-      if (total > 0 && attended >= total) stats.presenzaPerfetta++;
+      var campagnaVal = (champ.campagna || '').trim();
+      var stagioneVal = (champ.stagione || '').trim();
+      if (!campagnaVal || !stagioneVal) return;
+      var key = campagnaVal.toLowerCase() + '|' + stagioneVal.toLowerCase();
+      if (!campagnaGroups[key]) campagnaGroups[key] = { total: 0, attended: 0 };
+      campagnaGroups[key].total += (champTotalRounds[cid] || 0);
+      campagnaGroups[key].attended += Object.keys(champRounds[cid]).length;
     });
+    stats.presenzaPerfetta = Object.keys(campagnaGroups).filter(function(k){
+      var g = campagnaGroups[k];
+      return g.total > 0 && g.attended >= g.total;
+    }).length;
 
     // Costanza: miglior serie di gare consecutive senza ritiro (dnf/dsq)
     raceLog = raceLog.filter(function(r){ return r.date; }).sort(function(a,b){ return a.date < b.date ? -1 : 1; });
