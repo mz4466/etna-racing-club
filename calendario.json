@@ -1119,7 +1119,7 @@
         "laps": "13",
         "fase": "Pomeriggio",
         "lapsType": "giri",
-        "weather": "🌫️ Nebbioso, soleggiato con molte nuvole",
+        "weather": "S10 - 🌫️ Nebbioso, soleggiato con molte nuvole",
         "tire": "x2",
         "fuel": "x4",
         "types": "Medie/Morbide",
@@ -1129,7 +1129,8 @@
       }
     ],
     "costruttori": false,
-    "teams": []
+    "teams": [],
+    "campagna": "Estiva"
   },
   {
     "id": "trofeo-super-turismo-2026",
