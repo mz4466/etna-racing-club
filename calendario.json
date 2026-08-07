@@ -1093,7 +1093,8 @@
     ],
     "costruttori": false,
     "teams": [],
-    "catAuto": "Sportive Stradali"
+    "catAuto": "Sportive Stradali",
+    "campagna": "Estiva"
   },
   {
     "id": "evento-gr-4-2026",
