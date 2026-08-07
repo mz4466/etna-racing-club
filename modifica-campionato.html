@@ -443,8 +443,23 @@
       <div class="card">
         <div class="card-title">⚙️ Informazioni Campionato</div>
 
+        <div class="form-row col2">
+          <div class="field"><label>Stagione Ufficiale</label><input type="text" id="champStagione" placeholder="es. Stagione 1 · Primavera 2026" oninput="updateAll()"></div>
+          <div class="field">
+            <label>Campagna</label>
+            <input type="text" id="champCampagna" list="campagnaList" placeholder="es. Estiva" oninput="updateAll()">
+            <datalist id="campagnaList">
+              <option value="Estiva"></option>
+              <option value="Autunnale"></option>
+              <option value="Invernale"></option>
+              <option value="Primaverile"></option>
+            </datalist>
+            <span style="font-family:'Teko',sans-serif;font-size:11px;letter-spacing:1px;color:var(--text-dim);margin-top:4px;display:block;line-height:1.5;">
+              Insieme a Stagione Ufficiale determina il raggruppamento per Presenza Perfetta.
+            </span>
+          </div>
+        </div>
         <div class="form-row col4">
-          <div class="field" style="grid-column:1/-1"><label>Stagione Ufficiale</label><input type="text" id="champStagione" placeholder="es. Stagione 1 · Primavera 2026" oninput="updateAll()"></div>
           <div class="field"><label>Nome Campionato</label><input type="text" id="champName" oninput="updateAll()"></div>
           <div class="field"><label>Anno</label><input type="number" id="champYear" min="2020" max="2099" oninput="updateAll()"></div>
           <div class="field">
@@ -826,6 +841,26 @@ async function verifyAndLoad() {
   }
 }
 
+// Add distinct "campagna" values already used across the loaded championships
+// to the datalist, alongside the 4 presets, so previously-typed custom
+// campagne get suggested too.
+function populateCampagnaOptions(){
+  var datalist = document.getElementById('campagnaList');
+  if (!datalist) return;
+  var seen = {};
+  Array.from(datalist.options).forEach(function(o){ seen[o.value.toLowerCase().trim()] = true; });
+  championships.forEach(function(c){
+    var val = (c.campagna || '').trim();
+    if (!val) return;
+    var key = val.toLowerCase();
+    if (seen[key]) return;
+    seen[key] = true;
+    var opt = document.createElement('option');
+    opt.value = val;
+    datalist.appendChild(opt);
+  });
+}
+
 async function loadCalendario() {
   const token = getToken();
   toast('Caricamento lista campionati…', '');
@@ -840,6 +875,7 @@ async function loadCalendario() {
   championships = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\s/g,'')))));
   renderPickList();
   toast('✓ ' + championships.length + ' campionati trovati', 'ok');
+  populateCampagnaOptions();
 
   // Auto-load if coming from admin panel
   const autoSlug = sessionStorage.getItem('erc_autoload_champ');
@@ -929,6 +965,7 @@ function populateFromHTML(entry, html) {
   document.getElementById('champYear').value  = entry.year  || '2026';
   document.getElementById('champStagione').value = entry.stagione || '';
   document.getElementById('champCars').value  = entry.cars  || '';
+  document.getElementById('champCampagna').value = entry.campagna || '';
   document.getElementById('champDesc').value  = entry.desc  || '';
   document.getElementById('champSlug').value  = entry.slug  || '';
   document.getElementById('champTrophy').value = entry.trophy || '';
@@ -1582,6 +1619,7 @@ async function updateCalendarioEntry(token, fname) {
       list[idx].catAuto = document.getElementById('champCatAuto').value;
       list[idx].stagione = document.getElementById('champStagione').value.trim() || null;
       list[idx].cars  = document.getElementById('champCars').value.trim();
+      list[idx].campagna = document.getElementById('champCampagna').value.trim() || null;
       list[idx].desc  = document.getElementById('champDesc').value.trim();
       list[idx].slug  = document.getElementById('champSlug').value.trim();
 
