@@ -775,11 +775,26 @@
     <!-- Championship Info -->
     <div class="card">
       <div class="card-title">⚙️ Informazioni Campionato</div>
-      <div class="form-row col4">
-        <div class="field" style="grid-column:1/-1">
+      <div class="form-row col2">
+        <div class="field">
           <label>Stagione Ufficiale</label>
           <input type="text" id="champStagione" placeholder="es. Stagione 1 · Primavera 2026" oninput="updateAll()">
         </div>
+        <div class="field">
+          <label>Campagna</label>
+          <input type="text" id="champCampagna" list="campagnaList" placeholder="es. Estiva" oninput="updateAll()">
+          <datalist id="campagnaList">
+            <option value="Estiva"></option>
+            <option value="Autunnale"></option>
+            <option value="Invernale"></option>
+            <option value="Primaverile"></option>
+          </datalist>
+          <span style="font-family:'Teko',sans-serif;font-size:11px;letter-spacing:1px;color:var(--text-dim);margin-top:4px;display:block;line-height:1.5;">
+            Scegli dalla lista o scrivine una nuova — verrà proposta anche nei prossimi campionati. Insieme a Stagione Ufficiale determina il raggruppamento per Presenza Perfetta.
+          </span>
+        </div>
+      </div>
+      <div class="form-row col4">
         <div class="field">
           <label>Nome Campionato</label>
           <input type="text" id="champName" placeholder="es. Traiettorie Gelate" oninput="autoFillSlug(); updateAll()">
@@ -1230,7 +1245,35 @@ window.onload = () => {
   } else {
     updateAll();
   }
+  loadCampagnaOptions();
 };
+
+// Pull distinct "campagna" values already used across calendario.json and add
+// them to the datalist alongside the 4 presets, so previously-typed custom
+// campagne get suggested too. Best-effort/unauthenticated — fails silently.
+async function loadCampagnaOptions(){
+  try {
+    const r = await fetch(`https://api.github.com/repos/${REPO}/contents/calendario.json?ref=${BRANCH}&_=${Date.now()}`, {
+      headers: { Accept: 'application/vnd.github.v3+json' }
+    });
+    if (!r.ok) return;
+    const d = await r.json();
+    const list = JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\s/g,'')))));
+    const seen = {};
+    const datalist = document.getElementById('campagnaList');
+    Array.from(datalist.options).forEach(o => { seen[o.value.toLowerCase().trim()] = true; });
+    list.forEach(c => {
+      var val = (c.campagna || '').trim();
+      if (!val) return;
+      var key = val.toLowerCase();
+      if (seen[key]) return;
+      seen[key] = true;
+      var opt = document.createElement('option');
+      opt.value = val;
+      datalist.appendChild(opt);
+    });
+  } catch(e) { /* best-effort only */ }
+}
 
 
 
@@ -2060,6 +2103,7 @@ async function updateCalendario(token, fname, champPath) {
   const cat   = document.getElementById('champCat').value;
   const catAuto = document.getElementById('champCatAuto').value;
   const cars  = document.getElementById('champCars').value.trim();
+  const campagna = document.getElementById('champCampagna').value.trim();
   const desc  = document.getElementById('champDesc').value.trim();
   const slug   = document.getElementById('champSlug').value.trim();
   const bestOfEl = document.getElementById('champBestOf'); const bestOf = parseInt(bestOfEl ? bestOfEl.value : 0)||0;
@@ -2098,6 +2142,7 @@ async function updateCalendario(token, fname, champPath) {
   const newEntry = {
     id: null, // will be set below — stable unique ID, never changes after creation
     name, year, cat, catAuto,
+    campagna: campagna || null,
     stagione: document.getElementById('champStagione').value.trim() || null,
     slug: slug || cat,
     trophy: document.getElementById('champTrophy').value || null,
