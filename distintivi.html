@@ -365,7 +365,6 @@ async function main(){
       sfortunato:0, multicat:0
     };
     var champParticipated = {};    // champId -> earliest date
-    var completedChampIds = {};    // champId set (finale raggiunta)
     var raceLog = [];              // { date, stato }
     var circuitiSet = {};
     var categorieSet = {};
@@ -406,7 +405,6 @@ async function main(){
         if (champId) {
           var d = race.data || '9999';
           if (!champParticipated[champId] || d < champParticipated[champId]) champParticipated[champId] = d;
-          if (isFinal) completedChampIds[champId] = true;
           if (!champRounds[champId]) champRounds[champId] = {};
           champRounds[champId][garaNum] = true;
           champTotalRounds[champId] = totalRounds;
@@ -429,7 +427,17 @@ async function main(){
       }
     });
 
-    stats.campCompletati = Object.keys(completedChampIds).length;
+    // Camp. Completati: un campionato conta come "completato" se il pilota ha
+    // corso almeno il numero minimo di gare richiesto — quel minimo è il
+    // "Migliore su… gare" (bestOf) del campionato, se impostato; se non è
+    // impostato nessun minimo, serve averle corse TUTTE (totalRounds).
+    stats.campCompletati = Object.keys(champRounds).filter(function(cid){
+      var champ = calendario.find(function(c){ return c.id === cid; });
+      var totalRounds = champTotalRounds[cid] || 0;
+      var required = (champ && champ.bestOf) ? parseInt(champ.bestOf) : totalRounds;
+      var attended = Object.keys(champRounds[cid]).length;
+      return required > 0 && attended >= required;
+    }).length;
     stats.globetrotter = Object.keys(circuitiSet).length;
     stats.multicat = Object.keys(categorieSet).length;
 
