@@ -286,7 +286,8 @@
     "costruttori": false,
     "teams": [],
     "stagione": "Stagione 1",
-    "catAuto": "Monoposto"
+    "catAuto": "Monoposto",
+    "campagna": "Autunnale"
   },
   {
     "id": "trofeo-cronoscalata-autunno-2025",
