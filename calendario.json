@@ -473,56 +473,77 @@
         "circuit": "Sainte-Croix – Layout B – 7,1 km",
         "date": "2026-03-29",
         "laps": "11",
-        "weather": "🌑 Nubi dense",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "C06 - 🌑 Nubi dense",
         "tire": "x2",
         "fuel": "x5",
         "types": "Medie/Morbide",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Fuji – Layout completo – 4,6 km",
         "date": "2026-04-12",
         "laps": "17",
-        "weather": "🌑 Nubi dense + 🌧️ Nuvoloso con pioggia (copertura uniforme) + ⛈️ Nuvoloso con pioggia torrenziale + 🌊 Nubi dense con pioggia torrenziale",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "C06 - 🌑 Nubi dense + R07 - ⛈️ Nuvoloso con pioggia torrenziale + R08 - 🌊 Nubi dense con pioggia torrenziale",
         "tire": "x5",
         "fuel": "x1",
         "types": "Morbide",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Barcellona – Layout GP – 4,7 km",
         "date": "2026-04-26",
         "laps": "17",
-        "weather": "🌤️ Asciutto e piacevole, scarsa nuvolosità",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "S02 - 🌤️ Asciutto e piacevole, scarsa nuvolosità",
         "tire": "x1",
         "fuel": "x3",
         "types": "Dure/Morbide",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Monza – Layout completo – 5,8 km",
         "date": "2026-05-24",
         "laps": "14",
-        "weather": "🏔️ Sole con foschia alpina",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "S11 - 🏔️ Sole con foschia alpina",
         "tire": "x2",
         "fuel": "x4",
         "types": "Medie/Morbide",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       },
       {
         "circuit": "Nürburgring – Nordschleife – 20,8 km",
         "date": "2026-06-07",
         "laps": "4",
-        "weather": "💧 Umido, sereno e piacevole",
+        "fase": "",
+        "lapsType": "giri",
+        "weather": "S06 - 💧 Umido, sereno e piacevole",
         "tire": "x4",
         "fuel": "x1",
         "types": "Dure/Medie",
-        "notes": ""
+        "notes": "",
+        "carId": "",
+        "carName": ""
       }
     ],
     "costruttori": false,
     "teams": [],
-    "stagione": "Stagione 1"
+    "stagione": "Stagione 1",
+    "campagna": "Primaverile"
   },
   {
     "id": "abarth-1-campionato-2026",
