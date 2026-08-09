@@ -85,18 +85,6 @@
       }
     },
     {
-      "id": "b6",
-      "type": "video",
-      "x": 54.39,
-      "y": 28.72,
-      "w": 25,
-      "h": 28,
-      "content": {
-        "url": "https://vm.tiktok.com/ZN8RyBvh2/",
-        "caption": ""
-      }
-    },
-    {
       "id": "b7",
       "type": "video",
       "x": 76.45,
@@ -106,6 +94,17 @@
       "content": {
         "url": "https://www.youtube.com/shorts/5yIbhtG-2Ds?is=F5R58UbvGMo_IWVe",
         "caption": ""
+      }
+    },
+    {
+      "id": "b8",
+      "type": "embed",
+      "x": 54.33,
+      "y": 28.84,
+      "w": 22,
+      "h": 15,
+      "content": {
+        "url": "https://vm.tiktok.com/ZN8RyBvh2/"
       }
     }
   ]
