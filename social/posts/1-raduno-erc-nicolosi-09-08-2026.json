@@ -1,0 +1,112 @@
+{
+  "title": "1° Raduno ERC - Nicolosi 09-08-2026",
+  "slug": "1-raduno-erc-nicolosi-09-08-2026",
+  "date": "2026-08-09",
+  "year": 2026,
+  "campionato": "",
+  "blocks": [
+    {
+      "id": "b0",
+      "type": "title",
+      "x": 0,
+      "y": 0.97,
+      "w": 53.96,
+      "h": 10.46,
+      "content": {
+        "text": "Il primo Raduno dell'Etna Racing Club",
+        "size": "medium"
+      }
+    },
+    {
+      "id": "b1",
+      "type": "text",
+      "x": 0,
+      "y": 12.31,
+      "w": 53.86,
+      "h": 51.48,
+      "content": {
+        "html": "<p class=\"font-claude-response-body break-words whitespace-normal\" dir=\"ltr\">Oggi si è tenuto, per la prima volta, il Raduno dell'Etna Racing Club. Tra impegni di lavoro, famiglia e distanza, non tutti i membri sono riusciti a essere presenti, ma chi c'era ha reso l'evento speciale.</p>\n<p class=\"font-claude-response-body break-words whitespace-normal\" dir=\"ltr\">Il raduno è stato ospitato da Papaveri e Papere, il noto bar/ristorante/pizzeria di Nicolosi. In prima linea, come sempre, gli amministratori e fondatori del gruppo, Antonio e Pierpaolo. Presenti anche Giovanni, in vacanza da Londra, e Fabio, arrivato dal Nord Italia nonostante sia anch'egli nicolosita come Giovanni: la passione per l'Etna Racing Club, evidentemente, non conosce distanze. A completare il gruppo, Matteo Spinotto, Claudio e il nuovo arrivato Gaetano, accolto con l'entusiasmo che contraddistingue questa community.</p>\n<p class=\"font-claude-response-body break-words whitespace-normal\" dir=\"ltr\">Tra una granita, il caldo estivo e tante risate, è stata una bella colazione condivisa tra amici e appassionati, la dimostrazione di come, dietro le gare e la classifica, ci sia prima di tutto un gruppo di persone che si vuole bene.</p>\n<p class=\"font-claude-response-body break-words whitespace-normal\" dir=\"ltr\">Si spera di poter organizzare presto un altro raduno, magari con una partecipazione ancora più numerosa. Un gruppo speciale, anche se qualcuno, come detto, non è potuto essere presente questa volta — ma lo spirito dell'Etna Racing Club era lì con noi comunque.</p>\n<p class=\"font-claude-response-body break-words whitespace-normal\" dir=\"ltr\">Alla prossima!</p>"
+      }
+    },
+    {
+      "id": "b2",
+      "type": "photo",
+      "x": 54.4,
+      "y": 0,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/1-raduno-erc-nicolosi-09-08-2026-b2.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b3",
+      "type": "photo",
+      "x": 50.56,
+      "y": 64.82,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/1-raduno-erc-nicolosi-09-08-2026-b3.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b4",
+      "type": "photo",
+      "x": 25.36,
+      "y": 64.65,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/1-raduno-erc-nicolosi-09-08-2026-b4.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b5",
+      "type": "photo",
+      "x": 0.2,
+      "y": 64.51,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/1-raduno-erc-nicolosi-09-08-2026-b5.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b6",
+      "type": "video",
+      "x": 54.39,
+      "y": 28.72,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "url": "https://vm.tiktok.com/ZN8RyBvh2/",
+        "caption": ""
+      }
+    },
+    {
+      "id": "b7",
+      "type": "video",
+      "x": 76.45,
+      "y": 74.16,
+      "w": 20.66,
+      "h": 24.74,
+      "content": {
+        "url": "https://www.youtube.com/shorts/5yIbhtG-2Ds?is=F5R58UbvGMo_IWVe",
+        "caption": ""
+      }
+    }
+  ]
+}
