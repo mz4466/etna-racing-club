@@ -5,8 +5,18 @@
     "date": "2026-08-09",
     "year": 2026,
     "campionato": "",
-    "blockTypes": [],
-    "created": "2026-08-09T17:14:27.541Z"
+    "blockTypes": [
+      "title",
+      "text",
+      "photo",
+      "photo",
+      "photo",
+      "photo",
+      "video",
+      "video"
+    ],
+    "created": "2026-08-09T17:14:27.541Z",
+    "cover": "social/media/1-raduno-erc-nicolosi-09-08-2026-b2.jpeg"
   },
   {
     "title": "60 minuti per la vittora",
