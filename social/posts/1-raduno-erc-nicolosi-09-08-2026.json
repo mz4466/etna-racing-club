@@ -92,19 +92,22 @@
       "w": 20.66,
       "h": 24.74,
       "content": {
-        "url": "https://www.youtube.com/shorts/5yIbhtG-2Ds?is=F5R58UbvGMo_IWVe",
+        "url": "https://www.youtube.com/watch?v=e9rH0ub-WQ0",
         "caption": ""
       }
     },
     {
-      "id": "b8",
-      "type": "embed",
-      "x": 54.33,
-      "y": 28.84,
-      "w": 22,
-      "h": 15,
+      "id": "b9",
+      "type": "video",
+      "x": 54.69,
+      "y": 28.55,
+      "w": 13.32,
+      "h": 34.71,
       "content": {
-        "url": "https://vm.tiktok.com/ZN8RyBvh2/"
+        "url": "",
+        "caption": "",
+        "src": "social/media/1-raduno-erc-nicolosi-09-08-2026-b9.mp4",
+        "pending": null
       }
     }
   ]
