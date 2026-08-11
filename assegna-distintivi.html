@@ -75,6 +75,15 @@
   .badge-check-row .bc-text strong{display:block;color:var(--text);font-size:15px;font-weight:600;}
   .badge-check-row .bc-text span{color:var(--text-dim);font-size:13px;}
 
+  .badge-count-row{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:8px;}
+  .badge-count-row .bc-text strong{display:block;color:var(--text);font-size:15px;font-weight:600;}
+  .badge-count-row .bc-text span{color:var(--text-dim);font-size:13px;}
+  .counter{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+  .counter button{width:30px;height:30px;border-radius:6px;border:1px solid var(--border-hi);background:var(--bg-card);color:var(--gold-hi);font-family:'Teko',sans-serif;font-size:18px;cursor:pointer;transition:all .15s;}
+  .counter button:hover{border-color:var(--gold);background:rgba(201,162,39,0.15);}
+  .counter input{width:40px;text-align:center;background:var(--bg-card);border:1px solid var(--border-hi);border-radius:6px;padding:6px 4px;color:var(--text);font-family:'Teko',sans-serif;font-size:16px;outline:none;}
+  .counter input:focus{border-color:var(--gold);}
+
   .badges-form{display:none;}
   .badges-form.show{display:block;}
   .no-pilot-msg{font-family:'Teko',sans-serif;font-size:15px;letter-spacing:1px;color:var(--text-dim);text-align:center;padding:30px 0;}
@@ -150,18 +159,30 @@
       <div class="no-pilot-msg" id="noPilotMsg">Seleziona un pilota per assegnare i distintivi.</div>
 
       <div class="badges-form" id="badgesForm">
-        <label class="badge-check-row">
-          <input type="checkbox" id="badge-pilota-campagna">
-          <div class="bc-text"><strong>Pilota della Campagna</strong><span>Miglior pilota della campagna</span></div>
-        </label>
-        <label class="badge-check-row">
-          <input type="checkbox" id="badge-pilota-stagione">
-          <div class="bc-text"><strong>Pilota della Stagione</strong><span>Miglior pilota della stagione (tutte le campagne)</span></div>
-        </label>
-        <label class="badge-check-row">
-          <input type="checkbox" id="badge-fair-play">
-          <div class="bc-text"><strong>Fair Play</strong><span>Nessuna penalità in campagna</span></div>
-        </label>
+        <div class="badge-count-row">
+          <div class="bc-text"><strong>Pilota della Campagna</strong><span>Miglior pilota della campagna — assegnabile più volte</span></div>
+          <div class="counter">
+            <button type="button" onclick="stepCount('pilota-campagna',-1)">−</button>
+            <input type="number" id="count-pilota-campagna" value="0" min="0" onchange="clampCount('pilota-campagna')">
+            <button type="button" onclick="stepCount('pilota-campagna',1)">+</button>
+          </div>
+        </div>
+        <div class="badge-count-row">
+          <div class="bc-text"><strong>Pilota della Stagione</strong><span>Miglior pilota della stagione (tutte le campagne) — assegnabile più volte</span></div>
+          <div class="counter">
+            <button type="button" onclick="stepCount('pilota-stagione',-1)">−</button>
+            <input type="number" id="count-pilota-stagione" value="0" min="0" onchange="clampCount('pilota-stagione')">
+            <button type="button" onclick="stepCount('pilota-stagione',1)">+</button>
+          </div>
+        </div>
+        <div class="badge-count-row">
+          <div class="bc-text"><strong>Fair Play</strong><span>Nessuna penalità in campagna — assegnabile più volte</span></div>
+          <div class="counter">
+            <button type="button" onclick="stepCount('fair-play',-1)">−</button>
+            <input type="number" id="count-fair-play" value="0" min="0" onchange="clampCount('fair-play')">
+            <button type="button" onclick="stepCount('fair-play',1)">+</button>
+          </div>
+        </div>
         <label class="badge-check-row">
           <input type="checkbox" id="badge-rookie-campagna">
           <div class="bc-text"><strong>Rookie della Campagna</strong><span>Miglior esordiente in campagna</span></div>
@@ -183,7 +204,9 @@
 const REPO   = 'mz4466/etna-racing-club';
 const BRANCH = 'main';
 const FOLDER = 'piloti_schede';
-const SPECIAL_BADGE_KEYS = ['pilota-campagna','pilota-stagione','fair-play','rookie-campagna','rookie-stagione'];
+const REPEATABLE_BADGE_KEYS = ['pilota-campagna','pilota-stagione','fair-play'];
+const ONEOFF_BADGE_KEYS = ['rookie-campagna','rookie-stagione'];
+const SPECIAL_BADGE_KEYS = REPEATABLE_BADGE_KEYS.concat(ONEOFF_BADGE_KEYS);
 const SPECIAL_BADGE_LABELS = {
   'pilota-campagna': 'Pilota della Campagna',
   'pilota-stagione': 'Pilota della Stagione',
@@ -315,18 +338,40 @@ function onPilotSelected(){
   document.getElementById('pilotSummaryPsn').textContent = pilot.data.psn ? '(' + pilot.data.psn + ')' : '';
 
   const currentBadges = (pilot.data.badges || []).map(b => String(b).toLowerCase().trim());
-  const currentSpecial = SPECIAL_BADGE_KEYS.filter(k => currentBadges.indexOf(k) !== -1);
-  document.getElementById('pilotSummaryCurrent').textContent = currentSpecial.length
-    ? 'Attuali: ' + currentSpecial.map(k => SPECIAL_BADGE_LABELS[k]).join(', ')
+  const summaryParts = [];
+  REPEATABLE_BADGE_KEYS.forEach(function(key){
+    var n = currentBadges.filter(b => b === key).length;
+    if(n > 0) summaryParts.push(SPECIAL_BADGE_LABELS[key] + ' ×' + n);
+  });
+  ONEOFF_BADGE_KEYS.forEach(function(key){
+    if(currentBadges.indexOf(key) !== -1) summaryParts.push(SPECIAL_BADGE_LABELS[key]);
+  });
+  document.getElementById('pilotSummaryCurrent').textContent = summaryParts.length
+    ? 'Attuali: ' + summaryParts.join(', ')
     : 'Nessun distintivo speciale assegnato';
 
-  SPECIAL_BADGE_KEYS.forEach(function(key){
+  REPEATABLE_BADGE_KEYS.forEach(function(key){
+    document.getElementById('count-' + key).value = currentBadges.filter(b => b === key).length;
+  });
+  ONEOFF_BADGE_KEYS.forEach(function(key){
     document.getElementById('badge-' + key).checked = currentBadges.indexOf(key) !== -1;
   });
 
   summary.classList.add('show');
   form.classList.add('show');
   noMsg.style.display = 'none';
+}
+
+function stepCount(key, delta){
+  const el = document.getElementById('count-' + key);
+  const next = Math.max(0, (parseInt(el.value, 10) || 0) + delta);
+  el.value = next;
+}
+
+function clampCount(key){
+  const el = document.getElementById('count-' + key);
+  const v = Math.max(0, parseInt(el.value, 10) || 0);
+  el.value = v;
 }
 
 async function saveBadges(){
@@ -342,11 +387,20 @@ async function saveBadges(){
   btn.textContent = '⏳ Salvataggio…';
 
   try {
-    // Keep any non-special badges untouched, replace only the 5 special ones
+    // Keep any non-special badges untouched, rebuild only the 5 special ones
     const existingOther = (pilot.data.badges || [])
       .map(b => String(b).toLowerCase().trim())
       .filter(b => SPECIAL_BADGE_KEYS.indexOf(b) === -1);
-    const newSpecial = SPECIAL_BADGE_KEYS.filter(key => document.getElementById('badge-' + key).checked);
+
+    var newSpecial = [];
+    REPEATABLE_BADGE_KEYS.forEach(function(key){
+      var n = Math.max(0, parseInt(document.getElementById('count-' + key).value, 10) || 0);
+      for(var i=0; i<n; i++) newSpecial.push(key);
+    });
+    ONEOFF_BADGE_KEYS.forEach(function(key){
+      if(document.getElementById('badge-' + key).checked) newSpecial.push(key);
+    });
+
     const newBadges = existingOther.concat(newSpecial);
 
     const payload = Object.assign({}, pilot.data, { badges: newBadges });
