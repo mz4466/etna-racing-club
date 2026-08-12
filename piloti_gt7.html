@@ -123,7 +123,40 @@
     line-height:1;
 
     letter-spacing:1px;
-}        .pilot-stats { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
+}
+.mini-badge-box {
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    flex-wrap:wrap;
+    padding:4px 8px;
+    border-radius:8px;
+    border:1px solid rgba(201,162,39,0.25);
+    background:rgba(201,162,39,0.05);
+    text-decoration:none;
+    transition:all .2s;
+}
+.mini-badge-box:hover {
+    border-color:rgba(201,162,39,0.5);
+    background:rgba(201,162,39,0.12);
+}
+.mini-badge {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    font-size:12px;
+    background:#15151f;
+    border:2px solid rgba(255,255,255,0.12);
+    line-height:1;
+}
+.mini-badge.tier-bronzo  { border-color:#c9812a; box-shadow:0 0 5px rgba(201,129,42,0.4); }
+.mini-badge.tier-argento { border-color:#c9c9d4; box-shadow:0 0 5px rgba(201,201,212,0.4); }
+.mini-badge.tier-oro     { border-color:#e8c547; box-shadow:0 0 6px rgba(232,197,71,0.5); }
+.mini-badge.tier-platino { border-color:#7fd8e8; box-shadow:0 0 7px rgba(127,216,232,0.55); }
+        .pilot-stats { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
 .stat-pill {
     display:inline-flex;
     align-items:center;
@@ -481,6 +514,8 @@ var pilotStats = {};
         pilotMedals = {};
 // Map: pilotName (lowercase) → array of { champName, year, pos (2 or 3) }
 var pilotMedals = {};
+// Tutte le gare caricate (risultati/*.json), riusate per il mini-riepilogo distintivi in ogni card
+var ALL_RACES = [];
 
 async function loadAll() {
   grid.innerHTML = '<div style="color:var(--muted)">Caricamento...</div>';
@@ -508,6 +543,7 @@ async function loadAll() {
             return await r.json();
           } catch(e) { return null; }
         }, 4, 300);
+        ALL_RACES = results.filter(Boolean);
 
         // Build set of ufficiose champIds to exclude from stats
         var ufficioseIds = {};
@@ -726,6 +762,277 @@ async function loadAll() {
   }
 }
 
+// ══════════════════════════════════════════════════════════════════
+// DISTINTIVI — logica riusata da distintivi.html per il mini-riepilogo
+// nelle card pilota (icone con anello, solo quelli con progresso > 0)
+// ══════════════════════════════════════════════════════════════════
+const CATALOG = [
+  { cat:'Anzianità nel Club', items:[
+    { key:'veterano',  nome:'Veterano',  desc:'Sale ogni anno',        type:'tiered', thresholds:[1,2,3,5], unit:'anni' },
+  ]},
+  { cat:'Partecipazione Gare', items:[
+    { key:'gare',            nome:'Habitué di Pista',   desc:'Gare Totali Corse',           type:'tiered', thresholds:[10,30,60,100], unit:'gare' },
+    { key:'costanza',        nome:'Costanza',           desc:'Gare Consecutive',            type:'tiered', thresholds:[3,8,15,25], unit:'gare' },
+    { key:'presenzaPerfetta',nome:'Presenza Perfetta',  desc:'100% Presenze in Campagna',    type:'tiered', thresholds:[1,2,3,5], unit:'campagne' },
+    { key:'globetrotter',    nome:'Globetrotter',       desc:'Circuiti Diversi Corsi',       type:'tiered', thresholds:[10,16,22,30], unit:'circuiti' },
+  ]},
+  { cat:'Campionati', items:[
+    { key:'campCompletati', nome:'Camp. Completati', desc:'Campionati Completati', type:'tiered', thresholds:[1,5,10,20], unit:'campionati' },
+    { key:'campVinti',      nome:'Camp. Vinti',      desc:'Campionati Vinti',      type:'tiered', thresholds:[1,3,6,10], unit:'titoli' },
+  ]},
+  { cat:'Eventi & Trofei', items:[
+    { key:'eventi',     nome:'Cacciatore di Eventi/Trofei', desc:'N° di Partecipazioni', type:'tiered', thresholds:[1,3,5,10], unit:'eventi' },
+    { key:'trofeiVinti',nome:'Collezionista di Eventi/Trofei', desc:'Eventi/Trofei Vinti',  type:'tiered', thresholds:[1,2,3,5], unit:'trofei' },
+  ]},
+  { cat:'Risultati', items:[
+    { key:'vittorie',   nome:'Vittorie',    desc:'Numero di Vittorie',          type:'tiered', thresholds:[1,3,5,8], unit:'vittorie' },
+    { key:'podi',       nome:'Podi',        desc:'Podi Totali',                 type:'tiered', thresholds:[1,5,10,20], unit:'podi' },
+    { key:'giroveloce', nome:'Giri Veloci', desc:'Giri Veloci Ottenuti',        type:'tiered', thresholds:[1,4,8,15], unit:'giri veloci' },
+    { key:'pole',       nome:'Poleman',     desc:'Pole Position',               type:'tiered', thresholds:[1,3,6,10], unit:'pole' },
+    { key:'grandSlam',  nome:'Grand Slam',  desc:'Vittoria+Pole+Giro Veloce',   type:'tiered', thresholds:[1,2,3,5], unit:'grand slam' },
+  ]},
+  { cat:'Speciali', items:[
+    { key:'primaVittoriaPersonale', nome:'1ª Vittoria',            desc:'Per chi ha vinto almeno 1 Gara',    type:'auto' },
+    { key:'pilota-campagna',        nome:'Pilota della Campagna',  desc:'Miglior pilota della campagna',     type:'tiered', thresholds:[1,2,3,5], unit:'volte' },
+    { key:'pilota-stagione',        nome:'Pilota della Stagione',  desc:'Miglior pilota della stagione',     type:'tiered', thresholds:[1,2,3,5], unit:'volte' },
+    { key:'sfortunato',             nome:'Sfortunato',             desc:'N° di Dnf',                          type:'tiered', thresholds:[1,3,5,10], unit:'dnf' },
+    { key:'fair-play',              nome:'Fair Play',              desc:'Nessuna penalità in campagna',       type:'tiered', thresholds:[1,2,3,5], unit:'volte' },
+    { key:'rookie-campagna',        nome:'Rookie della Campagna',  desc:'Miglior esordiente in campagna',    type:'manual' },
+    { key:'rookie-stagione',        nome:'Rookie della Stagione',  desc:'Miglior esordiente stagionale',     type:'manual' },
+    { key:'multicat',               nome:'Multi-Categoria',        desc:'Classi Diverse Corse',               type:'tiered', thresholds:[3,6,9,12], unit:'categorie' },
+  ]},
+];
+
+function daysBetween(d1, d2){ return Math.abs(d2 - d1) / 86400000; }
+
+// Somma i periodi in cui il pilota è stato "Attivo", ignorando i gap "Non Attivo".
+function computeVeteranoAnni(pilot, earliestRaceDate){
+  var joinDateStr = pilot.dataIscrizione || null;
+  var history = Array.isArray(pilot.statusHistory)
+    ? pilot.statusHistory.filter(function(h){ return h && h.date; }).slice().sort(function(a,b){ return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); })
+    : [];
+
+  if (!joinDateStr) {
+    if (!earliestRaceDate) return 0;
+    if (pilot.attivo === false) return 0;
+    return Math.floor(daysBetween(new Date(earliestRaceDate), new Date()) / 365.25);
+  }
+
+  var segments = [{ date: joinDateStr, attivo: true }].concat(history);
+  var totalDays = 0;
+  var today = new Date();
+  for (var i = 0; i < segments.length; i++) {
+    var start = new Date(segments[i].date);
+    var end = (i + 1 < segments.length) ? new Date(segments[i + 1].date) : today;
+    if (segments[i].attivo !== false && end > start) {
+      totalDays += daysBetween(start, end);
+    }
+  }
+  return Math.floor(totalDays / 365.25);
+}
+function tierFor(value, thresholds){
+  var t = 0;
+  for (var i = 0; i < thresholds.length; i++) if (value >= thresholds[i]) t = i + 1;
+  return t;
+}
+var TIER_NAMES_MINI = ['locked','bronzo','argento','oro','platino'];
+var BADGE_ICONS_MINI = {
+  veterano:               '🕰️',
+  gare:                   '🛞',
+  costanza:               '🔥',
+  presenzaPerfetta:       '💯',
+  globetrotter:           '🗺️',
+  campCompletati:         '📜',
+  campVinti:              '👑',
+  eventi:                 '🧭',
+  trofeiVinti:            '🏆',
+  vittorie:               '🥇',
+  podi:                   '🪜',
+  giroveloce:             '⏱️',
+  pole:                   '🚦',
+  grandSlam:              '💎',
+  primaVittoriaPersonale: '🍾',
+  'pilota-campagna':      '🍁',
+  'pilota-stagione':      '🌟',
+  sfortunato:             '🔧',
+  'fair-play':            '🤝',
+  'rookie-campagna':      '🌱',
+  'rookie-stagione':      '🐣',
+  multicat:               '🧩'
+};
+
+function computeStatsForPilot(pilot, calendario, races){
+  var targetPsn  = (pilot.psn || '').toLowerCase().trim();
+  var targetNome = (pilot.nome || pilot.name || '').toLowerCase().trim();
+
+  var ufficioseIds = {};
+  calendario.forEach(function(c){ if (c.cat === 'Gara Ufficiosa' && c.id) ufficioseIds[c.id] = true; });
+
+  var psnByNameInChamp = {}, psnByNameGlobal = {};
+  races.forEach(function(race){
+    var cid = race.champId || '';
+    (race.rows || []).forEach(function(row){
+      if (!row.nome) return;
+      var nk = row.nome.toLowerCase().trim();
+      var ps = (row.psn || '').toLowerCase().trim();
+      if (!ps) return;
+      if (cid) { if (!psnByNameInChamp[cid]) psnByNameInChamp[cid] = {}; psnByNameInChamp[cid][nk] = ps; }
+      psnByNameGlobal[nk] = ps;
+    });
+  });
+  function resolvePsn(champId, nome){
+    var nk = (nome || '').toLowerCase().trim();
+    if (!nk) return '';
+    if (champId && psnByNameInChamp[champId] && psnByNameInChamp[champId][nk]) return psnByNameInChamp[champId][nk];
+    if (psnByNameGlobal[nk]) return psnByNameGlobal[nk];
+    return '';
+  }
+  function isTarget(rowNome, rowPsn){
+    var ps = (rowPsn || '').toLowerCase().trim();
+    var nm = (rowNome || '').toLowerCase().trim();
+    if (targetPsn && ps === targetPsn) return true;
+    if (!ps && targetNome && nm === targetNome) return true;
+    if (targetPsn && !ps && nm === targetNome) return true;
+    return false;
+  }
+
+  var stats = {
+    veterano:0, gare:0, costanza:0, presenzaPerfetta:0, globetrotter:0,
+    campCompletati:0, campVinti:0, eventi:0, trofeiVinti:0,
+    vittorie:0, podi:0, giroveloce:0, pole:0, grandSlam:0,
+    sfortunato:0, multicat:0
+  };
+  var champParticipated = {};    // champId -> earliest date
+  var raceLog = [];              // { date, stato }
+  var circuitiSet = {};
+  var categorieSet = {};
+  var champRounds = {};          // champId -> Set(garaNum) partecipati dal target
+  var champTotalRounds = {};     // champId -> totalRounds (da calendario, o garaTot come fallback)
+
+  races.forEach(function(race){
+    var champId = race.champId || '';
+    if (champId && ufficioseIds[champId]) return;
+
+    var champ = null;
+    if (champId) champ = calendario.find(function(c){ return c.id === champId; }) || null;
+    if (!champ && race.champIdx !== undefined) { var idx = parseInt(race.champIdx); if(!isNaN(idx)) champ = calendario[idx] || null; }
+
+    var garaNum = parseInt(race.garaNum) || 0;
+    var garaTot = parseInt(race.garaTot) || 0;
+    var isFinal = garaNum > 0 && garaNum === garaTot;
+    var totalRounds = (champ && champ.totalRounds) ? parseInt(champ.totalRounds) : garaTot;
+
+    (race.rows || []).forEach(function(row){
+      if (!isTarget(row.nome, row.psn)) return;
+      stats.gare++;
+      var pos = parseInt(row.pos);
+      if (pos === 1) stats.vittorie++;
+      if (pos >= 1 && pos <= 3) stats.podi++;
+      if (row.fl === true) stats.giroveloce++;
+      if (row.pole === true) stats.pole++;
+      if (pos === 1 && row.fl === true && row.pole === true) stats.grandSlam++;
+      if (champ && (champ.cat === 'Evento' || champ.cat === 'Trofeo')) stats.eventi++;
+      if (row.stato === 'dnf') stats.sfortunato++;
+
+      var circuito = race.circuito || race.circuit || race.track || '';
+      if (circuito) circuitiSet[circuito.toLowerCase().trim()] = true;
+      if (champ && champ.catAuto) categorieSet[String(champ.catAuto).toLowerCase().trim()] = true;
+
+      raceLog.push({ date: race.data || '', stato: row.stato || 'ok' });
+
+      if (champId) {
+        var d = race.data || '9999';
+        if (!champParticipated[champId] || d < champParticipated[champId]) champParticipated[champId] = d;
+        if (!champRounds[champId]) champRounds[champId] = {};
+        champRounds[champId][garaNum] = true;
+        champTotalRounds[champId] = totalRounds;
+      }
+    });
+
+    // Vittoria di campionato/trofeo, basata sulla classifica finale
+    if (isFinal && champ && champ.trophy) {
+      var standings = race.standings || [];
+      var champion = standings.find(function(s){ return parseInt(s.pos) === 1; });
+      if (!champion && race.rows && race.rows.length) champion = { nome: race.rows[0].nome };
+      if (champion && champion.nome) {
+        var champPsn = resolvePsn(champId, champion.nome) || champion.nome.toLowerCase().trim();
+        var won = champPsn === targetPsn || (!targetPsn && champion.nome.toLowerCase().trim() === targetNome);
+        if (won) {
+          if (champ.cat === 'Trofeo' || champ.cat === 'Evento') stats.trofeiVinti++;
+          else stats.campVinti++;
+        }
+      }
+    }
+  });
+
+  // Camp. Completati: un campionato conta come "completato" se il pilota ha
+  // corso almeno il numero minimo di gare richiesto — quel minimo è il
+  // "Migliore su… gare" (bestOf) del campionato, se impostato; se non è
+  // impostato nessun minimo, serve averle corse TUTTE (totalRounds).
+  stats.campCompletati = Object.keys(champRounds).filter(function(cid){
+    var champ = calendario.find(function(c){ return c.id === cid; });
+    var totalRounds = champTotalRounds[cid] || 0;
+    var required = (champ && champ.bestOf) ? parseInt(champ.bestOf) : totalRounds;
+    var attended = Object.keys(champRounds[cid]).length;
+    return required > 0 && attended >= required;
+  }).length;
+  stats.globetrotter = Object.keys(circuitiSet).length;
+  stats.multicat = Object.keys(categorieSet).length;
+
+  // Presenza Perfetta: CAMPAGNE (Campionato/Formula) completate al 100% dei
+  // round, dove una campagna può comprendere più campionati con lo stesso
+  // valore "campagna" + stessa Stagione Ufficiale (es. "Estiva" + "Stagione
+  // 2"). Serve 100% di presenza su TUTTI i round di TUTTI i campionati di
+  // quella campagna. Campionati senza "campagna" impostata vengono ignorati
+  // (dato non ancora migrato) — non contano né a favore né contro.
+  var campagnaGroups = {}; // key -> { total, attended }
+  Object.keys(champRounds).forEach(function(cid){
+    var champ = calendario.find(function(c){ return c.id === cid; });
+    if (!champ || (champ.cat !== 'Campionato' && champ.cat !== 'Formula')) return;
+    var campagnaVal = (champ.campagna || '').trim();
+    var stagioneVal = (champ.stagione || '').trim();
+    if (!campagnaVal || !stagioneVal) return;
+    var key = campagnaVal.toLowerCase() + '|' + stagioneVal.toLowerCase();
+    if (!campagnaGroups[key]) campagnaGroups[key] = { total: 0, attended: 0 };
+    campagnaGroups[key].total += (champTotalRounds[cid] || 0);
+    campagnaGroups[key].attended += Object.keys(champRounds[cid]).length;
+  });
+  stats.presenzaPerfetta = Object.keys(campagnaGroups).filter(function(k){
+    var g = campagnaGroups[k];
+    return g.total > 0 && g.attended >= g.total;
+  }).length;
+
+  // Costanza: miglior serie di gare consecutive senza ritiro (dnf/dsq)
+  raceLog = raceLog.filter(function(r){ return r.date; }).sort(function(a,b){ return a.date < b.date ? -1 : 1; });
+  var best = 0, cur = 0;
+  raceLog.forEach(function(r){
+    if (r.stato === 'ok') { cur++; if (cur > best) best = cur; }
+    else cur = 0;
+  });
+  stats.costanza = best;
+
+  // Veterano: anni di appartenenza CUMULATIVI da attivo — i periodi in cui il
+  // pilota è stato "Non Attivo" non contano. Se torna attivo, il conteggio
+  // riprende da dove era rimasto (non riparte da zero).
+  var earliestDate = null;
+  raceLog.forEach(function(r){ if (r.date && (!earliestDate || r.date < earliestDate)) earliestDate = r.date; });
+  stats.veterano = computeVeteranoAnni(pilot, earliestDate);
+
+  var autoUnica = {
+    primaVittoriaPersonale: stats.vittorie >= 1
+  };
+  var pilotBadges = (pilot.badges || []).map(function(b){ return String(b).toLowerCase().trim(); });
+
+  // Distintivi manuali "ripetibili" (assegnati più volte, es. una campagna
+  // diversa ogni volta): il conteggio è quante volte la chiave compare
+  // nell'array badges[] del pilota (assegnata da assegna-distintivi.html).
+  ['pilota-campagna','pilota-stagione','fair-play'].forEach(function(key){
+    stats[key] = pilotBadges.filter(function(b){ return b === key; }).length;
+  });
+
+  return { stats: stats, pilotBadges: pilotBadges, autoUnica: autoUnica, categorieSet: categorieSet };
+}
+
 function renderPilot(p, calendario) {
   calendario = calendario || [];
   var el = document.createElement('div');
@@ -767,6 +1074,34 @@ function renderPilot(p, calendario) {
   var dataIscrizione = p.dataIscrizione || '';
   var locationStr = nazione ? '🌍 <span style="opacity:0.5;font-size:11px">Da:</span> ' + esc(nazione) : '';
   if (p.location) locationStr += ' • 📍 ' + esc(p.location);
+
+  // Mini-riepilogo distintivi (solo quelli con progresso > 0), cliccabile verso distintivi.html
+  var badgePreviewHtml = '';
+  try {
+    var badgeRes = computeStatsForPilot(p, calendario, ALL_RACES);
+    var earnedBadges = [];
+    CATALOG.forEach(function(section){
+      section.items.forEach(function(def){
+        if (def.type === 'tiered') {
+          var val = badgeRes.stats[def.key] || 0;
+          if (val > 0) earnedBadges.push({ def: def, tier: tierFor(val, def.thresholds), val: val });
+        } else if (def.type === 'auto') {
+          if (badgeRes.autoUnica[def.key]) earnedBadges.push({ def: def, tier: 4, val: null });
+        } else {
+          if (badgeRes.pilotBadges.indexOf(def.key) !== -1) earnedBadges.push({ def: def, tier: 4, val: null });
+        }
+      });
+    });
+    if (earnedBadges.length) {
+      var chipsHtml = earnedBadges.map(function(b){
+        var tierClass = TIER_NAMES_MINI[b.tier] || 'bronzo';
+        var icon = BADGE_ICONS_MINI[b.def.key] || '🏅';
+        var title = b.def.nome + (b.val !== null ? ' — ' + b.val + ' ' + b.def.unit : ' — Ottenuto');
+        return '<span class="mini-badge tier-' + tierClass + '" title="' + esc(title) + '">' + icon + '</span>';
+      }).join('');
+      badgePreviewHtml = '<a class="mini-badge-box" href="distintivi.html?' + (psn && psn !== '—' ? 'psn=' + encodeURIComponent(psn) : 'nome=' + encodeURIComponent(nome)) + '" title="Vedi tutti i distintivi">' + chipsHtml + '</a>';
+    }
+  } catch(e) { console.warn('Badge preview error for', nome, e.message); }
 
   // Find trophies for this pilot
   // Match by nome, psn, gt7Name (any of them)
@@ -976,8 +1311,9 @@ function renderPilot(p, calendario) {
     + '</div>'
     + '<div class="pilot-content">'
     +   '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">'
-    +     '<div class="pilot-name" data-clicks="0" data-href="distintivi.html?' + (psn && psn !== '—' ? 'psn=' + encodeURIComponent(psn) : 'nome=' + encodeURIComponent(nome)) + '" onclick="handleSecretNameClick(this)" style="user-select:none;-webkit-user-select:none;-moz-user-select:none;">' + esc(nome) + (psn && psn !== '—' ? ' <span style="color:#c9a227;font-size:22px;opacity:0.75;">(' + esc(psn) + ')</span>' : '') + '</div>'
+    +     '<div class="pilot-name">' + esc(nome) + (psn && psn !== '—' ? ' <span style="color:#c9a227;font-size:22px;opacity:0.75;">(' + esc(psn) + ')</span>' : '') + '</div>'
     +     (!isActive ? '<span style="display:inline-block;background:rgba(192,57,43,.18);border:1px solid rgba(192,57,43,.4);border-radius:20px;padding:2px 10px;font-family:Teko,sans-serif;font-size:11px;letter-spacing:1.5px;color:#e05a4a;text-transform:uppercase;">Non Attivo</span>' : '')
+    +     badgePreviewHtml
     +   '</div>'
     +   ''
     +   (function(){
@@ -1045,18 +1381,6 @@ function renderPilot(p, calendario) {
 }
 
 function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
-// TEST MODE: pilot name is secretly clickable — 3 clicks required before it
-// navigates to the distintivi page. No cursor/hover hint on purpose, so
-// regular visitors won't notice it's interactive yet. Remove this gate
-// (just make it a normal <a href> again) once ready to launch publicly.
-function handleSecretNameClick(el){
-  var n = (parseInt(el.getAttribute('data-clicks'), 10) || 0) + 1;
-  el.setAttribute('data-clicks', n);
-  console.log('[pilot-name click]', n, '/ 3');
-  if(n >= 3){
-    window.location.href = el.getAttribute('data-href');
-  }
-}
 function formatJoinDate(dateStr){
   if(!dateStr) return '';
   var parts = String(dateStr).split('-');
