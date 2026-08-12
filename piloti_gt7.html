@@ -140,22 +140,22 @@
     border-color:rgba(201,162,39,0.5);
     background:rgba(201,162,39,0.12);
 }
-.mini-badge {
+.mini-ring {
+    position:relative;
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    width:24px;
-    height:24px;
-    border-radius:50%;
-    font-size:12px;
-    background:#15151f;
-    border:2px solid rgba(255,255,255,0.12);
+    flex-shrink:0;
+}
+.mini-ring svg {
+    position:absolute;
+    top:0;
+    left:0;
+}
+.mini-ring-icon {
+    position:relative;
     line-height:1;
 }
-.mini-badge.tier-bronzo  { border-color:#c9812a; box-shadow:0 0 5px rgba(201,129,42,0.4); }
-.mini-badge.tier-argento { border-color:#c9c9d4; box-shadow:0 0 5px rgba(201,201,212,0.4); }
-.mini-badge.tier-oro     { border-color:#e8c547; box-shadow:0 0 6px rgba(232,197,71,0.5); }
-.mini-badge.tier-platino { border-color:#7fd8e8; box-shadow:0 0 7px rgba(127,216,232,0.55); }
         .pilot-stats { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
 .stat-pill {
     display:inline-flex;
@@ -836,6 +836,25 @@ function tierFor(value, thresholds){
   return t;
 }
 var TIER_NAMES_MINI = ['locked','bronzo','argento','oro','platino'];
+var TIER_COLORS_MINI = { locked:'rgba(255,255,255,0.15)', bronzo:'#c98a4d', argento:'#c9c6bd', oro:'#e8c547', platino:'#ff8c42' };
+function miniRing(percent, tierName, iconChar, size){
+  size = size || 26;
+  var stroke = Math.max(2, Math.round(size * 0.14));
+  var r = (size - stroke) / 2;
+  var c = 2 * Math.PI * r;
+  var pct = Math.max(0, Math.min(100, percent));
+  var offset = c - (c * pct / 100);
+  var color = TIER_COLORS_MINI[tierName] || TIER_COLORS_MINI.locked;
+  var fontSize = Math.round(size * 0.46);
+  return ''
+    + '<span class="mini-ring" style="width:' + size + 'px;height:' + size + 'px;">'
+    +   '<svg width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size + '">'
+    +     '<circle cx="' + size/2 + '" cy="' + size/2 + '" r="' + r + '" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="' + stroke + '"/>'
+    +     '<circle cx="' + size/2 + '" cy="' + size/2 + '" r="' + r + '" fill="none" stroke="' + color + '" stroke-width="' + stroke + '" stroke-dasharray="' + c.toFixed(2) + '" stroke-dashoffset="' + offset.toFixed(2) + '" stroke-linecap="round" transform="rotate(-90 ' + size/2 + ' ' + size/2 + ')"/>'
+    +   '</svg>'
+    +   '<span class="mini-ring-icon" style="font-size:' + fontSize + 'px;">' + iconChar + '</span>'
+    + '</span>';
+}
 var BADGE_ICONS_MINI = {
   veterano:               '🕰️',
   gare:                   '🛞',
@@ -1084,11 +1103,20 @@ function renderPilot(p, calendario) {
       section.items.forEach(function(def){
         if (def.type === 'tiered') {
           var val = badgeRes.stats[def.key] || 0;
-          if (val > 0) earnedBadges.push({ def: def, tier: tierFor(val, def.thresholds), val: val });
+          if (val > 0) {
+            var tier = tierFor(val, def.thresholds);
+            var nextThreshold = def.thresholds[tier];
+            var pct = 100;
+            if (nextThreshold !== undefined) {
+              var prevThreshold = tier > 0 ? def.thresholds[tier - 1] : 0;
+              pct = Math.max(4, Math.min(100, Math.round(((val - prevThreshold) / (nextThreshold - prevThreshold)) * 100)));
+            }
+            earnedBadges.push({ def: def, tier: tier, val: val, pct: pct });
+          }
         } else if (def.type === 'auto') {
-          if (badgeRes.autoUnica[def.key]) earnedBadges.push({ def: def, tier: 4, val: null });
+          if (badgeRes.autoUnica[def.key]) earnedBadges.push({ def: def, tier: 4, val: null, pct: 100 });
         } else {
-          if (badgeRes.pilotBadges.indexOf(def.key) !== -1) earnedBadges.push({ def: def, tier: 4, val: null });
+          if (badgeRes.pilotBadges.indexOf(def.key) !== -1) earnedBadges.push({ def: def, tier: 4, val: null, pct: 100 });
         }
       });
     });
@@ -1097,7 +1125,7 @@ function renderPilot(p, calendario) {
         var tierClass = TIER_NAMES_MINI[b.tier] || 'bronzo';
         var icon = BADGE_ICONS_MINI[b.def.key] || '🏅';
         var title = b.def.nome + (b.val !== null ? ' — ' + b.val + ' ' + b.def.unit : ' — Ottenuto');
-        return '<span class="mini-badge tier-' + tierClass + '" title="' + esc(title) + '">' + icon + '</span>';
+        return '<span title="' + esc(title) + '">' + miniRing(b.pct, tierClass, icon, 26) + '</span>';
       }).join('');
       badgePreviewHtml = '<a class="mini-badge-box" href="distintivi.html?' + (psn && psn !== '—' ? 'psn=' + encodeURIComponent(psn) : 'nome=' + encodeURIComponent(nome)) + '" title="Vedi tutti i distintivi">' + chipsHtml + '</a>';
     }
