@@ -158,6 +158,33 @@ function computeVeteranoAnni(pilot, earliestRaceDate){
 }
 function initials(name){ return String(name||'').split(/\s+/).filter(Boolean).slice(0,2).map(function(w){ return w[0]; }).join('').toUpperCase(); }
 
+// Icona rappresentativa per ciascun distintivo (al posto delle iniziali testuali)
+var BADGE_ICONS = {
+  veterano:               '🕰️',
+  gare:                   '🛞',
+  costanza:               '🔥',
+  presenzaPerfetta:       '💯',
+  globetrotter:           '🗺️',
+  campCompletati:         '📜',
+  campVinti:              '👑',
+  eventi:                 '🧭',
+  trofeiVinti:            '🏆',
+  vittorie:               '🥇',
+  podi:                   '🪜',
+  giroveloce:             '⏱️',
+  pole:                   '🚦',
+  grandSlam:              '💎',
+  primaVittoriaPersonale: '🍾',
+  'pilota-campagna':      '🍁',
+  'pilota-stagione':      '🌟',
+  sfortunato:             '🔧',
+  'fair-play':            '🤝',
+  'rookie-campagna':      '🌱',
+  'rookie-stagione':      '🐣',
+  multicat:               '🧩'
+};
+function badgeIcon(def){ return BADGE_ICONS[def.key] || initials(def.nome); }
+
 // Elenco canonico "Categoria Auto" — deve rispecchiare le option in crea/modifica-campionato.html
 const CATEGORIA_AUTO_LIST = ['Gr1','Gr2','Gr3','Gr4','Monoposto','Sportive Stradali','Storiche','Super Turismo','Kart','City Car','Rally','Ultraleggere'];
 
@@ -260,7 +287,7 @@ function renderTieredCard(def, value, extraHtml){
 
   return ''
     + '<div class="card">'
-    +   '<div class="card-top">' + ringMedal(progressPct, tierName, initials(def.nome), 56) + '<div><h3>' + esc(def.nome) + '</h3></div></div>'
+    +   '<div class="card-top">' + ringMedal(progressPct, tierName, badgeIcon(def), 56) + '<div><h3>' + esc(def.nome) + '</h3></div></div>'
     +   '<p class="desc">' + esc(def.desc) + '</p>'
     +   (extraHtml || '')
     +   '<div class="tiers">' + tiersHtml + '</div>'
@@ -275,7 +302,7 @@ function renderUnicaCard(def, unlocked){
   var tagTxt = unlocked ? 'Ottenuto' : 'Non ottenuto';
   return ''
     + '<div class="card' + (unlocked ? '' : ' locked') + '">'
-    +   '<div class="card-top">' + ringMedal(unlocked ? 100 : 0, tierName, initials(def.nome), 56) + '<div><h3>' + esc(def.nome) + '</h3></div></div>'
+    +   '<div class="card-top">' + ringMedal(unlocked ? 100 : 0, tierName, badgeIcon(def), 56) + '<div><h3>' + esc(def.nome) + '</h3></div></div>'
     +   '<p class="desc">' + esc(def.desc) + '</p>'
     +   '<span class="manual-tag ' + tagCls + '">' + tagTxt + '</span>'
     + '</div>';
