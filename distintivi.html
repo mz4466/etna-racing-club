@@ -32,6 +32,8 @@
   .profile-name{ font-family:'Teko',sans-serif; font-size:34px; letter-spacing:1px; line-height:1; margin:0 0 4px; }
   .profile-psn{ color:var(--gold); font-size:15px; font-family:'Teko',sans-serif; letter-spacing:1px; }
   .profile-sub{ color:var(--muted); font-size:13px; margin-top:6px; }
+  .btn-confronta{ margin-left:auto; align-self:center; background:rgba(201,162,39,0.1); border:1px solid var(--gold); color:var(--gold2); font-family:'Teko',sans-serif; font-size:16px; letter-spacing:2px; padding:10px 20px; border-radius:24px; cursor:pointer; text-transform:uppercase; transition:all .2s; white-space:nowrap; }
+  .btn-confronta:hover{ background:rgba(201,162,39,0.22); box-shadow:0 0 14px rgba(201,162,39,0.25); }
 
   .state{ text-align:center; color:var(--muted); padding:60px 20px; font-family:'Teko',sans-serif; font-size:20px; letter-spacing:1px; }
 
@@ -84,6 +86,52 @@
   .cat-chip.got{ background:rgba(201,162,39,0.15); color:var(--gold2); border:1px solid rgba(201,162,39,0.4); opacity:1; }
 
   footer{ text-align:center; color:var(--muted); font-size:11px; margin-top:50px; padding-top:20px; border-top:1px solid var(--line); }
+  /* ── CONFRONTO ── */
+  .compare-overlay{ display:none; position:fixed; inset:0; background:rgba(2,2,4,0.85); backdrop-filter:blur(4px); z-index:500; align-items:flex-start; justify-content:center; overflow-y:auto; padding:40px 16px; }
+  .compare-overlay.open{ display:flex; }
+  .compare-modal{ width:100%; max-width:920px; background:linear-gradient(180deg,#121318,#0b0b0e); border:1px solid var(--line); border-radius:18px; padding:24px; box-shadow:0 20px 60px rgba(0,0,0,0.5); }
+  .compare-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+  .compare-head h2{ font-family:'Russo One',sans-serif; font-size:18px; color:var(--gold2); margin:0; letter-spacing:1px; }
+  .compare-close{ background:none; border:1px solid var(--line); color:var(--muted); width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:15px; transition:all .2s; }
+  .compare-close:hover{ color:var(--cream); border-color:var(--accent2); }
+
+  .compare-selectors{ display:flex; align-items:center; gap:12px; margin-bottom:24px; flex-wrap:wrap; }
+  .compare-selectors select{ flex:1; min-width:160px; background:#0d0d12; border:1px solid var(--line); color:var(--cream); font-family:'Teko',sans-serif; font-size:16px; letter-spacing:.5px; padding:10px 12px; border-radius:8px; }
+  .compare-vs{ font-family:'Russo One',sans-serif; color:var(--accent2); font-size:13px; flex-shrink:0; }
+  .compare-update-btn{ background:rgba(201,162,39,0.14); border:1px solid var(--gold); color:var(--gold2); font-family:'Teko',sans-serif; font-size:15px; letter-spacing:2px; padding:10px 18px; border-radius:8px; cursor:pointer; text-transform:uppercase; transition:all .2s; }
+  .compare-update-btn:hover{ background:rgba(201,162,39,0.26); }
+
+  .compare-empty{ text-align:center; color:var(--muted); padding:40px 0; font-family:'Teko',sans-serif; font-size:16px; letter-spacing:1px; }
+
+  .compare-profiles{ display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:14px; margin-bottom:20px; }
+  .compare-profile{ display:flex; align-items:center; gap:10px; }
+  .compare-profile.right{ flex-direction:row-reverse; text-align:right; }
+  .compare-profile img{ width:48px; height:48px; border-radius:10px; object-fit:cover; flex-shrink:0; }
+  .compare-profile .fallback{ width:48px; height:48px; border-radius:10px; flex-shrink:0; background:#1a1a2e; display:flex; align-items:center; justify-content:center; font-size:20px; opacity:.5; }
+  .compare-profile-name{ font-family:'Teko',sans-serif; font-size:19px; color:var(--cream); line-height:1.1; }
+  .compare-profile-psn{ font-family:'Teko',sans-serif; font-size:12px; color:var(--gold); }
+  .compare-vs-mid{ font-family:'Russo One',sans-serif; color:var(--accent); font-size:14px; text-align:center; }
+
+  .compare-section-title{ font-family:'Teko',sans-serif; font-size:13px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; border-bottom:1px solid var(--line); padding-bottom:6px; margin:22px 0 10px; }
+  .compare-row{ display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:10px; padding:9px 4px; border-bottom:1px solid var(--line); }
+  .compare-row-label{ font-family:'Teko',sans-serif; font-size:15px; color:var(--muted); letter-spacing:.5px; text-align:center; }
+  .compare-cell{ display:flex; align-items:center; gap:8px; justify-content:flex-end; min-width:110px; }
+  .compare-cell.left{ justify-content:flex-start; }
+  .compare-cell-icon{ width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; background:#1a1a24; border:1px solid var(--line); }
+  .compare-cell-icon.tier-bronzo{ border-color:#c9812a; box-shadow:0 0 6px rgba(201,129,42,0.4); }
+  .compare-cell-icon.tier-argento{ border-color:#c9c9d4; box-shadow:0 0 6px rgba(201,201,212,0.4); }
+  .compare-cell-icon.tier-oro{ border-color:#e8c547; box-shadow:0 0 6px rgba(232,197,71,0.5); }
+  .compare-cell-icon.tier-platino{ border-color:#7fd8e8; box-shadow:0 0 8px rgba(127,216,232,0.55); }
+  .compare-cell-val{ font-family:'Teko',sans-serif; font-size:14px; color:var(--muted); }
+  .compare-cell-val.win{ color:var(--gold2); font-weight:600; }
+
+  @media(max-width:640px){
+    .compare-profiles{ grid-template-columns:1fr; gap:8px; }
+    .compare-profile.right{ flex-direction:row; text-align:left; }
+    .compare-row{ grid-template-columns:auto 1fr auto; gap:6px; }
+    .compare-row-label{ font-size:13px; }
+    .compare-cell{ min-width:0; }
+  }
 </style>
 </head>
 <body>
@@ -98,6 +146,22 @@
 
 <div class="container">
   <div id="root"><div class="state">Caricamento dati pilota...</div></div>
+</div>
+
+<div class="compare-overlay" id="compareOverlay">
+  <div class="compare-modal">
+    <div class="compare-head">
+      <h2>⚔️ Confronta Distintivi</h2>
+      <button class="compare-close" onclick="closeCompare()">✕</button>
+    </div>
+    <div class="compare-selectors">
+      <select id="compareSelA"><option value="">— Pilota 1 —</option></select>
+      <span class="compare-vs">VS</span>
+      <select id="compareSelB"><option value="">— Pilota 2 —</option></select>
+      <button class="compare-update-btn" onclick="runCompare()">Aggiorna</button>
+    </div>
+    <div id="compareResults"><div class="compare-empty">Scegli due piloti e premi Aggiorna.</div></div>
+  </div>
 </div>
 
 <script>
@@ -308,6 +372,186 @@ function renderUnicaCard(def, unlocked){
     + '</div>';
 }
 
+// Calcola tutte le statistiche/distintivi per un singolo pilota, dati calendario
+// e races già caricati (riutilizzabile sia per il profilo principale che per
+// il confronto tra due piloti).
+function computeStatsForPilot(pilot, calendario, races){
+  var targetPsn  = (pilot.psn || '').toLowerCase().trim();
+  var targetNome = (pilot.nome || pilot.name || '').toLowerCase().trim();
+
+  var ufficioseIds = {};
+  calendario.forEach(function(c){ if (c.cat === 'Gara Ufficiosa' && c.id) ufficioseIds[c.id] = true; });
+
+  var psnByNameInChamp = {}, psnByNameGlobal = {};
+  races.forEach(function(race){
+    var cid = race.champId || '';
+    (race.rows || []).forEach(function(row){
+      if (!row.nome) return;
+      var nk = row.nome.toLowerCase().trim();
+      var ps = (row.psn || '').toLowerCase().trim();
+      if (!ps) return;
+      if (cid) { if (!psnByNameInChamp[cid]) psnByNameInChamp[cid] = {}; psnByNameInChamp[cid][nk] = ps; }
+      psnByNameGlobal[nk] = ps;
+    });
+  });
+  function resolvePsn(champId, nome){
+    var nk = (nome || '').toLowerCase().trim();
+    if (!nk) return '';
+    if (champId && psnByNameInChamp[champId] && psnByNameInChamp[champId][nk]) return psnByNameInChamp[champId][nk];
+    if (psnByNameGlobal[nk]) return psnByNameGlobal[nk];
+    return '';
+  }
+  function isTarget(rowNome, rowPsn){
+    var ps = (rowPsn || '').toLowerCase().trim();
+    var nm = (rowNome || '').toLowerCase().trim();
+    if (targetPsn && ps === targetPsn) return true;
+    if (!ps && targetNome && nm === targetNome) return true;
+    if (targetPsn && !ps && nm === targetNome) return true;
+    return false;
+  }
+
+  var stats = {
+    veterano:0, gare:0, costanza:0, presenzaPerfetta:0, globetrotter:0,
+    campCompletati:0, campVinti:0, eventi:0, trofeiVinti:0,
+    vittorie:0, podi:0, giroveloce:0, pole:0, grandSlam:0,
+    sfortunato:0, multicat:0
+  };
+  var champParticipated = {};    // champId -> earliest date
+  var raceLog = [];              // { date, stato }
+  var circuitiSet = {};
+  var categorieSet = {};
+  var champRounds = {};          // champId -> Set(garaNum) partecipati dal target
+  var champTotalRounds = {};     // champId -> totalRounds (da calendario, o garaTot come fallback)
+
+  races.forEach(function(race){
+    var champId = race.champId || '';
+    if (champId && ufficioseIds[champId]) return;
+
+    var champ = null;
+    if (champId) champ = calendario.find(function(c){ return c.id === champId; }) || null;
+    if (!champ && race.champIdx !== undefined) { var idx = parseInt(race.champIdx); if(!isNaN(idx)) champ = calendario[idx] || null; }
+
+    var garaNum = parseInt(race.garaNum) || 0;
+    var garaTot = parseInt(race.garaTot) || 0;
+    var isFinal = garaNum > 0 && garaNum === garaTot;
+    var totalRounds = (champ && champ.totalRounds) ? parseInt(champ.totalRounds) : garaTot;
+
+    (race.rows || []).forEach(function(row){
+      if (!isTarget(row.nome, row.psn)) return;
+      stats.gare++;
+      var pos = parseInt(row.pos);
+      if (pos === 1) stats.vittorie++;
+      if (pos >= 1 && pos <= 3) stats.podi++;
+      if (row.fl === true) stats.giroveloce++;
+      if (row.pole === true) stats.pole++;
+      if (pos === 1 && row.fl === true && row.pole === true) stats.grandSlam++;
+      if (champ && (champ.cat === 'Evento' || champ.cat === 'Trofeo')) stats.eventi++;
+      if (row.stato === 'dnf') stats.sfortunato++;
+
+      var circuito = race.circuito || race.circuit || race.track || '';
+      if (circuito) circuitiSet[circuito.toLowerCase().trim()] = true;
+      if (champ && champ.catAuto) categorieSet[String(champ.catAuto).toLowerCase().trim()] = true;
+
+      raceLog.push({ date: race.data || '', stato: row.stato || 'ok' });
+
+      if (champId) {
+        var d = race.data || '9999';
+        if (!champParticipated[champId] || d < champParticipated[champId]) champParticipated[champId] = d;
+        if (!champRounds[champId]) champRounds[champId] = {};
+        champRounds[champId][garaNum] = true;
+        champTotalRounds[champId] = totalRounds;
+      }
+    });
+
+    // Vittoria di campionato/trofeo, basata sulla classifica finale
+    if (isFinal && champ && champ.trophy) {
+      var standings = race.standings || [];
+      var champion = standings.find(function(s){ return parseInt(s.pos) === 1; });
+      if (!champion && race.rows && race.rows.length) champion = { nome: race.rows[0].nome };
+      if (champion && champion.nome) {
+        var champPsn = resolvePsn(champId, champion.nome) || champion.nome.toLowerCase().trim();
+        var won = champPsn === targetPsn || (!targetPsn && champion.nome.toLowerCase().trim() === targetNome);
+        if (won) {
+          if (champ.cat === 'Trofeo' || champ.cat === 'Evento') stats.trofeiVinti++;
+          else stats.campVinti++;
+        }
+      }
+    }
+  });
+
+  // Camp. Completati: un campionato conta come "completato" se il pilota ha
+  // corso almeno il numero minimo di gare richiesto — quel minimo è il
+  // "Migliore su… gare" (bestOf) del campionato, se impostato; se non è
+  // impostato nessun minimo, serve averle corse TUTTE (totalRounds).
+  stats.campCompletati = Object.keys(champRounds).filter(function(cid){
+    var champ = calendario.find(function(c){ return c.id === cid; });
+    var totalRounds = champTotalRounds[cid] || 0;
+    var required = (champ && champ.bestOf) ? parseInt(champ.bestOf) : totalRounds;
+    var attended = Object.keys(champRounds[cid]).length;
+    return required > 0 && attended >= required;
+  }).length;
+  stats.globetrotter = Object.keys(circuitiSet).length;
+  stats.multicat = Object.keys(categorieSet).length;
+
+  // Presenza Perfetta: CAMPAGNE (Campionato/Formula) completate al 100% dei
+  // round, dove una campagna può comprendere più campionati con lo stesso
+  // valore "campagna" + stessa Stagione Ufficiale (es. "Estiva" + "Stagione
+  // 2"). Serve 100% di presenza su TUTTI i round di TUTTI i campionati di
+  // quella campagna. Campionati senza "campagna" impostata vengono ignorati
+  // (dato non ancora migrato) — non contano né a favore né contro.
+  var campagnaGroups = {}; // key -> { total, attended }
+  Object.keys(champRounds).forEach(function(cid){
+    var champ = calendario.find(function(c){ return c.id === cid; });
+    if (!champ || (champ.cat !== 'Campionato' && champ.cat !== 'Formula')) return;
+    var campagnaVal = (champ.campagna || '').trim();
+    var stagioneVal = (champ.stagione || '').trim();
+    if (!campagnaVal || !stagioneVal) return;
+    var key = campagnaVal.toLowerCase() + '|' + stagioneVal.toLowerCase();
+    if (!campagnaGroups[key]) campagnaGroups[key] = { total: 0, attended: 0 };
+    campagnaGroups[key].total += (champTotalRounds[cid] || 0);
+    campagnaGroups[key].attended += Object.keys(champRounds[cid]).length;
+  });
+  stats.presenzaPerfetta = Object.keys(campagnaGroups).filter(function(k){
+    var g = campagnaGroups[k];
+    return g.total > 0 && g.attended >= g.total;
+  }).length;
+
+  // Costanza: miglior serie di gare consecutive senza ritiro (dnf/dsq)
+  raceLog = raceLog.filter(function(r){ return r.date; }).sort(function(a,b){ return a.date < b.date ? -1 : 1; });
+  var best = 0, cur = 0;
+  raceLog.forEach(function(r){
+    if (r.stato === 'ok') { cur++; if (cur > best) best = cur; }
+    else cur = 0;
+  });
+  stats.costanza = best;
+
+  // Veterano: anni di appartenenza CUMULATIVI da attivo — i periodi in cui il
+  // pilota è stato "Non Attivo" non contano. Se torna attivo, il conteggio
+  // riprende da dove era rimasto (non riparte da zero).
+  var earliestDate = null;
+  raceLog.forEach(function(r){ if (r.date && (!earliestDate || r.date < earliestDate)) earliestDate = r.date; });
+  stats.veterano = computeVeteranoAnni(pilot, earliestDate);
+
+  var autoUnica = {
+    primaVittoriaPersonale: stats.vittorie >= 1
+  };
+  var pilotBadges = (pilot.badges || []).map(function(b){ return String(b).toLowerCase().trim(); });
+
+  // Distintivi manuali "ripetibili" (assegnati più volte, es. una campagna
+  // diversa ogni volta): il conteggio è quante volte la chiave compare
+  // nell'array badges[] del pilota (assegnata da assegna-distintivi.html).
+  ['pilota-campagna','pilota-stagione','fair-play'].forEach(function(key){
+    stats[key] = pilotBadges.filter(function(b){ return b === key; }).length;
+  });
+
+  return { stats: stats, pilotBadges: pilotBadges, autoUnica: autoUnica, categorieSet: categorieSet };
+}
+
+// Dati condivisi, caricati una volta e riutilizzati anche dal Confronto
+var ALL_PILOT_DOCS = [];
+var ALL_CALENDARIO = [];
+var ALL_RACES = [];
+
 async function main(){
   if (!qPsn && !qNome) {
     root.innerHTML = '<div class="state">Nessun pilota specificato.<br>Apri questa pagina da un profilo pilota su <a href="piloti_gt7.html">Piloti GT7</a>.</div>';
@@ -324,8 +568,10 @@ async function main(){
       try { var r = await fetch(BASE_RAW + '/piloti_schede/' + name); if(!r.ok) return null; return await r.json(); }
       catch(e){ return null; }
     }, 5, 250);
+    pilotDocs = pilotDocs.filter(Boolean);
+    ALL_PILOT_DOCS = pilotDocs;
 
-    var pilot = pilotDocs.filter(Boolean).find(function(p){
+    var pilot = pilotDocs.find(function(p){
       var pPsn  = (p.psn  || '').toLowerCase().trim();
       var pNome = (p.nome || p.name || '').toLowerCase().trim();
       return (qPsn && pPsn === qPsn) || (qNome && pNome === qNome);
@@ -336,12 +582,10 @@ async function main(){
       return;
     }
 
-    var targetPsn  = (pilot.psn || '').toLowerCase().trim();
-    var targetNome = (pilot.nome || pilot.name || '').toLowerCase().trim();
-
     // ---- 2. Calendario + risultati ----
     var calendario = [];
     try { var calRes = await fetch(BASE_RAW + '/calendario.json?_=' + Date.now()); if (calRes.ok) calendario = await calRes.json(); } catch(e){}
+    ALL_CALENDARIO = calendario;
 
     var rIndexRes = await fetch(BASE_RAW + '/risultati/index.json?_=' + Date.now());
     var raceFiles = rIndexRes.ok ? await rIndexRes.json() : [];
@@ -352,172 +596,10 @@ async function main(){
       catch(e){ return null; }
     }, 5, 250);
     races = races.filter(function(r){ return r && Array.isArray(r.rows); });
+    ALL_RACES = races;
 
-    var ufficioseIds = {};
-    calendario.forEach(function(c){ if (c.cat === 'Gara Ufficiosa' && c.id) ufficioseIds[c.id] = true; });
-
-    // PSN resolution (stesso pattern usato in tutto il sito)
-    var psnByNameInChamp = {}, psnByNameGlobal = {};
-    races.forEach(function(race){
-      var cid = race.champId || '';
-      (race.rows || []).forEach(function(row){
-        if (!row.nome) return;
-        var nk = row.nome.toLowerCase().trim();
-        var ps = (row.psn || '').toLowerCase().trim();
-        if (!ps) return;
-        if (cid) { if (!psnByNameInChamp[cid]) psnByNameInChamp[cid] = {}; psnByNameInChamp[cid][nk] = ps; }
-        psnByNameGlobal[nk] = ps;
-      });
-    });
-    function resolvePsn(champId, nome){
-      var nk = (nome || '').toLowerCase().trim();
-      if (!nk) return '';
-      if (champId && psnByNameInChamp[champId] && psnByNameInChamp[champId][nk]) return psnByNameInChamp[champId][nk];
-      if (psnByNameGlobal[nk]) return psnByNameGlobal[nk];
-      return '';
-    }
-    function isTarget(rowNome, rowPsn){
-      var ps = (rowPsn || '').toLowerCase().trim();
-      var nm = (rowNome || '').toLowerCase().trim();
-      if (targetPsn && ps === targetPsn) return true;
-      if (!ps && targetNome && nm === targetNome) return true;
-      if (targetPsn && !ps && nm === targetNome) return true;
-      return false;
-    }
-
-    var stats = {
-      veterano:0, gare:0, costanza:0, presenzaPerfetta:0, globetrotter:0,
-      campCompletati:0, campVinti:0, eventi:0, trofeiVinti:0,
-      vittorie:0, podi:0, giroveloce:0, pole:0, grandSlam:0,
-      sfortunato:0, multicat:0
-    };
-    var champParticipated = {};    // champId -> earliest date
-    var raceLog = [];              // { date, stato }
-    var circuitiSet = {};
-    var categorieSet = {};
-    var champRounds = {};          // champId -> Set(garaNum) partecipati dal target
-    var champTotalRounds = {};     // champId -> totalRounds (da calendario, o garaTot come fallback)
-
-    races.forEach(function(race){
-      var champId = race.champId || '';
-      if (champId && ufficioseIds[champId]) return;
-
-      var champ = null;
-      if (champId) champ = calendario.find(function(c){ return c.id === champId; }) || null;
-      if (!champ && race.champIdx !== undefined) { var idx = parseInt(race.champIdx); if(!isNaN(idx)) champ = calendario[idx] || null; }
-
-      var garaNum = parseInt(race.garaNum) || 0;
-      var garaTot = parseInt(race.garaTot) || 0;
-      var isFinal = garaNum > 0 && garaNum === garaTot;
-      var totalRounds = (champ && champ.totalRounds) ? parseInt(champ.totalRounds) : garaTot;
-
-      (race.rows || []).forEach(function(row){
-        if (!isTarget(row.nome, row.psn)) return;
-        stats.gare++;
-        var pos = parseInt(row.pos);
-        if (pos === 1) stats.vittorie++;
-        if (pos >= 1 && pos <= 3) stats.podi++;
-        if (row.fl === true) stats.giroveloce++;
-        if (row.pole === true) stats.pole++;
-        if (pos === 1 && row.fl === true && row.pole === true) stats.grandSlam++;
-        if (champ && (champ.cat === 'Evento' || champ.cat === 'Trofeo')) stats.eventi++;
-        if (row.stato === 'dnf') stats.sfortunato++;
-
-        var circuito = race.circuito || race.circuit || race.track || '';
-        if (circuito) circuitiSet[circuito.toLowerCase().trim()] = true;
-        if (champ && champ.catAuto) categorieSet[String(champ.catAuto).toLowerCase().trim()] = true;
-
-        raceLog.push({ date: race.data || '', stato: row.stato || 'ok' });
-
-        if (champId) {
-          var d = race.data || '9999';
-          if (!champParticipated[champId] || d < champParticipated[champId]) champParticipated[champId] = d;
-          if (!champRounds[champId]) champRounds[champId] = {};
-          champRounds[champId][garaNum] = true;
-          champTotalRounds[champId] = totalRounds;
-        }
-      });
-
-      // Vittoria di campionato/trofeo, basata sulla classifica finale
-      if (isFinal && champ && champ.trophy) {
-        var standings = race.standings || [];
-        var champion = standings.find(function(s){ return parseInt(s.pos) === 1; });
-        if (!champion && race.rows && race.rows.length) champion = { nome: race.rows[0].nome };
-        if (champion && champion.nome) {
-          var champPsn = resolvePsn(champId, champion.nome) || champion.nome.toLowerCase().trim();
-          var won = champPsn === targetPsn || (!targetPsn && champion.nome.toLowerCase().trim() === targetNome);
-          if (won) {
-            if (champ.cat === 'Trofeo' || champ.cat === 'Evento') stats.trofeiVinti++;
-            else stats.campVinti++;
-          }
-        }
-      }
-    });
-
-    // Camp. Completati: un campionato conta come "completato" se il pilota ha
-    // corso almeno il numero minimo di gare richiesto — quel minimo è il
-    // "Migliore su… gare" (bestOf) del campionato, se impostato; se non è
-    // impostato nessun minimo, serve averle corse TUTTE (totalRounds).
-    stats.campCompletati = Object.keys(champRounds).filter(function(cid){
-      var champ = calendario.find(function(c){ return c.id === cid; });
-      var totalRounds = champTotalRounds[cid] || 0;
-      var required = (champ && champ.bestOf) ? parseInt(champ.bestOf) : totalRounds;
-      var attended = Object.keys(champRounds[cid]).length;
-      return required > 0 && attended >= required;
-    }).length;
-    stats.globetrotter = Object.keys(circuitiSet).length;
-    stats.multicat = Object.keys(categorieSet).length;
-
-    // Presenza Perfetta: CAMPAGNE (Campionato/Formula) completate al 100% dei
-    // round, dove una campagna può comprendere più campionati con lo stesso
-    // valore "campagna" + stessa Stagione Ufficiale (es. "Estiva" + "Stagione
-    // 2"). Serve 100% di presenza su TUTTI i round di TUTTI i campionati di
-    // quella campagna. Campionati senza "campagna" impostata vengono ignorati
-    // (dato non ancora migrato) — non contano né a favore né contro.
-    var campagnaGroups = {}; // key -> { total, attended }
-    Object.keys(champRounds).forEach(function(cid){
-      var champ = calendario.find(function(c){ return c.id === cid; });
-      if (!champ || (champ.cat !== 'Campionato' && champ.cat !== 'Formula')) return;
-      var campagnaVal = (champ.campagna || '').trim();
-      var stagioneVal = (champ.stagione || '').trim();
-      if (!campagnaVal || !stagioneVal) return;
-      var key = campagnaVal.toLowerCase() + '|' + stagioneVal.toLowerCase();
-      if (!campagnaGroups[key]) campagnaGroups[key] = { total: 0, attended: 0 };
-      campagnaGroups[key].total += (champTotalRounds[cid] || 0);
-      campagnaGroups[key].attended += Object.keys(champRounds[cid]).length;
-    });
-    stats.presenzaPerfetta = Object.keys(campagnaGroups).filter(function(k){
-      var g = campagnaGroups[k];
-      return g.total > 0 && g.attended >= g.total;
-    }).length;
-
-    // Costanza: miglior serie di gare consecutive senza ritiro (dnf/dsq)
-    raceLog = raceLog.filter(function(r){ return r.date; }).sort(function(a,b){ return a.date < b.date ? -1 : 1; });
-    var best = 0, cur = 0;
-    raceLog.forEach(function(r){
-      if (r.stato === 'ok') { cur++; if (cur > best) best = cur; }
-      else cur = 0;
-    });
-    stats.costanza = best;
-
-    // Veterano: anni di appartenenza CUMULATIVI da attivo — i periodi in cui il
-    // pilota è stato "Non Attivo" non contano. Se torna attivo, il conteggio
-    // riprende da dove era rimasto (non riparte da zero).
-    var earliestDate = null;
-    raceLog.forEach(function(r){ if (r.date && (!earliestDate || r.date < earliestDate)) earliestDate = r.date; });
-    stats.veterano = computeVeteranoAnni(pilot, earliestDate);
-
-    var autoUnica = {
-      primaVittoriaPersonale: stats.vittorie >= 1
-    };
-    var pilotBadges = (pilot.badges || []).map(function(b){ return String(b).toLowerCase().trim(); });
-
-    // Distintivi manuali "ripetibili" (assegnati più volte, es. una campagna
-    // diversa ogni volta): il conteggio è quante volte la chiave compare
-    // nell'array badges[] del pilota (assegnata da assegna-distintivi.html).
-    ['pilota-campagna','pilota-stagione','fair-play'].forEach(function(key){
-      stats[key] = pilotBadges.filter(function(b){ return b === key; }).length;
-    });
+    var result = computeStatsForPilot(pilot, calendario, races);
+    var stats = result.stats, pilotBadges = result.pilotBadges, autoUnica = result.autoUnica, categorieSet = result.categorieSet;
 
     // ---- Render ----
     var nome = pilot.nome || pilot.name || '—';
@@ -533,6 +615,7 @@ async function main(){
       +     (psnDisp ? '<div class="profile-psn">' + esc(psnDisp) + '</div>' : '')
       +     '<div class="profile-sub">' + stats.gare + ' gare disputate · ' + stats.vittorie + ' vittorie · ' + stats.podi + ' podi</div>'
       +   '</div>'
+      +   '<button class="btn-confronta" onclick="openCompare()">⚔️ Confronta</button>'
       + '</div>';
 
     CATALOG.forEach(function(section, si){
@@ -550,10 +633,137 @@ async function main(){
 
     root.innerHTML = html;
 
+    // Precompila il selettore "Pilota 1" con il pilota corrente
+    initCompareUI(pilot);
+
   } catch (err) {
     console.error(err);
     root.innerHTML = '<div class="state">Impossibile caricare i dati dei distintivi.<br>Riprova più tardi.</div>';
   }
+}
+
+// ── CONFRONTO TRA DUE PILOTI ──
+function initCompareUI(currentPilot){
+  var optsHtml = '<option value="">— seleziona —</option>' + ALL_PILOT_DOCS
+    .slice()
+    .sort(function(a,b){ return (a.nome||a.name||'').localeCompare(b.nome||b.name||''); })
+    .map(function(p){
+      var label = p.nome || p.name || p.psn || '—';
+      var val = (p.psn || p.nome || '').toLowerCase().trim();
+      return '<option value="' + esc(val) + '">' + esc(label) + '</option>';
+    }).join('');
+
+  var selA = document.getElementById('compareSelA');
+  var selB = document.getElementById('compareSelB');
+  selA.innerHTML = optsHtml;
+  selB.innerHTML = optsHtml;
+
+  // Precompila Pilota 1 con il profilo attualmente aperto
+  var currentKey = ((currentPilot.psn || currentPilot.nome || '')).toLowerCase().trim();
+  if (currentKey) selA.value = currentKey;
+}
+
+function openCompare(){
+  document.getElementById('compareOverlay').classList.add('open');
+}
+function closeCompare(){
+  document.getElementById('compareOverlay').classList.remove('open');
+}
+
+function findPilotByKey(key){
+  key = (key || '').toLowerCase().trim();
+  if (!key) return null;
+  return ALL_PILOT_DOCS.find(function(p){
+    var psn = (p.psn || '').toLowerCase().trim();
+    var nome = (p.nome || p.name || '').toLowerCase().trim();
+    return psn === key || nome === key;
+  }) || null;
+}
+
+function compareProfileHtml(pilot, side){
+  var nome = pilot.nome || pilot.name || '—';
+  var psn = pilot.psn || '';
+  var foto = pilot.foto || pilot.photo || null;
+  var photoHtml = foto ? '<img src="' + esc(foto) + '" alt="">' : '<div class="fallback">🪖</div>';
+  return '<div class="compare-profile ' + side + '">' + photoHtml
+    + '<div><div class="compare-profile-name">' + esc(nome) + '</div>'
+    + (psn ? '<div class="compare-profile-psn">' + esc(psn) + '</div>' : '')
+    + '</div></div>';
+}
+
+function compareCellHtml(def, value, side){
+  var tier, tierName, valLabel;
+  if (def.type === 'tiered'){
+    var t = tierFor(value, def.thresholds);
+    tierName = TIER_NAMES[t];
+    valLabel = value + ' ' + def.unit;
+  } else {
+    var unlocked = value === true;
+    tierName = unlocked ? 'oro' : 'locked';
+    valLabel = unlocked ? 'Ottenuto' : '—';
+  }
+  var cls = tierName && tierName !== 'locked' ? ' tier-' + tierName : '';
+  var winCls = (def.type === 'tiered' ? value > 0 : value === true) ? ' win' : '';
+  var icon = '<div class="compare-cell-icon' + cls + '">' + badgeIcon(def) + '</div>';
+  var valHtml = '<span class="compare-cell-val' + winCls + '">' + esc(valLabel) + '</span>';
+  return side === 'left'
+    ? '<div class="compare-cell left">' + icon + valHtml + '</div>'
+    : '<div class="compare-cell">' + valHtml + icon + '</div>';
+}
+
+function runCompare(){
+  var keyA = document.getElementById('compareSelA').value;
+  var keyB = document.getElementById('compareSelB').value;
+  var results = document.getElementById('compareResults');
+
+  if (!keyA || !keyB){
+    results.innerHTML = '<div class="compare-empty">Seleziona entrambi i piloti.</div>';
+    return;
+  }
+  if (keyA === keyB){
+    results.innerHTML = '<div class="compare-empty">Scegli due piloti diversi.</div>';
+    return;
+  }
+
+  var pilotA = findPilotByKey(keyA);
+  var pilotB = findPilotByKey(keyB);
+  if (!pilotA || !pilotB){
+    results.innerHTML = '<div class="compare-empty">Pilota non trovato.</div>';
+    return;
+  }
+
+  var resA = computeStatsForPilot(pilotA, ALL_CALENDARIO, ALL_RACES);
+  var resB = computeStatsForPilot(pilotB, ALL_CALENDARIO, ALL_RACES);
+
+  var html = '<div class="compare-profiles">'
+    + compareProfileHtml(pilotA, 'left')
+    + '<div class="compare-vs-mid">VS</div>'
+    + compareProfileHtml(pilotB, 'right')
+    + '</div>';
+
+  CATALOG.forEach(function(section){
+    html += '<div class="compare-section-title">' + esc(section.cat) + '</div>';
+    section.items.forEach(function(def){
+      var valA, valB;
+      if (def.type === 'tiered'){
+        valA = resA.stats[def.key] || 0;
+        valB = resB.stats[def.key] || 0;
+      } else if (def.type === 'auto'){
+        valA = !!resA.autoUnica[def.key];
+        valB = !!resB.autoUnica[def.key];
+      } else {
+        valA = resA.pilotBadges.indexOf(def.key) !== -1;
+        valB = resB.pilotBadges.indexOf(def.key) !== -1;
+      }
+      html += '<div class="compare-row">'
+        + compareCellHtml(def, valA, 'left')
+        + '<div class="compare-row-label">' + esc(def.nome) + '</div>'
+        + compareCellHtml(def, valB, 'right')
+        + '</div>';
+    });
+  });
+
+  results.innerHTML = html;
 }
 
 main();
