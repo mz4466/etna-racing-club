@@ -32,6 +32,33 @@
   .profile-name{ font-family:'Teko',sans-serif; font-size:34px; letter-spacing:1px; line-height:1; margin:0 0 4px; }
   .profile-psn{ color:var(--gold); font-size:15px; font-family:'Teko',sans-serif; letter-spacing:1px; }
   .profile-sub{ color:var(--muted); font-size:13px; margin-top:6px; }
+
+  /* ── BACHECA TROFEI ── */
+  .trophy-shelf-section{ margin:24px 0 32px; }
+  .trophy-shelf-head{ font-family:'Russo One',sans-serif; font-size:16px; color:var(--gold2); letter-spacing:1px; margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+  .trophy-shelf-head .sub{ font-family:'Teko',sans-serif; font-size:13px; letter-spacing:1px; color:var(--muted); text-transform:none; font-weight:400; }
+  .trophy-shelf{
+    display:flex; flex-wrap:wrap; gap:22px 18px; padding:22px 18px 26px;
+    background:linear-gradient(180deg,rgba(201,162,39,0.05),rgba(0,0,0,0) 40%);
+    border-bottom:3px solid; border-image:linear-gradient(90deg,transparent,rgba(201,162,39,0.5),transparent) 1;
+    border-radius:10px;
+    position:relative;
+  }
+  .shelf-trophy{ width:96px; text-align:center; display:flex; flex-direction:column; align-items:center; }
+  .shelf-trophy-icon{
+    width:76px; height:76px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(circle at 35% 30%,rgba(201,162,39,0.18),rgba(0,0,0,0.3) 75%);
+    border:2px solid rgba(201,162,39,0.4);
+    box-shadow:0 6px 14px rgba(0,0,0,0.4), 0 0 16px rgba(201,162,39,0.15);
+    margin-bottom:8px;
+    overflow:hidden;
+    transition:transform .2s;
+  }
+  .shelf-trophy:hover .shelf-trophy-icon{ transform:translateY(-3px) scale(1.05); }
+  .shelf-trophy-icon img{ width:64px; height:64px; object-fit:contain; filter:drop-shadow(0 0 6px rgba(201,162,39,0.3)); }
+  .shelf-fallback{ font-size:28px; }
+  .shelf-trophy-name{ font-family:'Teko',sans-serif; font-size:13px; letter-spacing:.5px; color:var(--cream); line-height:1.2; }
+  .shelf-trophy-sub{ font-family:'Teko',sans-serif; font-size:11px; color:var(--muted); margin-top:2px; }
   .btn-confronta{ margin-left:auto; align-self:center; background:rgba(201,162,39,0.1); border:1px solid var(--gold); color:var(--gold2); font-family:'Teko',sans-serif; font-size:16px; letter-spacing:2px; padding:10px 20px; border-radius:24px; cursor:pointer; text-transform:uppercase; transition:all .2s; white-space:nowrap; }
   .btn-confronta:hover{ background:rgba(201,162,39,0.22); box-shadow:0 0 14px rgba(201,162,39,0.25); }
 
@@ -174,6 +201,19 @@ const qNome = (params.get('nome') || '').toLowerCase().trim();
 const root = document.getElementById('root');
 
 function esc(s){ return String(s||'').replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+// TEST MODE: la Bacheca Trofei è nascosta finché non si clicca 3 volte sul
+// nome del pilota — nessun indizio visivo (niente cursore/hover) finché non
+// è pronta per il lancio pubblico. Per renderla sempre visibile, basta
+// togliere lo style="display:none" da #trophyShelfSection e rimuovere
+// data-clicks/onclick dal nome.
+function handleSecretNameClick(el){
+  var n = (parseInt(el.getAttribute('data-clicks'), 10) || 0) + 1;
+  el.setAttribute('data-clicks', n);
+  if (n >= 3) {
+    var shelf = document.getElementById('trophyShelfSection');
+    if (shelf) shelf.style.display = 'block';
+  }
+}
 
 async function fetchBatched(urls, fetchFn, batchSize, delayMs){
   var results = [];
@@ -372,6 +412,34 @@ function renderUnicaCard(def, unlocked){
     + '</div>';
 }
 
+// Bacheca Trofei: mostra le immagini reali dei trofei vinti dal pilota
+// (campo "trophy" in calendario.json, cartella trophy_png/), raggruppate
+// per Campionati e Trofei/Eventi. Non mostra nulla se non ha vinto nulla.
+function renderTrophyShelf(wonTrophies){
+  if (!wonTrophies || !wonTrophies.length) return '';
+
+  var sorted = wonTrophies.slice().sort(function(a,b){
+    return (b.year||'') - (a.year||'') || (b.date||'').localeCompare(a.date||'');
+  });
+
+  var itemsHtml = sorted.map(function(t){
+    var img = t.trophy ? '<img src="trophy_png/' + esc(t.trophy) + '" alt="' + esc(t.name) + '">' : '<span class="shelf-fallback">🏆</span>';
+    var sub = [t.stagione, t.year].filter(Boolean).join(' · ');
+    return ''
+      + '<div class="shelf-trophy">'
+      +   '<div class="shelf-trophy-icon">' + img + '</div>'
+      +   '<div class="shelf-trophy-name">' + esc(t.name) + '</div>'
+      +   (sub ? '<div class="shelf-trophy-sub">' + esc(sub) + '</div>' : '')
+      + '</div>';
+  }).join('');
+
+  return ''
+    + '<div class="trophy-shelf-section" id="trophyShelfSection" style="display:none">'
+    +   '<div class="trophy-shelf-head">🏆 Bacheca Trofei <span class="sub">' + wonTrophies.length + (wonTrophies.length === 1 ? ' titolo vinto' : ' titoli vinti') + '</span></div>'
+    +   '<div class="trophy-shelf">' + itemsHtml + '</div>'
+    + '</div>';
+}
+
 // Calcola tutte le statistiche/distintivi per un singolo pilota, dati calendario
 // e races già caricati (riutilizzabile sia per il profilo principale che per
 // il confronto tra due piloti).
@@ -422,6 +490,7 @@ function computeStatsForPilot(pilot, calendario, races){
   var categorieSet = {};
   var champRounds = {};          // champId -> Set(garaNum) partecipati dal target
   var champTotalRounds = {};     // champId -> totalRounds (da calendario, o garaTot come fallback)
+  var wonTrophies = [];          // [{name, year, stagione, cat, trophy, date}, ...] — per la Bacheca Trofei
 
   races.forEach(function(race){
     var champId = race.champId || '';
@@ -474,6 +543,14 @@ function computeStatsForPilot(pilot, calendario, races){
         if (won) {
           if (champ.cat === 'Trofeo' || champ.cat === 'Evento') stats.trofeiVinti++;
           else stats.campVinti++;
+          wonTrophies.push({
+            name: champ.name || champId,
+            year: champ.year || '',
+            stagione: champ.stagione || '',
+            cat: champ.cat || '',
+            trophy: champ.trophy,
+            date: race.data || ''
+          });
         }
       }
     }
@@ -544,7 +621,7 @@ function computeStatsForPilot(pilot, calendario, races){
     stats[key] = pilotBadges.filter(function(b){ return b === key; }).length;
   });
 
-  return { stats: stats, pilotBadges: pilotBadges, autoUnica: autoUnica, categorieSet: categorieSet };
+  return { stats: stats, pilotBadges: pilotBadges, autoUnica: autoUnica, categorieSet: categorieSet, wonTrophies: wonTrophies };
 }
 
 // Dati condivisi, caricati una volta e riutilizzati anche dal Confronto
@@ -599,7 +676,7 @@ async function main(){
     ALL_RACES = races;
 
     var result = computeStatsForPilot(pilot, calendario, races);
-    var stats = result.stats, pilotBadges = result.pilotBadges, autoUnica = result.autoUnica, categorieSet = result.categorieSet;
+    var stats = result.stats, pilotBadges = result.pilotBadges, autoUnica = result.autoUnica, categorieSet = result.categorieSet, wonTrophies = result.wonTrophies;
 
     // ---- Render ----
     var nome = pilot.nome || pilot.name || '—';
@@ -611,12 +688,14 @@ async function main(){
       + '<div class="profile">'
       +   photoHtml
       +   '<div>'
-      +     '<div class="profile-name">' + esc(nome) + '</div>'
+      +     '<div class="profile-name" data-clicks="0" onclick="handleSecretNameClick(this)" style="user-select:none;-webkit-user-select:none;-moz-user-select:none;">' + esc(nome) + '</div>'
       +     (psnDisp ? '<div class="profile-psn">' + esc(psnDisp) + '</div>' : '')
       +     '<div class="profile-sub">' + stats.gare + ' gare disputate · ' + stats.vittorie + ' vittorie · ' + stats.podi + ' podi</div>'
       +   '</div>'
       +   '<button class="btn-confronta" onclick="openCompare()">⚔️ Confronta</button>'
       + '</div>';
+
+    html += renderTrophyShelf(wonTrophies);
 
     CATALOG.forEach(function(section, si){
       html += '<div class="section"><div class="section-head"><span class="n">' + String(si+1).padStart(2,'0') + '</span><h2>' + esc(section.cat) + '</h2><span class="sub">' + section.items.length + ' distintivi</span></div>';
@@ -645,6 +724,7 @@ async function main(){
 // ── CONFRONTO TRA DUE PILOTI ──
 function initCompareUI(currentPilot){
   var optsHtml = '<option value="">— seleziona —</option>' + ALL_PILOT_DOCS
+    .filter(function(p){ return p.attivo !== false; })
     .slice()
     .sort(function(a,b){ return (a.nome||a.name||'').localeCompare(b.nome||b.name||''); })
     .map(function(p){
@@ -658,9 +738,11 @@ function initCompareUI(currentPilot){
   selA.innerHTML = optsHtml;
   selB.innerHTML = optsHtml;
 
-  // Precompila Pilota 1 con il profilo attualmente aperto
-  var currentKey = ((currentPilot.psn || currentPilot.nome || '')).toLowerCase().trim();
-  if (currentKey) selA.value = currentKey;
+  // Precompila Pilota 1 con il profilo attualmente aperto (solo se attivo)
+  if (currentPilot.attivo !== false) {
+    var currentKey = ((currentPilot.psn || currentPilot.nome || '')).toLowerCase().trim();
+    if (currentKey) selA.value = currentKey;
+  }
 }
 
 function openCompare(){
