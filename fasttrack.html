@@ -106,7 +106,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     </div>
 
     <div class="search-wrap">
-      <input type="text" class="search-input" id="searchInput" placeholder="🔍 Cerca circuito…" oninput="render()">
+      <input type="text" class="search-input" id="searchInput" placeholder="🔍 Cerca circuito…">
     </div>
 
     <div class="filters-wrap">
@@ -120,13 +120,13 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       </div>
       <div class="filter-group">
         <span class="filter-label">Categoria Auto</span>
-        <select class="filter-select" id="catAutoSelect" onchange="render()">
+        <select class="filter-select" id="catAutoSelect">
           <option value="tutte">Tutte</option>
         </select>
       </div>
       <div class="filter-group">
         <span class="filter-label">Auto</span>
-        <select class="filter-select" id="autoSelect" onchange="render()">
+        <select class="filter-select" id="autoSelect">
           <option value="tutte">Tutte</option>
         </select>
       </div>
@@ -406,6 +406,9 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
         render();
       });
     }
+    document.getElementById('catAutoSelect').addEventListener('change', render);
+    document.getElementById('autoSelect').addEventListener('change', render);
+    document.getElementById('searchInput').addEventListener('input', render);
   }
 
   init();
