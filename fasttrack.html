@@ -33,7 +33,15 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 .notice-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:var(--muted);line-height:1.6}
 .notice-box b{color:var(--gold-hi);font-weight:600}
 
-.search-wrap{margin-bottom:24px}
+.search-wrap{margin-bottom:16px}
+.filters-wrap{display:flex;flex-wrap:wrap;gap:20px;align-items:center;margin-bottom:24px}
+.filter-group{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filter-label{font-family:'Teko',sans-serif;font-size:12px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-right:2px}
+.cat-pill{font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,0.12);color:var(--muted);cursor:pointer;transition:all 0.15s;background:transparent}
+.cat-pill:hover{border-color:rgba(201,162,39,0.3)}
+.cat-pill.active{background:var(--gold-dim);border-color:rgba(201,162,39,0.4);color:var(--gold-hi)}
+.filter-select{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:1px;color:var(--text);background:var(--card);border:1px solid var(--border-hi);border-radius:8px;padding:7px 14px;cursor:pointer}
+.filter-select:focus{outline:none;border-color:var(--gold)}
 .search-input{width:100%;font-family:'Teko',sans-serif;font-size:16px;letter-spacing:1px;color:var(--text);background:var(--card);border:1px solid var(--border-hi);border-radius:10px;padding:11px 16px;outline:none}
 .search-input:focus{border-color:var(--gold)}
 .search-input::placeholder{color:var(--dim)}
@@ -101,6 +109,29 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       <input type="text" class="search-input" id="searchInput" placeholder="🔍 Cerca circuito…" oninput="render()">
     </div>
 
+    <div class="filters-wrap">
+      <div class="filter-group" id="catFilters">
+        <span class="filter-label">Categoria</span>
+        <button class="cat-pill active" data-cat="tutti">Tutti</button>
+        <button class="cat-pill" data-cat="campionati">Campionati</button>
+        <button class="cat-pill" data-cat="trofei">Trofei</button>
+        <button class="cat-pill" data-cat="formula">Formula</button>
+        <button class="cat-pill" data-cat="eventi">Eventi</button>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Categoria Auto</span>
+        <select class="filter-select" id="catAutoSelect" onchange="render()">
+          <option value="tutte">Tutte</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Auto</span>
+        <select class="filter-select" id="autoSelect" onchange="render()">
+          <option value="tutte">Tutte</option>
+        </select>
+      </div>
+    </div>
+
     <div class="overview-grid">
       <div class="ov-card"><div class="ov-num" id="ovCircuiti">–</div><div class="ov-label">Circuiti con tempi</div></div>
       <div class="ov-card"><div class="ov-num" id="ovGiri">–</div><div class="ov-label">Giri registrati</div></div>
@@ -118,8 +149,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
   var BASE = '';
   var schede = {};              // psnLower -> { nome, attivo }
   var champCatMap = {};         // champId -> cat
+  var champCatAutoMap = {};     // champId -> catAuto
   var champNameMap = {};        // champId -> nome campionato
-  var circuits = {};             // circuito -> [{psn, nome, ms, timeStr, auto, champName, data, attivo}]
 
   function fetchInBatches(items, batchSize, worker){
     var results = [];
@@ -164,6 +195,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
           var cid = c.id || '';
           if(!cid) continue;
           champCatMap[cid] = c.cat || '';
+          champCatAutoMap[cid] = c.catAuto || '';
           champNameMap[cid] = c.name || cid;
         }
       })
@@ -202,8 +234,10 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       .then(function(d){ if(onProgress) onProgress(); return d; });
   }
 
+  var allLaps = []; // flat list, filtered + grouped by circuit inside render()
+
   function processData(races){
-    circuits = {};
+    allLaps = [];
     for(var i=0;i<races.length;i++){
       var race = races[i];
       if(!race) continue;
@@ -222,14 +256,16 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
         var scheda = psn ? schede[psn] : null;
         var displayNome = scheda ? scheda.nome : (row.nome || psn || '—');
 
-        if(!circuits[circuito]) circuits[circuito] = [];
-        circuits[circuito].push({
+        allLaps.push({
+          circuito: circuito,
           psn: psn,
           nome: displayNome,
           attivo: scheda ? scheda.attivo : true,
           ms: ms,
           timeStr: formatMs(ms),
-          auto: row.auto || '',
+          auto: (row.auto || '').trim(),
+          cat: cid ? (champCatMap[cid] || '') : '',
+          catAuto: cid ? (champCatAutoMap[cid] || '') : '',
           champName: cid ? (champNameMap[cid] || cid) : '',
           data: race.data || ''
         });
@@ -237,21 +273,61 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     }
   }
 
+  function populateFilterOptions(){
+    var catAutoSet = {}, autoSet = {};
+    allLaps.forEach(function(l){
+      if(l.catAuto) catAutoSet[l.catAuto] = true;
+      if(l.auto) autoSet[l.auto] = true;
+    });
+    var catAutoSel = document.getElementById('catAutoSelect');
+    Object.keys(catAutoSet).sort().forEach(function(v){
+      var opt = document.createElement('option'); opt.value = v; opt.textContent = v;
+      catAutoSel.appendChild(opt);
+    });
+    var autoSel = document.getElementById('autoSelect');
+    Object.keys(autoSet).sort().forEach(function(v){
+      var opt = document.createElement('option'); opt.value = v; opt.textContent = v;
+      autoSel.appendChild(opt);
+    });
+  }
+
+  var CAT_FILTERS = {
+    tutti:      ['Campionato','Trofeo','Formula','Evento'],
+    campionati: ['Campionato'],
+    trofei:     ['Trofeo'],
+    formula:    ['Formula'],
+    eventi:     ['Evento']
+  };
+  var currentCat = 'tutti';
+
   function render(){
     var query = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+    var catAutoFilter = document.getElementById('catAutoSelect').value;
+    var autoFilter = document.getElementById('autoSelect').value;
+    var allowedCats = CAT_FILTERS[currentCat] || CAT_FILTERS.tutti;
+
+    var filtered = allLaps.filter(function(l){
+      if(allowedCats.indexOf(l.cat) === -1) return false;
+      if(catAutoFilter !== 'tutte' && l.catAuto !== catAutoFilter) return false;
+      if(autoFilter !== 'tutte' && l.auto !== autoFilter) return false;
+      return true;
+    });
+
+    var circuits = {};
+    filtered.forEach(function(l){
+      if(!circuits[l.circuito]) circuits[l.circuito] = [];
+      circuits[l.circuito].push(l);
+    });
+
     var names = Object.keys(circuits).sort(function(a,b){ return a.localeCompare(b); });
     if(query) names = names.filter(function(n){ return n.toLowerCase().indexOf(query) !== -1; });
 
-    var totalLaps = 0;
-    Object.keys(circuits).forEach(function(c){ totalLaps += circuits[c].length; });
     document.getElementById('ovCircuiti').textContent = Object.keys(circuits).length;
-    document.getElementById('ovGiri').textContent = totalLaps;
+    document.getElementById('ovGiri').textContent = filtered.length;
 
     var fastestOverall = null;
-    Object.keys(circuits).forEach(function(c){
-      circuits[c].forEach(function(e){
-        if(!fastestOverall || e.ms < fastestOverall.ms) fastestOverall = e;
-      });
+    filtered.forEach(function(e){
+      if(!fastestOverall || e.ms < fastestOverall.ms) fastestOverall = e;
     });
     document.getElementById('ovRecord').textContent = fastestOverall ? fastestOverall.timeStr : '–';
 
@@ -309,6 +385,8 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       return fetchPilotStatus().then(function(){ return results.filter(Boolean); });
     }).then(function(races){
       processData(races);
+      populateFilterOptions();
+      bindFilters();
       render();
       document.getElementById('loading').style.display = 'none';
       document.getElementById('content').style.display = 'block';
@@ -316,6 +394,18 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
       document.getElementById('loadingText').textContent = 'Errore nel caricamento';
       console.error('FastTrack — errore:', e);
     });
+  }
+
+  function bindFilters(){
+    var pills = document.querySelectorAll('.cat-pill');
+    for(var i=0;i<pills.length;i++){
+      pills[i].addEventListener('click', function(){
+        for(var j=0;j<pills.length;j++) pills[j].classList.remove('active');
+        this.classList.add('active');
+        currentCat = this.getAttribute('data-cat');
+        render();
+      });
+    }
   }
 
   init();
