@@ -57,7 +57,7 @@
       "psn": "PyerStark",
       "auto": "BMW M3 Sport Evolution '89",
       "tempo": "",
-      "bestLap": "0'15''861",
+      "bestLap": "01'58''610",
       "fl": false,
       "pole": false,
       "punti": 16,
@@ -101,31 +101,31 @@
     {
       "nome": "Giovanni",
       "psn": "mz4461",
-      "pts": 27,
+      "pts": 75,
       "pos": 1
-    },
-    {
-      "nome": "Stefano",
-      "psn": "stefano8923",
-      "pts": 21,
-      "pos": 2
     },
     {
       "nome": "Carmine",
       "psn": "CarmineRafa87",
-      "pts": 18,
-      "pos": 3
+      "pts": 64,
+      "pos": 2
     },
     {
       "nome": "Pyer",
       "psn": "PyerStark",
-      "pts": 16,
-      "pos": 4
+      "pts": 52,
+      "pos": 3
     },
     {
       "nome": "William",
       "psn": "steward_andante",
-      "pts": 14,
+      "pts": 44,
+      "pos": 4
+    },
+    {
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "pts": 37,
       "pos": 5
     },
     {
