@@ -50,6 +50,12 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
 .ov-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 12px;text-align:center}
 .ov-num{font-family:'Russo One',sans-serif;font-size:clamp(18px,5vw,26px);color:var(--gold-hi);line-height:1}
 .ov-label{font-family:'Teko',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-top:6px}
+.ov-card-top3{text-align:left}
+.top-records-list{display:flex;flex-direction:column;gap:4px}
+.top-record-row{display:flex;align-items:center;justify-content:space-between;gap:6px;font-family:'Teko',sans-serif;font-size:13px}
+.top-record-name{color:var(--text);letter-spacing:.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top-record-count{color:var(--gold-hi);font-weight:600;flex-shrink:0}
+.top-records-empty{color:var(--dim);font-size:13px;text-align:center}
 
 .circuit-card{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:18px;overflow:hidden}
 .circuit-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px;background:rgba(201,162,39,0.06);border-bottom:1px solid var(--border)}
@@ -135,7 +141,10 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     <div class="overview-grid">
       <div class="ov-card"><div class="ov-num" id="ovCircuiti">–</div><div class="ov-label">Circuiti con tempi</div></div>
       <div class="ov-card"><div class="ov-num" id="ovGiri">–</div><div class="ov-label">Giri registrati</div></div>
-      <div class="ov-card"><div class="ov-num" id="ovRecord">–</div><div class="ov-label">Record club</div></div>
+      <div class="ov-card ov-card-top3">
+        <div class="ov-label" style="margin-top:0;margin-bottom:8px;">Più Record</div>
+        <div id="ovTopRecords" class="top-records-list">–</div>
+      </div>
     </div>
 
     <div id="circuitsContainer"></div>
@@ -325,11 +334,29 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-
     document.getElementById('ovCircuiti').textContent = Object.keys(circuits).length;
     document.getElementById('ovGiri').textContent = filtered.length;
 
-    var fastestOverall = null;
-    filtered.forEach(function(e){
-      if(!fastestOverall || e.ms < fastestOverall.ms) fastestOverall = e;
+    // Top 3 piloti per numero di record (posizione #1) sui circuiti mostrati,
+    // coi filtri attuali — non sui giri totali, sui PRIMATI di circuito.
+    var recordCounts = {};
+    names.forEach(function(circuito){
+      var sorted = circuits[circuito].slice().sort(function(a,b){ return a.ms - b.ms; });
+      var holder = sorted[0];
+      if(!holder) return;
+      var key = holder.psn || holder.nome;
+      if(!recordCounts[key]) recordCounts[key] = { nome: holder.nome, count: 0 };
+      recordCounts[key].count++;
     });
-    document.getElementById('ovRecord').textContent = fastestOverall ? fastestOverall.timeStr : '–';
+    var topRecords = Object.keys(recordCounts).map(function(k){ return recordCounts[k]; })
+      .sort(function(a,b){ return b.count - a.count; })
+      .slice(0, 3);
+    var topRecordsEl = document.getElementById('ovTopRecords');
+    if(!topRecords.length){
+      topRecordsEl.innerHTML = '<div class="top-records-empty">–</div>';
+    } else {
+      var medals = ['🥇','🥈','🥉'];
+      topRecordsEl.innerHTML = topRecords.map(function(r, idx){
+        return '<div class="top-record-row"><span class="top-record-name">' + medals[idx] + ' ' + esc(r.nome) + '</span><span class="top-record-count">' + r.count + '</span></div>';
+      }).join('');
+    }
 
     var container = document.getElementById('circuitsContainer');
     var emptyState = document.getElementById('emptyState');
