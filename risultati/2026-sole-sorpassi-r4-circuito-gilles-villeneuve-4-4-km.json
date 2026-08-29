@@ -1,0 +1,241 @@
+{
+  "circuito": "Circuito Gilles Villeneuve – 4,4 km",
+  "data": "2026-08-29",
+  "garaNum": "4",
+  "garaTot": "5",
+  "champId": "sole-sorpassi-2026",
+  "champIdx": "sole-sorpassi-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "auto": "Mercedes-AMG GT3 '20",
+      "tempo": "46'50''411",
+      "bestLap": "01'36''776",
+      "fl": false,
+      "pole": false,
+      "punti": 25,
+      "extra": "-",
+      "totale": 25,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 2,
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "auto": "Audi R8 LMS Evo '19",
+      "tempo": "a 0\"977",
+      "bestLap": "01'36''418",
+      "fl": true,
+      "pole": true,
+      "punti": 21,
+      "extra": "1+1",
+      "totale": 23,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 3,
+      "nome": "Carmine",
+      "psn": "CarmineRafa87",
+      "auto": "Audi R8 LMS Evo '19",
+      "tempo": "a 10\"646",
+      "bestLap": "01'36''941",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 4,
+      "nome": "Matteo Pareschi",
+      "psn": "Pare1988",
+      "auto": "911 GT3 R (992) '22",
+      "tempo": "a 50\"848",
+      "bestLap": "01'37''696",
+      "fl": false,
+      "pole": false,
+      "punti": 16,
+      "extra": "-",
+      "totale": 16,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 5,
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "auto": "BMW M6 GT3 Sprint Model '16",
+      "tempo": "a 1'24\"196",
+      "bestLap": "01'39''266",
+      "fl": false,
+      "pole": false,
+      "punti": 14,
+      "extra": "-",
+      "totale": 14,
+      "stato": "ok",
+      "note": "Penalità di 10\" a Claudio per incidente causato al secondo giro nei confronti di Antonio"
+    },
+    {
+      "pos": 6,
+      "nome": "Antonio",
+      "psn": "antonioleocataad",
+      "auto": "911 GT3 R (992) '22",
+      "tempo": "a 1'29\"181",
+      "bestLap": "01'38''058",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 7,
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "auto": "Honda NSX Gr.3",
+      "tempo": "a 1'30\"181",
+      "bestLap": "01'39''288",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 8,
+      "nome": "Matteo Spinotto",
+      "psn": "Sp1n8_Mes",
+      "auto": "BMW M6 GT3 Sprint Model '16",
+      "tempo": "a 1 Giro",
+      "bestLap": "01'37''886",
+      "fl": false,
+      "pole": false,
+      "punti": 8,
+      "extra": "-",
+      "totale": 8,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 9,
+      "nome": "Nicola",
+      "psn": "taeniko85",
+      "auto": "911 GT3 R (992) '22",
+      "tempo": "a 1 Giro",
+      "bestLap": "01'40''987",
+      "fl": false,
+      "pole": false,
+      "punti": 7,
+      "extra": "-",
+      "totale": 7,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 10,
+      "nome": "William",
+      "psn": "steward_andante",
+      "auto": "Ferrari 458 Italia GT3 '13",
+      "tempo": "a 1 Giro",
+      "bestLap": "01'40''925",
+      "fl": false,
+      "pole": false,
+      "punti": 6,
+      "extra": "-",
+      "totale": 6,
+      "stato": "ok",
+      "note": ""
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "pts": 89,
+      "pos": 1
+    },
+    {
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "pts": 83,
+      "pos": 2
+    },
+    {
+      "nome": "Carmine",
+      "psn": "CarmineRafa87",
+      "pts": 74,
+      "pos": 3
+    },
+    {
+      "nome": "Antonio",
+      "psn": "antonioleocataad",
+      "pts": 65,
+      "pos": 4
+    },
+    {
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "pts": 58,
+      "pos": 5
+    },
+    {
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "pts": 57,
+      "pos": 6
+    },
+    {
+      "nome": "William",
+      "psn": "steward_andante",
+      "pts": 29,
+      "pos": 7
+    },
+    {
+      "nome": "Matteo Spinotto",
+      "psn": "Sp1n8_Mes",
+      "pts": 24,
+      "pos": 8
+    },
+    {
+      "nome": "Daniele",
+      "psn": "MrSciacca81",
+      "pts": 22,
+      "pos": 9
+    },
+    {
+      "nome": "Nicola",
+      "psn": "taeniko85",
+      "pts": 22,
+      "pos": 9
+    },
+    {
+      "nome": "Matteo Pareschi",
+      "psn": "Pare1988",
+      "pts": 16,
+      "pos": 11
+    },
+    {
+      "nome": "Gaetano",
+      "psn": "Fizzarrinho",
+      "pts": 10,
+      "pos": 12
+    },
+    {
+      "nome": "Antonio Cola",
+      "psn": "Cola_030696",
+      "pts": 0,
+      "pos": 13
+    }
+  ],
+  "bestOf": 4
+}
