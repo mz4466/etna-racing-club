@@ -5,8 +5,19 @@
     "date": "2026-08-29",
     "year": 2026,
     "campionato": "Sole & Sorpassi (2026)",
-    "blockTypes": [],
-    "created": "2026-08-29T19:28:37.990Z"
+    "blockTypes": [
+      "title",
+      "photo",
+      "photo",
+      "video",
+      "photo",
+      "photo",
+      "photo",
+      "photo",
+      "photo"
+    ],
+    "created": "2026-08-29T19:28:37.990Z",
+    "cover": "social/media/gr3-gara-4-sole-sorpassi-b1.jpg"
   },
   {
     "title": "1° Raduno ERC - Nicolosi 09-08-2026",
