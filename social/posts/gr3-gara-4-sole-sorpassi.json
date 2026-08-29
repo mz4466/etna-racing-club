@@ -1,0 +1,131 @@
+{
+  "title": "Gr3 - Gara 4 - Sole & Sorpassi",
+  "slug": "gr3-gara-4-sole-sorpassi",
+  "date": "2026-08-29",
+  "year": 2026,
+  "campionato": "Sole & Sorpassi (2026)",
+  "blocks": [
+    {
+      "id": "b0",
+      "type": "title",
+      "x": 0.98,
+      "y": 5.08,
+      "w": 29.92,
+      "h": 12.12,
+      "content": {
+        "text": "A un passo dalla vittoria",
+        "size": "medium"
+      }
+    },
+    {
+      "id": "b1",
+      "type": "photo",
+      "x": 32.08,
+      "y": 0.51,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/gr3-gara-4-sole-sorpassi-b1.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b2",
+      "type": "photo",
+      "x": 32.07,
+      "y": 29.9,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/gr3-gara-4-sole-sorpassi-b2.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b3",
+      "type": "video",
+      "x": 1.17,
+      "y": 18.53,
+      "w": 29.54,
+      "h": 36.37,
+      "content": {
+        "url": "https://youtu.be/IdcbC-U54J8?si=MrTpaXBFPNuZlCSL",
+        "caption": ""
+      }
+    },
+    {
+      "id": "b4",
+      "type": "photo",
+      "x": 32.39,
+      "y": 57.42,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/gr3-gara-4-sole-sorpassi-b4.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b5",
+      "type": "photo",
+      "x": 1.44,
+      "y": 55.8,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/gr3-gara-4-sole-sorpassi-b5.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b6",
+      "type": "photo",
+      "x": 77.07,
+      "y": 30.38,
+      "w": 14.97,
+      "h": 50.32,
+      "content": {
+        "src": "social/media/gr3-gara-4-sole-sorpassi-b6.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b7",
+      "type": "photo",
+      "x": 58.02,
+      "y": 30.15,
+      "w": 18.34,
+      "h": 50.48,
+      "content": {
+        "src": "social/media/gr3-gara-4-sole-sorpassi-b7.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b8",
+      "type": "photo",
+      "x": 58.03,
+      "y": 0.68,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/gr3-gara-4-sole-sorpassi-b8.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    }
+  ]
+}
