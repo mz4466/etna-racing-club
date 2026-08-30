@@ -952,10 +952,10 @@
     "trophy": "GR3_Championship_Winner.png",
     "cars": "Gr.3",
     "desc": "ETNA RACING CLUB: CAMPIONATO SOLE & SORPASSI 2026 💥\nLasciate le scuse ai box. Il Campionato Gr.3 Sole & Sorpassi non è per i deboli di cuore. Attraverso 5 round spietati, la griglia lotterà per ogni millimetro d'asfalto in un vero test di resistenza, velocità pura e guerra psicologica.\nCon moltiplicatori di usura pneumatici che arrivano fino a ×5 e consumo carburante fino a ×5, vincere richiederà molto più di un giro veloce: servirà un'esecuzione strategica impeccabile sotto pressione. Da uno sprint accecante all'alba di Dragon Trail a un'estenuante battaglia notturna a Yas Marina, fino alle condizioni bagnate di Montreal, solo i piloti più versatili sopravvivranno.\nCinque tracciati. Macchine Gr.3 d'élite. Un solo campione. Iscrivetevi, concentratevi e dimostrate di appartenere ai vertici. 👑",
-    "status": "in-corso",
+    "status": "concluso",
     "file": "campionati/sole--sorpassi-2026-campionato-sole-sorpassi.html",
     "totalRounds": 5,
-    "completedRounds": 4,
+    "completedRounds": 5,
     "bestOf": 4,
     "rounds": [
       {
