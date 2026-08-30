@@ -5,8 +5,17 @@
     "date": "2026-08-30",
     "year": 2026,
     "campionato": "Sole & Sorpassi (2026)",
-    "blockTypes": [],
-    "created": "2026-08-30T15:24:10.062Z"
+    "blockTypes": [
+      "title",
+      "photo",
+      "photo",
+      "photo",
+      "video",
+      "photo",
+      "text"
+    ],
+    "created": "2026-08-30T15:24:10.062Z",
+    "cover": "social/media/gr3-gara-5-sole-sorpassi-b1.jpg"
   },
   {
     "title": "Gr3 - Gara 4 - Sole & Sorpassi",
