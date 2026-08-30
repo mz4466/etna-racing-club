@@ -1203,6 +1203,7 @@ function roundHTML(id, pos, d={}) {
             <option value="x4" ${(d.tire||'x3')==='x4'?'selected':''}>x4</option>
             <option value="x5" ${(d.tire||'x3')==='x5'?'selected':''}>x5</option>
             <option value="x6" ${(d.tire||'x3')==='x6'?'selected':''}>x6</option>
+            <option value="Da Confermare" ${(d.tire||'x3')==='Da Confermare'?'selected':''}>Da Confermare</option>
           </select></div>
         <div class="field"><label>Consumo Carburante</label><select id="rfuel-${id}" oninput="syncRound(${id})">
             <option value="x1" ${(d.fuel||'x4')==='x1'?'selected':''}>x1</option>
@@ -1211,6 +1212,7 @@ function roundHTML(id, pos, d={}) {
             <option value="x4" ${(d.fuel||'x4')==='x4'?'selected':''}>x4</option>
             <option value="x5" ${(d.fuel||'x4')==='x5'?'selected':''}>x5</option>
             <option value="x6" ${(d.fuel||'x4')==='x6'?'selected':''}>x6</option>
+            <option value="Da Confermare" ${(d.fuel||'x4')==='Da Confermare'?'selected':''}>Da Confermare</option>
           </select></div>
         <div class="field"><label>Gomme Disponibili</label><input type="text" value="${esc(d.types||'')}" placeholder="Soft / Medium / Hard" id="rtypes-${id}" oninput="syncRound(${id})"></div>
         <div class="field"><label>Note (opzionale)</label><input type="text" value="${esc(d.note||'')}" placeholder="es. Pit stop obbligatorio" id="rnotes-${id}"></div>
