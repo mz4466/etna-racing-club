@@ -1466,5 +1466,69 @@
     ],
     "costruttori": false,
     "teams": []
+  },
+  {
+    "id": "2o-campionato-f1-2026",
+    "name": "2o Campionato F1",
+    "year": "2026",
+    "cat": "Formula",
+    "catAuto": "Monoposto",
+    "campagna": "Autunnale",
+    "stagione": "Stagione 2",
+    "slug": "2o-campionato-f1",
+    "trophy": "Formula1_Vincitore.png",
+    "cars": "Porsche F3500-A",
+    "desc": "",
+    "status": "prossimo",
+    "file": "campionati/2o-campionato-f1-2026-formula-2o-campionato-f1.html",
+    "totalRounds": 3,
+    "completedRounds": 0,
+    "bestOf": null,
+    "rounds": [
+      {
+        "circuit": "Nürburgring – 24h – 25,4 km",
+        "date": "2026-09-20",
+        "laps": "Da Confermare",
+        "lapsType": "giri",
+        "fase": "",
+        "carId": "3562",
+        "carName": "Porsche F3500-A",
+        "weather": "",
+        "tire": "Da Confermare",
+        "fuel": "Da Confermare",
+        "types": "",
+        "notes": ""
+      },
+      {
+        "circuit": "Circuito di Yas Marina – Layout completo – 5,3 km",
+        "date": "2026-10-25",
+        "laps": "Da Confermare",
+        "lapsType": "giri",
+        "fase": "",
+        "carId": "3562",
+        "carName": "Porsche F3500-A",
+        "weather": "",
+        "tire": "Da Confermare",
+        "fuel": "Da Confermare",
+        "types": "",
+        "notes": ""
+      },
+      {
+        "circuit": "Circuito Gilles Villeneuve – 4,4 km",
+        "date": "2026-11-22",
+        "laps": "Da Confermare",
+        "lapsType": "giri",
+        "fase": "",
+        "carId": "3562",
+        "carName": "Porsche F3500-A",
+        "weather": "",
+        "tire": "Da Confermare",
+        "fuel": "Da Confermare",
+        "types": "",
+        "notes": ""
+      }
+    ],
+    "costruttori": false,
+    "teams": []
   }
 ]
