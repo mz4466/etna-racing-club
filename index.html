@@ -910,6 +910,8 @@
             /* sort by date */
             upcoming.sort(function(a,b){ return a.days - b.days; });
 
+            upcoming = upcoming.slice(0, 3);
+
             if(!upcoming.length) return;
 
             var html = '<div class="recent-label">Prossimi Eventi</div>';
