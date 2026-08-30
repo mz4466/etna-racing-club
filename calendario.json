@@ -1530,5 +1530,41 @@
     ],
     "costruttori": false,
     "teams": []
+  },
+  {
+    "id": "evento-gr-2-2026",
+    "name": "Evento Gr.2",
+    "year": "2026",
+    "cat": "Evento",
+    "catAuto": "Gr2",
+    "campagna": "Autunnale",
+    "stagione": "Stagione 2",
+    "slug": "evento-gr-2",
+    "trophy": "evento_winner.png",
+    "cars": "Gr.2",
+    "desc": "",
+    "status": "prossimo",
+    "file": "campionati/evento-gr2-2026-evento-evento-gr-2.html",
+    "totalRounds": 1,
+    "completedRounds": 0,
+    "bestOf": null,
+    "rounds": [
+      {
+        "circuit": "Daytona – Tracciato stradale – 5,7 km",
+        "date": "2026-09-19",
+        "laps": "Da Confermare",
+        "lapsType": "giri",
+        "fase": "",
+        "carId": "",
+        "carName": "",
+        "weather": "",
+        "tire": "Da Confermare",
+        "fuel": "Da Confermare",
+        "types": "",
+        "notes": ""
+      }
+    ],
+    "costruttori": false,
+    "teams": []
   }
 ]
