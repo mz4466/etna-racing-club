@@ -1287,6 +1287,7 @@ var TROPHIES = [
   { file: 'Crono_Vincitore.png',           label: 'Crono Vincitore' },
   { file: 'Crono_Scalata_Pikes_Peak.png',  label: 'Pikes Peak' },
   { file: 'trofeo_Kart.png',               label: 'Trofeo Kart' },
+  { file: 'Kart-Camp.png',               label: 'Kart 125' },
   { file: 'ERD-Trofeo.jpg',              label: 'ERD Trofeo' },
   { file: 'evento_winner.png',           label: 'Evento Winner' },
   { file: 'superT_trophy.jpg',           label: 'Super T' },
@@ -1895,6 +1896,9 @@ function buildHTML() {
     .round-manifesto{width:100%;height:auto;}
     .round-manifesto img{height:auto;max-height:280px;object-fit:contain;}
   }
+  .round-track-map{width:120px;flex-shrink:0;border-radius:10px;overflow:hidden;border:1px solid rgba(79,195,247,0.2);cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;}
+  .round-track-map:hover{border-color:rgba(79,195,247,0.5);box-shadow:0 4px 20px rgba(79,195,247,0.1);}
+  .round-track-map img{width:100%;height:100%;object-fit:contain;display:block;background:#080814;}
 
   .manifesto-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out;}
   .manifesto-lightbox.open{display:flex;}
