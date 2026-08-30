@@ -1,0 +1,100 @@
+{
+  "title": "Gr3 - Gara 5 - Sole & Sorpassi",
+  "slug": "gr3-gara-5-sole-sorpassi",
+  "date": "2026-08-30",
+  "year": 2026,
+  "campionato": "Sole & Sorpassi (2026)",
+  "blocks": [
+    {
+      "id": "b0",
+      "type": "title",
+      "x": 1.19,
+      "y": 0.69,
+      "w": 62.26,
+      "h": 12.62,
+      "content": {
+        "text": "Stefano vince il campionato come premesso!!!",
+        "size": "medium"
+      }
+    },
+    {
+      "id": "b1",
+      "type": "photo",
+      "x": 38.84,
+      "y": 43.31,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/gr3-gara-5-sole-sorpassi-b1.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b2",
+      "type": "photo",
+      "x": 0.95,
+      "y": 68.48,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/gr3-gara-5-sole-sorpassi-b2.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b3",
+      "type": "photo",
+      "x": 38.88,
+      "y": 14.48,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/gr3-gara-5-sole-sorpassi-b3.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b4",
+      "type": "video",
+      "x": 1.1,
+      "y": 26.04,
+      "w": 37.16,
+      "h": 41.51,
+      "content": {
+        "url": "https://youtu.be/JD4tHoXQzoo?si=1NDMKXrh9U9T07oF",
+        "caption": ""
+      }
+    },
+    {
+      "id": "b7",
+      "type": "photo",
+      "x": 38.79,
+      "y": 71.94,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/gr3-gara-5-sole-sorpassi-b7.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b8",
+      "type": "text",
+      "x": 1.32,
+      "y": 13.93,
+      "w": 36.49,
+      "h": 10.46,
+      "content": {
+        "html": "Carmine sorprende tutti alla gara 5 con una bellisima vittoria me non basta per recuperare il secondo posto"
+      }
+    }
+  ]
+}
