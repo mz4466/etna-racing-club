@@ -1175,7 +1175,7 @@ function roundHTML(id, pos, d={}) {
         <div class="field"><label>Round #</label><input type="number" value="${pos}" min="1" id="rnum-${id}"></div>
         <div class="field"><label>Circuito</label><input type="text" value="${esc(d.circuit||'')}" class="circuit-input" id="rcircuit-${id}" list="gt7-circuits" oninput="syncRound(${id});autoFillTrackMap(${id})"></div>
         <div class="field"><label>Data Gara</label><input type="date" value="${d.date||''}" id="rdate-${id}" oninput="syncRound(${id})"></div>
-        <div class="field"><label>Giri / Min</label><div style="display:flex;gap:4px;align-items:center;"><input type="number" value="${d.laps||17}" min="1" id="rlaps-${id}" style="flex:1;min-width:0;"><button type="button" id="rlapstype-${id}" data-type="${d.lapsType||'giri'}" onclick="toggleLapsType('${id}')" style="flex-shrink:0;padding:7px 10px;border-radius:6px;border:1px solid var(--border-hi);background:var(--bg-input);color:var(--gold);font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:all .2s;" title="Clicca per cambiare">${d.lapsType==='min'?'⏱ min':'🔄 giri'}</button></div></div>
+        <div class="field"><label>Giri / Min</label><div style="display:flex;gap:4px;align-items:center;"><input type="text" inputmode="numeric" value="${d.laps==='Da Confermare'?'Da Confermare':(d.laps||17)}" ${d.laps==='Da Confermare'?'disabled':''} id="rlaps-${id}" style="flex:1;min-width:0;"><button type="button" id="rlapstype-${id}" data-type="${d.lapsType||'giri'}" onclick="toggleLapsType('${id}')" style="flex-shrink:0;padding:7px 10px;border-radius:6px;border:1px solid var(--border-hi);background:var(--bg-input);color:var(--gold);font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:all .2s;" title="Clicca per cambiare">${d.lapsType==='min'?'⏱ min':'🔄 giri'}</button><button type="button" id="rlapstbd-${id}" data-tbd="${d.laps==='Da Confermare'?'1':'0'}" onclick="toggleLapsTBD('${id}')" style="flex-shrink:0;padding:7px 10px;border-radius:6px;border:1px solid ${d.laps==='Da Confermare'?'var(--red)':'var(--border-hi)'};background:${d.laps==='Da Confermare'?'rgba(192,57,43,0.15)':'var(--bg-input)'};color:${d.laps==='Da Confermare'?'var(--red)':'var(--gold)'};font-family:'Teko',sans-serif;font-size:13px;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:all .2s;" title="Da Confermare">❓</button></div></div>
       </div>
       <div class="form-row col4">
         <div class="field">
@@ -1898,6 +1898,29 @@ function toggleLapsType(id) {
   btn.textContent = next === 'min' ? '⏱ min' : '🔄 giri';
   btn.style.color = next === 'min' ? 'var(--blue)' : 'var(--gold)';
   btn.style.borderColor = next === 'min' ? 'var(--blue)' : 'var(--border-hi)';
+  if (typeof syncRound === 'function') syncRound(id);
+}
+function toggleLapsTBD(id) {
+  var inp = document.getElementById('rlaps-' + id);
+  var btn = document.getElementById('rlapstbd-' + id);
+  if (!inp || !btn) return;
+  var isTbd = btn.dataset.tbd === '1';
+  if (isTbd) {
+    inp.value = inp.dataset.prev || '17';
+    inp.disabled = false;
+    btn.dataset.tbd = '0';
+    btn.style.background = 'var(--bg-input)';
+    btn.style.color = 'var(--gold)';
+    btn.style.borderColor = 'var(--border-hi)';
+  } else {
+    if (inp.value && inp.value !== 'Da Confermare') inp.dataset.prev = inp.value;
+    inp.value = 'Da Confermare';
+    inp.disabled = true;
+    btn.dataset.tbd = '1';
+    btn.style.background = 'rgba(192,57,43,0.15)';
+    btn.style.color = 'var(--red)';
+    btn.style.borderColor = 'var(--red)';
+  }
   if (typeof syncRound === 'function') syncRound(id);
 }
 </script>
