@@ -1402,5 +1402,69 @@
     ],
     "costruttori": false,
     "teams": []
+  },
+  {
+    "id": "1o-campionato-kart-125-2026",
+    "name": "1o Campionato Kart 125",
+    "year": "2026",
+    "cat": "Campionato",
+    "catAuto": "Kart",
+    "campagna": "Autunnale",
+    "stagione": "Stagione 2",
+    "slug": "1o-campionato-kart-125",
+    "trophy": "Kart-Camp.png",
+    "cars": "Kart",
+    "desc": "",
+    "status": "prossimo",
+    "file": "campionati/1o-campionato-kart-125-2026-campionato-1o-campionato-kart-125.html",
+    "totalRounds": 3,
+    "completedRounds": 0,
+    "bestOf": null,
+    "rounds": [
+      {
+        "circuit": "Tsukuba – 2,0 km",
+        "date": "2026-09-06",
+        "laps": "30",
+        "lapsType": "giri",
+        "fase": "",
+        "carId": "2060",
+        "carName": "Porsche Racing Kart 125 Shifter",
+        "weather": "",
+        "tire": "x1",
+        "fuel": "x1",
+        "types": "",
+        "notes": ""
+      },
+      {
+        "circuit": "Autopolis – Layout corto – 3,0 km",
+        "date": "2026-10-11",
+        "laps": "Da Confermare",
+        "lapsType": "giri",
+        "fase": "",
+        "carId": "2060",
+        "carName": "Porsche Racing Kart 125 Shifter",
+        "weather": "",
+        "tire": "x1",
+        "fuel": "x1",
+        "types": "",
+        "notes": ""
+      },
+      {
+        "circuit": "Lago Maggiore – Centro – 1,7 km",
+        "date": "2026-11-08",
+        "laps": "Da Confermare",
+        "lapsType": "giri",
+        "fase": "",
+        "carId": "2060",
+        "carName": "Porsche Racing Kart 125 Shifter",
+        "weather": "",
+        "tire": "x1",
+        "fuel": "x1",
+        "types": "",
+        "notes": ""
+      }
+    ],
+    "costruttori": false,
+    "teams": []
   }
 ]
