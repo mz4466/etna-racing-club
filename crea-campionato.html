@@ -1713,6 +1713,8 @@ function buildHTML() {
     const results  = val(`rresults-${id}`);
     const manifesto = manifestoData[id] || null;
   const trackMap  = trackMapData[id] || null;
+    const carId    = val(`rcarid-${id}`);
+    const carName  = val(`rcarname-${id}`);
 
     const dateFmt = date
       ? new Date(date).toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'})
