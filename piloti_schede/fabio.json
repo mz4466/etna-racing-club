@@ -3,6 +3,7 @@
   "psn": "fabyus1983",
   "nazione": "Sicilia / Lombardia",
   "auto": "",
+  "dataIscrizione": "",
   "stile": "",
   "pistaAma": "",
   "pistaOdia": "SPA",
@@ -12,18 +13,14 @@
   "foto2": "",
   "numero": "83",
   "campionati": {
-    "sole-sorpassi-2026": {
+    "asian-street-legends-2026": {
       "cars": [
-        "911 GT3 R (992) '22"
-      ]
-    },
-    "trofeo-super-turismo-2026": {
-      "cars": [
-        "BMW M3 Sport Evolution '89",
-        "Mercedes-Benz 190 E 2.5-16 Evolution II '91",
-        "Alfa Romeo 155 2.5 V6 TI '93"
+        "Toyota Supra RZ '97",
+        "Nissan R34 GT-R V-spec II Nur '02",
+        "Mazda RX-7 Spirit R Type A (FD) '02"
       ]
     }
   },
+  "statusHistory": [],
   "attivo": true
 }
