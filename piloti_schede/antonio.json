@@ -3,6 +3,7 @@
   "psn": "antonioleocataad",
   "nazione": "",
   "auto": "",
+  "dataIscrizione": "",
   "stile": "",
   "pistaAma": "",
   "pistaOdia": "",
@@ -12,16 +13,14 @@
   "foto2": "",
   "numero": "16",
   "campionati": {
-    "sole-sorpassi-2026": {
+    "asian-street-legends-2026": {
       "cars": [
-        "911 GT3 R (992) '22"
-      ]
-    },
-    "evento-gr-4-2026": {
-      "cars": [
-        "Ferrari 458 Italia Gr.4"
+        "Toyota Supra RZ '97",
+        "Nissan R34 GT-R V-spec II Nur '02",
+        "Mazda RX-7 Spirit R Type A (FD) '02"
       ]
     }
   },
+  "statusHistory": [],
   "attivo": true
 }
