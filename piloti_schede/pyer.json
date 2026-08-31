@@ -3,6 +3,7 @@
   "psn": "PyerStark",
   "nazione": "Sicilia It",
   "auto": "Boh",
+  "dataIscrizione": "",
   "stile": "Pazzo",
   "pistaAma": "Nurbergring",
   "pistaOdia": "se vince Giovanni",
@@ -12,18 +13,14 @@
   "foto2": "",
   "numero": "3",
   "campionati": {
-    "sole-sorpassi-2026": {
+    "asian-street-legends-2026": {
       "cars": [
-        "Honda NSX Gr.3"
-      ]
-    },
-    "licence-to-race-2026": {
-      "cars": [
-        "Aston Martin DB5 '64",
-        "Toyota 2000GT '67",
-        "BMW Z8 '01"
+        "Toyota Supra RZ '97",
+        "Nissan R34 GT-R V-spec II Nur '02",
+        "Mazda RX-7 Spirit R Type A (FD) '02"
       ]
     }
   },
+  "statusHistory": [],
   "attivo": true
 }
