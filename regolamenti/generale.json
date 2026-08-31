@@ -14,10 +14,9 @@
           "items": [
             "**Reprimenda:** Verrà assegnata ai piloti rei di aver commesso infrazioni lievi (cioè quando non porteranno danni alle macchine altrui)",
             "È severamente vietato cambiare [[2 volte corsia in rettilineo]] per difendere la posizione; chi commetterà tale ostruzione riceverà una Reprimenda",
-            "Se nel corso di una Stagione un Pilota riceverà [[3 Reprimende]], il Pilota in questione verrà retrocesso in ultima posizione nella griglia per la gara successiva",
-            "Se la terza Reprimenda verrà assegnata nell'ultima gara della Stagione, il Pilota in questione verrà penalizzato di [[10 secondi]] nella gara stessa",
+            "Se nel corso di una Campagna un Pilota riceverà [[3 Reprimende]], il Pilota in questione verrà retrocesso in ultima posizione nella griglia per la gara successiva",
+            "Se la terza Reprimenda verrà assegnata nell'ultima gara della Campagna, il Pilota in questione verrà penalizzato di [[10 secondi]] nella gara stessa",
             "Se durante una gara ci sarà un contatto che porterà danni evidenti ad un Pilota, chi lo ha causato verrà punito con [[10 secondi di penalità]] nella gara stessa",
-            "Nel caso in cui il gioco vada immediatamente ad assegnare una penalità a chi commette un incidente, è **fortemente consigliato restituire la posizione**, in quel caso gli verrà assegnata una penalità inferiore",
             "Se durante lo stesso Campionato un Pilota subirà più di una penalità, i secondi della medesima [[aumenteranno]]"
           ]
         },
@@ -38,6 +37,17 @@
           "items": [
             "Nella Stagione successiva i punti verranno restituiti totalmente",
             "Se durante una Stagione un Pilota dovesse perdere tutti i punti della Super Patente, subirà una penalità di [[30 secondi]] nella gara in questione"
+          ]
+        },
+        {
+          "type": "format",
+          "subtitle": "🏎️ Formato Gara",
+          "steps": [
+            { "label": "Fine Sessione (non oltre)", "value": "11:45" }
+          ],
+          "items": [
+            "In qualsiasi Gara della Stagione sarà sempre presente almeno un [[Pit Stop Obbligatorio]] (tranne nelle gare con pioggia)",
+            "Se al termine di un Campionato due (o più) Piloti si trovassero con gli stessi punti in classifica, verrà posizionato davanti colui che avrà vinto più gare; nel caso in cui la situazione sia ancora pari si andrà a guardare i secondi posti, e così via fino a quando non si risolverà la situazione"
           ]
         },
         {
@@ -70,8 +80,8 @@
             "Il **rispetto reciproco** sia in pista che fuori sarà sempre alla base di ogni gara",
             "Viene richiesto di seguire le bandiere di gara il più velocemente possibile",
             "Sarà sempre richiesta la presenza nei party durante tutte le Gare (ma se si vuole si può silenziare il microfono, stare nel party serve più che altro agli Organizzatori per esporre comunicazioni della Gara)",
-            "Dopo ogni gara chiunque avrà la possibilità di fare dei reclami agli Organizzatori, non sarà invece permesso discutere di eventuali incidenti né durante la Gara né dopo la Gara",
-            "I partecipanti che non completeranno **almeno metà della gara** non riceveranno nessun punto, chi invece completerà almeno metà gara riceverà **punti dimezzati**",
+            "Dopo ogni gara chiunque avrà la possibilità di fare dei reclami agli Organizzatori, non sarà invece permesso discutere di eventuali incidenti né durante la Gara (per evitare di disturbare gli altri partecipanti) né dopo la Gara (se non si ha intenzione di esporre reclami non ha senso lamentarsi)",
+            "I partecipanti che non completeranno **almeno il 75% della gara** non riceveranno alcun punto; chi invece completerà almeno il 75% senza arrivare al traguardo sarà **retrocesso in ultima posizione con punteggio dimezzato** (se ciò accadrà nella medesima gara a più di un pilota, verrà classificato prima chi era davanti)",
             "Durante le sessioni di Qualifica e Gara è richiesto il **maggior silenzio possibile** per evitare di disturbare gli altri piloti"
           ]
         }
@@ -84,10 +94,9 @@
         {
           "type": "rules",
           "items": [
-            "Ogni tipo di competizione si basa su regolamenti diversi che vanno ad influire il tipo di Gara, la differenza principale è sull'applicazione o no del **BdP (Bilanciamento delle Prestazioni)**, quando viene applicato le auto avranno dei limiti di Peso, Potenza e PP, in caso contrario il pilota sarà libero di sviluppare la propria vettura come meglio crede",
+            "Ogni tipo di competizione si basa su regolamenti diversi che vanno ad influire il tipo di Gara, la differenza principale è sull'applicazione o no del **BdP (Bilanciamento delle Prestazioni)**, quando non è attivo verranno applicati dei limiti di Peso, Potenza e PP",
             "Ogni Gara si differenzia dalle altre per **consumo carburante e usura gomme**, raccomandiamo di prestare attenzione a questi valori",
-            "I Campionati sono organizzati per correre con **auto sempre diverse**",
-            "Ogni Campionato verrà organizzato cercando di restare sempre il più fedeli possibili alla realtà (quindi i **danni alle auto, scie, aderenza fuori pista, bandiere e collisioni** varie saranno sempre attivi)",
+            "Ogni Campionato verrà organizzato cercando di restare sempre il più fedeli possibili alla realtà (quindi **scie, aderenza fuori pista e bandiere** saranno sempre attivi)",
             "Quando sarà possibile sviluppare le auto sarà sempre [[vietato montare pezzi del catalogo \"Supremo\"]]"
           ]
         }
