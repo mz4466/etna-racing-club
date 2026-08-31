@@ -1,0 +1,160 @@
+{
+  "circuito": "Tokyo Expressway – Sud in senso orario – 5,2 km",
+  "data": "2026-08-31",
+  "garaNum": "3",
+  "garaTot": "3",
+  "champId": "asian-street-legends-2026",
+  "champIdx": "asian-street-legends-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "auto": "Mazda RX-7 Spirit R Type A (FD) '02",
+      "tempo": "08'49''322",
+      "bestLap": "01'43''593",
+      "fl": true,
+      "pole": false,
+      "punti": 25,
+      "extra": "1",
+      "totale": 26,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 2,
+      "nome": "Nicola",
+      "psn": "taeniko85",
+      "auto": "Mazda RX-7 Spirit R Type A (FD) '02",
+      "tempo": "a 4\"915",
+      "bestLap": "01'44''838",
+      "fl": false,
+      "pole": false,
+      "punti": 21,
+      "extra": "-",
+      "totale": 21,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 3,
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "auto": "Mazda RX-7 Spirit R Type A (FD) '02",
+      "tempo": "a 12\"078",
+      "bestLap": "01'44''710",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 4,
+      "nome": "Antonio",
+      "psn": "antonioleocataad",
+      "auto": "Mazda RX-7 Spirit R Type A (FD) '02",
+      "tempo": "a 15\"656",
+      "bestLap": "01'43''816",
+      "fl": false,
+      "pole": false,
+      "punti": 16,
+      "extra": "-",
+      "totale": 16,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 5,
+      "nome": "William",
+      "psn": "steward_andante",
+      "auto": "Mazda RX-7 Spirit R Type A (FD) '02",
+      "tempo": "a 34\"988",
+      "bestLap": "01'46''926",
+      "fl": false,
+      "pole": false,
+      "punti": 14,
+      "extra": "-",
+      "totale": 14,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 6,
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "auto": "Mazda RX-7 Spirit R Type A (FD) '02",
+      "tempo": "a 51\"876",
+      "bestLap": "01'43''978",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 7,
+      "nome": "Fabio",
+      "psn": "fabyus1983",
+      "auto": "Mazda RX-7 Spirit R Type A (FD) '02",
+      "tempo": "a 53\"938",
+      "bestLap": "01'47''363",
+      "fl": false,
+      "pole": false,
+      "punti": 10,
+      "extra": "-",
+      "totale": 10,
+      "stato": "ok",
+      "note": ""
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Antonio",
+      "psn": "antonioleocataad",
+      "pts": 65,
+      "pos": 1
+    },
+    {
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "pts": 52,
+      "pos": 2
+    },
+    {
+      "nome": "Nicola",
+      "psn": "taeniko85",
+      "pts": 49,
+      "pos": 3
+    },
+    {
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "pts": 46,
+      "pos": 4
+    },
+    {
+      "nome": "Fabio",
+      "psn": "fabyus1983",
+      "pts": 45,
+      "pos": 5
+    },
+    {
+      "nome": "Claudio",
+      "psn": "SybeX26",
+      "pts": 43,
+      "pos": 6
+    },
+    {
+      "nome": "William",
+      "psn": "steward_andante",
+      "pts": 42,
+      "pos": 7
+    }
+  ],
+  "bestOf": null
+}
