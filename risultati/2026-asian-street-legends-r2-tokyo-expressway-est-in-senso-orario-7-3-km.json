@@ -28,11 +28,11 @@
       "auto": "Nissan R34 GT-R V-spec II Nur '02",
       "tempo": "a 7\"626",
       "bestLap": "02'11''798",
-      "fl": true,
+      "fl": false,
       "pole": false,
       "punti": 21,
-      "extra": "1",
-      "totale": 22,
+      "extra": "-",
+      "totale": 21,
       "stato": "ok",
       "note": ""
     },
@@ -43,11 +43,11 @@
       "auto": "Nissan R34 GT-R V-spec II Nur '02",
       "tempo": "a 7\"991",
       "bestLap": "02'11''585",
-      "fl": false,
+      "fl": true,
       "pole": false,
       "punti": 18,
-      "extra": "-",
-      "totale": 18,
+      "extra": "1",
+      "totale": 19,
       "stato": "ok",
       "note": ""
     },
@@ -116,43 +116,43 @@
     {
       "nome": "Antonio",
       "psn": "antonioleocataad",
-      "pts": 49,
+      "pts": 64,
       "pos": 1
-    },
-    {
-      "nome": "Fabio",
-      "psn": "fabyus1983",
-      "pts": 35,
-      "pos": 2
-    },
-    {
-      "nome": "Giovanni",
-      "psn": "mz4461",
-      "pts": 34,
-      "pos": 3
-    },
-    {
-      "nome": "Nicola",
-      "psn": "taeniko85",
-      "pts": 28,
-      "pos": 4
-    },
-    {
-      "nome": "William",
-      "psn": "steward_andante",
-      "pts": 28,
-      "pos": 4
     },
     {
       "nome": "Pyer",
       "psn": "PyerStark",
-      "pts": 26,
-      "pos": 6
+      "pts": 52,
+      "pos": 2
+    },
+    {
+      "nome": "Nicola",
+      "psn": "taeniko85",
+      "pts": 49,
+      "pos": 3
+    },
+    {
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "pts": 47,
+      "pos": 4
+    },
+    {
+      "nome": "Fabio",
+      "psn": "fabyus1983",
+      "pts": 45,
+      "pos": 5
     },
     {
       "nome": "Claudio",
       "psn": "SybeX26",
-      "pts": 25,
+      "pts": 43,
+      "pos": 6
+    },
+    {
+      "nome": "William",
+      "psn": "steward_andante",
+      "pts": 42,
       "pos": 7
     }
   ],
