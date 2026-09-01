@@ -5,8 +5,12 @@
     "date": "2026-09-01",
     "year": 2026,
     "campionato": "",
-    "blockTypes": [],
-    "created": "2026-09-01T18:57:17.620Z"
+    "blockTypes": [
+      "audio",
+      "photo"
+    ],
+    "created": "2026-09-01T18:57:17.620Z",
+    "cover": "social/media/pagelle-agosto-2026-b1.png"
   },
   {
     "title": "Fast e tutti Furiousi",
