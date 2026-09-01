@@ -1,0 +1,36 @@
+{
+  "title": "Pagelle Agosto 2026",
+  "slug": "pagelle-agosto-2026",
+  "date": "2026-09-01",
+  "year": 2026,
+  "campionato": "",
+  "blocks": [
+    {
+      "id": "b0",
+      "type": "audio",
+      "x": 0.93,
+      "y": 12.44,
+      "w": 30.12,
+      "h": 27.57,
+      "content": {
+        "src": "",
+        "label": "Audio",
+        "pending": null
+      }
+    },
+    {
+      "id": "b1",
+      "type": "photo",
+      "x": 31.88,
+      "y": 9.76,
+      "w": 27.32,
+      "h": 55.96,
+      "content": {
+        "src": "social/media/pagelle-agosto-2026-b1.png",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    }
+  ]
+}
