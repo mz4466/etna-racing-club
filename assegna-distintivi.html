@@ -135,7 +135,7 @@
 
   <main class="main">
     <div class="page-title">🎖️ Assegna Distintivi Speciali</div>
-    <div class="page-sub">Pilota della Campagna/Stagione, Rookie della Campagna/Stagione, Fair Play — non hanno un calcolo automatico, si assegnano qui a mano.</div>
+    <div class="page-sub">Pilota della Campagna/Stagione, Rookie della Campagna/Stagione — non hanno un calcolo automatico, si assegnano qui a mano. Fair Play è invece calcolato automaticamente su distintivi.html in base alle note interne dei risultati.</div>
 
     <div class="section-card">
       <div class="section-heading">Seleziona Pilota</div>
@@ -175,14 +175,6 @@
             <button type="button" onclick="stepCount('pilota-stagione',1)">+</button>
           </div>
         </div>
-        <div class="badge-count-row">
-          <div class="bc-text"><strong>Fair Play</strong><span>Nessuna penalità in campagna — assegnabile più volte</span></div>
-          <div class="counter">
-            <button type="button" onclick="stepCount('fair-play',-1)">−</button>
-            <input type="number" id="count-fair-play" value="0" min="0" onchange="clampCount('fair-play')">
-            <button type="button" onclick="stepCount('fair-play',1)">+</button>
-          </div>
-        </div>
         <label class="badge-check-row">
           <input type="checkbox" id="badge-rookie-campagna">
           <div class="bc-text"><strong>Rookie della Campagna</strong><span>Miglior esordiente in campagna</span></div>
@@ -204,13 +196,12 @@
 const REPO   = 'mz4466/etna-racing-club';
 const BRANCH = 'main';
 const FOLDER = 'piloti_schede';
-const REPEATABLE_BADGE_KEYS = ['pilota-campagna','pilota-stagione','fair-play'];
+const REPEATABLE_BADGE_KEYS = ['pilota-campagna','pilota-stagione'];
 const ONEOFF_BADGE_KEYS = ['rookie-campagna','rookie-stagione'];
 const SPECIAL_BADGE_KEYS = REPEATABLE_BADGE_KEYS.concat(ONEOFF_BADGE_KEYS);
 const SPECIAL_BADGE_LABELS = {
   'pilota-campagna': 'Pilota della Campagna',
   'pilota-stagione': 'Pilota della Stagione',
-  'fair-play': 'Fair Play',
   'rookie-campagna': 'Rookie della Campagna',
   'rookie-stagione': 'Rookie della Stagione'
 };

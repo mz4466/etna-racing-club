@@ -490,6 +490,7 @@ function computeStatsForPilot(pilot, calendario, races){
   var categorieSet = {};
   var champRounds = {};          // champId -> Set(garaNum) partecipati dal target
   var champTotalRounds = {};     // champId -> totalRounds (da calendario, o garaTot come fallback)
+  var champHasNote = {};         // champId -> true se il target ha almeno una nota interna in una sua riga
   var wonTrophies = [];          // [{name, year, stagione, cat, trophy, date}, ...] — per la Bacheca Trofei
 
   races.forEach(function(race){
@@ -529,6 +530,7 @@ function computeStatsForPilot(pilot, calendario, races){
         if (!champRounds[champId]) champRounds[champId] = {};
         champRounds[champId][garaNum] = true;
         champTotalRounds[champId] = totalRounds;
+        if (row.note && String(row.note).trim()) champHasNote[champId] = true;
       }
     });
 
@@ -576,7 +578,7 @@ function computeStatsForPilot(pilot, calendario, races){
   // 2"). Serve 100% di presenza su TUTTI i round di TUTTI i campionati di
   // quella campagna. Campionati senza "campagna" impostata vengono ignorati
   // (dato non ancora migrato) — non contano né a favore né contro.
-  var campagnaGroups = {}; // key -> { total, attended }
+  var campagnaGroups = {}; // key -> { total, attended, hasNote }
   Object.keys(champRounds).forEach(function(cid){
     var champ = calendario.find(function(c){ return c.id === cid; });
     if (!champ || (champ.cat !== 'Campionato' && champ.cat !== 'Formula')) return;
@@ -584,13 +586,23 @@ function computeStatsForPilot(pilot, calendario, races){
     var stagioneVal = (champ.stagione || '').trim();
     if (!campagnaVal || !stagioneVal) return;
     var key = campagnaVal.toLowerCase() + '|' + stagioneVal.toLowerCase();
-    if (!campagnaGroups[key]) campagnaGroups[key] = { total: 0, attended: 0 };
+    if (!campagnaGroups[key]) campagnaGroups[key] = { total: 0, attended: 0, hasNote: false };
     campagnaGroups[key].total += (champTotalRounds[cid] || 0);
     campagnaGroups[key].attended += Object.keys(champRounds[cid]).length;
+    if (champHasNote[cid]) campagnaGroups[key].hasNote = true;
   });
   stats.presenzaPerfetta = Object.keys(campagnaGroups).filter(function(k){
     var g = campagnaGroups[k];
     return g.total > 0 && g.attended >= g.total;
+  }).length;
+
+  // Fair Play: assegnato automaticamente per ogni Campagna (raggruppata come
+  // sopra, per Campionato/Formula) in cui il pilota ha corso e NON ha
+  // ricevuto nessuna nota interna (== penalità) in nessuna delle sue righe.
+  // Sostituisce l'assegnazione manuale precedente — eventuali "fair-play"
+  // ancora presenti in badges[] (assegna-distintivi.html) vengono ignorati.
+  stats['fair-play'] = Object.keys(campagnaGroups).filter(function(k){
+    return !campagnaGroups[k].hasNote;
   }).length;
 
   // Costanza: miglior serie di gare consecutive senza ritiro (dnf/dsq)
@@ -617,7 +629,8 @@ function computeStatsForPilot(pilot, calendario, races){
   // Distintivi manuali "ripetibili" (assegnati più volte, es. una campagna
   // diversa ogni volta): il conteggio è quante volte la chiave compare
   // nell'array badges[] del pilota (assegnata da assegna-distintivi.html).
-  ['pilota-campagna','pilota-stagione','fair-play'].forEach(function(key){
+  // "fair-play" NON è più qui: è calcolato automaticamente sopra.
+  ['pilota-campagna','pilota-stagione'].forEach(function(key){
     stats[key] = pilotBadges.filter(function(b){ return b === key; }).length;
   });
 
