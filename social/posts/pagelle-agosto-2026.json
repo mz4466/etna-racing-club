@@ -6,19 +6,6 @@
   "campionato": "",
   "blocks": [
     {
-      "id": "b0",
-      "type": "audio",
-      "x": 0.93,
-      "y": 12.44,
-      "w": 30.12,
-      "h": 27.57,
-      "content": {
-        "src": "",
-        "label": "Audio",
-        "pending": null
-      }
-    },
-    {
       "id": "b1",
       "type": "photo",
       "x": 31.88,
@@ -30,6 +17,19 @@
         "caption": "",
         "pending": null,
         "url": ""
+      }
+    },
+    {
+      "id": "b2",
+      "type": "audio",
+      "x": 1.06,
+      "y": 11.38,
+      "w": 29.92,
+      "h": 26.74,
+      "content": {
+        "src": "social/media/pagelle-agosto-2026-b2.aac",
+        "label": "Audio",
+        "pending": null
       }
     }
   ]
