@@ -1,0 +1,256 @@
+{
+  "title": "Fast e tutti Furiousi",
+  "slug": "fast-e-tutti-furiousi",
+  "date": "2026-08-31",
+  "year": 2026,
+  "campionato": "Asian Street Legends (2026)",
+  "blocks": [
+    {
+      "id": "b0",
+      "type": "title",
+      "x": 0.78,
+      "y": 0.9,
+      "w": 27.41,
+      "h": 12.62,
+      "content": {
+        "text": "Cattivi & Competitivi ",
+        "size": "medium"
+      }
+    },
+    {
+      "id": "b1",
+      "type": "text",
+      "x": 0.68,
+      "y": 14.75,
+      "w": 29.34,
+      "h": 84.19,
+      "content": {
+        "html": "<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">&nbsp;Poco fa si è concluso l evento ispirato alla Saga di Fast and\nFurious</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">La\nPole Position di Gara 1 (Con la Supra) è andata ad un ispiratissimo\nAntonio, capace poi anche di stravincere la gara</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Quello\nche è invece successo in Gara 2 è da prendere e consegnare all\nUnesco degli E-Sports, nel primo dei cinque giri succede praticamente\ndi tutto, Claudio che era partito in testa riesce a scappare, ma\ndietro si forma una fila di 6 cani rabbiosi che lottano tra di loro\nfino alla fine, al traguardo Antonio riesce a prendersi la 2°\nposizione (e a consolidare la vetta della competizione) davanti a\nGiovanni distaccato di meno di mezzo secondo,  distanziato di 4\nsecondi dal londinese arriva William che precede Fabio, Pierpaolo e\nNicola, tutti racchiusi in meno di 1 secondo e mezzo</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">In\nGara 3 Nicola riesce a mantenere la testa per circa 2 giri, poi viene\nsopravanzato da Pierpaolo che si invola verso la vittoria (risultato\nche gli permette di chiudere la competizione al secondo posto),\nNicola difende benissimo la sua seconda posizione, dietro di lui\narrivano Claudio e Antonio capaci di mantenere un distacco onorevole,\nmentre gli altri 3 hanno problemi e arrivano particolarmente staccati</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">L\nevento viene vinto comodamente da Antonio, dietro di lui classifica\nmolto corta con soli 10 punti di distacco tra il 2° e il 7°</p>\n<p align=\"justify\" style=\"line-height: 108%; margin-bottom: 0.28cm\">Con\nqueste 3 mini gare si chiude la Campagna Estiva, ma i motori restano\ncomunque accesi, tra appena 7 giorni si riprenderà con quella\nAutunnale, subito gara 1 del campionato Kart nella pista di Tsukuba</p>"
+      }
+    },
+    {
+      "id": "b2",
+      "type": "photo",
+      "x": 30.59,
+      "y": 0.17,
+      "w": 18.15,
+      "h": 24.58,
+      "content": {
+        "src": "social/media/fast-e-tutti-furiousi-b2.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b3",
+      "type": "photo",
+      "x": 30.62,
+      "y": 25.54,
+      "w": 18.15,
+      "h": 22.09,
+      "content": {
+        "src": "social/media/fast-e-tutti-furiousi-b3.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b4",
+      "type": "photo",
+      "x": 30.77,
+      "y": 72.29,
+      "w": 18.34,
+      "h": 20.59,
+      "content": {
+        "src": "social/media/fast-e-tutti-furiousi-b4.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b5",
+      "type": "photo",
+      "x": 49.74,
+      "y": 49.3,
+      "w": 20.75,
+      "h": 21.75,
+      "content": {
+        "src": "social/media/fast-e-tutti-furiousi-b5.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b6",
+      "type": "photo",
+      "x": 49.81,
+      "y": 72.32,
+      "w": 20.85,
+      "h": 19.76,
+      "content": {
+        "src": "social/media/fast-e-tutti-furiousi-b6.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b7",
+      "type": "photo",
+      "x": 49.71,
+      "y": 0.67,
+      "w": 20.17,
+      "h": 23.91,
+      "content": {
+        "src": "social/media/fast-e-tutti-furiousi-b7.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b8",
+      "type": "photo",
+      "x": 30.81,
+      "y": 48.76,
+      "w": 18.24,
+      "h": 22.75,
+      "content": {
+        "src": "social/media/fast-e-tutti-furiousi-b8.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b9",
+      "type": "photo",
+      "x": 49.65,
+      "y": 25.62,
+      "w": 20.46,
+      "h": 22.25,
+      "content": {
+        "src": "social/media/fast-e-tutti-furiousi-b9.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b10",
+      "type": "photo",
+      "x": 87.36,
+      "y": 0.84,
+      "w": 12.45,
+      "h": 23.58,
+      "content": {
+        "src": "social/media/fast-e-tutti-furiousi-b10.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b11",
+      "type": "photo",
+      "x": 71.02,
+      "y": 71.94,
+      "w": 16.31,
+      "h": 20.26,
+      "content": {
+        "src": "social/media/fast-e-tutti-furiousi-b11.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b12",
+      "type": "photo",
+      "x": 70.92,
+      "y": 49.02,
+      "w": 16.02,
+      "h": 22.09,
+      "content": {
+        "src": "social/media/fast-e-tutti-furiousi-b12.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b13",
+      "type": "photo",
+      "x": 70.61,
+      "y": 25,
+      "w": 16.31,
+      "h": 22.42,
+      "content": {
+        "src": "social/media/fast-e-tutti-furiousi-b13.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b14",
+      "type": "photo",
+      "x": 70.41,
+      "y": 1.1,
+      "w": 16.41,
+      "h": 23.25,
+      "content": {
+        "src": "social/media/fast-e-tutti-furiousi-b14.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b15",
+      "type": "photo",
+      "x": 87.64,
+      "y": 48.87,
+      "w": 12.16,
+      "h": 22.09,
+      "content": {
+        "src": "social/media/fast-e-tutti-furiousi-b15.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b16",
+      "type": "photo",
+      "x": 87.55,
+      "y": 24.94,
+      "w": 12.45,
+      "h": 21.59,
+      "content": {
+        "src": "social/media/fast-e-tutti-furiousi-b16.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b17",
+      "type": "photo",
+      "x": 87.74,
+      "y": 72.03,
+      "w": 12.58,
+      "h": 19.93,
+      "content": {
+        "src": "social/media/fast-e-tutti-furiousi-b17.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    }
+  ]
+}
