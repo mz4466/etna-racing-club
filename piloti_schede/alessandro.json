@@ -12,5 +12,11 @@
   "foto2": "",
   "numero": "",
   "campionati": {},
-  "attivo": true
+  "attivo": false,
+  "statusHistory": [
+    {
+      "date": "2026-09-03",
+      "attivo": false
+    }
+  ]
 }
