@@ -3,6 +3,7 @@
   "psn": "Pare1988",
   "nazione": "Umbria",
   "auto": "Porsche 911 gt3 R",
+  "dataIscrizione": "",
   "stile": "Al limite",
   "pistaAma": "Suzuka",
   "pistaOdia": "Tokio città",
@@ -12,11 +13,12 @@
   "foto2": "",
   "numero": "33",
   "campionati": {
-    "sole-sorpassi-2026": {
+    "ruggiti-d-autunno-2026": {
       "cars": [
-        "911 GT3 R (992) '22"
+        "BMW M6 GT3 Sprint Model '16"
       ]
     }
   },
+  "statusHistory": [],
   "attivo": true
 }
