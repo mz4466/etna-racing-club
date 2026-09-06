@@ -1,0 +1,160 @@
+{
+  "circuito": "Tsukuba – 2,0 km",
+  "data": "2026-09-06",
+  "garaNum": "1",
+  "garaTot": "3",
+  "champId": "1o-campionato-kart-125-2026",
+  "champIdx": "1o-campionato-kart-125-2026",
+  "rows": [
+    {
+      "pos": 1,
+      "nome": "Lukyno",
+      "psn": "Lukyno18",
+      "auto": "Porsche Racing Kart 125 Shifter",
+      "tempo": "29'54''890",
+      "bestLap": "00'59''235",
+      "fl": true,
+      "pole": true,
+      "punti": 25,
+      "extra": "1+1",
+      "totale": 27,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 2,
+      "nome": "Antonio",
+      "psn": "antonioleocataad",
+      "auto": "Porsche Racing Kart 125 Shifter",
+      "tempo": "a 18\"666",
+      "bestLap": "00'59''712",
+      "fl": false,
+      "pole": false,
+      "punti": 21,
+      "extra": "-",
+      "totale": 21,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 3,
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "auto": "Porsche Racing Kart 125 Shifter",
+      "tempo": "a 29\"422",
+      "bestLap": "00'59''624",
+      "fl": false,
+      "pole": false,
+      "punti": 18,
+      "extra": "-",
+      "totale": 18,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 4,
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "auto": "Porsche Racing Kart 125 Shifter",
+      "tempo": "a 49\"298",
+      "bestLap": "00'59''672",
+      "fl": false,
+      "pole": false,
+      "punti": 16,
+      "extra": "-",
+      "totale": 16,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 5,
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "auto": "Porsche Racing Kart 125 Shifter",
+      "tempo": "a 1 Giro",
+      "bestLap": "00'59''793",
+      "fl": false,
+      "pole": false,
+      "punti": 14,
+      "extra": "-",
+      "totale": 14,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 6,
+      "nome": "Nicola",
+      "psn": "taeniko85",
+      "auto": "Porsche Racing Kart 125 Shifter",
+      "tempo": "a 1 Giro",
+      "bestLap": "01'01''581",
+      "fl": false,
+      "pole": false,
+      "punti": 12,
+      "extra": "-",
+      "totale": 12,
+      "stato": "ok",
+      "note": ""
+    },
+    {
+      "pos": 7,
+      "nome": "William",
+      "psn": "steward_andante",
+      "auto": "Porsche Racing Kart 125 Shifter",
+      "tempo": "",
+      "bestLap": "01'01''673",
+      "fl": false,
+      "pole": false,
+      "punti": 0,
+      "extra": "-",
+      "totale": 0,
+      "stato": "dnf",
+      "note": ""
+    }
+  ],
+  "standings": [
+    {
+      "nome": "Lukyno",
+      "psn": "Lukyno18",
+      "pts": 27,
+      "pos": 1
+    },
+    {
+      "nome": "Antonio",
+      "psn": "antonioleocataad",
+      "pts": 21,
+      "pos": 2
+    },
+    {
+      "nome": "Pyer",
+      "psn": "PyerStark",
+      "pts": 18,
+      "pos": 3
+    },
+    {
+      "nome": "Giovanni",
+      "psn": "mz4461",
+      "pts": 16,
+      "pos": 4
+    },
+    {
+      "nome": "Stefano",
+      "psn": "stefano8923",
+      "pts": 14,
+      "pos": 5
+    },
+    {
+      "nome": "Nicola",
+      "psn": "taeniko85",
+      "pts": 12,
+      "pos": 6
+    },
+    {
+      "nome": "William",
+      "psn": "steward_andante",
+      "pts": 0,
+      "pos": 7
+    }
+  ],
+  "bestOf": null
+}
