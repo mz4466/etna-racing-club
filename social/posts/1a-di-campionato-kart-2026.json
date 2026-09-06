@@ -1,0 +1,187 @@
+{
+  "title": "1a Di Campionato Kart 2026",
+  "slug": "1a-di-campionato-kart-2026",
+  "date": "2026-09-06",
+  "year": 2026,
+  "campionato": "1° Campionato Kart 125 (2026)",
+  "blocks": [
+    {
+      "id": "b1",
+      "type": "title",
+      "x": 1.07,
+      "y": 0.99,
+      "w": 32.43,
+      "h": 11.96,
+      "content": {
+        "text": "59 - Questo e' il suo numero",
+        "size": "medium"
+      }
+    },
+    {
+      "id": "b2",
+      "type": "photo",
+      "x": 1.17,
+      "y": 13.69,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/1a-di-campionato-kart-2026-b2.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b3",
+      "type": "photo",
+      "x": 26.72,
+      "y": 42.69,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/1a-di-campionato-kart-2026-b3.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b4",
+      "type": "photo",
+      "x": 26.66,
+      "y": 71.94,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/1a-di-campionato-kart-2026-b4.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b5",
+      "type": "video",
+      "x": 27.03,
+      "y": 13.88,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "url": "https://youtu.be/tslIKgd3R7w?si=eYqu_axk-umKjt2q",
+        "caption": ""
+      }
+    },
+    {
+      "id": "b6",
+      "type": "photo",
+      "x": 52.61,
+      "y": 14.66,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/1a-di-campionato-kart-2026-b6.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b7",
+      "type": "photo",
+      "x": 1.17,
+      "y": 71.94,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/1a-di-campionato-kart-2026-b7.jpeg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b8",
+      "type": "photo",
+      "x": 1.15,
+      "y": 42.7,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/1a-di-campionato-kart-2026-b8.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b9",
+      "type": "photo",
+      "x": 52.54,
+      "y": 71.94,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/1a-di-campionato-kart-2026-b9.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b10",
+      "type": "photo",
+      "x": 52.62,
+      "y": 43.47,
+      "w": 25,
+      "h": 28,
+      "content": {
+        "src": "social/media/1a-di-campionato-kart-2026-b10.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b11",
+      "type": "photo",
+      "x": 78.38,
+      "y": 16.33,
+      "w": 21.62,
+      "h": 24.58,
+      "content": {
+        "src": "social/media/1a-di-campionato-kart-2026-b11.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b12",
+      "type": "photo",
+      "x": 78.47,
+      "y": 72.77,
+      "w": 21.24,
+      "h": 24.74,
+      "content": {
+        "src": "social/media/1a-di-campionato-kart-2026-b12.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    },
+    {
+      "id": "b13",
+      "type": "photo",
+      "x": 78.55,
+      "y": 44.8,
+      "w": 20.99,
+      "h": 25.74,
+      "content": {
+        "src": "social/media/1a-di-campionato-kart-2026-b13.jpg",
+        "caption": "",
+        "pending": null,
+        "url": ""
+      }
+    }
+  ]
+}
