@@ -5,8 +5,23 @@
     "date": "2026-09-06",
     "year": 2026,
     "campionato": "1° Campionato Kart 125 (2026)",
-    "blockTypes": [],
-    "created": "2026-09-06T13:51:14.028Z"
+    "blockTypes": [
+      "title",
+      "photo",
+      "photo",
+      "photo",
+      "video",
+      "photo",
+      "photo",
+      "photo",
+      "photo",
+      "photo",
+      "photo",
+      "photo",
+      "photo"
+    ],
+    "created": "2026-09-06T13:51:14.028Z",
+    "cover": "social/media/1a-di-campionato-kart-2026-b2.jpg"
   },
   {
     "title": "Pagelle Agosto 2026",
