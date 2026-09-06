@@ -13,9 +13,14 @@
   "foto2": "",
   "numero": "8",
   "campionati": {
-    "sole-sorpassi-2026": {
+    "ruggiti-d-autunno-2026": {
       "cars": [
-        "Mercedes-AMG GT3 '20"
+        "Subaru WRX Gr.3"
+      ]
+    },
+    "1o-campionato-kart-125-2026": {
+      "cars": [
+        "Porsche Racing Kart 125 Shifter"
       ]
     }
   },
