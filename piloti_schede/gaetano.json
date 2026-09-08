@@ -3,6 +3,7 @@
   "psn": "Fizzarrinho",
   "nazione": "",
   "auto": "Lamborghini Sesto Elemento",
+  "dataIscrizione": "",
   "stile": "Rispetto, educazione e gentilezza",
   "pistaAma": "Spa-Francorchamps",
   "pistaOdia": "",
@@ -12,11 +13,12 @@
   "foto2": "",
   "numero": "18",
   "campionati": {
-    "sole-sorpassi-2026": {
+    "ruggiti-d-autunno-2026": {
       "cars": [
         "911 GT3 R (992) '22"
       ]
     }
   },
+  "statusHistory": [],
   "attivo": true
 }
