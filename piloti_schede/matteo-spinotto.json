@@ -3,6 +3,7 @@
   "psn": "Sp1n8_Mes",
   "nazione": "",
   "auto": "Ancora nessuna..devo trovare ancora la mia🤷🏻‍♂️",
+  "dataIscrizione": "",
   "stile": "",
   "pistaAma": "Interlagos",
   "pistaOdia": "",
@@ -12,16 +13,12 @@
   "foto2": "",
   "numero": "22",
   "campionati": {
-    "sole-sorpassi-2026": {
+    "ruggiti-d-autunno-2026": {
       "cars": [
-        "BMW M6 GT3 Sprint Model '16"
-      ]
-    },
-    "evento-gr-4-2026": {
-      "cars": [
-        "Ferrari 458 Italia Gr.4"
+        "BMW M6 GT3 Endurance Model '16"
       ]
     }
   },
+  "statusHistory": [],
   "attivo": true
 }
