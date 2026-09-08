@@ -3,6 +3,7 @@
   "psn": "Slend2MaN321",
   "nazione": "",
   "auto": "",
+  "dataIscrizione": "",
   "stile": "",
   "pistaAma": "",
   "pistaOdia": "",
@@ -12,11 +13,12 @@
   "foto2": "",
   "numero": "86",
   "campionati": {
-    "sole-sorpassi-2026": {
+    "ruggiti-d-autunno-2026": {
       "cars": [
         "Subaru BRZ GT300 '21"
       ]
     }
   },
+  "statusHistory": [],
   "attivo": true
 }
