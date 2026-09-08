@@ -1,0 +1,24 @@
+{
+  "nome": "Carlo",
+  "psn": "Viperx_88_",
+  "nazione": "",
+  "auto": "",
+  "dataIscrizione": "2026-09-07",
+  "stile": "",
+  "pistaAma": "",
+  "pistaOdia": "",
+  "catchphrase": "",
+  "badges": [],
+  "foto": "",
+  "foto2": "",
+  "numero": "88",
+  "campionati": {
+    "ruggiti-d-autunno-2026": {
+      "cars": [
+        "Ferrari 296 GT3 '23"
+      ]
+    }
+  },
+  "statusHistory": [],
+  "attivo": true
+}
