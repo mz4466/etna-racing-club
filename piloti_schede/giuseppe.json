@@ -3,6 +3,7 @@
   "psn": "GiuseppeAyrtonF1",
   "nazione": "",
   "auto": "",
+  "dataIscrizione": "2025-10-03",
   "stile": "",
   "pistaAma": "",
   "pistaOdia": "",
@@ -12,5 +13,6 @@
   "foto2": "",
   "numero": "",
   "campionati": {},
+  "statusHistory": [],
   "attivo": true
 }
