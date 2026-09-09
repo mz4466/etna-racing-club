@@ -3,6 +3,7 @@
   "psn": "NyghtCrawlr",
   "nazione": "",
   "auto": "",
+  "dataIscrizione": "2025-09-28",
   "stile": "",
   "pistaAma": "",
   "pistaOdia": "",
@@ -12,5 +13,6 @@
   "foto2": "",
   "numero": "",
   "campionati": {},
+  "statusHistory": [],
   "attivo": false
 }
