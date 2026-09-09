@@ -1416,7 +1416,9 @@ function formatJoinDate(dateStr){
   var mesi = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
   var m = parseInt(parts[1], 10);
   var mese = (m >= 1 && m <= 12) ? mesi[m-1] : '';
-  return mese ? (mese + ' ' + parts[0]) : dateStr;
+  if(!mese) return dateStr;
+  var giorno = parts.length >= 3 ? parseInt(parts[2], 10) : null;
+  return giorno ? (giorno + ' ' + mese + ' ' + parts[0]) : (mese + ' ' + parts[0]);
 }
 
 function buildNumberRoster(pilots){
