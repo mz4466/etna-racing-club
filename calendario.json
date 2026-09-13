@@ -1553,15 +1553,15 @@
         "circuit": "Daytona – Tracciato stradale – 5,7 km",
         "date": "2026-09-19",
         "laps": "Da Confermare",
-        "lapsType": "giri",
         "fase": "",
-        "carId": "",
-        "carName": "",
+        "lapsType": "giri",
         "weather": "",
         "tire": "Da Confermare",
         "fuel": "Da Confermare",
         "types": "",
-        "notes": ""
+        "notes": "",
+        "carId": "3349",
+        "carName": "Lexus RC F GT500 '16"
       }
     ],
     "costruttori": false,
