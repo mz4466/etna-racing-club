@@ -1309,10 +1309,10 @@
     "trophy": "GR3_Championship_Winner.png",
     "cars": "Gr.3",
     "desc": "",
-    "status": "prossimo",
+    "status": "in-corso",
     "file": "campionati/ruggiti-dautunno-2026-campionato-ruggiti-d-autunno.html",
     "totalRounds": 6,
-    "completedRounds": 0,
+    "completedRounds": 1,
     "bestOf": 5,
     "rounds": [
       {
