@@ -5,8 +5,17 @@
     "date": "2026-09-13",
     "year": 2026,
     "campionato": "Ruggiti d'Autunno (2026)",
-    "blockTypes": [],
-    "created": "2026-09-13T15:22:52.453Z"
+    "blockTypes": [
+      "title",
+      "video",
+      "photo",
+      "photo",
+      "photo",
+      "photo",
+      "photo"
+    ],
+    "created": "2026-09-13T15:22:52.453Z",
+    "cover": "social/media/ruggiti-d-autunno-gr3-gara-1-b2.jpg"
   },
   {
     "title": "1a Di Campionato Kart 2026",
