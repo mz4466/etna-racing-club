@@ -12,7 +12,13 @@
   "foto": "",
   "foto2": "",
   "numero": "84",
-  "campionati": {},
+  "campionati": {
+    "ruggiti-d-autunno-2026": {
+      "cars": [
+        "911 GT3 R (992) '22"
+      ]
+    }
+  },
   "statusHistory": [],
   "attivo": true
 }
